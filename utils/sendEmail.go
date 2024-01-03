@@ -3,6 +3,7 @@ package utils
 import (
 	"careville_backend/database"
 	"context"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
@@ -10,8 +11,9 @@ import (
 )
 
 var (
+	senderEmail = os.Getenv("SENDER_EMAIL")
 	charSet = aws.String("UTF-8")
-	sender  = aws.String("careville@yopmail.com")
+	sender  = aws.String(senderEmail)
 	subject = aws.String("otp for user signup")
 )
 
