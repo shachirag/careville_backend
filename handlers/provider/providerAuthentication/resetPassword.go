@@ -1,0 +1,76 @@
+package providerAuthenticate
+
+import (
+	"careville_backend/database"
+	providerAuth "careville_backend/dto/provider/providerAuth"
+	"careville_backend/entity"
+	"careville_backend/utils"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// @Summary Reset business user Password after OTP Verification
+// @Description Reset business user password after OTP verification using the new password and confirm password
+// @Tags business user authorization
+// @Accept application/json
+// @Param businessUser body providerAuth.ResetPasswordAfterOtpReqDto true "Reset business user password after OTP verification"
+// @Produce json
+// @Success 200 {object} providerAuth.ProviderPasswordResDto
+// @Router /business/reset-password [Put]
+func ResetPasswordAfterOtp(c *fiber.Ctx) error {
+	var (
+		providerColl = database.GetCollection("provider")
+		data         providerAuth.ResetPasswordAfterOtpReqDto
+		provider     entity.ProviderEntity
+	)
+
+	// Parsing the request body
+	err := c.BodyParser(&data)
+	if err != nil {
+		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
+			Status:  false,
+			Message: err.Error(),
+		})
+	}
+
+	// Find the user with email address from client
+	err = providerColl.FindOne(ctx, bson.M{"email": data.Email}).Decode(&provider)
+	if err != nil {
+		// Check if there is no documents found error
+		if err == mongo.ErrNoDocuments {
+			return c.Status(404).JSON(providerAuth.ProviderPasswordResDto{
+				Status:  false,
+				Message: "No provider found",
+			})
+		}
+
+		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
+			Status:  false,
+			Message: "Internal server error, while getting the provider: " + err.Error(),
+		})
+	}
+
+	// Hash the new password
+	hashedPassword, err := utils.HashPassword(data.NewPassword)
+	if err != nil {
+		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
+			Status:  false,
+			Message: "Failed to hash the password: " + err.Error(),
+		})
+	}
+
+	_, err = providerColl.UpdateOne(ctx, bson.M{"_id": provider.Id}, bson.M{"$set": bson.M{"password": hashedPassword}})
+	if err != nil {
+		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
+			Status:  false,
+			Message: "Failed to update password in the database: " + err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(providerAuth.ProviderPasswordResDto{
+		Status:  true,
+		Message: "Password updated successfully after OTP verification",
+	})
+}

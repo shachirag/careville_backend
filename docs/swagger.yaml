@@ -1,0 +1,417 @@
+basePath: /
+definitions:
+  providerAuth.GetProviderResDto:
+    properties:
+      data:
+        $ref: '#/definitions/providerAuth.ProviderData'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  providerAuth.LoginProviderReqDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  providerAuth.LoginProviderResDto:
+    properties:
+      data:
+        $ref: '#/definitions/providerAuth.ProviderResDto'
+      message:
+        type: string
+      status:
+        type: boolean
+      token:
+        type: string
+    type: object
+  providerAuth.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
+  providerAuth.ProviderChangePasswordReqDto:
+    properties:
+      confirmPassword:
+        type: string
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+    type: object
+  providerAuth.ProviderChangePasswordResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  providerAuth.ProviderData:
+    properties:
+      additionalDetails:
+        type: string
+      address:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      notification:
+        type: boolean
+      phoneNumber:
+        $ref: '#/definitions/providerAuth.PhoneNumber'
+      updatedAt:
+        type: string
+    type: object
+  providerAuth.ProviderForgotPasswordReqDto:
+    properties:
+      email:
+        type: string
+    type: object
+  providerAuth.ProviderPasswordResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  providerAuth.ProviderResDto:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/providerAuth.PhoneNumber'
+      updatedAt:
+        type: string
+    type: object
+  providerAuth.ProviderResponseDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  providerAuth.ProviderSignupReqDto:
+    properties:
+      dialCode:
+        type: string
+      email:
+        type: string
+      phoneNumber:
+        type: string
+    type: object
+  providerAuth.ProviderSignupVerifyOtpReqDto:
+    properties:
+      dialCode:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      otp:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+    type: object
+  providerAuth.ProviderSignupVerifyOtpResDto:
+    properties:
+      data:
+        $ref: '#/definitions/providerAuth.ProviderResDto'
+      message:
+        type: string
+      status:
+        type: boolean
+      token:
+        type: string
+    type: object
+  providerAuth.ResetPasswordAfterOtpReqDto:
+    properties:
+      confirmPassword:
+        type: string
+      email:
+        type: string
+      newPassword:
+        type: string
+    type: object
+  providerAuth.UpdateProviderResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  providerAuth.VerifyOtpReqDto:
+    properties:
+      email:
+        type: string
+      otp:
+        type: string
+    type: object
+host: zn2j5663-5065.inc1.devtunnels.ms
+info:
+  contact:
+    name: Chirag Sharma
+  description: Care Ville Backend (in GoLang)
+  license:
+    name: MIT
+  title: Care Ville
+  version: 0.0.1
+paths:
+  /business/reset-password:
+    put:
+      consumes:
+      - application/json
+      description: Reset business user password after OTP verification using the new
+        password and confirm password
+      parameters:
+      - description: Reset business user password after OTP verification
+        in: body
+        name: businessUser
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ResetPasswordAfterOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
+      summary: Reset business user Password after OTP Verification
+      tags:
+      - business user authorization
+  /provider/change-password/{id}:
+    put:
+      consumes:
+      - application/json
+      description: change provider Password
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Change password of provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderChangePasswordReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderChangePasswordResDto'
+      summary: Change provider Password
+      tags:
+      - provider authorization
+  /provider/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Forgot Password
+      parameters:
+      - description: forgot password for provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderForgotPasswordReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
+      summary: Forgot Password
+      tags:
+      - provider authorization
+  /provider/get-provider-info/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch provider By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.GetProviderResDto'
+      summary: Fetch provider By ID
+      tags:
+      - provider authorization
+  /provider/login:
+    post:
+      consumes:
+      - application/json
+      description: Login provider
+      parameters:
+      - description: login provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.LoginProviderReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.LoginProviderResDto'
+      summary: Login provider
+      tags:
+      - provider authorization
+  /provider/signup:
+    post:
+      description: Signup provider
+      parameters:
+      - description: send 6 digit otp to email for signup
+        in: body
+        name: signup
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderSignupReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderResponseDto'
+      summary: Signup provider
+      tags:
+      - provider authorization
+  /provider/update-provider-data/{id}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update provider
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - in: formData
+        name: additionalDetails
+        type: string
+      - in: formData
+        name: address
+        type: string
+      - in: formData
+        name: dialCode
+        type: string
+      - in: formData
+        name: name
+        type: string
+      - in: formData
+        name: oldProfileImage
+        type: string
+      - in: formData
+        name: phoneNumber
+        type: string
+      - description: provider profile image
+        in: formData
+        name: newProviderImage
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.UpdateProviderResDto'
+      summary: Update provider
+      tags:
+      - provider authorization
+  /provider/verify-otp:
+    post:
+      consumes:
+      - application/json
+      description: Verify the entered 6 digit OTP
+      parameters:
+      - description: Verify 6 digit OTP
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.VerifyOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
+      summary: Verify provider OTP
+      tags:
+      - provider authorization
+  /provider/verify-otp-for-signup:
+    post:
+      consumes:
+      - application/json
+      description: Verify the entered 6 digit OTP
+      parameters:
+      - description: Verify 6 digit OTP and insert data into database
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderSignupVerifyOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderSignupVerifyOtpResDto'
+      summary: Verify OTP for signup
+      tags:
+      - provider authorization
+swagger: "2.0"
