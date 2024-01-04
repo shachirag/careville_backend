@@ -11,14 +11,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// @Summary Reset business user Password after OTP Verification
-// @Description Reset business user password after OTP verification using the new password and confirm password
-// @Tags business user authorization
+// @Summary Reset provider Password after OTP Verification
+// @Description Reset provider password after OTP verification using the new password and confirm password
+// @Tags provider authorization
 // @Accept application/json
-// @Param businessUser body providerAuth.ResetPasswordAfterOtpReqDto true "Reset business user password after OTP verification"
+// @Param provider body providerAuth.ResetPasswordAfterOtpReqDto true "Reset provider password after OTP verification"
 // @Produce json
 // @Success 200 {object} providerAuth.ProviderPasswordResDto
-// @Router /business/reset-password [Put]
+// @Router /provider/reset-password [Put]
 func ResetPasswordAfterOtp(c *fiber.Ctx) error {
 	var (
 		providerColl = database.GetCollection("provider")

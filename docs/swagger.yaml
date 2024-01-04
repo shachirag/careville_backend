@@ -177,29 +177,6 @@ info:
   title: Care Ville
   version: 0.0.1
 paths:
-  /business/reset-password:
-    put:
-      consumes:
-      - application/json
-      description: Reset business user password after OTP verification using the new
-        password and confirm password
-      parameters:
-      - description: Reset business user password after OTP verification
-        in: body
-        name: businessUser
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.ResetPasswordAfterOtpReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
-      summary: Reset business user Password after OTP Verification
-      tags:
-      - business user authorization
   /provider/change-password/{id}:
     put:
       consumes:
@@ -300,6 +277,29 @@ paths:
           schema:
             $ref: '#/definitions/providerAuth.LoginProviderResDto'
       summary: Login provider
+      tags:
+      - provider authorization
+  /provider/reset-password:
+    put:
+      consumes:
+      - application/json
+      description: Reset provider password after OTP verification using the new password
+        and confirm password
+      parameters:
+      - description: Reset provider password after OTP verification
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ResetPasswordAfterOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
+      summary: Reset provider Password after OTP Verification
       tags:
       - provider authorization
   /provider/signup:

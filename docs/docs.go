@@ -20,40 +20,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/business/reset-password": {
-            "put": {
-                "description": "Reset business user password after OTP verification using the new password and confirm password",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "business user authorization"
-                ],
-                "summary": "Reset business user Password after OTP Verification",
-                "parameters": [
-                    {
-                        "description": "Reset business user password after OTP verification",
-                        "name": "businessUser",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ResetPasswordAfterOtpReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderPasswordResDto"
-                        }
-                    }
-                }
-            }
-        },
         "/provider/change-password/{id}": {
             "put": {
                 "description": "change provider Password",
@@ -204,6 +170,40 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/providerAuth.LoginProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/reset-password": {
+            "put": {
+                "description": "Reset provider password after OTP verification using the new password and confirm password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider authorization"
+                ],
+                "summary": "Reset provider Password after OTP Verification",
+                "parameters": [
+                    {
+                        "description": "Reset provider password after OTP verification",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ResetPasswordAfterOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderPasswordResDto"
                         }
                     }
                 }
