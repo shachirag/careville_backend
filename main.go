@@ -7,7 +7,7 @@ import "careville_backend/app"
 // @description Care Ville Backend (in GoLang)
 // @contact.name Chirag Sharma
 // @license.name MIT
-// @host zn2j5663-5065.inc1.devtunnels.ms
+// @host mmpn2atpcm.eu-west-1.awsapprunner.com
 // @BasePath /
 func main() {
 	err := app.SetupAndRunApp()
@@ -15,3 +15,5 @@ func main() {
 		panic(err)
 	}
 }
+
+// mmpn2atpcm.eu-west-1.awsapprunner.com

@@ -650,7 +650,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "0.0.1",
-	Host:             "zn2j5663-5065.inc1.devtunnels.ms",
+	Host:             "mmpn2atpcm.eu-west-1.awsapprunner.com",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Care Ville",
