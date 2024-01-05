@@ -1,0 +1,230 @@
+package services
+
+import (
+	"encoding/json"
+	"fmt"
+	"strconv"
+	"time"
+
+	"careville_backend/database"
+	"careville_backend/dto/provider/services"
+	"careville_backend/entity"
+	"careville_backend/utils"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// @Summary Add laboratory
+// @Tags services
+// @Description Add laboratory
+// @Accept multipart/form-data
+//
+//	@Param Authorization header	string true	"Authentication header"
+//
+// @Param provider formData services.LaboratoryRequestDto true "add laboratory"
+// @Param laboratoryImage formData file false "laboratoryImage"
+// @Param certificate formData file false "certificate"
+// @Param license formData file false "license"
+// @Produce json
+// @Success 200 {object} services.LaboratoryResDto
+// @Router /provider/add-laboratory [post]
+func AddLaboratory(c *fiber.Ctx) error {
+	var (
+		servicesColl = database.GetCollection("service")
+		data         services.LaboratoryRequestDto
+		laboratory   entity.ServiceEntity
+	)
+
+	dataStr := c.FormValue("data")
+	dataBytes := []byte(dataStr)
+
+	err := json.Unmarshal(dataBytes, &data)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: err.Error(),
+		})
+	}
+
+	// Access the MultipartForm directly from the fiber.Ctx
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "Failed to get multipart form: " + err.Error(),
+		})
+	}
+
+	formFiles := form.File["laboratoryImage"]
+	if len(formFiles) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "No laboratoryImage uploaded",
+		})
+	}
+
+	// Upload each image to S3 and get the S3 URLs
+	for _, formFile := range formFiles {
+		file, err := formFile.Open()
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+				Status:  false,
+				Message: "Failed to upload laboratoryImage to S3: " + err.Error(),
+			})
+		}
+
+		// Generate a unique filename for each image
+		id := primitive.NewObjectID()
+		fileName := fmt.Sprintf("laboratory/%v-image-%s", id.Hex(), formFile.Filename)
+
+		// Upload the image to S3 and get the S3 URL
+		laboratoryImage, err := utils.UploadToS3(fileName, file)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
+				Status:  false,
+				Message: "Failed to upload laboratoryImage to S3: " + err.Error(),
+			})
+		}
+
+		// Append the image URL to the Images field
+		laboratory.Laboratory.Information.Image = laboratoryImage
+	}
+
+	formFiles = form.File["certificate"]
+	if len(formFiles) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "No certificate uploaded",
+		})
+	}
+
+	// Upload each image to S3 and get the S3 URLs
+	for _, formFile := range formFiles {
+		file, err := formFile.Open()
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+				Status:  false,
+				Message: "Failed to upload certificate to S3: " + err.Error(),
+			})
+		}
+
+		// Generate a unique filename for each image
+		id := primitive.NewObjectID()
+		fileName := fmt.Sprintf("certificate/%v-doc-%s", id.Hex(), formFile.Filename)
+
+		// Upload the image to S3 and get the S3 URL
+		certificateURL, err := utils.UploadToS3(fileName, file)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
+				Status:  false,
+				Message: "Failed to upload certificate to S3: " + err.Error(),
+			})
+		}
+
+		// Append the image URL to the Images field
+		laboratory.Laboratory.Documents.Certificate = certificateURL
+	}
+
+	formFiles = form.File["license"]
+	if len(formFiles) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "No license uploaded",
+		})
+	}
+
+	// Upload each image to S3 and get the S3 URLs
+	for _, formFile := range formFiles {
+		file, err := formFile.Open()
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+				Status:  false,
+				Message: "Failed to upload license to S3: " + err.Error(),
+			})
+		}
+
+		// Generate a unique filename for each image
+		id := primitive.NewObjectID()
+		fileName := fmt.Sprintf("license/%v-doc-%s", id.Hex(), formFile.Filename)
+
+		// Upload the image to S3 and get the S3 URL
+		licenseURL, err := utils.UploadToS3(fileName, file)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
+				Status:  false,
+				Message: "Failed to upload license to S3: " + err.Error(),
+			})
+		}
+
+		// Append the image URL to the Images field
+		laboratory.Laboratory.Documents.License = licenseURL
+	}
+
+	longitude, err := strconv.ParseFloat(data.LaboratoryReqDto.Longitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "Invalid longitude format",
+		})
+	}
+
+	latitude, err := strconv.ParseFloat(data.LaboratoryReqDto.Latitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "Invalid latitude format",
+		})
+	}
+
+	var investigations []entity.Investigations
+	for _, inv := range data.LaboratoryReqDto.Investigations {
+		convertedInv := entity.Investigations{
+			Type:        inv.Type,
+			Name:        inv.Name,
+			Information: inv.Information,
+			Price:       inv.Price,
+		}
+		investigations = append(investigations, convertedInv)
+	}
+
+	laboratory = entity.ServiceEntity{
+		Id:                   primitive.NewObjectID(),
+		ProviderId:           data.LaboratoryReqDto.ProviderId,
+		Role:                 data.LaboratoryReqDto.Role,
+		FacilityOrProfession: data.LaboratoryReqDto.FacilityOrProfession,
+		Laboratory: entity.Laboratory{
+			Information: entity.Information{
+				Name:           data.LaboratoryReqDto.InformationName,
+				AdditionalText: data.LaboratoryReqDto.AdditionalText,
+				Image:          laboratory.Laboratory.Information.Image,
+				Address: entity.Address{
+					Coordinates: []float64{longitude, latitude},
+					Add:         data.LaboratoryReqDto.Address,
+					Type:        "Point",
+				},
+			},
+			Documents: entity.Documents{
+				Certificate: laboratory.Laboratory.Documents.Certificate,
+				License:     laboratory.Laboratory.Documents.License,
+			},
+			Investigations: investigations,
+		},
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+	}
+
+	_, err = servicesColl.InsertOne(ctx, laboratory)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
+			Status:  false,
+			Message: "Failed to insert laboratory data into MongoDB: " + err.Error(),
+		})
+	}
+
+	laboratoryRes := services.LaboratoryResDto{
+		Status:  true,
+		Message: "laboratory added successfully",
+	}
+	return c.Status(fiber.StatusOK).JSON(laboratoryRes)
+}

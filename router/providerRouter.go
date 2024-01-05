@@ -3,6 +3,7 @@ package router
 import (
 	"careville_backend/handlers"
 	providerAuthenticate "careville_backend/handlers/provider/providerAuthentication"
+	"careville_backend/handlers/provider/services"
 	"careville_backend/middlewares"
 	"os"
 
@@ -31,4 +32,11 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	provider.Put("/change-password/:id", jwt, providerAuthenticate.ChangeProviderPassword)
 	provider.Get("/get-provider-info/:id", jwt, providerAuthenticate.FetchProviderById)
 	provider.Put("/update-provider-info/:id", jwt, providerAuthenticate.UpdateProvider)
+
+	// services
+	provider.Post("/add-hospitalClinic", jwt, services.AddHospClinic)
+	provider.Post("/add-laboratory", jwt, services.AddLaboratory)
+	provider.Post("/add-fitness-center", jwt, services.AddFitnessCenter)
+	provider.Post("/add-pharmacy", jwt, services.AddFitnessCenter)
+	provider.Post("/add-doctor-profession", jwt, services.AddDoctorProfession)
 }

@@ -167,6 +167,292 @@ definitions:
       otp:
         type: string
     type: object
+  services.AdditionalServices:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  services.Doctor:
+    properties:
+      name:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/services.Schedule'
+        type: array
+      speciality:
+        type: string
+    type: object
+  services.DoctorProfessionReqDto:
+    properties:
+      additionalText:
+        type: string
+      address:
+        type: string
+      certificate:
+        type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      latitude:
+        type: string
+      license:
+        type: string
+      longitude:
+        type: string
+      personalIdentificationDocs:
+        $ref: '#/definitions/services.PersonalIdentificationDocs'
+      professionalDetailsDocs:
+        $ref: '#/definitions/services.ProfessionalDetailsDocs'
+      providerId:
+        type: string
+      qualifications:
+        type: string
+      role:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/services.DoctorSchedule'
+        type: array
+      speciality:
+        type: string
+    type: object
+  services.DoctorProfessionResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.DoctorSchedule:
+    properties:
+      consultationFees:
+        type: string
+      slots:
+        $ref: '#/definitions/services.Slots'
+    type: object
+  services.FitnessCenterReqDto:
+    properties:
+      additionalServices:
+        items:
+          $ref: '#/definitions/services.AdditionalServices'
+        type: array
+      additionalText:
+        type: string
+      address:
+        type: string
+      certificate:
+        type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      latitude:
+        type: string
+      license:
+        type: string
+      longitude:
+        type: string
+      providerId:
+        type: string
+      role:
+        type: string
+      subscription:
+        items:
+          $ref: '#/definitions/services.Subscription'
+        type: array
+      trainers:
+        items:
+          $ref: '#/definitions/services.Trainers'
+        type: array
+    type: object
+  services.FitnessCenterResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.HospitalClinicReqDto:
+    properties:
+      additionalText:
+        type: string
+      address:
+        type: string
+      certificate:
+        type: string
+      doctor:
+        items:
+          $ref: '#/definitions/services.Doctor'
+        type: array
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      insurances:
+        items:
+          type: string
+        type: array
+      latitude:
+        type: string
+      license:
+        type: string
+      longitude:
+        type: string
+      otherServices:
+        items:
+          type: string
+        type: array
+      providerId:
+        type: string
+      role:
+        type: string
+    type: object
+  services.HospitalClinicResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.Investigations:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  services.LaboratoryReqDto:
+    properties:
+      additionalText:
+        type: string
+      address:
+        type: string
+      certificate:
+        type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      investigations:
+        items:
+          $ref: '#/definitions/services.Investigations'
+        type: array
+      latitude:
+        type: string
+      license:
+        type: string
+      longitude:
+        type: string
+      providerId:
+        type: string
+      role:
+        type: string
+    type: object
+  services.LaboratoryResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.PersonalIdentificationDocs:
+    properties:
+      license:
+        type: string
+      nimc:
+        type: string
+    type: object
+  services.PharmacyReqDto:
+    properties:
+      additionalServices:
+        items:
+          $ref: '#/definitions/services.AdditionalServices'
+        type: array
+      additionalText:
+        type: string
+      address:
+        type: string
+      certificate:
+        type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      latitude:
+        type: string
+      license:
+        type: string
+      longitude:
+        type: string
+      providerId:
+        type: string
+      role:
+        type: string
+    type: object
+  services.PharmacyResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.ProfessionalDetailsDocs:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
+    type: object
+  services.Schedule:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  services.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  services.Subscription:
+    properties:
+      details:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  services.Trainers:
+    properties:
+      category:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
 host: mmpn2atpcm.eu-west-1.awsapprunner.com
 info:
   contact:
@@ -177,6 +463,138 @@ info:
   title: Care Ville
   version: 0.0.1
 paths:
+  /provider/add-fitness-center:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add fitnessCenter
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: fitnessCenterImage
+        in: formData
+        name: fitnessCenterImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.FitnessCenterResDto'
+      summary: Add fitnessCenter
+      tags:
+      - services
+  /provider/add-hospitalClinic:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add HospitalClinic
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: hospitalImage
+        in: formData
+        name: hopitalImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.HospitalClinicResDto'
+      summary: Add HospitalClinic
+      tags:
+      - services
+  /provider/add-laboratory:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add laboratory
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: laboratoryImage
+        in: formData
+        name: laboratoryImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.LaboratoryResDto'
+      summary: Add laboratory
+      tags:
+      - services
+  /provider/add-pharmacy:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add pharmacy
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pharmacyImage
+        in: formData
+        name: pharmacyImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.PharmacyResDto'
+      summary: Add pharmacy
+      tags:
+      - services
   /provider/change-password/{id}:
     put:
       consumes:

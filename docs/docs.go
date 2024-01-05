@@ -20,6 +20,206 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/provider/add-fitness-center": {
+            "post": {
+                "description": "Add fitnessCenter",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add fitnessCenter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "fitnessCenterImage",
+                        "name": "fitnessCenterImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.FitnessCenterResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/add-hospitalClinic": {
+            "post": {
+                "description": "Add HospitalClinic",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add HospitalClinic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "hospitalImage",
+                        "name": "hopitalImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.HospitalClinicResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/add-laboratory": {
+            "post": {
+                "description": "Add laboratory",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add laboratory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "laboratoryImage",
+                        "name": "laboratoryImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.LaboratoryResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/add-pharmacy": {
+            "post": {
+                "description": "Add pharmacy",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add pharmacy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "pharmacyImage",
+                        "name": "pharmacyImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.PharmacyResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/change-password/{id}": {
             "put": {
                 "description": "change provider Password",
@@ -641,6 +841,445 @@ const docTemplate = `{
                 },
                 "otp": {
                     "type": "string"
+                }
+            }
+        },
+        "services.AdditionalServices": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.Doctor": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Schedule"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.DoctorProfessionReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "certificate": {
+                    "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "personalIdentificationDocs": {
+                    "$ref": "#/definitions/services.PersonalIdentificationDocs"
+                },
+                "professionalDetailsDocs": {
+                    "$ref": "#/definitions/services.ProfessionalDetailsDocs"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "qualifications": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.DoctorSchedule"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.DoctorProfessionResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.DoctorSchedule": {
+            "type": "object",
+            "properties": {
+                "consultationFees": {
+                    "type": "string"
+                },
+                "slots": {
+                    "$ref": "#/definitions/services.Slots"
+                }
+            }
+        },
+        "services.FitnessCenterReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalServices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.AdditionalServices"
+                    }
+                },
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "certificate": {
+                    "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "subscription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Subscription"
+                    }
+                },
+                "trainers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Trainers"
+                    }
+                }
+            }
+        },
+        "services.FitnessCenterResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.HospitalClinicReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "certificate": {
+                    "type": "string"
+                },
+                "doctor": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Doctor"
+                    }
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "insurances": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "otherServices": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.HospitalClinicResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.Investigations": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.LaboratoryReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "certificate": {
+                    "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "investigations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Investigations"
+                    }
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.LaboratoryResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.PersonalIdentificationDocs": {
+            "type": "object",
+            "properties": {
+                "license": {
+                    "type": "string"
+                },
+                "nimc": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.PharmacyReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalServices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.AdditionalServices"
+                    }
+                },
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "certificate": {
+                    "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.PharmacyResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.ProfessionalDetailsDocs": {
+            "type": "object",
+            "properties": {
+                "certificate": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.Schedule": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.Slots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.Subscription": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.Trainers": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         }

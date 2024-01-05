@@ -2,11 +2,11 @@ package services
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-type HospitalClinicRequestDto struct {
-	HospitalClinicReqDto HospitalClinicReqDto `json:"data" form:"data"`
+type LaboratoryRequestDto struct {
+	LaboratoryReqDto LaboratoryReqDto `json:"data" form:"data"`
 }
 
-type HospitalClinicReqDto struct {
+type LaboratoryReqDto struct {
 	ProviderId           primitive.ObjectID `json:"providerId" form:"providerId"`
 	Role                 string             `json:"role" form:"role"`
 	FacilityOrProfession string             `json:"facilityOrProfession" form:"facilityOrProfession"`
@@ -15,26 +15,19 @@ type HospitalClinicReqDto struct {
 	Longitude            string             `json:"longitude" form:"longitude"`
 	Latitude             string             `json:"latitude" form:"latitude"`
 	AdditionalText       string             `json:"additionalText" form:"additionalText"`
-	OtherServices        []string           `json:"otherServices" form:"otherServices"`
-	Insurances           []string           `json:"insurances" form:"insurances"`
 	Certificate          string             `json:"certificate" form:"certificate"`
 	License              string             `json:"license" form:"license"`
-	Doctor               []Doctor           `json:"doctor" form:"doctor"`
+	Investigations       []Investigations   `json:"investigations" form:"investigations"`
 }
 
-type Doctor struct {
-	Name       string     `json:"name" form:"name"`
-	Speciality string     `json:"speciality" form:"speciality"`
-	Schedule   []Schedule `json:"schedule" form:"schedule"`
+type Investigations struct {
+	Type        string  `json:"type" bson:"type"`
+	Name        string  `json:"name" bson:"name"`
+	Information string  `json:"information" bson:"information"`
+	Price       float64 `json:"price" bson:"price"`
 }
 
-type Schedule struct {
-	StartTime string   `json:"startTime" form:"startTime"`
-	EndTime   string   `json:"endTime" form:"endTime"`
-	Days      []string `json:"days" form:"days"`
-}
-
-type HospitalClinicResDto struct {
+type LaboratoryResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
 }
