@@ -15,8 +15,6 @@ type LaboratoryReqDto struct {
 	Longitude            string             `json:"longitude" form:"longitude"`
 	Latitude             string             `json:"latitude" form:"latitude"`
 	AdditionalText       string             `json:"additionalText" form:"additionalText"`
-	Certificate          string             `json:"certificate" form:"certificate"`
-	License              string             `json:"license" form:"license"`
 	Investigations       []Investigations   `json:"investigations" form:"investigations"`
 }
 

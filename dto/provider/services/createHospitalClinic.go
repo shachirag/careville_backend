@@ -17,8 +17,6 @@ type HospitalClinicReqDto struct {
 	AdditionalText       string             `json:"additionalText" form:"additionalText"`
 	OtherServices        []string           `json:"otherServices" form:"otherServices"`
 	Insurances           []string           `json:"insurances" form:"insurances"`
-	Certificate          string             `json:"certificate" form:"certificate"`
-	License              string             `json:"license" form:"license"`
 	Doctor               []Doctor           `json:"doctor" form:"doctor"`
 }
 

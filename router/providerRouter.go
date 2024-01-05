@@ -39,4 +39,5 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	provider.Post("/add-fitness-center", jwt, services.AddFitnessCenter)
 	provider.Post("/add-pharmacy", jwt, services.AddFitnessCenter)
 	provider.Post("/add-doctor-profession", jwt, services.AddDoctorProfession)
+	provider.Post("/add-nurse", jwt, services.AddNurse)
 }

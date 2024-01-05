@@ -199,8 +199,6 @@ definitions:
         type: string
       latitude:
         type: string
-      license:
-        type: string
       longitude:
         type: string
       personalIdentificationDocs:
@@ -244,15 +242,11 @@ definitions:
         type: string
       address:
         type: string
-      certificate:
-        type: string
       facilityOrProfession:
         type: string
       informationName:
         type: string
       latitude:
-        type: string
-      license:
         type: string
       longitude:
         type: string
@@ -282,8 +276,6 @@ definitions:
         type: string
       address:
         type: string
-      certificate:
-        type: string
       doctor:
         items:
           $ref: '#/definitions/services.Doctor'
@@ -297,8 +289,6 @@ definitions:
           type: string
         type: array
       latitude:
-        type: string
-      license:
         type: string
       longitude:
         type: string
@@ -335,8 +325,6 @@ definitions:
         type: string
       address:
         type: string
-      certificate:
-        type: string
       facilityOrProfession:
         type: string
       informationName:
@@ -346,8 +334,6 @@ definitions:
           $ref: '#/definitions/services.Investigations'
         type: array
       latitude:
-        type: string
-      license:
         type: string
       longitude:
         type: string
@@ -362,6 +348,51 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.NurseReqDto:
+    properties:
+      additionalText:
+        type: string
+      address:
+        type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      personalIdentificationDocs:
+        $ref: '#/definitions/services.PersonalIdentificationDocs'
+      professionalDetailsDocs:
+        $ref: '#/definitions/services.ProfessionalDetailsDocs'
+      providerId:
+        type: string
+      qualifications:
+        type: string
+      role:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/services.NurseSchedule'
+        type: array
+    type: object
+  services.NurseResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.NurseSchedule:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: string
+      slots:
+        $ref: '#/definitions/services.Slots'
     type: object
   services.PersonalIdentificationDocs:
     properties:
@@ -380,15 +411,11 @@ definitions:
         type: string
       address:
         type: string
-      certificate:
-        type: string
       facilityOrProfession:
         type: string
       informationName:
         type: string
       latitude:
-        type: string
-      license:
         type: string
       longitude:
         type: string
@@ -463,6 +490,47 @@ info:
   title: Care Ville
   version: 0.0.1
 paths:
+  /provider/add-doctor-profession:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add doctorProfession
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: doctorImage
+        in: formData
+        name: doctorImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorProfessionResDto'
+      summary: Add doctorProfession
+      tags:
+      - services
   /provider/add-fitness-center:
     post:
       consumes:
@@ -560,6 +628,47 @@ paths:
           schema:
             $ref: '#/definitions/services.LaboratoryResDto'
       summary: Add laboratory
+      tags:
+      - services
+  /provider/add-nurse:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add nurse
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: doctorImage
+        in: formData
+        name: doctorImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NurseResDto'
+      summary: Add nurse
       tags:
       - services
   /provider/add-pharmacy:

@@ -20,6 +20,68 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/provider/add-doctor-profession": {
+            "post": {
+                "description": "Add doctorProfession",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add doctorProfession",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "doctorImage",
+                        "name": "doctorImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorProfessionResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/add-fitness-center": {
             "post": {
                 "description": "Add fitnessCenter",
@@ -165,6 +227,68 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.LaboratoryResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/add-nurse": {
+            "post": {
+                "description": "Add nurse",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add nurse",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "doctorImage",
+                        "name": "doctorImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NurseResDto"
                         }
                     }
                 }
@@ -893,9 +1017,6 @@ const docTemplate = `{
                 "latitude": {
                     "type": "string"
                 },
-                "license": {
-                    "type": "string"
-                },
                 "longitude": {
                     "type": "string"
                 },
@@ -962,9 +1083,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "certificate": {
-                    "type": "string"
-                },
                 "facilityOrProfession": {
                     "type": "string"
                 },
@@ -972,9 +1090,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "latitude": {
-                    "type": "string"
-                },
-                "license": {
                     "type": "string"
                 },
                 "longitude": {
@@ -1020,9 +1135,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "certificate": {
-                    "type": "string"
-                },
                 "doctor": {
                     "type": "array",
                     "items": {
@@ -1042,9 +1154,6 @@ const docTemplate = `{
                     }
                 },
                 "latitude": {
-                    "type": "string"
-                },
-                "license": {
                     "type": "string"
                 },
                 "longitude": {
@@ -1101,9 +1210,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "certificate": {
-                    "type": "string"
-                },
                 "facilityOrProfession": {
                     "type": "string"
                 },
@@ -1117,9 +1223,6 @@ const docTemplate = `{
                     }
                 },
                 "latitude": {
-                    "type": "string"
-                },
-                "license": {
                     "type": "string"
                 },
                 "longitude": {
@@ -1141,6 +1244,75 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.NurseReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "personalIdentificationDocs": {
+                    "$ref": "#/definitions/services.PersonalIdentificationDocs"
+                },
+                "professionalDetailsDocs": {
+                    "$ref": "#/definitions/services.ProfessionalDetailsDocs"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "qualifications": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.NurseSchedule"
+                    }
+                }
+            }
+        },
+        "services.NurseResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.NurseSchedule": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "string"
+                },
+                "slots": {
+                    "$ref": "#/definitions/services.Slots"
                 }
             }
         },
@@ -1170,9 +1342,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "certificate": {
-                    "type": "string"
-                },
                 "facilityOrProfession": {
                     "type": "string"
                 },
@@ -1180,9 +1349,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "latitude": {
-                    "type": "string"
-                },
-                "license": {
                     "type": "string"
                 },
                 "longitude": {
