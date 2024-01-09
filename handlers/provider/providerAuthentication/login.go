@@ -25,7 +25,6 @@ import (
 // @Success 200 {object} providerAuth.LoginProviderResDto
 // @Router /provider/login [post]
 func LoginProvider(c *fiber.Ctx) error {
-
 	var (
 		providerColl = database.GetCollection("provider")
 		data         providerAuth.LoginProviderReqDto
@@ -69,19 +68,14 @@ func LoginProvider(c *fiber.Ctx) error {
 
 	// create auth token
 	_secret := os.Getenv("JWT_SECRET_KEY")
-	// _token_exp := os.Getenv("JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT")
-	// t, err := utils.CreateToken(user, _secret)
 	month := (time.Hour * 24) * 30
-	// Create the JWT claims, which includes the user ID and expiry time
 	claims := jtoken.MapClaims{
 		"Id":    provider.Id,
 		"email": provider.Email,
 		"role":  "provider",
 		"exp":   time.Now().Add(month * 6).Unix(),
 	}
-	// Create token
 	token := jtoken.NewWithClaims(jtoken.SigningMethodHS256, claims)
-	// Generate encoded token and send it as response.
 	_token, err := token.SignedString([]byte(_secret))
 	if err != nil {
 		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
@@ -93,23 +87,22 @@ func LoginProvider(c *fiber.Ctx) error {
 	var service entity.ServiceEntity
 	serviceColl := database.GetCollection("service")
 	err = serviceColl.FindOne(ctx, bson.M{"providerId": provider.Id}).Decode(&service)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.LoginProviderResDto{
-			Status:  false,
-			Message: "Failed to fetch service data: " + err.Error(),
-		})
+
+	role := providerAuth.Role{}
+	if err == nil {
+		role = providerAuth.Role{
+			ProviderId:           service.Id,
+			Role:                 service.Role,
+			FacilityOrProfession: service.FacilityOrProfession,
+			IsApproved:           service.IsApproved,
+		}
 	}
 
 	return c.Status(200).JSON(providerAuth.LoginProviderResDto{
 		Status:  true,
 		Message: "Successfully logged in.",
 		Provider: providerAuth.ProviderRespDto{
-			Role: providerAuth.Role{
-				ProviderId:           service.Id,
-				Role:                 service.Role,
-				FacilityOrProfession: service.FacilityOrProfession,
-				IsApproved:           service.IsApproved,
-			},
+			Role: role,
 			User: providerAuth.User{
 				Id:    provider.Id,
 				Name:  provider.Name,
