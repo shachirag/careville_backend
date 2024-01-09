@@ -71,3 +71,6 @@ func SignupUserOtpEmailBodyHtml(otp string) *string {
 	res := fmt.Sprintf(s, os.Getenv("S3_BUCKET_URL"), otp)
 	return aws.String(res)
 }
+
+
+  

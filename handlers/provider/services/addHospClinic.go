@@ -204,6 +204,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 		ProviderId:           data.HospitalClinicReqDto.ProviderId,
 		Role:                 data.HospitalClinicReqDto.Role,
 		FacilityOrProfession: data.HospitalClinicReqDto.FacilityOrProfession,
+		IsApproved:           false,
 		HospClinic: entity.HospClinic{
 			Information: entity.Information{
 				Name:           data.HospitalClinicReqDto.InformationName,

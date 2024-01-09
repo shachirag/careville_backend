@@ -23,7 +23,7 @@ import (
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param provider formData services.NurseRequestDto true "add nurse"
-// @Param doctorImage formData file false "doctorImage"
+// @Param nurseImage formData file false "nurseImage"
 // @Param professionalCertificate formData file false "professionalCertificate"
 // @Param professionalLicense formData file false "professionalLicense"
 // @Param personalLicense formData file false "personalLicense"
@@ -268,14 +268,15 @@ func AddNurse(c *fiber.Ctx) error {
 
 	nurse.Nurse.Schedule = schedule
 
-	// Assign schedule to doctorProfession
-	nurse.Nurse.Schedule = schedule
+	// // Assign schedule to doctorProfession
+	// nurse.Nurse.Schedule = schedule
 
 	nurse = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
 		ProviderId:           data.NurseReqDto.ProviderId,
 		Role:                 data.NurseReqDto.Role,
 		FacilityOrProfession: data.NurseReqDto.FacilityOrProfession,
+		IsApproved:           false,
 		Nurse: entity.Nurse{
 			Information: entity.Information{
 				Name:           data.NurseReqDto.InformationName,

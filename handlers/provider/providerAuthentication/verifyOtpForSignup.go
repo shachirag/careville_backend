@@ -117,10 +117,11 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 			DialCode: data.DialCode,
 			Number:   data.PhoneNumber,
 		},
-		Notification: false,
-		Password:     string(hashedPassword),
-		CreatedAt:    time.Now().UTC(),
-		UpdatedAt:    time.Now().UTC(),
+		Notification:         false,
+		IsEmergencyAvailable: false,
+		Password:             string(hashedPassword),
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = providerColl.InsertOne(ctx, provider)
@@ -159,13 +160,15 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		Message: "OTP verified successfully and provider data inserted",
 		Token:   _token,
 		Provider: providerAuth.ProviderResDto{
-			Id:          provider.Id,
-			Name:        provider.Name,
-			Email:       provider.Email,
-			Image:       provider.Image,
-			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
-			CreatedAt:   provider.CreatedAt,
-			UpdatedAt:   provider.UpdatedAt,
+			Id:                   provider.Id,
+			Name:                 provider.Name,
+			Email:                provider.Email,
+			Image:                provider.Image,
+			PhoneNumber:          providerAuth.PhoneNumber(provider.PhoneNumber),
+			Notification:         provider.Notification,
+			IsEmergencyAvailable: provider.IsEmergencyAvailable,
+			CreatedAt:            provider.CreatedAt,
+			UpdatedAt:            provider.UpdatedAt,
 		},
 	})
 }

@@ -109,6 +109,6 @@ func SignupProvider(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.ProviderResponseDto{
 		Status:  true,
-		Message: "otp send successfully",
+		Message: "OTP sent successfully",
 	})
 }

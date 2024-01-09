@@ -232,6 +232,68 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/add-medicalLab-scientist": {
+            "post": {
+                "description": "Add MedicalLabScientist",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add MedicalLabScientist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "physiotherapistImage",
+                        "name": "medicalLabScientistImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MedicalLabScientistResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/add-nurse": {
             "post": {
                 "description": "Add nurse",
@@ -255,8 +317,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "file",
-                        "description": "doctorImage",
-                        "name": "doctorImage",
+                        "description": "nurseImage",
+                        "name": "nurseImage",
                         "in": "formData"
                     },
                     {
@@ -339,6 +401,68 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.PharmacyResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/add-physiotherapist": {
+            "post": {
+                "description": "Add Physiotherapist",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add Physiotherapist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "physiotherapistImage",
+                        "name": "physiotherapistImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.PhysiotherapistResDto"
                         }
                     }
                 }
@@ -738,7 +862,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/providerAuth.ProviderResDto"
+                    "$ref": "#/definitions/providerAuth.ProviderRespDto"
                 },
                 "message": {
                     "type": "string"
@@ -808,6 +932,9 @@ const docTemplate = `{
                 "image": {
                     "type": "string"
                 },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -850,20 +977,46 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "image": {
                     "type": "string"
                 },
+                "isApproved": {
+                    "type": "boolean"
+                },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
+                },
+                "notification": {
+                    "type": "boolean"
                 },
                 "phoneNumber": {
                     "$ref": "#/definitions/providerAuth.PhoneNumber"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "updatedAt": {
                     "type": "string"
+                }
+            }
+        },
+        "providerAuth.ProviderRespDto": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "$ref": "#/definitions/providerAuth.Role"
+                },
+                "user": {
+                    "$ref": "#/definitions/providerAuth.User"
                 }
             }
         },
@@ -946,6 +1099,23 @@ const docTemplate = `{
                 }
             }
         },
+        "providerAuth.Role": {
+            "type": "object",
+            "properties": {
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "isApproved": {
+                    "type": "boolean"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
         "providerAuth.UpdateProviderResDto": {
             "type": "object",
             "properties": {
@@ -954,6 +1124,38 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "providerAuth.User": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notification": {
+                    "type": "boolean"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/providerAuth.PhoneNumber"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },
@@ -1019,12 +1221,6 @@ const docTemplate = `{
                 },
                 "longitude": {
                     "type": "string"
-                },
-                "personalIdentificationDocs": {
-                    "$ref": "#/definitions/services.PersonalIdentificationDocs"
-                },
-                "professionalDetailsDocs": {
-                    "$ref": "#/definitions/services.ProfessionalDetailsDocs"
                 },
                 "providerId": {
                     "type": "string"
@@ -1247,6 +1443,58 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MedicalLabScientistReqDto": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "document": {
+                    "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.PhysiotherapistSchedule"
+                    }
+                }
+            }
+        },
+        "services.MedicalLabScientistResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.NurseReqDto": {
             "type": "object",
             "properties": {
@@ -1267,12 +1515,6 @@ const docTemplate = `{
                 },
                 "longitude": {
                     "type": "string"
-                },
-                "personalIdentificationDocs": {
-                    "$ref": "#/definitions/services.PersonalIdentificationDocs"
-                },
-                "professionalDetailsDocs": {
-                    "$ref": "#/definitions/services.ProfessionalDetailsDocs"
                 },
                 "providerId": {
                     "type": "string"
@@ -1313,17 +1555,6 @@ const docTemplate = `{
                 },
                 "slots": {
                     "$ref": "#/definitions/services.Slots"
-                }
-            }
-        },
-        "services.PersonalIdentificationDocs": {
-            "type": "object",
-            "properties": {
-                "license": {
-                    "type": "string"
-                },
-                "nimc": {
-                    "type": "string"
                 }
             }
         },
@@ -1373,14 +1604,66 @@ const docTemplate = `{
                 }
             }
         },
-        "services.ProfessionalDetailsDocs": {
+        "services.PhysiotherapistReqDto": {
             "type": "object",
             "properties": {
-                "certificate": {
+                "additionalText": {
                     "type": "string"
                 },
-                "license": {
+                "address": {
                     "type": "string"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "informationName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "qualifications": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.PhysiotherapistSchedule"
+                    }
+                }
+            }
+        },
+        "services.PhysiotherapistResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.PhysiotherapistSchedule": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "string"
+                },
+                "slots": {
+                    "$ref": "#/definitions/services.Slots"
                 }
             }
         },

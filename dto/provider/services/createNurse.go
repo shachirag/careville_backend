@@ -16,8 +16,6 @@ type NurseReqDto struct {
 	Latitude                   string                     `json:"latitude" form:"latitude"`
 	AdditionalText             string                     `json:"additionalText" form:"additionalText"`
 	Qualifications             string                     `json:"qualifications" bson:"qualifications"`
-	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" form:"personalIdentificationDocs"`
-	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" form:"professionalDetailsDocs"`
 	Schedule                   []NurseSchedule            `json:"schedule" form:"schedule"`
 }
 

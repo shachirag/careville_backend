@@ -18,8 +18,6 @@ type DoctorProfessionReqDto struct {
 	Certificate                string                     `json:"certificate" form:"certificate"`
 	Speciality                 string                     `json:"speciality" bson:"speciality"`
 	Qualifications             string                     `json:"qualifications" bson:"qualifications"`
-	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" form:"personalIdentificationDocs"`
-	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" form:"professionalDetailsDocs"`
 	Schedule                   []DoctorSchedule           `json:"schedule" form:"schedule"`
 }
 

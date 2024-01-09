@@ -15,27 +15,27 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// @Summary Add doctorProfession
+// @Summary Add Physiotherapist
 // @Tags services
-// @Description Add doctorProfession
+// @Description Add Physiotherapist
 // @Accept multipart/form-data
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param provider formData services.DoctorProfessionRequestDto true "add doctorProfession"
-// @Param doctorImage formData file false "doctorImage"
+// @Param provider formData services.PhysiotherapistRequestDto true "add Physiotherapist"
+// @Param physiotherapistImage formData file false "physiotherapistImage"
 // @Param professionalCertificate formData file false "professionalCertificate"
 // @Param professionalLicense formData file false "professionalLicense"
 // @Param personalLicense formData file false "personalLicense"
 // @Param personalNimc formData file false "personalNimc"
 // @Produce json
-// @Success 200 {object} services.DoctorProfessionResDto
-// @Router /provider/add-doctor-profession [post]
-func AddDoctorProfession(c *fiber.Ctx) error {
+// @Success 200 {object} services.PhysiotherapistResDto
+// @Router /provider/add-physiotherapist [post]
+func AddPhysiotherapist(c *fiber.Ctx) error {
 	var (
-		servicesColl     = database.GetCollection("service")
-		data             services.DoctorProfessionRequestDto
-		doctorProfession entity.ServiceEntity
+		servicesColl    = database.GetCollection("service")
+		data            services.PhysiotherapistRequestDto
+		physiotherapist entity.ServiceEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -43,7 +43,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 
 	err := json.Unmarshal(dataBytes, &data)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -52,17 +52,17 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	// Access the MultipartForm directly from the fiber.Ctx
 	form, err := c.MultipartForm()
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "Failed to get multipart form: " + err.Error(),
 		})
 	}
 
-	formFiles := form.File["doctorImage"]
+	formFiles := form.File["physiotherapistImage"]
 	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
-			Message: "No doctorImage uploaded",
+			Message: "No physiotherapistImage uploaded",
 		})
 	}
 
@@ -70,32 +70,32 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
-				Message: "Failed to upload doctorImage to S3: " + err.Error(),
+				Message: "Failed to upload nurseImage to S3: " + err.Error(),
 			})
 		}
 
 		// Generate a unique filename for each image
 		id := primitive.NewObjectID()
-		fileName := fmt.Sprintf("doctor/%v-image-%s", id.Hex(), formFile.Filename)
+		fileName := fmt.Sprintf("physiotherapist/%v-image-%s", id.Hex(), formFile.Filename)
 
 		// Upload the image to S3 and get the S3 URL
-		doctorImage, err := utils.UploadToS3(fileName, file)
+		physiotherapistImage, err := utils.UploadToS3(fileName, file)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload doctorImage to S3: " + err.Error(),
 			})
 		}
 
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.Information.Image = doctorImage
+		physiotherapist.Physiotherapist.Information.Image = physiotherapistImage
 	}
 
 	formFiles = form.File["professionalCertificate"]
 	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "No certificate uploaded",
 		})
@@ -105,7 +105,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload certificate to S3: " + err.Error(),
 			})
@@ -118,19 +118,19 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		// Upload the image to S3 and get the S3 URL
 		certificateURL, err := utils.UploadToS3(fileName, file)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload certificate to S3: " + err.Error(),
 			})
 		}
 
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate = certificateURL
+		physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate = certificateURL
 	}
 
 	formFiles = form.File["professionalLicense"]
 	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "No license uploaded",
 		})
@@ -140,7 +140,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload license to S3: " + err.Error(),
 			})
@@ -153,19 +153,19 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		// Upload the image to S3 and get the S3 URL
 		licenseURL, err := utils.UploadToS3(fileName, file)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload license to S3: " + err.Error(),
 			})
 		}
 
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.ProfessionalDetailsDocs.License = licenseURL
+		physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License = licenseURL
 	}
 
 	formFiles = form.File["personalNimc"]
 	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "No personalNimc uploaded",
 		})
@@ -175,7 +175,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload personalNimc to S3: " + err.Error(),
 			})
@@ -188,19 +188,19 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		// Upload the image to S3 and get the S3 URL
 		nimcURL, err := utils.UploadToS3(fileName, file)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload personalNimc to S3: " + err.Error(),
 			})
 		}
 
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.PersonalIdentificationDocs.Nimc = nimcURL
+		physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc = nimcURL
 	}
 
 	formFiles = form.File["personalLicense"]
 	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "No personalLicense uploaded",
 		})
@@ -210,7 +210,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload personalLicense to S3: " + err.Error(),
 			})
@@ -223,37 +223,39 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		// Upload the image to S3 and get the S3 URL
 		licenseURL, err := utils.UploadToS3(fileName, file)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
 				Message: "Failed to upload personalLicense to S3: " + err.Error(),
 			})
 		}
 
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.PersonalIdentificationDocs.License = licenseURL
+		physiotherapist.Physiotherapist.PersonalIdentificationDocs.License = licenseURL
 	}
 
-	longitude, err := strconv.ParseFloat(data.DoctorProfessionReqDto.Longitude, 64)
+	longitude, err := strconv.ParseFloat(data.PhysiotherapistReqDto.Longitude, 64)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "Invalid longitude format",
 		})
 	}
 
-	latitude, err := strconv.ParseFloat(data.DoctorProfessionReqDto.Latitude, 64)
+	latitude, err := strconv.ParseFloat(data.PhysiotherapistReqDto.Latitude, 64)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "Invalid latitude format",
 		})
 	}
 
 	// Parse and add DoctorSchedule data
-	var schedule []entity.DoctorSchedule
-	for _, scheduleItem := range data.DoctorProfessionReqDto.Schedule {
-		scheduleData := entity.DoctorSchedule{
-			ConsultationFees: scheduleItem.ConsultationFees,
+	// Parse and add NurseSchedule data
+	var schedule []entity.ServiceAndSchedule
+	for _, scheduleItem := range data.PhysiotherapistReqDto.Schedule {
+		scheduleData := entity.ServiceAndSchedule{
+			Name:        scheduleItem.Name,
+			ServiceFees: scheduleItem.ServiceFees,
 			Slots: entity.Slots{
 				StartTime: scheduleItem.Slots.StartTime,
 				EndTime:   scheduleItem.Slots.EndTime,
@@ -264,56 +266,57 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		schedule = append(schedule, scheduleData)
 	}
 
-	// Assign schedule to doctorProfession
-	doctorProfession.Doctor.Schedule = schedule
+	physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
 
-	doctorProfession = entity.ServiceEntity{
+	// Assign schedule to doctorProfession
+	// physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
+
+	physiotherapist = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.DoctorProfessionReqDto.ProviderId,
-		Role:                 data.DoctorProfessionReqDto.Role,
-		FacilityOrProfession: data.DoctorProfessionReqDto.FacilityOrProfession,
+		ProviderId:           data.PhysiotherapistReqDto.ProviderId,
+		Role:                 data.PhysiotherapistReqDto.Role,
+		FacilityOrProfession: data.PhysiotherapistReqDto.FacilityOrProfession,
 		IsApproved:           false,
-		Doctor: entity.DoctorEntityDto{
+		Physiotherapist: entity.Physiotherapist{
 			Information: entity.Information{
-				Name:           data.DoctorProfessionReqDto.InformationName,
-				AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
-				Image:          doctorProfession.Doctor.Information.Image,
+				Name:           data.PhysiotherapistReqDto.InformationName,
+				AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
+				Image:          physiotherapist.Physiotherapist.Information.Image,
 				Address: entity.Address{
 					Coordinates: []float64{longitude, latitude},
-					Add:         data.DoctorProfessionReqDto.Address,
+					Add:         data.PhysiotherapistReqDto.Address,
 					Type:        "Point",
 				},
 			},
-			AdditionalServices: entity.AdditionalService{
-				Qualifications: data.DoctorProfessionReqDto.Qualifications,
-				Speciality:     data.DoctorProfessionReqDto.Speciality,
+			ProfessionalDetails: entity.ProfessionalDetails{
+				Qualifications: data.PhysiotherapistReqDto.Qualifications,
 			},
 			PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-				Nimc:    doctorProfession.Doctor.PersonalIdentificationDocs.Nimc,
-				License: doctorProfession.Doctor.PersonalIdentificationDocs.License,
+				Nimc:    physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc,
+				License: physiotherapist.Physiotherapist.PersonalIdentificationDocs.License,
 			},
 			ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-				Certificate: doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate,
-				License:     doctorProfession.Doctor.ProfessionalDetailsDocs.License,
+				Certificate: physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate,
+				License:     physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License,
 			},
-			Schedule: schedule,
+			ServiceAndSchedule: schedule,
 		},
 
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, doctorProfession)
+	_, err = servicesColl.InsertOne(ctx, physiotherapist)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 			Status:  false,
-			Message: "Failed to insert doctor profession data into MongoDB: " + err.Error(),
+			Message: "Failed to insert Physiotherapist data into MongoDB: " + err.Error(),
 		})
 	}
 
-	fitnessRes := services.DoctorProfessionResDto{
+	fitnessRes := services.NurseResDto{
 		Status:  true,
-		Message: "doctor profession added successfully",
+		Message: "Physiotherapist added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
 }

@@ -19,7 +19,7 @@ definitions:
   providerAuth.LoginProviderResDto:
     properties:
       data:
-        $ref: '#/definitions/providerAuth.ProviderResDto'
+        $ref: '#/definitions/providerAuth.ProviderRespDto'
       message:
         type: string
       status:
@@ -64,6 +64,8 @@ definitions:
         type: string
       image:
         type: string
+      isEmergencyAvailable:
+        type: boolean
       name:
         type: string
       notification:
@@ -91,16 +93,33 @@ definitions:
         type: string
       email:
         type: string
+      facilityOrProfession:
+        type: string
       id:
         type: string
       image:
         type: string
+      isApproved:
+        type: boolean
+      isEmergencyAvailable:
+        type: boolean
       name:
         type: string
+      notification:
+        type: boolean
       phoneNumber:
         $ref: '#/definitions/providerAuth.PhoneNumber'
+      role:
+        type: string
       updatedAt:
         type: string
+    type: object
+  providerAuth.ProviderRespDto:
+    properties:
+      role:
+        $ref: '#/definitions/providerAuth.Role'
+      user:
+        $ref: '#/definitions/providerAuth.User'
     type: object
   providerAuth.ProviderResponseDto:
     properties:
@@ -153,12 +172,44 @@ definitions:
       newPassword:
         type: string
     type: object
+  providerAuth.Role:
+    properties:
+      facilityOrProfession:
+        type: string
+      isApproved:
+        type: boolean
+      providerId:
+        type: string
+      role:
+        type: string
+    type: object
   providerAuth.UpdateProviderResDto:
     properties:
       message:
         type: string
       status:
         type: boolean
+    type: object
+  providerAuth.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      isEmergencyAvailable:
+        type: boolean
+      name:
+        type: string
+      notification:
+        type: boolean
+      phoneNumber:
+        $ref: '#/definitions/providerAuth.PhoneNumber'
+      updatedAt:
+        type: string
     type: object
   providerAuth.VerifyOtpReqDto:
     properties:
@@ -201,10 +252,6 @@ definitions:
         type: string
       longitude:
         type: string
-      personalIdentificationDocs:
-        $ref: '#/definitions/services.PersonalIdentificationDocs'
-      professionalDetailsDocs:
-        $ref: '#/definitions/services.ProfessionalDetailsDocs'
       providerId:
         type: string
       qualifications:
@@ -349,6 +396,40 @@ definitions:
       status:
         type: boolean
     type: object
+  services.MedicalLabScientistReqDto:
+    properties:
+      additionalText:
+        type: string
+      address:
+        type: string
+      department:
+        type: string
+      document:
+        type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      providerId:
+        type: string
+      role:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/services.PhysiotherapistSchedule'
+        type: array
+    type: object
+  services.MedicalLabScientistResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.NurseReqDto:
     properties:
       additionalText:
@@ -363,10 +444,6 @@ definitions:
         type: string
       longitude:
         type: string
-      personalIdentificationDocs:
-        $ref: '#/definitions/services.PersonalIdentificationDocs'
-      professionalDetailsDocs:
-        $ref: '#/definitions/services.ProfessionalDetailsDocs'
       providerId:
         type: string
       qualifications:
@@ -393,13 +470,6 @@ definitions:
         type: string
       slots:
         $ref: '#/definitions/services.Slots'
-    type: object
-  services.PersonalIdentificationDocs:
-    properties:
-      license:
-        type: string
-      nimc:
-        type: string
     type: object
   services.PharmacyReqDto:
     properties:
@@ -431,12 +501,46 @@ definitions:
       status:
         type: boolean
     type: object
-  services.ProfessionalDetailsDocs:
+  services.PhysiotherapistReqDto:
     properties:
-      certificate:
+      additionalText:
         type: string
-      license:
+      address:
         type: string
+      facilityOrProfession:
+        type: string
+      informationName:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      providerId:
+        type: string
+      qualifications:
+        type: string
+      role:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/services.PhysiotherapistSchedule'
+        type: array
+    type: object
+  services.PhysiotherapistResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.PhysiotherapistSchedule:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: string
+      slots:
+        $ref: '#/definitions/services.Slots'
     type: object
   services.Schedule:
     properties:
@@ -630,6 +734,47 @@ paths:
       summary: Add laboratory
       tags:
       - services
+  /provider/add-medicalLab-scientist:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add MedicalLabScientist
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: physiotherapistImage
+        in: formData
+        name: medicalLabScientistImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MedicalLabScientistResDto'
+      summary: Add MedicalLabScientist
+      tags:
+      - services
   /provider/add-nurse:
     post:
       consumes:
@@ -641,9 +786,9 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: doctorImage
+      - description: nurseImage
         in: formData
-        name: doctorImage
+        name: nurseImage
         type: file
       - description: professionalCertificate
         in: formData
@@ -702,6 +847,47 @@ paths:
           schema:
             $ref: '#/definitions/services.PharmacyResDto'
       summary: Add pharmacy
+      tags:
+      - services
+  /provider/add-physiotherapist:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add Physiotherapist
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: physiotherapistImage
+        in: formData
+        name: physiotherapistImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.PhysiotherapistResDto'
+      summary: Add Physiotherapist
       tags:
       - services
   /provider/change-password/{id}:

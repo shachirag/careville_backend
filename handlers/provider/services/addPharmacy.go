@@ -191,6 +191,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 		ProviderId:           data.PharmacyReqDto.ProviderId,
 		Role:                 data.PharmacyReqDto.Role,
 		FacilityOrProfession: data.PharmacyReqDto.FacilityOrProfession,
+		IsApproved:           false,
 		Pharmacy: entity.Pharmacy{
 			Information: entity.Information{
 				Name:           data.PharmacyReqDto.InformationName,

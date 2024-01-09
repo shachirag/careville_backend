@@ -193,6 +193,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 		ProviderId:           data.LaboratoryReqDto.ProviderId,
 		Role:                 data.LaboratoryReqDto.Role,
 		FacilityOrProfession: data.LaboratoryReqDto.FacilityOrProfession,
+		IsApproved:           false,
 		Laboratory: entity.Laboratory{
 			Information: entity.Information{
 				Name:           data.LaboratoryReqDto.InformationName,

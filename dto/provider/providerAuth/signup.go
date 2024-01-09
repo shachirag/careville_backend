@@ -35,13 +35,18 @@ type ProviderSignupVerifyOtpResDto struct {
 }
 
 type ProviderResDto struct {
-	Id          primitive.ObjectID `json:"id" bson:"_id"`
-	Name        string             `json:"name" bson:"name"`
-	Email       string             `json:"email" bson:"email"`
-	Image       string             `json:"image" bson:"image"`
-	PhoneNumber PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
-	CreatedAt   time.Time          `json:"createdAt" bson:"createdAt"`
-	UpdatedAt   time.Time          `json:"updatedAt" bson:"updatedAt"`
+	Id                   primitive.ObjectID `json:"id" bson:"_id"`
+	Name                 string             `json:"name" bson:"name"`
+	Email                string             `json:"email" bson:"email"`
+	Image                string             `json:"image" bson:"image"`
+	Notification         bool               `json:"notification" bson:"notification"`
+	IsEmergencyAvailable bool               `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
+	PhoneNumber          PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
+	Role                 string             `json:"role" bson:"role"`
+	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	IsApproved           bool               `json:"isApproved" bson:"isApproved"`
+	CreatedAt            time.Time          `json:"createdAt" bson:"createdAt"`
+	UpdatedAt            time.Time          `json:"updatedAt" bson:"updatedAt"`
 }
 
 type PhoneNumber struct {

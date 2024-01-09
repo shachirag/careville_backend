@@ -19,6 +19,7 @@ type ServiceEntity struct {
 	Doctor               DoctorEntityDto     `json:"doctor" bson:"doctor"`
 	Physiotherapist      Physiotherapist     `json:"physiotherapist" bson:"physiotherapist"`
 	Nurse                Nurse               `json:"nurse" bson:"nurse"`
+	IsApproved           bool                `json:"isApproved" bson:"isApproved"`
 	CreatedAt            time.Time           `json:"createdAt" bson:"createdAt"`
 	UpdatedAt            time.Time           `json:"updatedAt" bson:"updatedAt"`
 }

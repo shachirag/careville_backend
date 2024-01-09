@@ -90,17 +90,40 @@ func LoginProvider(c *fiber.Ctx) error {
 		})
 	}
 
+	var service entity.ServiceEntity
+	serviceColl := database.GetCollection("service")
+	err = serviceColl.FindOne(ctx, bson.M{"providerId": provider.Id}).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.LoginProviderResDto{
+			Status:  false,
+			Message: "Failed to fetch service data: " + err.Error(),
+		})
+	}
+
 	return c.Status(200).JSON(providerAuth.LoginProviderResDto{
 		Status:  true,
 		Message: "Successfully logged in.",
-		Provider: providerAuth.ProviderResDto{
-			Id:          provider.Id,
-			Name:        provider.Name,
-			Email:       provider.Email,
-			Image:       provider.Image,
-			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
-			CreatedAt:   provider.CreatedAt,
-			UpdatedAt:   provider.UpdatedAt,
+		Provider: providerAuth.ProviderRespDto{
+			Role: providerAuth.Role{
+				ProviderId:           service.Id,
+				Role:                 service.Role,
+				FacilityOrProfession: service.FacilityOrProfession,
+				IsApproved:           service.IsApproved,
+			},
+			User: providerAuth.User{
+				Id:    provider.Id,
+				Name:  provider.Name,
+				Email: provider.Email,
+				Image: provider.Image,
+				PhoneNumber: providerAuth.PhoneNumber{
+					DialCode: provider.PhoneNumber.DialCode,
+					Number:   provider.PhoneNumber.Number,
+				},
+				Notification:         provider.Notification,
+				IsEmergencyAvailable: provider.IsEmergencyAvailable,
+				CreatedAt:            provider.CreatedAt,
+				UpdatedAt:            provider.UpdatedAt,
+			},
 		},
 		Token: _token,
 	})

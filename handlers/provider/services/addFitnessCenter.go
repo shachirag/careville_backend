@@ -212,6 +212,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		ProviderId:           data.FitnessCenterReqDto.ProviderId,
 		Role:                 data.FitnessCenterReqDto.Role,
 		FacilityOrProfession: data.FitnessCenterReqDto.FacilityOrProfession,
+		IsApproved:           false,
 		FitnessCenter: entity.FitnessCenter{
 			Information: entity.Information{
 				Name:           data.FitnessCenterReqDto.InformationName,

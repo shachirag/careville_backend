@@ -39,7 +39,7 @@ func VerifyOtp(c *fiber.Ctx) error {
 	if data.EnteredOTP == "" {
 		return c.Status(400).JSON(providerAuth.ProviderPasswordResDto{
 			Status:  false,
-			Message: "Entered OTP is required",
+			Message: "OTP is required",
 		})
 	}
 

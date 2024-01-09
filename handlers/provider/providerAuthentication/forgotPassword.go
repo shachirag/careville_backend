@@ -85,6 +85,6 @@ func ForgotPassword(c *fiber.Ctx) error {
 
 	return c.Status(200).JSON(providerAuth.ProviderPasswordResDto{
 		Status:  true,
-		Message: "Successfully send 6 digit OTP.",
+		Message: "Successfully sent 6 digit OTP.",
 	})
 }
