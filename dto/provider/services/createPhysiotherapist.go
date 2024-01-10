@@ -1,15 +1,10 @@
 package services
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
 type PhysiotherapistRequestDto struct {
 	PhysiotherapistReqDto PhysiotherapistReqDto `json:"data" form:"data"`
 }
 
 type PhysiotherapistReqDto struct {
-	ProviderId           primitive.ObjectID        `json:"providerId" form:"providerId"`
-	Role                 string                    `json:"role" form:"role"`
-	FacilityOrProfession string                    `json:"facilityOrProfession" form:"facilityOrProfession"`
 	InformationName      string                    `json:"informationName" form:"informationName"`
 	Address              string                    `json:"address" form:"address"`
 	Longitude            string                    `json:"longitude" form:"longitude"`

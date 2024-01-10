@@ -1,23 +1,18 @@
 package services
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
 type HospitalClinicRequestDto struct {
 	HospitalClinicReqDto HospitalClinicReqDto `json:"data" form:"data"`
 }
 
 type HospitalClinicReqDto struct {
-	ProviderId           primitive.ObjectID `json:"providerId" form:"providerId"`
-	Role                 string             `json:"role" form:"role"`
-	FacilityOrProfession string             `json:"facilityOrProfession" form:"facilityOrProfession"`
-	InformationName      string             `json:"informationName" form:"informationName"`
-	Address              string             `json:"address" form:"address"`
-	Longitude            string             `json:"longitude" form:"longitude"`
-	Latitude             string             `json:"latitude" form:"latitude"`
-	AdditionalText       string             `json:"additionalText" form:"additionalText"`
-	OtherServices        []string           `json:"otherServices" form:"otherServices"`
-	Insurances           []string           `json:"insurances" form:"insurances"`
-	Doctor               []Doctor           `json:"doctor" form:"doctor"`
+	InformationName string   `json:"informationName" form:"informationName"`
+	Address         string   `json:"address" form:"address"`
+	Longitude       string   `json:"longitude" form:"longitude"`
+	Latitude        string   `json:"latitude" form:"latitude"`
+	AdditionalText  string   `json:"additionalText" form:"additionalText"`
+	OtherServices   []string `json:"otherServices" form:"otherServices"`
+	Insurances      []string `json:"insurances" form:"insurances"`
+	Doctor          []Doctor `json:"doctor" form:"doctor"`
 }
 
 type Doctor struct {

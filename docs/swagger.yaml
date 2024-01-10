@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  providerAuth.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
   providerAuth.GetProviderResDto:
     properties:
       data:
@@ -27,8 +38,19 @@ definitions:
       token:
         type: string
     type: object
+  providerAuth.Notification:
+    properties:
+      deviceToken:
+        type: string
+      deviceType:
+        type: string
+      isEnabled:
+        type: boolean
+    type: object
   providerAuth.PhoneNumber:
     properties:
+      countryCode:
+        type: string
       dialCode:
         type: string
       number:
@@ -55,7 +77,7 @@ definitions:
       additionalDetails:
         type: string
       address:
-        type: string
+        $ref: '#/definitions/providerAuth.Address'
       createdAt:
         type: string
       email:
@@ -69,7 +91,7 @@ definitions:
       name:
         type: string
       notification:
-        type: boolean
+        $ref: '#/definitions/providerAuth.Notification'
       phoneNumber:
         $ref: '#/definitions/providerAuth.PhoneNumber'
       updatedAt:
@@ -101,12 +123,10 @@ definitions:
         type: string
       isApproved:
         type: boolean
-      isEmergencyAvailable:
-        type: boolean
       name:
         type: string
       notification:
-        type: boolean
+        $ref: '#/definitions/providerAuth.Notification'
       phoneNumber:
         $ref: '#/definitions/providerAuth.PhoneNumber'
       role:
@@ -139,6 +159,12 @@ definitions:
     type: object
   providerAuth.ProviderSignupVerifyOtpReqDto:
     properties:
+      countryCode:
+        type: string
+      deviceToken:
+        type: string
+      deviceType:
+        type: string
       dialCode:
         type: string
       email:
@@ -176,11 +202,16 @@ definitions:
     properties:
       facilityOrProfession:
         type: string
-      isApproved:
-        type: boolean
       providerId:
         type: string
       role:
+        type: string
+      status:
+        type: string
+    type: object
+  providerAuth.UpdateImageReqDto:
+    properties:
+      oldImage:
         type: string
     type: object
   providerAuth.UpdateProviderResDto:
@@ -200,12 +231,10 @@ definitions:
         type: string
       image:
         type: string
-      isEmergencyAvailable:
-        type: boolean
       name:
         type: string
       notification:
-        type: boolean
+        $ref: '#/definitions/providerAuth.Notification'
       phoneNumber:
         $ref: '#/definitions/providerAuth.PhoneNumber'
       updatedAt:
@@ -244,19 +273,13 @@ definitions:
         type: string
       certificate:
         type: string
-      facilityOrProfession:
-        type: string
       informationName:
         type: string
       latitude:
         type: string
       longitude:
         type: string
-      providerId:
-        type: string
       qualifications:
-        type: string
-      role:
         type: string
       schedule:
         items:
@@ -272,12 +295,32 @@ definitions:
       status:
         type: boolean
     type: object
+  services.DoctorRes:
+    type: object
+  services.DoctorResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.DoctorRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.DoctorSchedule:
     properties:
       consultationFees:
         type: string
       slots:
         $ref: '#/definitions/services.Slots'
+    type: object
+  services.FitnessCenterEntity:
+    properties:
+      categories:
+        items:
+          type: string
+        type: array
     type: object
   services.FitnessCenterReqDto:
     properties:
@@ -289,17 +332,11 @@ definitions:
         type: string
       address:
         type: string
-      facilityOrProfession:
-        type: string
       informationName:
         type: string
       latitude:
         type: string
       longitude:
-        type: string
-      providerId:
-        type: string
-      role:
         type: string
       subscription:
         items:
@@ -317,6 +354,17 @@ definitions:
       status:
         type: boolean
     type: object
+  services.HospClinicEntity:
+    properties:
+      insurances:
+        items:
+          type: string
+        type: array
+      otherServices:
+        items:
+          type: string
+        type: array
+    type: object
   services.HospitalClinicReqDto:
     properties:
       additionalText:
@@ -327,8 +375,6 @@ definitions:
         items:
           $ref: '#/definitions/services.Doctor'
         type: array
-      facilityOrProfession:
-        type: string
       informationName:
         type: string
       insurances:
@@ -343,10 +389,6 @@ definitions:
         items:
           type: string
         type: array
-      providerId:
-        type: string
-      role:
-        type: string
     type: object
   services.HospitalClinicResDto:
     properties:
@@ -366,13 +408,18 @@ definitions:
       type:
         type: string
     type: object
+  services.LaboratoryEntity:
+    properties:
+      investigations:
+        items:
+          type: string
+        type: array
+    type: object
   services.LaboratoryReqDto:
     properties:
       additionalText:
         type: string
       address:
-        type: string
-      facilityOrProfession:
         type: string
       informationName:
         type: string
@@ -383,10 +430,6 @@ definitions:
       latitude:
         type: string
       longitude:
-        type: string
-      providerId:
-        type: string
-      role:
         type: string
     type: object
   services.LaboratoryResDto:
@@ -406,17 +449,11 @@ definitions:
         type: string
       document:
         type: string
-      facilityOrProfession:
-        type: string
       informationName:
         type: string
       latitude:
         type: string
       longitude:
-        type: string
-      providerId:
-        type: string
-      role:
         type: string
       schedule:
         items:
@@ -430,13 +467,29 @@ definitions:
       status:
         type: boolean
     type: object
+  services.MiscRes:
+    properties:
+      fitnessCenter:
+        $ref: '#/definitions/services.FitnessCenterEntity'
+      hospClinic:
+        $ref: '#/definitions/services.HospClinicEntity'
+      laboratory:
+        $ref: '#/definitions/services.LaboratoryEntity'
+    type: object
+  services.MiscResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.MiscRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.NurseReqDto:
     properties:
       additionalText:
         type: string
       address:
-        type: string
-      facilityOrProfession:
         type: string
       informationName:
         type: string
@@ -444,11 +497,7 @@ definitions:
         type: string
       longitude:
         type: string
-      providerId:
-        type: string
       qualifications:
-        type: string
-      role:
         type: string
       schedule:
         items:
@@ -481,17 +530,11 @@ definitions:
         type: string
       address:
         type: string
-      facilityOrProfession:
-        type: string
       informationName:
         type: string
       latitude:
         type: string
       longitude:
-        type: string
-      providerId:
-        type: string
-      role:
         type: string
     type: object
   services.PharmacyResDto:
@@ -507,19 +550,13 @@ definitions:
         type: string
       address:
         type: string
-      facilityOrProfession:
-        type: string
       informationName:
         type: string
       latitude:
         type: string
       longitude:
         type: string
-      providerId:
-        type: string
       qualifications:
-        type: string
-      role:
         type: string
       schedule:
         items:
@@ -562,6 +599,22 @@ definitions:
       endTime:
         type: string
       startTime:
+        type: string
+    type: object
+  services.StatusRes:
+    properties:
+      data:
+        $ref: '#/definitions/services.StatusRespDto'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.StatusRespDto:
+    properties:
+      id:
+        type: string
+      status:
         type: string
     type: object
   services.Subscription:
@@ -681,7 +734,7 @@ paths:
         type: string
       - description: hospitalImage
         in: formData
-        name: hopitalImage
+        name: hospitalImage
         type: file
       - description: certificate
         in: formData
@@ -944,6 +997,40 @@ paths:
       summary: Forgot Password
       tags:
       - provider authorization
+  /provider/get-all-doctors:
+    get:
+      description: Get all doctors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: Get all doctors
+      tags:
+      - services
+  /provider/get-misc-data:
+    get:
+      consumes:
+      - application/json
+      description: Fetch All misc data
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MiscResDto'
+      summary: Fetch All misc data
+      tags:
+      - services
   /provider/get-provider-info/{id}:
     get:
       consumes:
@@ -970,6 +1057,32 @@ paths:
       summary: Fetch provider By ID
       tags:
       - provider authorization
+  /provider/get-status/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch status By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.StatusRes'
+      summary: Fetch status By ID
+      tags:
+      - services
   /provider/login:
     post:
       consumes:
@@ -1035,6 +1148,42 @@ paths:
       summary: Signup provider
       tags:
       - provider authorization
+  /provider/update-profile-image/{id}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update Profile Image
+      parameters:
+      - description: provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of admin
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.UpdateImageReqDto'
+      - description: profile image
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.UpdateProviderResDto'
+      summary: Update Profile Image
+      tags:
+      - provider authorization
   /provider/update-provider-data/{id}:
     put:
       consumes:
@@ -1052,19 +1201,25 @@ paths:
         required: true
         type: string
       - in: formData
-        name: additionalDetails
+        name: additionalText
         type: string
       - in: formData
         name: address
         type: string
       - in: formData
+        name: countryCode
+        type: string
+      - in: formData
         name: dialCode
         type: string
       - in: formData
-        name: name
+        name: latitude
         type: string
       - in: formData
-        name: oldProfileImage
+        name: longitude
+        type: string
+      - in: formData
+        name: name
         type: string
       - in: formData
         name: phoneNumber

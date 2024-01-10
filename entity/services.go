@@ -7,21 +7,25 @@ import (
 )
 
 type ServiceEntity struct {
-	Id                   primitive.ObjectID  `json:"id" bson:"_id"`
-	Role                 string              `json:"role" bson:"role"`
-	ProviderId           primitive.ObjectID  `json:"providerId" bson:"providerId"`
-	FacilityOrProfession string              `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	HospClinic           HospClinic          `json:"hospClinic" bson:"hospClinic"`
-	FitnessCenter        FitnessCenter       `json:"fitnessCenter" bson:"fitnessCenter"`
-	Laboratory           Laboratory          `json:"laboratory" bson:"laboratory"`
-	Pharmacy             Pharmacy            `json:"pharmacy" bson:"pharmacy"`
-	MedicalLabScientist  MedicalLabScientist `json:"medicalLabScientist" bson:"medicalLabScientist"`
-	Doctor               DoctorEntityDto     `json:"doctor" bson:"doctor"`
-	Physiotherapist      Physiotherapist     `json:"physiotherapist" bson:"physiotherapist"`
-	Nurse                Nurse               `json:"nurse" bson:"nurse"`
-	IsApproved           bool                `json:"isApproved" bson:"isApproved"`
-	CreatedAt            time.Time           `json:"createdAt" bson:"createdAt"`
-	UpdatedAt            time.Time           `json:"updatedAt" bson:"updatedAt"`
+	Id                   primitive.ObjectID   `json:"id" bson:"_id"`
+	Role                 string               `json:"role" bson:"role"`
+	Name                 string               `json:"name" bson:"name"`
+	Email                string               `json:"email" bson:"email"`
+	Password             string               `json:"password" bson:"password"`
+	Notification         Notification         `json:"notification" bson:"notification"`
+	PhoneNumber          PhoneNumber          `json:"phoneNumber" bson:"phoneNumber"`
+	FacilityOrProfession string               `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	HospClinic           *HospClinic          `json:"hospClinic" bson:"hospClinic,omitempty"`
+	FitnessCenter        *FitnessCenter       `json:"fitnessCenter" bson:"fitnessCenter,omitempty"`
+	Laboratory           *Laboratory          `json:"laboratory" bson:"laboratory,omitempty"`
+	Pharmacy             *Pharmacy            `json:"pharmacy" bson:"pharmacy,omitempty"`
+	MedicalLabScientist  *MedicalLabScientist `json:"medicalLabScientist" bson:"medicalLabScientist,omitempty"`
+	Doctor               *DoctorEntityDto     `json:"doctor" bson:"doctor,omitempty"`
+	Physiotherapist      *Physiotherapist     `json:"physiotherapist" bson:"physiotherapist,omitempty"`
+	Nurse                *Nurse               `json:"nurse" bson:"nurse,omitempty"`
+	Status               string               `json:"status" bson:"status"`
+	CreatedAt            time.Time            `json:"createdAt" bson:"createdAt"`
+	UpdatedAt            time.Time            `json:"updatedAt" bson:"updatedAt"`
 }
 
 type HospClinic struct {
@@ -33,10 +37,24 @@ type HospClinic struct {
 }
 
 type Information struct {
-	Name           string  `json:"name" bson:"name"`
-	AdditionalText string  `json:"additionalText" bson:"additionalText"`
-	Image          string  `json:"image" bson:"image"`
-	Address        Address `json:"address" bson:"address"`
+	Name                 string       `json:"name" bson:"name"`
+	AdditionalText       string       `json:"additionalText" bson:"additionalText"`
+	Notification         Notification `json:"notification" bson:"notification"`
+	Image                string       `json:"image" bson:"image"`
+	Address              Address      `json:"address" bson:"address"`
+	IsEmergencyAvailable bool         `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
+}
+
+type Notification struct {
+	DeviceToken string `json:"deviceToken" bson:"deviceToken"`
+	DeviceType  string `json:"deviceType" bson:"deviceType"`
+	IsEnabled   bool   `json:"isEnabled" bson:"isEnabled"`
+}
+
+type PhoneNumber struct {
+	DialCode    string `json:"dialCode" bson:"dialCode"`
+	CountryCode string `json:"countryCode" bson:"countryCode"`
+	Number      string `json:"number" bson:"number"`
 }
 
 type Address struct {

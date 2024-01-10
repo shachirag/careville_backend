@@ -7,18 +7,15 @@ type DoctorProfessionRequestDto struct {
 }
 
 type DoctorProfessionReqDto struct {
-	ProviderId                 primitive.ObjectID         `json:"providerId" form:"providerId"`
-	Role                       string                     `json:"role" form:"role"`
-	FacilityOrProfession       string                     `json:"facilityOrProfession" form:"facilityOrProfession"`
-	InformationName            string                     `json:"informationName" form:"informationName"`
-	Address                    string                     `json:"address" form:"address"`
-	Longitude                  string                     `json:"longitude" form:"longitude"`
-	Latitude                   string                     `json:"latitude" form:"latitude"`
-	AdditionalText             string                     `json:"additionalText" form:"additionalText"`
-	Certificate                string                     `json:"certificate" form:"certificate"`
-	Speciality                 string                     `json:"speciality" bson:"speciality"`
-	Qualifications             string                     `json:"qualifications" bson:"qualifications"`
-	Schedule                   []DoctorSchedule           `json:"schedule" form:"schedule"`
+	InformationName string             `json:"informationName" form:"informationName"`
+	Address         string             `json:"address" form:"address"`
+	Longitude       string             `json:"longitude" form:"longitude"`
+	Latitude        string             `json:"latitude" form:"latitude"`
+	AdditionalText  string             `json:"additionalText" form:"additionalText"`
+	Certificate     string             `json:"certificate" form:"certificate"`
+	Speciality      string             `json:"speciality" bson:"speciality"`
+	Qualifications  string             `json:"qualifications" bson:"qualifications"`
+	Schedule        []DoctorSchedule   `json:"schedule" form:"schedule"`
 }
 
 type PersonalIdentificationDocs struct {
@@ -45,4 +42,20 @@ type Slots struct {
 type DoctorProfessionResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+}
+
+type StatusResDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+}
+
+type StatusRes struct {
+	Status  bool          `json:"status"`
+	Message string        `json:"message"`
+	Data    StatusRespDto `json:"data"`
+}
+
+type StatusRespDto struct {
+	Id     primitive.ObjectID `json:"id" bson:"_id"`
+	Status string             `json:"status" bson:"status"`
 }

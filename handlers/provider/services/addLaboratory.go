@@ -46,6 +46,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 			Message: err.Error(),
 		})
 	}
+	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve23449")
 
 	// Access the MultipartForm directly from the fiber.Ctx
 	form, err := c.MultipartForm()
@@ -63,7 +64,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 			Message: "No laboratoryImage uploaded",
 		})
 	}
-
+	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve23467")
 	// Upload each image to S3 and get the S3 URLs
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
@@ -86,9 +87,10 @@ func AddLaboratory(c *fiber.Ctx) error {
 				Message: "Failed to upload laboratoryImage to S3: " + err.Error(),
 			})
 		}
-
-		// Append the image URL to the Images field
-		laboratory.Laboratory.Information.Image = laboratoryImage
+		if laboratory.Laboratory != nil {
+			laboratory.Laboratory.Information.Image = laboratoryImage
+		}
+		fmt.Println("93")
 	}
 
 	formFiles = form.File["certificate"]
@@ -98,7 +100,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 			Message: "No certificate uploaded",
 		})
 	}
-
+	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve234102")
 	// Upload each image to S3 and get the S3 URLs
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
@@ -121,11 +123,13 @@ func AddLaboratory(c *fiber.Ctx) error {
 				Message: "Failed to upload certificate to S3: " + err.Error(),
 			})
 		}
-
+		if laboratory.Laboratory != nil {
+			laboratory.Laboratory.Documents.Certificate = certificateURL
+		}
 		// Append the image URL to the Images field
-		laboratory.Laboratory.Documents.Certificate = certificateURL
-	}
 
+	}
+	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve23129")
 	formFiles = form.File["license"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
@@ -156,11 +160,13 @@ func AddLaboratory(c *fiber.Ctx) error {
 				Message: "Failed to upload license to S3: " + err.Error(),
 			})
 		}
-
+		if laboratory.Laboratory != nil {
+			laboratory.Laboratory.Documents.License = licenseURL
+		}
 		// Append the image URL to the Images field
-		laboratory.Laboratory.Documents.License = licenseURL
-	}
 
+	}
+	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve234")
 	longitude, err := strconv.ParseFloat(data.LaboratoryReqDto.Longitude, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
@@ -188,31 +194,53 @@ func AddLaboratory(c *fiber.Ctx) error {
 		investigations = append(investigations, convertedInv)
 	}
 
+	var laboratoryImage string
+	if laboratory.Laboratory != nil {
+		laboratoryImage = laboratory.Laboratory.Information.Image
+	}
+
+	var licenseDoc string
+	if laboratory.Laboratory != nil {
+		licenseDoc = laboratory.Laboratory.Documents.License
+	}
+
+	var certificate string
+	if laboratory.Laboratory != nil {
+		certificate = laboratory.Laboratory.Documents.Certificate
+	}
+
+	laboratoryData := entity.Laboratory{
+		Information: entity.Information{
+			Name:           data.LaboratoryReqDto.InformationName,
+			AdditionalText: data.LaboratoryReqDto.AdditionalText,
+			Image:          laboratoryImage,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.LaboratoryReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		Documents: entity.Documents{
+			Certificate: certificate,
+			License:     licenseDoc,
+		},
+		Investigations: investigations,
+	}
+
+	// if &laboratoryData != nil {
+
+	// }
+
+	fmt.Println("1234")
+
 	laboratory = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.LaboratoryReqDto.ProviderId,
-		Role:                 data.LaboratoryReqDto.Role,
-		FacilityOrProfession: data.LaboratoryReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		Laboratory: entity.Laboratory{
-			Information: entity.Information{
-				Name:           data.LaboratoryReqDto.InformationName,
-				AdditionalText: data.LaboratoryReqDto.AdditionalText,
-				Image:          laboratory.Laboratory.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.LaboratoryReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			Documents: entity.Documents{
-				Certificate: laboratory.Laboratory.Documents.Certificate,
-				License:     laboratory.Laboratory.Documents.License,
-			},
-			Investigations: investigations,
-		},
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthFacility",
+		FacilityOrProfession: "laboratory",
+		Status:               "pending",
+		Laboratory:           &laboratoryData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, laboratory)

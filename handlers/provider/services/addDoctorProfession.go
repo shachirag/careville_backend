@@ -89,8 +89,10 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		doctorProfession.Doctor.Information.Image = doctorImage
+		if doctorProfession.Doctor != nil {
+			doctorProfession.Doctor.Information.Image = doctorImage
+		}
+
 	}
 
 	formFiles = form.File["professionalCertificate"]
@@ -123,9 +125,11 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Message: "Failed to upload certificate to S3: " + err.Error(),
 			})
 		}
-
+		if doctorProfession.Doctor != nil {
+			doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate = certificateURL
+		}
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate = certificateURL
+
 	}
 
 	formFiles = form.File["professionalLicense"]
@@ -158,9 +162,11 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Message: "Failed to upload license to S3: " + err.Error(),
 			})
 		}
-
+		if doctorProfession.Doctor != nil {
+			doctorProfession.Doctor.ProfessionalDetailsDocs.License = licenseURL
+		}
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.ProfessionalDetailsDocs.License = licenseURL
+
 	}
 
 	formFiles = form.File["personalNimc"]
@@ -193,9 +199,11 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Message: "Failed to upload personalNimc to S3: " + err.Error(),
 			})
 		}
-
+		if doctorProfession.Doctor != nil {
+			doctorProfession.Doctor.PersonalIdentificationDocs.Nimc = nimcURL
+		}
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.PersonalIdentificationDocs.Nimc = nimcURL
+
 	}
 
 	formFiles = form.File["personalLicense"]
@@ -228,9 +236,11 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Message: "Failed to upload personalLicense to S3: " + err.Error(),
 			})
 		}
-
+		if doctorProfession.Doctor != nil {
+			doctorProfession.Doctor.PersonalIdentificationDocs.License = licenseURL
+		}
 		// Append the image URL to the Images field
-		doctorProfession.Doctor.PersonalIdentificationDocs.License = licenseURL
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.DoctorProfessionReqDto.Longitude, 64)
@@ -264,43 +274,69 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		schedule = append(schedule, scheduleData)
 	}
 
-	// Assign schedule to doctorProfession
-	doctorProfession.Doctor.Schedule = schedule
+	if doctorProfession.Doctor != nil {
+		doctorProfession.Doctor.Schedule = schedule
+	}
+
+	var doctoryImage string
+	if doctorProfession.Doctor != nil {
+		doctoryImage = doctorProfession.Doctor.Information.Image
+	}
+
+	var nimcDoc string
+	if doctorProfession.Doctor != nil {
+		nimcDoc = doctorProfession.Doctor.PersonalIdentificationDocs.Nimc
+	}
+
+	var personalLicense string
+	if doctorProfession.Doctor != nil {
+		personalLicense = doctorProfession.Doctor.PersonalIdentificationDocs.License
+	}
+
+	var professionalLicense string
+	if doctorProfession.Doctor != nil {
+		professionalLicense = doctorProfession.Doctor.ProfessionalDetailsDocs.License
+	}
+
+	var professionalCertificate string
+	if doctorProfession.Doctor != nil {
+		professionalCertificate = doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate
+	}
+
+	doctorData := entity.DoctorEntityDto{
+		Information: entity.Information{
+			Name:           data.DoctorProfessionReqDto.InformationName,
+			AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
+			Image:          doctoryImage,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.DoctorProfessionReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		AdditionalServices: entity.AdditionalService{
+			Qualifications: data.DoctorProfessionReqDto.Qualifications,
+			Speciality:     data.DoctorProfessionReqDto.Speciality,
+		},
+		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+			Nimc:    nimcDoc,
+			License: personalLicense,
+		},
+		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+			Certificate: professionalCertificate,
+			License:     professionalLicense,
+		},
+		Schedule: schedule,
+	}
 
 	doctorProfession = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.DoctorProfessionReqDto.ProviderId,
-		Role:                 data.DoctorProfessionReqDto.Role,
-		FacilityOrProfession: data.DoctorProfessionReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		Doctor: entity.DoctorEntityDto{
-			Information: entity.Information{
-				Name:           data.DoctorProfessionReqDto.InformationName,
-				AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
-				Image:          doctorProfession.Doctor.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.DoctorProfessionReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			AdditionalServices: entity.AdditionalService{
-				Qualifications: data.DoctorProfessionReqDto.Qualifications,
-				Speciality:     data.DoctorProfessionReqDto.Speciality,
-			},
-			PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-				Nimc:    doctorProfession.Doctor.PersonalIdentificationDocs.Nimc,
-				License: doctorProfession.Doctor.PersonalIdentificationDocs.License,
-			},
-			ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-				Certificate: doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate,
-				License:     doctorProfession.Doctor.ProfessionalDetailsDocs.License,
-			},
-			Schedule: schedule,
-		},
-
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthProfessional",
+		FacilityOrProfession: "doctor",
+		Status:               "pending",
+		Doctor:               &doctorData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, doctorProfession)

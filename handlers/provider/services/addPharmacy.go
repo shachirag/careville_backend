@@ -186,31 +186,32 @@ func AddPharmacy(c *fiber.Ctx) error {
 		additionalServices = append(additionalServices, convertedInv)
 	}
 
+	pharmacyData := entity.Pharmacy{
+		Information: entity.Information{
+			Name:           data.PharmacyReqDto.InformationName,
+			AdditionalText: data.PharmacyReqDto.AdditionalText,
+			Image:          pharmacy.Pharmacy.Information.Image,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.PharmacyReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		Documents: entity.Documents{
+			Certificate: pharmacy.Pharmacy.Documents.Certificate,
+			License:     pharmacy.Pharmacy.Documents.License,
+		},
+		AdditionalServices: additionalServices,
+	}
+
 	pharmacy = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.PharmacyReqDto.ProviderId,
-		Role:                 data.PharmacyReqDto.Role,
-		FacilityOrProfession: data.PharmacyReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		Pharmacy: entity.Pharmacy{
-			Information: entity.Information{
-				Name:           data.PharmacyReqDto.InformationName,
-				AdditionalText: data.PharmacyReqDto.AdditionalText,
-				Image:          pharmacy.Pharmacy.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.PharmacyReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			Documents: entity.Documents{
-				Certificate: pharmacy.Pharmacy.Documents.Certificate,
-				License:     pharmacy.Pharmacy.Documents.License,
-			},
-			AdditionalServices: additionalServices,
-		},
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthFacility",
+		FacilityOrProfession: "pharmacy",
+		Status:               "pending",
+		Pharmacy:             &pharmacyData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, pharmacy)

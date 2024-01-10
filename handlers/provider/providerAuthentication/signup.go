@@ -25,9 +25,9 @@ var ctx = context.Background()
 // @Router /provider/signup [post]
 func SignupProvider(c *fiber.Ctx) error {
 	var (
-		providerColl = database.GetCollection("provider")
-		otpColl      = database.GetCollection("otp")
-		data         providerAuth.ProviderSignupReqDto
+		serviceColl = database.GetCollection("service")
+		otpColl     = database.GetCollection("otp")
+		data        providerAuth.ProviderSignupReqDto
 	)
 
 	// Parsing the request body
@@ -44,7 +44,7 @@ func SignupProvider(c *fiber.Ctx) error {
 		"email": strings.ToLower(data.Email),
 	}
 
-	exists, err := providerColl.CountDocuments(ctx, filter)
+	exists, err := serviceColl.CountDocuments(ctx, filter)
 	if err != nil {
 		return c.Status(500).JSON(providerAuth.ProviderResponseDto{
 			Status:  false,
@@ -65,7 +65,7 @@ func SignupProvider(c *fiber.Ctx) error {
 		"phoneNumber.number":   data.PhoneNumber,
 	}
 
-	exists, err = providerColl.CountDocuments(ctx, filter)
+	exists, err = serviceColl.CountDocuments(ctx, filter)
 	if err != nil {
 		return c.Status(500).JSON(providerAuth.ProviderResponseDto{
 			Status:  false,

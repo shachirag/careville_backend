@@ -268,42 +268,39 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 
 	physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
 
-	// Assign schedule to doctorProfession
-	// physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
+	physiotherapistData := entity.Physiotherapist{
+		Information: entity.Information{
+			Name:           data.PhysiotherapistReqDto.InformationName,
+			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
+			Image:          physiotherapist.Physiotherapist.Information.Image,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.PhysiotherapistReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		ProfessionalDetails: entity.ProfessionalDetails{
+			Qualifications: data.PhysiotherapistReqDto.Qualifications,
+		},
+		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+			Nimc:    physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc,
+			License: physiotherapist.Physiotherapist.PersonalIdentificationDocs.License,
+		},
+		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+			Certificate: physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate,
+			License:     physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License,
+		},
+		ServiceAndSchedule: schedule,
+	}
 
 	physiotherapist = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.PhysiotherapistReqDto.ProviderId,
-		Role:                 data.PhysiotherapistReqDto.Role,
-		FacilityOrProfession: data.PhysiotherapistReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		Physiotherapist: entity.Physiotherapist{
-			Information: entity.Information{
-				Name:           data.PhysiotherapistReqDto.InformationName,
-				AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
-				Image:          physiotherapist.Physiotherapist.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.PhysiotherapistReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			ProfessionalDetails: entity.ProfessionalDetails{
-				Qualifications: data.PhysiotherapistReqDto.Qualifications,
-			},
-			PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-				Nimc:    physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc,
-				License: physiotherapist.Physiotherapist.PersonalIdentificationDocs.License,
-			},
-			ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-				Certificate: physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate,
-				License:     physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License,
-			},
-			ServiceAndSchedule: schedule,
-		},
-
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthProfessional",
+		FacilityOrProfession: "physiotherpist",
+		Status:               "pending",
+		Physiotherapist:      &physiotherapistData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, physiotherapist)

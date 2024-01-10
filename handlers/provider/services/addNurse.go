@@ -268,42 +268,39 @@ func AddNurse(c *fiber.Ctx) error {
 
 	nurse.Nurse.Schedule = schedule
 
-	// // Assign schedule to doctorProfession
-	// nurse.Nurse.Schedule = schedule
+	NurseData := entity.Nurse{
+		Information: entity.Information{
+			Name:           data.NurseReqDto.InformationName,
+			AdditionalText: data.NurseReqDto.AdditionalText,
+			Image:          nurse.Nurse.Information.Image,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.NurseReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		ProfessionalDetails: entity.ProfessionalDetails{
+			Qualifications: data.NurseReqDto.Qualifications,
+		},
+		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+			Nimc:    nurse.Nurse.PersonalIdentificationDocs.Nimc,
+			License: nurse.Nurse.PersonalIdentificationDocs.License,
+		},
+		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+			Certificate: nurse.Nurse.ProfessionalDetailsDocs.Certificate,
+			License:     nurse.Nurse.ProfessionalDetailsDocs.License,
+		},
+		Schedule: schedule,
+	}
 
 	nurse = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.NurseReqDto.ProviderId,
-		Role:                 data.NurseReqDto.Role,
-		FacilityOrProfession: data.NurseReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		Nurse: entity.Nurse{
-			Information: entity.Information{
-				Name:           data.NurseReqDto.InformationName,
-				AdditionalText: data.NurseReqDto.AdditionalText,
-				Image:          nurse.Nurse.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.NurseReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			ProfessionalDetails: entity.ProfessionalDetails{
-				Qualifications: data.NurseReqDto.Qualifications,
-			},
-			PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-				Nimc:    nurse.Nurse.PersonalIdentificationDocs.Nimc,
-				License: nurse.Nurse.PersonalIdentificationDocs.License,
-			},
-			ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-				Certificate: nurse.Nurse.ProfessionalDetailsDocs.Certificate,
-				License:     nurse.Nurse.ProfessionalDetailsDocs.License,
-			},
-			Schedule: schedule,
-		},
-
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthProfessional",
+		FacilityOrProfession: "nurse",
+		Status:               "pending",
+		Nurse:                &NurseData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, nurse)

@@ -26,9 +26,9 @@ import (
 // @Router /provider/login [post]
 func LoginProvider(c *fiber.Ctx) error {
 	var (
-		providerColl = database.GetCollection("provider")
-		data         providerAuth.LoginProviderReqDto
-		provider     entity.ProviderEntity
+		serviceColl = database.GetCollection("service")
+		data        providerAuth.LoginProviderReqDto
+		provider    entity.ServiceEntity
 	)
 
 	// Parsing the request body
@@ -40,8 +40,12 @@ func LoginProvider(c *fiber.Ctx) error {
 		})
 	}
 
+	filter := bson.M{
+		"email": strings.ToLower(data.Email),
+	}
+
 	// Find the user with email address from client
-	err = providerColl.FindOne(ctx, bson.M{"email": data.Email}).Decode(&provider)
+	err = serviceColl.FindOne(ctx, filter).Decode(&provider)
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {
@@ -84,18 +88,34 @@ func LoginProvider(c *fiber.Ctx) error {
 		})
 	}
 
-	var service entity.ServiceEntity
-	serviceColl := database.GetCollection("service")
-	err = serviceColl.FindOne(ctx, bson.M{"providerId": provider.Id}).Decode(&service)
-
 	role := providerAuth.Role{}
 	if err == nil {
 		role = providerAuth.Role{
-			ProviderId:           service.Id,
-			Role:                 service.Role,
-			FacilityOrProfession: service.FacilityOrProfession,
-			IsApproved:           service.IsApproved,
+			ProviderId:           provider.Id,
+			Role:                 provider.Role,
+			FacilityOrProfession: provider.FacilityOrProfession,
+			Status:               provider.Status,
 		}
+	}
+
+	var image string
+
+	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+		image = provider.HospClinic.Information.Image
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+		image = provider.Laboratory.Information.Image
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+		image = provider.FitnessCenter.Information.Image
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+		image = provider.Pharmacy.Information.Image
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+		image = provider.MedicalLabScientist.Information.Image
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "nurse" {
+		image = provider.Nurse.Information.Image
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "doctor" {
+		image = provider.Doctor.Information.Image
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "physiotherapist" {
+		image = provider.Physiotherapist.Information.Image
 	}
 
 	return c.Status(200).JSON(providerAuth.LoginProviderResDto{
@@ -107,15 +127,18 @@ func LoginProvider(c *fiber.Ctx) error {
 				Id:    provider.Id,
 				Name:  provider.Name,
 				Email: provider.Email,
-				Image: provider.Image,
+				Image: image,
 				PhoneNumber: providerAuth.PhoneNumber{
 					DialCode: provider.PhoneNumber.DialCode,
 					Number:   provider.PhoneNumber.Number,
 				},
-				Notification:         provider.Notification,
-				IsEmergencyAvailable: provider.IsEmergencyAvailable,
-				CreatedAt:            provider.CreatedAt,
-				UpdatedAt:            provider.UpdatedAt,
+				Notification: providerAuth.Notification{
+					DeviceToken: provider.Notification.DeviceToken,
+					DeviceType:  provider.Notification.DeviceType,
+					IsEnabled:   provider.Notification.IsEnabled,
+				},
+				CreatedAt: provider.CreatedAt,
+				UpdatedAt: provider.UpdatedAt,
 			},
 		},
 		Token: _token,

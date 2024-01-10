@@ -23,6 +23,9 @@ type ProviderSignupVerifyOtpReqDto struct {
 	Email       string `json:"email" bson:"email"`
 	DialCode    string `json:"dialCode" bson:"dialCode"`
 	PhoneNumber string `json:"phoneNumber" bson:"phoneNumber"`
+	CountryCode string `json:"countryCode" bson:"countryCode"`
+	DeviceToken string `json:"deviceToken" bson:"deviceToken"`
+	DeviceType  string `json:"deviceType" bson:"deviceType"`
 	Password    string `json:"password" bson:"password"`
 	EnteredOTP  string `json:"otp" bson:"otp"`
 }
@@ -39,8 +42,7 @@ type ProviderResDto struct {
 	Name                 string             `json:"name" bson:"name"`
 	Email                string             `json:"email" bson:"email"`
 	Image                string             `json:"image" bson:"image"`
-	Notification         bool               `json:"notification" bson:"notification"`
-	IsEmergencyAvailable bool               `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
+	Notification         Notification       `json:"notification" bson:"notification"`
 	PhoneNumber          PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
 	Role                 string             `json:"role" bson:"role"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
@@ -49,7 +51,14 @@ type ProviderResDto struct {
 	UpdatedAt            time.Time          `json:"updatedAt" bson:"updatedAt"`
 }
 
+type Notification struct {
+	DeviceToken string `json:"deviceToken" bson:"deviceToken"`
+	DeviceType  string `json:"deviceType" bson:"deviceType"`
+	IsEnabled   bool   `json:"isEnabled" bson:"isEnabled"`
+}
+
 type PhoneNumber struct {
-	DialCode string `json:"dialCode" bson:"dialCode"`
-	Number   string `json:"number" bson:"number"`
+	DialCode    string `json:"dialCode" bson:"dialCode"`
+	CountryCode string `json:"countryCode" bson:"countryCode"`
+	Number      string `json:"number" bson:"number"`
 }

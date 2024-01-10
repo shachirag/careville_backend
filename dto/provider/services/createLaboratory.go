@@ -1,21 +1,16 @@
 package services
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
 type LaboratoryRequestDto struct {
 	LaboratoryReqDto LaboratoryReqDto `json:"data" form:"data"`
 }
 
 type LaboratoryReqDto struct {
-	ProviderId           primitive.ObjectID `json:"providerId" form:"providerId"`
-	Role                 string             `json:"role" form:"role"`
-	FacilityOrProfession string             `json:"facilityOrProfession" form:"facilityOrProfession"`
-	InformationName      string             `json:"informationName" form:"informationName"`
-	Address              string             `json:"address" form:"address"`
-	Longitude            string             `json:"longitude" form:"longitude"`
-	Latitude             string             `json:"latitude" form:"latitude"`
-	AdditionalText       string             `json:"additionalText" form:"additionalText"`
-	Investigations       []Investigations   `json:"investigations" form:"investigations"`
+	InformationName string           `json:"informationName" form:"informationName"`
+	Address         string           `json:"address" form:"address"`
+	Longitude       string           `json:"longitude" form:"longitude"`
+	Latitude        string           `json:"latitude" form:"latitude"`
+	AdditionalText  string           `json:"additionalText" form:"additionalText"`
+	Investigations  []Investigations `json:"investigations" form:"investigations"`
 }
 
 type Investigations struct {

@@ -5,6 +5,7 @@ import (
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 	"careville_backend/utils"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,10 +24,10 @@ import (
 // @Router /provider/forgot-password [post]
 func ForgotPassword(c *fiber.Ctx) error {
 	var (
-		providerColl = database.GetCollection("provider")
-		otpColl      = database.GetCollection("otp")
-		data         providerAuth.ProviderForgotPasswordReqDto
-		provider     entity.ProviderEntity
+		serviceColl = database.GetCollection("service")
+		otpColl     = database.GetCollection("otp")
+		data        providerAuth.ProviderForgotPasswordReqDto
+		provider    entity.ServiceEntity
 	)
 
 	// Parsing the request body
@@ -38,8 +39,10 @@ func ForgotPassword(c *fiber.Ctx) error {
 		})
 	}
 
+	smallEmail := strings.ToLower(data.Email)
+
 	// Find the user with email address from client
-	err = providerColl.FindOne(ctx, bson.M{"email": data.Email}).Decode(&provider)
+	err = serviceColl.FindOne(ctx, bson.M{"email": smallEmail}).Decode(&provider)
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {

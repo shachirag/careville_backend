@@ -1,0 +1,66 @@
+package services
+
+import (
+	"careville_backend/database"
+	"careville_backend/dto/provider/services"
+	"careville_backend/entity"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// @Summary Fetch status By ID
+// @Description Fetch status By ID
+// @Tags services
+// @Accept application/json
+//
+//	@Param Authorization header	string true	"Authentication header"
+//
+// @Param id path string true "service ID"
+// @Produce json
+// @Success 200 {object} services.StatusRes
+// @Router /provider/get-status/{id} [get]
+func FetchStatusById(c *fiber.Ctx) error {
+
+	var service entity.ServiceEntity
+
+	logentryId := c.Params("id")
+	objId, err := primitive.ObjectIDFromHex(logentryId)
+
+	if err != nil {
+		return c.Status(400).JSON(services.StatusRes{
+			Status:  false,
+			Message: "invalid objectId " + err.Error(),
+		})
+
+	}
+
+	serviceColl := database.GetCollection("service")
+
+	err = serviceColl.FindOne(ctx, bson.M{"_id": objId}).Decode(&service)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return c.Status(fiber.StatusNotFound).JSON(services.StatusRes{
+				Status:  false,
+				Message: "status not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(services.StatusRes{
+			Status:  false,
+			Message: "Failed to fetch status from MongoDB: " + err.Error(),
+		})
+	}
+
+	statusRes := services.StatusRespDto{
+		Id:     service.Id,
+		Status: service.Status,
+	}
+
+	return c.Status(fiber.StatusOK).JSON(services.StatusRes{
+		Status:  true,
+		Message: "status retrieved successfully",
+		Data:    statusRes,
+	})
+}

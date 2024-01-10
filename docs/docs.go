@@ -156,7 +156,7 @@ const docTemplate = `{
                     {
                         "type": "file",
                         "description": "hospitalImage",
-                        "name": "hopitalImage",
+                        "name": "hospitalImage",
                         "in": "formData"
                     },
                     {
@@ -550,6 +550,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/get-all-doctors": {
+            "get": {
+                "description": "Get all doctors",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Get all doctors",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/get-misc-data": {
+            "get": {
+                "description": "Fetch All misc data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Fetch All misc data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MiscResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/get-provider-info/{id}": {
             "get": {
                 "description": "Fetch provider By ID",
@@ -584,6 +636,45 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/providerAuth.GetProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/get-status/{id}": {
+            "get": {
+                "description": "Fetch status By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Fetch status By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.StatusRes"
                         }
                     }
                 }
@@ -688,6 +779,60 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/update-profile-image/{id}": {
+            "put": {
+                "description": "Update Profile Image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider authorization"
+                ],
+                "summary": "Update Profile Image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "provider ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of admin",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.UpdateImageReqDto"
+                        }
+                    },
+                    {
+                        "type": "file",
+                        "description": "profile image",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.UpdateProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/update-provider-data/{id}": {
             "put": {
                 "description": "Update provider",
@@ -718,7 +863,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "name": "additionalDetails",
+                        "name": "additionalText",
                         "in": "formData"
                     },
                     {
@@ -728,17 +873,27 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "name": "countryCode",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
                         "name": "dialCode",
                         "in": "formData"
                     },
                     {
                         "type": "string",
-                        "name": "name",
+                        "name": "latitude",
                         "in": "formData"
                     },
                     {
                         "type": "string",
-                        "name": "oldProfileImage",
+                        "name": "longitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
                         "in": "formData"
                     },
                     {
@@ -833,6 +988,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "providerAuth.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "providerAuth.GetProviderResDto": {
             "type": "object",
             "properties": {
@@ -875,9 +1047,26 @@ const docTemplate = `{
                 }
             }
         },
+        "providerAuth.Notification": {
+            "type": "object",
+            "properties": {
+                "deviceToken": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "isEnabled": {
+                    "type": "boolean"
+                }
+            }
+        },
         "providerAuth.PhoneNumber": {
             "type": "object",
             "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
                 "dialCode": {
                     "type": "string"
                 },
@@ -918,7 +1107,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "address": {
-                    "type": "string"
+                    "$ref": "#/definitions/providerAuth.Address"
                 },
                 "createdAt": {
                     "type": "string"
@@ -939,7 +1128,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "notification": {
-                    "type": "boolean"
+                    "$ref": "#/definitions/providerAuth.Notification"
                 },
                 "phoneNumber": {
                     "$ref": "#/definitions/providerAuth.PhoneNumber"
@@ -989,14 +1178,11 @@ const docTemplate = `{
                 "isApproved": {
                     "type": "boolean"
                 },
-                "isEmergencyAvailable": {
-                    "type": "boolean"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notification": {
-                    "type": "boolean"
+                    "$ref": "#/definitions/providerAuth.Notification"
                 },
                 "phoneNumber": {
                     "$ref": "#/definitions/providerAuth.PhoneNumber"
@@ -1048,6 +1234,15 @@ const docTemplate = `{
         "providerAuth.ProviderSignupVerifyOtpReqDto": {
             "type": "object",
             "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "deviceToken": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
                 "dialCode": {
                     "type": "string"
                 },
@@ -1105,13 +1300,21 @@ const docTemplate = `{
                 "facilityOrProfession": {
                     "type": "string"
                 },
-                "isApproved": {
-                    "type": "boolean"
-                },
                 "providerId": {
                     "type": "string"
                 },
                 "role": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "providerAuth.UpdateImageReqDto": {
+            "type": "object",
+            "properties": {
+                "oldImage": {
                     "type": "string"
                 }
             }
@@ -1142,14 +1345,11 @@ const docTemplate = `{
                 "image": {
                     "type": "string"
                 },
-                "isEmergencyAvailable": {
-                    "type": "boolean"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notification": {
-                    "type": "boolean"
+                    "$ref": "#/definitions/providerAuth.Notification"
                 },
                 "phoneNumber": {
                     "$ref": "#/definitions/providerAuth.PhoneNumber"
@@ -1210,9 +1410,6 @@ const docTemplate = `{
                 "certificate": {
                     "type": "string"
                 },
-                "facilityOrProfession": {
-                    "type": "string"
-                },
                 "informationName": {
                     "type": "string"
                 },
@@ -1222,13 +1419,7 @@ const docTemplate = `{
                 "longitude": {
                     "type": "string"
                 },
-                "providerId": {
-                    "type": "string"
-                },
                 "qualifications": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 },
                 "schedule": {
@@ -1253,6 +1444,26 @@ const docTemplate = `{
                 }
             }
         },
+        "services.DoctorRes": {
+            "type": "object"
+        },
+        "services.DoctorResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.DoctorRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.DoctorSchedule": {
             "type": "object",
             "properties": {
@@ -1261,6 +1472,17 @@ const docTemplate = `{
                 },
                 "slots": {
                     "$ref": "#/definitions/services.Slots"
+                }
+            }
+        },
+        "services.FitnessCenterEntity": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1279,9 +1501,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "facilityOrProfession": {
-                    "type": "string"
-                },
                 "informationName": {
                     "type": "string"
                 },
@@ -1289,12 +1508,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "longitude": {
-                    "type": "string"
-                },
-                "providerId": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 },
                 "subscription": {
@@ -1322,6 +1535,23 @@ const docTemplate = `{
                 }
             }
         },
+        "services.HospClinicEntity": {
+            "type": "object",
+            "properties": {
+                "insurances": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "otherServices": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "services.HospitalClinicReqDto": {
             "type": "object",
             "properties": {
@@ -1336,9 +1566,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.Doctor"
                     }
-                },
-                "facilityOrProfession": {
-                    "type": "string"
                 },
                 "informationName": {
                     "type": "string"
@@ -1360,12 +1587,6 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
-                },
-                "providerId": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
                 }
             }
         },
@@ -1397,6 +1618,17 @@ const docTemplate = `{
                 }
             }
         },
+        "services.LaboratoryEntity": {
+            "type": "object",
+            "properties": {
+                "investigations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "services.LaboratoryReqDto": {
             "type": "object",
             "properties": {
@@ -1404,9 +1636,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "address": {
-                    "type": "string"
-                },
-                "facilityOrProfession": {
                     "type": "string"
                 },
                 "informationName": {
@@ -1422,12 +1651,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "longitude": {
-                    "type": "string"
-                },
-                "providerId": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 }
             }
@@ -1458,9 +1681,6 @@ const docTemplate = `{
                 "document": {
                     "type": "string"
                 },
-                "facilityOrProfession": {
-                    "type": "string"
-                },
                 "informationName": {
                     "type": "string"
                 },
@@ -1468,12 +1688,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "longitude": {
-                    "type": "string"
-                },
-                "providerId": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 },
                 "schedule": {
@@ -1495,6 +1709,34 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MiscRes": {
+            "type": "object",
+            "properties": {
+                "fitnessCenter": {
+                    "$ref": "#/definitions/services.FitnessCenterEntity"
+                },
+                "hospClinic": {
+                    "$ref": "#/definitions/services.HospClinicEntity"
+                },
+                "laboratory": {
+                    "$ref": "#/definitions/services.LaboratoryEntity"
+                }
+            }
+        },
+        "services.MiscResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.MiscRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.NurseReqDto": {
             "type": "object",
             "properties": {
@@ -1502,9 +1744,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "address": {
-                    "type": "string"
-                },
-                "facilityOrProfession": {
                     "type": "string"
                 },
                 "informationName": {
@@ -1516,13 +1755,7 @@ const docTemplate = `{
                 "longitude": {
                     "type": "string"
                 },
-                "providerId": {
-                    "type": "string"
-                },
                 "qualifications": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 },
                 "schedule": {
@@ -1573,9 +1806,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "facilityOrProfession": {
-                    "type": "string"
-                },
                 "informationName": {
                     "type": "string"
                 },
@@ -1583,12 +1813,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "longitude": {
-                    "type": "string"
-                },
-                "providerId": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 }
             }
@@ -1613,9 +1837,6 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "facilityOrProfession": {
-                    "type": "string"
-                },
                 "informationName": {
                     "type": "string"
                 },
@@ -1625,13 +1846,7 @@ const docTemplate = `{
                 "longitude": {
                     "type": "string"
                 },
-                "providerId": {
-                    "type": "string"
-                },
                 "qualifications": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 },
                 "schedule": {
@@ -1697,6 +1912,31 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.StatusRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.StatusRespDto"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.StatusRespDto": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }

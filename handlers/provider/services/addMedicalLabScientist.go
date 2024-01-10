@@ -266,43 +266,40 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 
 	medicalLabScientist.MedicalLabScientist.ServiceAndSchedule = schedule
 
-	// Assign schedule to doctorProfession
-	// physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
+	MedicalLabScientistData := entity.MedicalLabScientist{
+		Information: entity.Information{
+			Name:           data.MedicalLabScientistReqDto.InformationName,
+			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
+			Image:          medicalLabScientist.MedicalLabScientist.Information.Image,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.MedicalLabScientistReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		PersonalDetails: entity.PersonalDetails{
+			Department: data.MedicalLabScientistReqDto.Department,
+			Document:   data.MedicalLabScientistReqDto.Document,
+		},
+		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+			Nimc:    medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc,
+			License: medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License,
+		},
+		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+			Certificate: medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate,
+			License:     medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License,
+		},
+		ServiceAndSchedule: schedule,
+	}
 
 	medicalLabScientist = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.MedicalLabScientistReqDto.ProviderId,
-		Role:                 data.MedicalLabScientistReqDto.Role,
-		FacilityOrProfession: data.MedicalLabScientistReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		MedicalLabScientist: entity.MedicalLabScientist{
-			Information: entity.Information{
-				Name:           data.MedicalLabScientistReqDto.InformationName,
-				AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
-				Image:          medicalLabScientist.MedicalLabScientist.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.MedicalLabScientistReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			PersonalDetails: entity.PersonalDetails{
-				Department: data.MedicalLabScientistReqDto.Department,
-				Document:   data.MedicalLabScientistReqDto.Document,
-			},
-			PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-				Nimc:    medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc,
-				License: medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License,
-			},
-			ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-				Certificate: medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate,
-				License:     medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License,
-			},
-			ServiceAndSchedule: schedule,
-		},
-
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthProfessional",
+		FacilityOrProfession: "medicalLabScientist",
+		Status:               "pending",
+		MedicalLabScientist:  &MedicalLabScientistData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, medicalLabScientist)

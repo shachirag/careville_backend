@@ -207,33 +207,34 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		subscription = append(subscription, convertedInv)
 	}
 
+	fitnessCenterData := entity.FitnessCenter{
+		Information: entity.Information{
+			Name:           data.FitnessCenterReqDto.InformationName,
+			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
+			Image:          fitnessCenter.FitnessCenter.Information.Image,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.FitnessCenterReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		Documents: entity.Documents{
+			Certificate: fitnessCenter.FitnessCenter.Documents.Certificate,
+			License:     fitnessCenter.FitnessCenter.Documents.License,
+		},
+		AdditionalServices: additionalServices,
+		Trainers:           trainers,
+		Subscription:       subscription,
+	}
+
 	fitnessCenter = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.FitnessCenterReqDto.ProviderId,
-		Role:                 data.FitnessCenterReqDto.Role,
-		FacilityOrProfession: data.FitnessCenterReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		FitnessCenter: entity.FitnessCenter{
-			Information: entity.Information{
-				Name:           data.FitnessCenterReqDto.InformationName,
-				AdditionalText: data.FitnessCenterReqDto.AdditionalText,
-				Image:          fitnessCenter.FitnessCenter.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.FitnessCenterReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			Documents: entity.Documents{
-				Certificate: fitnessCenter.FitnessCenter.Documents.Certificate,
-				License:     fitnessCenter.FitnessCenter.Documents.License,
-			},
-			AdditionalServices: additionalServices,
-			Trainers:           trainers,
-			Subscription:       subscription,
-		},
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "healthFacility",
+		FacilityOrProfession: "fitnessCenter",
+		Status:               "pending",
+		FitnessCenter:        &fitnessCenterData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, fitnessCenter)

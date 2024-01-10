@@ -3,8 +3,8 @@ package providerAuthenticate
 import (
 	"careville_backend/database"
 	providerAuth "careville_backend/dto/provider/providerAuth"
-	"careville_backend/utils"
-	"fmt"
+	"careville_backend/entity"
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -29,8 +29,9 @@ import (
 func UpdateProvider(c *fiber.Ctx) error {
 
 	var (
-		providerColl = database.GetCollection("provider")
-		data         providerAuth.UpdateProviderReqDto
+		serviceColl = database.GetCollection("service")
+		data        providerAuth.UpdateProviderReqDto
+		provider    entity.ServiceEntity
 	)
 
 	// Parsing the request body
@@ -59,63 +60,186 @@ func UpdateProvider(c *fiber.Ctx) error {
 	}
 
 	filter := bson.M{"_id": objID}
-	result := providerColl.FindOne(ctx, filter)
-	if result.Err() != nil {
-		if result.Err() == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(providerAuth.UpdateProviderResDto{
+	err = serviceColl.FindOne(ctx, filter).Decode(&provider)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return c.Status(fiber.StatusNotFound).JSON(providerAuth.GetProviderResDto{
 				Status:  false,
 				Message: "provider not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.GetProviderResDto{
 			Status:  false,
-			Message: "internal server error " + err.Error(),
+			Message: "Failed to fetch provider from MongoDB: " + err.Error(),
 		})
 	}
 
-	formFile, err := c.FormFile("newProviderImage")
-	var imageURL string
+	longitude, err := strconv.ParseFloat(data.Longitude, 64)
 	if err != nil {
-		imageURL = data.OldProfileImage
-	} else {
-		// New image uploaded
-		file, err := formFile.Open()
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
-				Status:  false,
-				Message: "Failed to open image file: " + err.Error(),
-			})
-		}
-		defer file.Close()
-
-		id := primitive.NewObjectID()
-		fileName := fmt.Sprintf("provider/%v-profilepic%v", id.Hex(), formFile.Filename)
-
-		imageURL, err = utils.UploadToS3(fileName, file)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
-				Status:  false,
-				Message: "Failed to upload image to S3: " + err.Error(),
-			})
-		}
+		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.UpdateProviderResDto{
+			Status:  false,
+			Message: "Invalid longitude format",
+		})
 	}
 
-	// Update the admin document with new data
-	update := bson.M{
-		"name": data.Name,
-		"phoneNumber": bson.M{
-			"dialCode": data.DialCode,
-			"number":   data.PhoneNumber,
+	latitude, err := strconv.ParseFloat(data.Latitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.UpdateProviderResDto{
+			Status:  false,
+			Message: "Invalid latitude format",
+		})
+	}
+
+	update := bson.M{}
+
+	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                             time.Now().UTC(),
+			"hospClinic.information.name":           data.Name,
+			"hospClinic.information.additionalText": data.AdditionalText,
+			"hospClinic.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
 		},
-		"image":             imageURL,
-		"additionalDetails": data.AdditionalDetails,
-		"address":           data.Address,
-		"updatedAt":         time.Now().UTC(),
+		}
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                             time.Now().UTC(),
+			"laboratory.information.name":           data.Name,
+			"laboratory.information.additionalText": data.AdditionalText,
+			"laboratory.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                                time.Now().UTC(),
+			"fitnessCenter.information.name":           data.Name,
+			"fitnessCenter.information.additionalText": data.AdditionalText,
+			"fitnessCenter.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                           time.Now().UTC(),
+			"pharmacy.information.name":           data.Name,
+			"pharmacy.information.additionalText": data.AdditionalText,
+			"pharmacy.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                                      time.Now().UTC(),
+			"medicalLabScientist.information.name":           data.Name,
+			"medicalLabScientist.information.additionalText": data.AdditionalText,
+			"medicalLabScientist.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "nurse" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                        time.Now().UTC(),
+			"nurse.information.name":           data.Name,
+			"nurse.information.additionalText": data.AdditionalText,
+			"nurse.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "doctor" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                         time.Now().UTC(),
+			"doctor.information.name":           data.Name,
+			"doctor.information.additionalText": data.AdditionalText,
+			"doctor.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "physiotherapist" {
+		update = bson.M{"$set": bson.M{
+			"name": data.Name,
+			"phoneNumber": bson.M{
+				"dialCode": data.DialCode,
+				"number":   data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+			"updatedAt":                                  time.Now().UTC(),
+			"physiotherapist.information.name":           data.Name,
+			"physiotherapist.information.additionalText": data.AdditionalText,
+			"physiotherapist.information.address": providerAuth.Address{
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
+			},
+		},
+		}
 	}
 
-	updateFields := bson.M{"$set": update}
 	// Execute the update operation
-	updateRes, err := providerColl.UpdateOne(ctx, filter, updateFields)
+	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
 			Status:  false,

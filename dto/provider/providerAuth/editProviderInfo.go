@@ -1,15 +1,21 @@
 package providerAuth
 
 type UpdateProviderReqDto struct {
-	Name              string `json:"name" form:"name"`
-	DialCode          string `json:"dialCode" form:"dialCode"`
-	PhoneNumber       string `json:"phoneNumber" form:"phoneNumber"`
-	Address           string `json:"address" form:"address"`
-	OldProfileImage   string `json:"oldProfileImage" form:"oldProfileImage"`
-	AdditionalDetails string `json:"additionalDetails" form:"additionalDetails"`
+	Name           string `json:"name" form:"name"`
+	DialCode       string `json:"dialCode" form:"dialCode"`
+	PhoneNumber    string `json:"phoneNumber" form:"phoneNumber"`
+	CountryCode    string `json:"countryCode" form:"countryCode"`
+	Latitude       string `json:"latitude" form:"latitude" bson:"latitude"`
+	Longitude      string `json:"longitude" form:"longitude" bson:"longitude"`
+	Address        string `json:"address" form:"address"`
+	AdditionalText string `json:"additionalText" form:"additionalText"`
 }
 
 type UpdateProviderResDto struct {
 	Status  bool   `json:"status"`
 	Message string `json:"message"`
+}
+
+type UpdateImageReqDto struct {
+	OldImage string `json:"oldImage" form:"oldImage"`
 }

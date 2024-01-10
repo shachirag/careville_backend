@@ -24,7 +24,7 @@ import (
 // @Router /provider/get-provider-info/{id} [get]
 func FetchProviderById(c *fiber.Ctx) error {
 
-	var provider entity.ProviderEntity
+	var provider entity.ServiceEntity
 
 	// Get the user ID from the URL parameter
 	userId := c.Params("id")
@@ -38,9 +38,9 @@ func FetchProviderById(c *fiber.Ctx) error {
 
 	}
 
-	providerColl := database.GetCollection("provider")
+	serviceColl := database.GetCollection("service")
 
-	err = providerColl.FindOne(ctx, bson.M{"_id": objId}).Decode(&provider)
+	err = serviceColl.FindOne(ctx, bson.M{"_id": objId}).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(providerAuth.GetProviderResDto{
@@ -54,18 +54,69 @@ func FetchProviderById(c *fiber.Ctx) error {
 		})
 	}
 
+	var image string
+	var additionalDetails string
+	var isEmergencyAvailable bool
+	var address providerAuth.Address
+
+	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+		image = provider.HospClinic.Information.Image
+		additionalDetails = provider.HospClinic.Information.AdditionalText
+		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.HospClinic.Information.Address)
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+		image = provider.Laboratory.Information.Image
+		additionalDetails = provider.Laboratory.Information.AdditionalText
+		isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Laboratory.Information.Address)
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+		image = provider.FitnessCenter.Information.Image
+		additionalDetails = provider.FitnessCenter.Information.AdditionalText
+		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.FitnessCenter.Information.Address)
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+		image = provider.Pharmacy.Information.Image
+		additionalDetails = provider.Pharmacy.Information.AdditionalText
+		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Pharmacy.Information.Address)
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+		image = provider.MedicalLabScientist.Information.Image
+		additionalDetails = provider.MedicalLabScientist.Information.AdditionalText
+		isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.MedicalLabScientist.Information.Address)
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "nurse" {
+		image = provider.Nurse.Information.Image
+		additionalDetails = provider.Nurse.Information.AdditionalText
+		isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Nurse.Information.Address)
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "doctor" {
+		image = provider.Doctor.Information.Image
+		additionalDetails = provider.Doctor.Information.AdditionalText
+		isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Doctor.Information.Address)
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "physiotherapist" {
+		image = provider.Physiotherapist.Information.Image
+		additionalDetails = provider.Physiotherapist.Information.AdditionalText
+		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Physiotherapist.Information.Address)
+	}
+
 	providerRes := providerAuth.ProviderData{
 		Id:                   provider.Id,
 		Name:                 provider.Name,
 		Email:                provider.Email,
-		Image:                provider.Image,
-		AdditionalDetails:    provider.AdditionalDetails,
-		Address:              provider.Address,
+		Image:                image,
+		AdditionalDetails:    additionalDetails,
+		Address:              address,
+		IsEmergencyAvailable: isEmergencyAvailable,
 		PhoneNumber:          providerAuth.PhoneNumber(provider.PhoneNumber),
 		CreatedAt:            provider.CreatedAt,
 		UpdatedAt:            provider.UpdatedAt,
-		Notification:         provider.Notification,
-		IsEmergencyAvailable: provider.IsEmergencyAvailable,
+		Notification: providerAuth.Notification{
+			DeviceToken: provider.Notification.DeviceToken,
+			DeviceType:  provider.Notification.DeviceType,
+			IsEnabled:   provider.Notification.IsEnabled,
+		},
 	}
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.GetProviderResDto{

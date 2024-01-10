@@ -27,8 +27,8 @@ import (
 func ChangeProviderPassword(c *fiber.Ctx) error {
 
 	var (
-		providerColl = database.GetCollection("provider")
-		data         providerAuth.ProviderChangePasswordReqDto
+		serviceColl = database.GetCollection("service")
+		data        providerAuth.ProviderChangePasswordReqDto
 	)
 
 	// Parsing the request body
@@ -41,10 +41,10 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 	}
 
 	// Get the customer ID from the request parameters
-	customerID := c.Params("id")
+	providerID := c.Params("id")
 
 	// Convert the admin ID string to primitive.ObjectID
-	objID, err := primitive.ObjectIDFromHex(customerID)
+	objID, err := primitive.ObjectIDFromHex(providerID)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.ProviderChangePasswordResDto{
 			Status:  false,
@@ -54,7 +54,7 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 
 	filter := bson.M{"_id": objID}
 
-	result := providerColl.FindOne(ctx, filter)
+	result := serviceColl.FindOne(ctx, filter)
 	if result.Err() != nil {
 		if result.Err() == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(providerAuth.ProviderChangePasswordResDto{
@@ -70,18 +70,18 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 	}
 
 	// Decode the customer data
-	var customer entity.ProviderEntity
-	err = result.Decode(&customer)
+	var provider entity.ServiceEntity
+	err = result.Decode(&provider)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.ProviderChangePasswordResDto{
 			Status:  false,
-			Message: "Failed to decode customer data: " + err.Error(),
+			Message: "Failed to decode provider data: " + err.Error(),
 		})
 	}
 
 	if data.CurrentPassword != "" {
 		// Validate the current password
-		err = bcrypt.CompareHashAndPassword([]byte(customer.Password), []byte(data.CurrentPassword))
+		err = bcrypt.CompareHashAndPassword([]byte(provider.Password), []byte(data.CurrentPassword))
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(providerAuth.ProviderChangePasswordResDto{
 				Status:  false,
@@ -106,7 +106,7 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 	}
 
 	// Execute the update operation
-	updateRes, err := providerColl.UpdateOne(ctx, filter, update)
+	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.ProviderChangePasswordResDto{
 			Status:  false,

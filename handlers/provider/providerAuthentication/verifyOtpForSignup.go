@@ -27,10 +27,10 @@ import (
 // @Router /provider/verify-otp-for-signup [post]
 func VerifyOtpForSignup(c *fiber.Ctx) error {
 	var (
-		otpColl      = database.GetCollection("otp")
-		providerColl = database.GetCollection("provider")
-		data         providerAuth.ProviderSignupVerifyOtpReqDto
-		otpData      entity.OtpEntity
+		otpColl     = database.GetCollection("otp")
+		serviceColl = database.GetCollection("service")
+		data        providerAuth.ProviderSignupVerifyOtpReqDto
+		otpData     entity.OtpEntity
 	)
 
 	// Parsing the request body
@@ -50,8 +50,10 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		})
 	}
 
+	smallEmail := strings.ToLower(data.Email)
+
 	// Find the user with email address from client
-	err = otpColl.FindOne(ctx, bson.M{"email": data.Email}, options.FindOne().SetSort(bson.M{"createdAt": -1})).Decode(&otpData)
+	err = otpColl.FindOne(ctx, bson.M{"email": smallEmail}, options.FindOne().SetSort(bson.M{"createdAt": -1})).Decode(&otpData)
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {
@@ -85,12 +87,11 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		})
 	}
 
-	// Check if email is not already used
 	filter := bson.M{
 		"email": strings.ToLower(data.Email),
 	}
 
-	exists, err := providerColl.CountDocuments(ctx, filter)
+	exists, err := serviceColl.CountDocuments(ctx, filter)
 	if err != nil {
 		return c.Status(500).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
 			Status:  false,
@@ -109,22 +110,26 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	id := primitive.NewObjectID()
 
 	// Now that OTP is verified, proceed to insert the data into the database
-	provider := entity.ProviderEntity{
+	provider := entity.ServiceEntity{
 		Id:    id,
 		Name:  data.Name,
-		Email: data.Email,
+		Email: smallEmail,
 		PhoneNumber: entity.PhoneNumber{
-			DialCode: data.DialCode,
-			Number:   data.PhoneNumber,
+			DialCode:    data.DialCode,
+			Number:      data.PhoneNumber,
+			CountryCode: data.CountryCode,
 		},
-		Notification:         false,
-		IsEmergencyAvailable: false,
-		Password:             string(hashedPassword),
-		CreatedAt:            time.Now().UTC(),
-		UpdatedAt:            time.Now().UTC(),
+		Notification: entity.Notification{
+			DeviceToken: data.DeviceToken,
+			DeviceType:  data.DeviceType,
+			IsEnabled:   false,
+		},
+		Password:  string(hashedPassword),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}
 
-	_, err = providerColl.InsertOne(ctx, provider)
+	_, err = serviceColl.InsertOne(ctx, provider)
 	if err != nil {
 		return c.Status(500).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
 			Status:  false,
@@ -160,15 +165,18 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		Message: "OTP verified successfully and provider data inserted",
 		Token:   _token,
 		Provider: providerAuth.ProviderResDto{
-			Id:                   provider.Id,
-			Name:                 provider.Name,
-			Email:                provider.Email,
-			Image:                provider.Image,
-			PhoneNumber:          providerAuth.PhoneNumber(provider.PhoneNumber),
-			Notification:         provider.Notification,
-			IsEmergencyAvailable: provider.IsEmergencyAvailable,
-			CreatedAt:            provider.CreatedAt,
-			UpdatedAt:            provider.UpdatedAt,
+			Id:    provider.Id,
+			Name:  provider.Name,
+			Email: provider.Email,
+			// Image:                provider.Image,
+			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
+			Notification: providerAuth.Notification{
+				DeviceToken: provider.Notification.DeviceToken,
+				DeviceType:  provider.Notification.DeviceType,
+				IsEnabled:   provider.Notification.IsEnabled,
+			},
+			CreatedAt: provider.CreatedAt,
+			UpdatedAt: provider.UpdatedAt,
 		},
 	})
 }

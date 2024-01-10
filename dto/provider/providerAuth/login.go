@@ -27,19 +27,18 @@ type Role struct {
 	ProviderId           primitive.ObjectID `json:"providerId" bson:"providerId"`
 	Role                 string             `json:"role" bson:"role"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	IsApproved           bool               `json:"isApproved" bson:"isApproved"`
+	Status               string             `json:"status" bson:"status"`
 }
 
 type User struct {
-	Id                   primitive.ObjectID `json:"id" bson:"_id"`
-	Name                 string             `json:"name" bson:"name"`
-	Email                string             `json:"email" bson:"email"`
-	Image                string             `json:"image" bson:"image"`
-	Notification         bool               `json:"notification" bson:"notification"`
-	PhoneNumber          PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
-	IsEmergencyAvailable bool               `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
-	CreatedAt            time.Time          `json:"createdAt" bson:"createdAt"`
-	UpdatedAt            time.Time          `json:"updatedAt" bson:"updatedAt"`
+	Id           primitive.ObjectID `json:"id" bson:"_id"`
+	Name         string             `json:"name" bson:"name"`
+	Email        string             `json:"email" bson:"email"`
+	Image        string             `json:"image" bson:"image"`
+	Notification Notification       `json:"notification" bson:"notification"`
+	PhoneNumber  PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
+	CreatedAt    time.Time          `json:"createdAt" bson:"createdAt"`
+	UpdatedAt    time.Time          `json:"updatedAt" bson:"updatedAt"`
 }
 
 type GetProvideResDto struct {

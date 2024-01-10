@@ -4,6 +4,7 @@ import (
 	"careville_backend/database"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -43,8 +44,10 @@ func VerifyOtp(c *fiber.Ctx) error {
 		})
 	}
 
+	smallEmail := strings.ToLower(data.Email)
+
 	// Find the user with email address from client
-	err = otpColl.FindOne(ctx, bson.M{"email": data.Email}, options.FindOne().SetSort(bson.M{"createdAt": -1})).Decode(&otpData)
+	err = otpColl.FindOne(ctx, bson.M{"email": smallEmail}, options.FindOne().SetSort(bson.M{"createdAt": -1})).Decode(&otpData)
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {

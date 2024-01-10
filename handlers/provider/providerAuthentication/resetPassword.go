@@ -5,6 +5,7 @@ import (
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 	"careville_backend/utils"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -21,9 +22,9 @@ import (
 // @Router /provider/reset-password [Put]
 func ResetPasswordAfterOtp(c *fiber.Ctx) error {
 	var (
-		providerColl = database.GetCollection("provider")
-		data         providerAuth.ResetPasswordAfterOtpReqDto
-		provider     entity.ProviderEntity
+		serviceColl = database.GetCollection("service")
+		data        providerAuth.ResetPasswordAfterOtpReqDto
+		provider    entity.ServiceEntity
 	)
 
 	// Parsing the request body
@@ -35,8 +36,12 @@ func ResetPasswordAfterOtp(c *fiber.Ctx) error {
 		})
 	}
 
+	filter := bson.M{
+		"email": strings.ToLower(data.Email),
+	}
+
 	// Find the user with email address from client
-	err = providerColl.FindOne(ctx, bson.M{"email": data.Email}).Decode(&provider)
+	err = serviceColl.FindOne(ctx, filter).Decode(&provider)
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {
@@ -61,7 +66,7 @@ func ResetPasswordAfterOtp(c *fiber.Ctx) error {
 		})
 	}
 
-	_, err = providerColl.UpdateOne(ctx, bson.M{"_id": provider.Id}, bson.M{"$set": bson.M{"password": hashedPassword}})
+	_, err = serviceColl.UpdateOne(ctx, bson.M{"_id": provider.Id}, bson.M{"$set": bson.M{"password": hashedPassword}})
 	if err != nil {
 		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
 			Status:  false,

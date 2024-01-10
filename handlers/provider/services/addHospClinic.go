@@ -26,7 +26,7 @@ var ctx = context.Background()
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param  provider formData services.HospitalClinicRequestDto true "add HospitalClinic"
-// @Param hopitalImage formData file false "hospitalImage"
+// @Param hospitalImage formData file false "hospitalImage"
 // @Param certificate formData file false "certificate"
 // @Param license formData file false "license"
 // @Produce json
@@ -199,33 +199,34 @@ func AddHospClinic(c *fiber.Ctx) error {
 		}
 	}
 
+	hospClinicData := entity.HospClinic{
+		Information: entity.Information{
+			Name:           data.HospitalClinicReqDto.InformationName,
+			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
+			Image:          hospClinic.HospClinic.Information.Image,
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.HospitalClinicReqDto.Address,
+				Type:        "Point",
+			},
+		},
+		Documents: entity.Documents{
+			Certificate: hospClinic.HospClinic.Documents.Certificate,
+			License:     hospClinic.HospClinic.Documents.License,
+		},
+		OtherServices: data.HospitalClinicReqDto.OtherServices,
+		Insurances:    data.HospitalClinicReqDto.Insurances,
+		Doctor:        doctors,
+	}
+
 	hospClinic = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),
-		ProviderId:           data.HospitalClinicReqDto.ProviderId,
-		Role:                 data.HospitalClinicReqDto.Role,
-		FacilityOrProfession: data.HospitalClinicReqDto.FacilityOrProfession,
-		IsApproved:           false,
-		HospClinic: entity.HospClinic{
-			Information: entity.Information{
-				Name:           data.HospitalClinicReqDto.InformationName,
-				AdditionalText: data.HospitalClinicReqDto.AdditionalText,
-				Image:          hospClinic.HospClinic.Information.Image,
-				Address: entity.Address{
-					Coordinates: []float64{longitude, latitude},
-					Add:         data.HospitalClinicReqDto.Address,
-					Type:        "Point",
-				},
-			},
-			Documents: entity.Documents{
-				Certificate: hospClinic.HospClinic.Documents.Certificate,
-				License:     hospClinic.HospClinic.Documents.License,
-			},
-			OtherServices: data.HospitalClinicReqDto.OtherServices,
-			Insurances:    data.HospitalClinicReqDto.Insurances,
-			Doctor:        doctors,
-		},
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
+		Role:                 "hospitalFacility",
+		FacilityOrProfession: "hospClinic",
+		Status:               "pending",
+		HospClinic:           &hospClinicData,
+		CreatedAt:            time.Now().UTC(),
+		UpdatedAt:            time.Now().UTC(),
 	}
 
 	_, err = servicesColl.InsertOne(ctx, hospClinic)

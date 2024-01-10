@@ -24,22 +24,27 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	// provider authentication
 	provider := app.Group("/provider")
 	provider.Post("/signup", providerAuthenticate.SignupProvider)
-	provider.Post("/verify-otp-for-signup", providerAuthenticate.VerifyOtpForSignup)
-	provider.Post("/login", providerAuthenticate.LoginProvider)
+	// provider.Post("/verify-otp-for-signup", providerAuthenticate.VerifyOtpForSignup)
+	// provider.Post("/login", providerAuthenticate.LoginProvider)
 	provider.Post("/forgot-password", providerAuthenticate.ForgotPassword)
 	provider.Post("/verify-otp", providerAuthenticate.VerifyOtp)
 	provider.Put("/reset-password", providerAuthenticate.ResetPasswordAfterOtp)
 	provider.Put("/change-password/:id", jwt, providerAuthenticate.ChangeProviderPassword)
-	provider.Get("/get-provider-info/:id", jwt, providerAuthenticate.FetchProviderById)
-	provider.Put("/update-provider-info/:id", jwt, providerAuthenticate.UpdateProvider)
+	// provider.Get("/get-provider-info/:id", jwt, providerAuthenticate.FetchProviderById)
+	provider.Put("/update-provider-info/:id", providerAuthenticate.UpdateProvider)
+	provider.Put("/update-profile-image/:id", jwt, providerAuthenticate.UpdateImage)
 
 	// services
 	provider.Post("/add-hospitalClinic", jwt, services.AddHospClinic)
-	provider.Post("/add-laboratory", jwt, services.AddLaboratory)
+	provider.Post("/add-laboratory",  services.AddLaboratory)
 	provider.Post("/add-fitness-center", jwt, services.AddFitnessCenter)
 	provider.Post("/add-pharmacy", jwt, services.AddFitnessCenter)
 	provider.Post("/add-doctor-profession", jwt, services.AddDoctorProfession)
 	provider.Post("/add-nurse", jwt, services.AddNurse)
 	provider.Post("/add-physiotherapist", jwt, services.AddPhysiotherapist)
 	provider.Post("/add-medicalLab-scientist", jwt, services.AddMedicalLabScientist)
+	provider.Get("/get-misc-data", jwt, services.FetchAllMiscData)
+	// provider.Put("/change-status/:id", jwt, services.ChangeStatus)
+	provider.Get("/get-status/:id", jwt, services.FetchStatusById)
+
 }
