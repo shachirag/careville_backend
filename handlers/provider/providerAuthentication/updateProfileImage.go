@@ -2,6 +2,7 @@ package providerAuthenticate
 
 import (
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 	"careville_backend/utils"
@@ -27,7 +28,7 @@ import (
 // @Param image formData file false "profile image"
 // @Produce json
 // @Success 200 {object} providerAuth.UpdateProviderResDto
-// @Router /provider/update-profile-image/{id} [put]
+// @Router /provider/profile/update-profile-image [put]
 func UpdateImage(c *fiber.Ctx) error {
 	var (
 		serviceColl = database.GetCollection("service")
@@ -45,22 +46,10 @@ func UpdateImage(c *fiber.Ctx) error {
 		})
 	}
 
-	providerID := c.Params("id")
-	if providerID == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.UpdateProviderResDto{
-			Status:  false,
-			Message: "provider ID is missing in the request",
-		})
-	}
-	objproviderID, err := primitive.ObjectIDFromHex(providerID)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.UpdateProviderResDto{
-			Status:  false,
-			Message: "Invalid provider ID format",
-		})
-	}
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
-	filter := bson.M{"_id": objproviderID}
+	filter := bson.M{"_id": providerData.ProviderId}
 	err = serviceColl.FindOne(ctx, filter).Decode(&providers)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -107,49 +96,49 @@ func UpdateImage(c *fiber.Ctx) error {
 		update = bson.M{
 			"$set": bson.M{
 				"hospClinic.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":                    time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthFacility" && providers.FacilityOrProfession == "laboratory" {
 		update = bson.M{
 			"$set": bson.M{
 				"laboratory.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":                    time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthFacility" && providers.FacilityOrProfession == "fitnessCenter" {
 		update = bson.M{
 			"$set": bson.M{
 				"fitnessCenter.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":                       time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthFacility" && providers.FacilityOrProfession == "pharmacy" {
 		update = bson.M{
 			"$set": bson.M{
 				"pharmacy.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":                  time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "medicalLabScientist" {
 		update = bson.M{
 			"$set": bson.M{
 				"medicalLabScientist.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":                             time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "nurse" {
 		update = bson.M{
 			"$set": bson.M{
 				"nurse.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":               time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "doctor" {
 		update = bson.M{
 			"$set": bson.M{
 				"doctor.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"updatedAt":                time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "physiotherapist" {
@@ -177,7 +166,7 @@ func UpdateImage(c *fiber.Ctx) error {
 	}
 
 	// Construct a filter to retrieve the updated user data
-	updatedFilter := bson.M{"_id": objproviderID}
+	updatedFilter := bson.M{"_id": providerData.ProviderId}
 
 	// Retrieve the updated user data from MongoDB
 	var provider entity.ServiceEntity

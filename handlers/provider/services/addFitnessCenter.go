@@ -28,7 +28,7 @@ import (
 // @Param license formData file false "license"
 // @Produce json
 // @Success 200 {object} services.FitnessCenterResDto
-// @Router /provider/add-fitness-center [post]
+// @Router /provider/services/add-fitness-center [post]
 func AddFitnessCenter(c *fiber.Ctx) error {
 	var (
 		servicesColl  = database.GetCollection("service")

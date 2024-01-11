@@ -64,9 +64,10 @@ type Address struct {
 }
 
 type Doctor struct {
-	Name       string     `json:"name" bson:"name"`
-	Speciality string     `json:"speciality" bson:"speciality"`
-	Schedule   []Schedule `json:"schedule" bson:"schedule"`
+	Id         primitive.ObjectID `json:"id" bson:"id"`
+	Name       string             `json:"name" bson:"name"`
+	Speciality string             `json:"speciality" bson:"speciality"`
+	Schedule   []Schedule         `json:"schedule" bson:"schedule"`
 }
 
 type Schedule struct {

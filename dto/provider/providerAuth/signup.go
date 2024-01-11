@@ -41,7 +41,7 @@ type ProviderResDto struct {
 	Id                   primitive.ObjectID `json:"id" bson:"_id"`
 	Name                 string             `json:"name" bson:"name"`
 	Email                string             `json:"email" bson:"email"`
-	Image                string             `json:"image" bson:"image"`
+	// Image                string             `json:"image" bson:"image"`
 	Notification         Notification       `json:"notification" bson:"notification"`
 	PhoneNumber          PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
 	Role                 string             `json:"role" bson:"role"`

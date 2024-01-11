@@ -28,7 +28,7 @@ import (
 // @Param license formData file false "license"
 // @Produce json
 // @Success 200 {object} services.LaboratoryResDto
-// @Router /provider/add-laboratory [post]
+// @Router /provider/services/add-laboratory [post]
 func AddLaboratory(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")

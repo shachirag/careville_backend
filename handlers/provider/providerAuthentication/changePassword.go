@@ -2,30 +2,28 @@ package providerAuthenticate
 
 import (
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
+// ChangeProviderPassword is the handler for changing provider passwords
 // @Summary Change provider Password
-// @Description change provider Password
+// @Description Change provider Password
 // @Tags provider authorization
 // @Accept application/json
-//
-//	@Param Authorization header	string true	"Authentication header"
-//
+// @Param Authorization header string true "Authentication header"
 // @Param id path string true "provider ID"
-// @Param provider body  providerAuth.ProviderChangePasswordReqDto true "Change password of provider"
+// @Param provider body providerAuth.ProviderChangePasswordReqDto true "Change password of provider"
 // @Produce json
-// @Success 200 {object}  providerAuth.ProviderChangePasswordResDto
-// @Router /provider/change-password/{id} [put]
+// @Success 200 {object} providerAuth.ProviderChangePasswordResDto
+// @Router /provider/profile/change-password [put]
 func ChangeProviderPassword(c *fiber.Ctx) error {
-
 	var (
 		serviceColl = database.GetCollection("service")
 		data        providerAuth.ProviderChangePasswordReqDto
@@ -40,36 +38,27 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 		})
 	}
 
-	// Get the customer ID from the request parameters
-	providerID := c.Params("id")
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
-	// Convert the admin ID string to primitive.ObjectID
-	objID, err := primitive.ObjectIDFromHex(providerID)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.ProviderChangePasswordResDto{
-			Status:  false,
-			Message: "Invalid provider ID",
-		})
-	}
+	filter := bson.M{"_id": providerData.ProviderId}
 
-	filter := bson.M{"_id": objID}
-
-	result := serviceColl.FindOne(ctx, filter)
+	result := serviceColl.FindOne(c.Context(), filter)
 	if result.Err() != nil {
 		if result.Err() == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(providerAuth.ProviderChangePasswordResDto{
 				Status:  false,
-				Message: "provider not found",
+				Message: "Provider not found",
 			})
 		}
 
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.ProviderChangePasswordResDto{
 			Status:  false,
-			Message: "Error by finding provider " + err.Error(),
+			Message: "Error finding provider: " + err.Error(),
 		})
 	}
 
-	// Decode the customer data
+	// Decode the provider data
 	var provider entity.ServiceEntity
 	err = result.Decode(&provider)
 	if err != nil {
@@ -106,7 +95,7 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 	}
 
 	// Execute the update operation
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
+	updateRes, err := serviceColl.UpdateOne(c.Context(), filter, update)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.ProviderChangePasswordResDto{
 			Status:  false,
@@ -117,12 +106,12 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(providerAuth.ProviderChangePasswordResDto{
 			Status:  false,
-			Message: "provider not found",
+			Message: "Provider not found",
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.ProviderChangePasswordResDto{
 		Status:  true,
-		Message: "provider password updated successfully",
+		Message: "Provider password updated successfully",
 	})
 }

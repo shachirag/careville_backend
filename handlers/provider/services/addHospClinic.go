@@ -31,7 +31,7 @@ var ctx = context.Background()
 // @Param license formData file false "license"
 // @Produce json
 // @Success 200 {object} services.HospitalClinicResDto
-// @Router /provider/add-hospitalClinic [post]
+// @Router /provider/services/add-hospitalClinic [post]
 func AddHospClinic(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
@@ -199,6 +199,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 		}
 
 		doctors[i] = entity.Doctor{
+			Id:         primitive.NewObjectID(),
 			Name:       doc.Name,
 			Speciality: doc.Speciality,
 			Schedule:   schedule,

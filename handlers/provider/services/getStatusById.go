@@ -2,12 +2,12 @@ package services
 
 import (
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,25 +21,17 @@ import (
 // @Param id path string true "service ID"
 // @Produce json
 // @Success 200 {object} services.StatusRes
-// @Router /provider/get-status/{id} [get]
+// @Router /provider/services/get-status/{id} [get]
 func FetchStatusById(c *fiber.Ctx) error {
 
 	var service entity.ServiceEntity
 
-	logentryId := c.Params("id")
-	objId, err := primitive.ObjectIDFromHex(logentryId)
-
-	if err != nil {
-		return c.Status(400).JSON(services.StatusRes{
-			Status:  false,
-			Message: "invalid objectId " + err.Error(),
-		})
-
-	}
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
 	serviceColl := database.GetCollection("service")
 
-	err = serviceColl.FindOne(ctx, bson.M{"_id": objId}).Decode(&service)
+	err := serviceColl.FindOne(ctx, bson.M{"_id": providerData.ProviderId}).Decode(&service)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.StatusRes{

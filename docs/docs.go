@@ -20,457 +20,77 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/provider/add-doctor-profession": {
+        "/provider/forgot-password": {
             "post": {
-                "description": "Add doctorProfession",
+                "description": "Forgot Password",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "provider authorization"
                 ],
-                "summary": "Add doctorProfession",
+                "summary": "Forgot Password",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "doctorImage",
-                        "name": "doctorImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalCertificate",
-                        "name": "professionalCertificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalLicense",
-                        "name": "professionalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalLicense",
-                        "name": "personalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalNimc",
-                        "name": "personalNimc",
-                        "in": "formData"
+                        "description": "forgot password for provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderForgotPasswordReqDto"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.DoctorProfessionResDto"
+                            "$ref": "#/definitions/providerAuth.ProviderPasswordResDto"
                         }
                     }
                 }
             }
         },
-        "/provider/add-fitness-center": {
+        "/provider/login": {
             "post": {
-                "description": "Add fitnessCenter",
+                "description": "Login provider",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "provider authorization"
                 ],
-                "summary": "Add fitnessCenter",
+                "summary": "Login provider",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "fitnessCenterImage",
-                        "name": "fitnessCenterImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "certificate",
-                        "name": "certificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "license",
-                        "name": "license",
-                        "in": "formData"
+                        "description": "login provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.LoginProviderReqDto"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.FitnessCenterResDto"
+                            "$ref": "#/definitions/providerAuth.LoginProviderResDto"
                         }
                     }
                 }
             }
         },
-        "/provider/add-hospitalClinic": {
-            "post": {
-                "description": "Add HospitalClinic",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Add HospitalClinic",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "hospitalImage",
-                        "name": "hospitalImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "certificate",
-                        "name": "certificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "license",
-                        "name": "license",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.HospitalClinicResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/add-laboratory": {
-            "post": {
-                "description": "Add laboratory",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Add laboratory",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "laboratoryImage",
-                        "name": "laboratoryImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "certificate",
-                        "name": "certificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "license",
-                        "name": "license",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.LaboratoryResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/add-medicalLab-scientist": {
-            "post": {
-                "description": "Add MedicalLabScientist",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Add MedicalLabScientist",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "physiotherapistImage",
-                        "name": "medicalLabScientistImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalCertificate",
-                        "name": "professionalCertificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalLicense",
-                        "name": "professionalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalLicense",
-                        "name": "personalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalNimc",
-                        "name": "personalNimc",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.MedicalLabScientistResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/add-nurse": {
-            "post": {
-                "description": "Add nurse",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Add nurse",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "nurseImage",
-                        "name": "nurseImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalCertificate",
-                        "name": "professionalCertificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalLicense",
-                        "name": "professionalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalLicense",
-                        "name": "personalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalNimc",
-                        "name": "personalNimc",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.NurseResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/add-pharmacy": {
-            "post": {
-                "description": "Add pharmacy",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Add pharmacy",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "pharmacyImage",
-                        "name": "pharmacyImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "certificate",
-                        "name": "certificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "license",
-                        "name": "license",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.PharmacyResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/add-physiotherapist": {
-            "post": {
-                "description": "Add Physiotherapist",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Add Physiotherapist",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "physiotherapistImage",
-                        "name": "physiotherapistImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalCertificate",
-                        "name": "professionalCertificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "professionalLicense",
-                        "name": "professionalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalLicense",
-                        "name": "personalLicense",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "personalNimc",
-                        "name": "personalNimc",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.PhysiotherapistResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/change-password/{id}": {
+        "/provider/profile/change-password": {
             "put": {
-                "description": "change provider Password",
+                "description": "Change provider Password",
                 "consumes": [
                     "application/json"
                 ],
@@ -516,93 +136,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/forgot-password": {
-            "post": {
-                "description": "Forgot Password",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider authorization"
-                ],
-                "summary": "Forgot Password",
-                "parameters": [
-                    {
-                        "description": "forgot password for provider",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderForgotPasswordReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderPasswordResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/get-all-doctors": {
-            "get": {
-                "description": "Get all doctors",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Get all doctors",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.DoctorResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/get-misc-data": {
-            "get": {
-                "description": "Fetch All misc data",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Fetch All misc data",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.MiscResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/get-provider-info/{id}": {
+        "/provider/profile/get-provider-info": {
             "get": {
                 "description": "Fetch provider By ID",
                 "consumes": [
@@ -641,145 +175,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/get-status/{id}": {
-            "get": {
-                "description": "Fetch status By ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "services"
-                ],
-                "summary": "Fetch status By ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.StatusRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/login": {
-            "post": {
-                "description": "Login provider",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider authorization"
-                ],
-                "summary": "Login provider",
-                "parameters": [
-                    {
-                        "description": "login provider",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.LoginProviderReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.LoginProviderResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/reset-password": {
-            "put": {
-                "description": "Reset provider password after OTP verification using the new password and confirm password",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider authorization"
-                ],
-                "summary": "Reset provider Password after OTP Verification",
-                "parameters": [
-                    {
-                        "description": "Reset provider password after OTP verification",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ResetPasswordAfterOtpReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderPasswordResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/signup": {
-            "post": {
-                "description": "Signup provider",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider authorization"
-                ],
-                "summary": "Signup provider",
-                "parameters": [
-                    {
-                        "description": "send 6 digit otp to email for signup",
-                        "name": "signup",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderSignupReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderResponseDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/update-profile-image/{id}": {
+        "/provider/profile/update-profile-image": {
             "put": {
                 "description": "Update Profile Image",
                 "consumes": [
@@ -833,7 +229,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/update-provider-data/{id}": {
+        "/provider/profile/update-provider-data": {
             "put": {
                 "description": "Update provider",
                 "consumes": [
@@ -913,6 +309,681 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/providerAuth.UpdateProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/reset-password": {
+            "put": {
+                "description": "Reset provider password after OTP verification using the new password and confirm password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider authorization"
+                ],
+                "summary": "Reset provider Password after OTP Verification",
+                "parameters": [
+                    {
+                        "description": "Reset provider password after OTP verification",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ResetPasswordAfterOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderPasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-doctor-profession": {
+            "post": {
+                "description": "Add doctorProfession",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add doctorProfession",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "doctorImage",
+                        "name": "doctorImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorProfessionResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-fitness-center": {
+            "post": {
+                "description": "Add fitnessCenter",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add fitnessCenter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "fitnessCenterImage",
+                        "name": "fitnessCenterImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.FitnessCenterResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-hospitalClinic": {
+            "post": {
+                "description": "Add HospitalClinic",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add HospitalClinic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "hospitalImage",
+                        "name": "hospitalImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.HospitalClinicResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-laboratory": {
+            "post": {
+                "description": "Add laboratory",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add laboratory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "laboratoryImage",
+                        "name": "laboratoryImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.LaboratoryResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-medicalLab-scientist": {
+            "post": {
+                "description": "Add MedicalLabScientist",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add MedicalLabScientist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "physiotherapistImage",
+                        "name": "medicalLabScientistImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MedicalLabScientistResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-nurse": {
+            "post": {
+                "description": "Add nurse",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add nurse",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "nurseImage",
+                        "name": "nurseImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NurseResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-pharmacy": {
+            "post": {
+                "description": "Add pharmacy",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add pharmacy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "pharmacyImage",
+                        "name": "pharmacyImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.PharmacyResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-physiotherapist": {
+            "post": {
+                "description": "Add Physiotherapist",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add Physiotherapist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "physiotherapistImage",
+                        "name": "physiotherapistImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalCertificate",
+                        "name": "professionalCertificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "professionalLicense",
+                        "name": "professionalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalLicense",
+                        "name": "personalLicense",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "personalNimc",
+                        "name": "personalNimc",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.PhysiotherapistResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-all-doctors": {
+            "get": {
+                "description": "GetAllDoctors",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "GetAllDoctors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by speciality",
+                        "name": "speciality",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-doctor-info/{doctorId}": {
+            "get": {
+                "description": "Get Doctor info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Get Doctor info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "doctor ID",
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-misc-data": {
+            "get": {
+                "description": "Fetch All misc data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Fetch All misc data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MiscResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-status/{id}": {
+            "get": {
+                "description": "Fetch status By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Fetch status By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.StatusRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/signup": {
+            "post": {
+                "description": "Signup provider",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider authorization"
+                ],
+                "summary": "Signup provider",
+                "parameters": [
+                    {
+                        "description": "send 6 digit otp to email for signup",
+                        "name": "signup",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderSignupReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderResponseDto"
                         }
                     }
                 }
@@ -1172,9 +1243,6 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "image": {
-                    "type": "string"
-                },
                 "isApproved": {
                     "type": "boolean"
                 },
@@ -1182,7 +1250,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "notification": {
-                    "$ref": "#/definitions/providerAuth.Notification"
+                    "description": "Image                string             ` + "`" + `json:\"image\" bson:\"image\"` + "`" + `",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/providerAuth.Notification"
+                        }
+                    ]
                 },
                 "phoneNumber": {
                     "$ref": "#/definitions/providerAuth.PhoneNumber"
@@ -1445,7 +1518,24 @@ const docTemplate = `{
             }
         },
         "services.DoctorRes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.DoctorScheduleRes"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
         },
         "services.DoctorResDto": {
             "type": "object",
@@ -1472,6 +1562,23 @@ const docTemplate = `{
                 },
                 "slots": {
                     "$ref": "#/definitions/services.Slots"
+                }
+            }
+        },
+        "services.DoctorScheduleRes": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
                 }
             }
         },

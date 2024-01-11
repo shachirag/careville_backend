@@ -30,7 +30,7 @@ import (
 // @Param personalNimc formData file false "personalNimc"
 // @Produce json
 // @Success 200 {object} services.MedicalLabScientistResDto
-// @Router /provider/add-medicalLab-scientist [post]
+// @Router /provider/services/add-medicalLab-scientist [post]
 func AddMedicalLabScientist(c *fiber.Ctx) error {
 	var (
 		servicesColl        = database.GetCollection("service")

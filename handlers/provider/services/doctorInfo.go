@@ -2,45 +2,61 @@ package services
 
 import (
 	"careville_backend/database"
-	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
 	"context"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// @Summary GetAllDoctors
-// @Description GetAllDoctors
+// @Summary Get Doctor info
+// @Description Get Doctor info
 // @Tags services
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param speciality query string false "Filter by speciality"
-// @Param id path string true "service ID"
+// @Param serviceId path string true "service ID"
+// @Param doctorId path string true "doctor ID"
 // @Produce json
 // @Success 200 {object} services.DoctorResDto
-// @Router /provider/services/get-all-doctors [get]
-func GetAllDoctors(c *fiber.Ctx) error {
+// @Router /provider/services/get-doctor-info/{doctorId} [get]
+func GetDoctorsInfo(c *fiber.Ctx) error {
 	ctx := context.TODO()
 
 	var service entity.ServiceEntity
 
-	// Get provider data from middleware
-	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+	serviceID := c.Params("serviceId")
+	serviceObjID, err := primitive.ObjectIDFromHex(serviceID)
+
+	if err != nil {
+		return c.Status(400).JSON(services.GetDoctorResDto{
+			Status:  false,
+			Message: "invalid objectId " + err.Error(),
+		})
+	}
+
+	doctorId := c.Params("doctorId")
+	doctorObjID, err := primitive.ObjectIDFromHex(doctorId)
+
+	if err != nil {
+		return c.Status(400).JSON(services.GetDoctorResDto{
+			Status:  false,
+			Message: "invalid objectId " + err.Error(),
+		})
+	}
 
 	serviceColl := database.GetCollection("service")
 
-	specialityFilter := c.Query("speciality")
 	filter := bson.M{
-		"_id": providerData.ProviderId,
+		"_id": serviceObjID,
 		"hospClinic.doctor": bson.M{
 			"$elemMatch": bson.M{
-				"speciality": specialityFilter,
+				"id": doctorObjID,
 			},
 		},
 	}
@@ -58,28 +74,28 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 	findOptions := options.FindOne().SetProjection(projection)
 
-	err := serviceColl.FindOne(ctx, filter, findOptions).Decode(&service)
+	err = serviceColl.FindOne(ctx, filter, findOptions).Decode(&service)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.DoctorResDto{
+			return c.Status(fiber.StatusNotFound).JSON(services.GetDoctorResDto{
 				Status:  false,
 				Message: "service not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.GetDoctorResDto{
 			Status:  false,
 			Message: "Failed to fetch service from MongoDB: " + err.Error(),
 		})
 	}
 
 	if service.HospClinic == nil {
-		return c.Status(fiber.StatusNotFound).JSON(services.DoctorResDto{
+		return c.Status(fiber.StatusNotFound).JSON(services.GetDoctorResDto{
 			Status:  false,
 			Message: "No HospClinic information found for the service",
 		})
 	}
 
-	var doctorsRes []services.DoctorRes
+	var doctorsRes services.DoctorRes
 
 	for _, doctor := range service.HospClinic.Doctor {
 		doctorRes := services.DoctorRes{
@@ -98,10 +114,10 @@ func GetAllDoctors(c *fiber.Ctx) error {
 			}
 		}
 
-		doctorsRes = append(doctorsRes, doctorRes)
+		doctorsRes = doctorRes
 	}
 
-	return c.Status(fiber.StatusOK).JSON(services.DoctorResDto{
+	return c.Status(fiber.StatusOK).JSON(services.GetDoctorResDto{
 		Status:  true,
 		Message: "doctors retrieved successfully",
 		Data:    doctorsRes,

@@ -119,14 +119,14 @@ definitions:
         type: string
       id:
         type: string
-      image:
-        type: string
       isApproved:
         type: boolean
       name:
         type: string
       notification:
-        $ref: '#/definitions/providerAuth.Notification'
+        allOf:
+        - $ref: '#/definitions/providerAuth.Notification'
+        description: Image                string             `json:"image" bson:"image"`
       phoneNumber:
         $ref: '#/definitions/providerAuth.PhoneNumber'
       role:
@@ -296,6 +296,17 @@ definitions:
         type: boolean
     type: object
   services.DoctorRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/services.DoctorScheduleRes'
+        type: array
+      speciality:
+        type: string
     type: object
   services.DoctorResDto:
     properties:
@@ -314,6 +325,17 @@ definitions:
         type: string
       slots:
         $ref: '#/definitions/services.Slots'
+    type: object
+  services.DoctorScheduleRes:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
     type: object
   services.FitnessCenterEntity:
     properties:
@@ -647,307 +669,55 @@ info:
   title: Care Ville
   version: 0.0.1
 paths:
-  /provider/add-doctor-profession:
+  /provider/forgot-password:
     post:
       consumes:
-      - multipart/form-data
-      description: Add doctorProfession
+      - application/json
+      description: Forgot Password
       parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
+      - description: forgot password for provider
+        in: body
+        name: provider
         required: true
-        type: string
-      - description: doctorImage
-        in: formData
-        name: doctorImage
-        type: file
-      - description: professionalCertificate
-        in: formData
-        name: professionalCertificate
-        type: file
-      - description: professionalLicense
-        in: formData
-        name: professionalLicense
-        type: file
-      - description: personalLicense
-        in: formData
-        name: personalLicense
-        type: file
-      - description: personalNimc
-        in: formData
-        name: personalNimc
-        type: file
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderForgotPasswordReqDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.DoctorProfessionResDto'
-      summary: Add doctorProfession
+            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
+      summary: Forgot Password
       tags:
-      - services
-  /provider/add-fitness-center:
+      - provider authorization
+  /provider/login:
     post:
       consumes:
-      - multipart/form-data
-      description: Add fitnessCenter
+      - application/json
+      description: Login provider
       parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
+      - description: login provider
+        in: body
+        name: provider
         required: true
-        type: string
-      - description: fitnessCenterImage
-        in: formData
-        name: fitnessCenterImage
-        type: file
-      - description: certificate
-        in: formData
-        name: certificate
-        type: file
-      - description: license
-        in: formData
-        name: license
-        type: file
+        schema:
+          $ref: '#/definitions/providerAuth.LoginProviderReqDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.FitnessCenterResDto'
-      summary: Add fitnessCenter
+            $ref: '#/definitions/providerAuth.LoginProviderResDto'
+      summary: Login provider
       tags:
-      - services
-  /provider/add-hospitalClinic:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add HospitalClinic
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: hospitalImage
-        in: formData
-        name: hospitalImage
-        type: file
-      - description: certificate
-        in: formData
-        name: certificate
-        type: file
-      - description: license
-        in: formData
-        name: license
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.HospitalClinicResDto'
-      summary: Add HospitalClinic
-      tags:
-      - services
-  /provider/add-laboratory:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add laboratory
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: laboratoryImage
-        in: formData
-        name: laboratoryImage
-        type: file
-      - description: certificate
-        in: formData
-        name: certificate
-        type: file
-      - description: license
-        in: formData
-        name: license
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.LaboratoryResDto'
-      summary: Add laboratory
-      tags:
-      - services
-  /provider/add-medicalLab-scientist:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add MedicalLabScientist
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: physiotherapistImage
-        in: formData
-        name: medicalLabScientistImage
-        type: file
-      - description: professionalCertificate
-        in: formData
-        name: professionalCertificate
-        type: file
-      - description: professionalLicense
-        in: formData
-        name: professionalLicense
-        type: file
-      - description: personalLicense
-        in: formData
-        name: personalLicense
-        type: file
-      - description: personalNimc
-        in: formData
-        name: personalNimc
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.MedicalLabScientistResDto'
-      summary: Add MedicalLabScientist
-      tags:
-      - services
-  /provider/add-nurse:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add nurse
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: nurseImage
-        in: formData
-        name: nurseImage
-        type: file
-      - description: professionalCertificate
-        in: formData
-        name: professionalCertificate
-        type: file
-      - description: professionalLicense
-        in: formData
-        name: professionalLicense
-        type: file
-      - description: personalLicense
-        in: formData
-        name: personalLicense
-        type: file
-      - description: personalNimc
-        in: formData
-        name: personalNimc
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.NurseResDto'
-      summary: Add nurse
-      tags:
-      - services
-  /provider/add-pharmacy:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add pharmacy
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: pharmacyImage
-        in: formData
-        name: pharmacyImage
-        type: file
-      - description: certificate
-        in: formData
-        name: certificate
-        type: file
-      - description: license
-        in: formData
-        name: license
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.PharmacyResDto'
-      summary: Add pharmacy
-      tags:
-      - services
-  /provider/add-physiotherapist:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add Physiotherapist
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: physiotherapistImage
-        in: formData
-        name: physiotherapistImage
-        type: file
-      - description: professionalCertificate
-        in: formData
-        name: professionalCertificate
-        type: file
-      - description: professionalLicense
-        in: formData
-        name: professionalLicense
-        type: file
-      - description: personalLicense
-        in: formData
-        name: personalLicense
-        type: file
-      - description: personalNimc
-        in: formData
-        name: personalNimc
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.PhysiotherapistResDto'
-      summary: Add Physiotherapist
-      tags:
-      - services
-  /provider/change-password/{id}:
+      - provider authorization
+  /provider/profile/change-password:
     put:
       consumes:
       - application/json
-      description: change provider Password
+      description: Change provider Password
       parameters:
       - description: Authentication header
         in: header
@@ -975,63 +745,7 @@ paths:
       summary: Change provider Password
       tags:
       - provider authorization
-  /provider/forgot-password:
-    post:
-      consumes:
-      - application/json
-      description: Forgot Password
-      parameters:
-      - description: forgot password for provider
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.ProviderForgotPasswordReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
-      summary: Forgot Password
-      tags:
-      - provider authorization
-  /provider/get-all-doctors:
-    get:
-      description: Get all doctors
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.DoctorResDto'
-      summary: Get all doctors
-      tags:
-      - services
-  /provider/get-misc-data:
-    get:
-      consumes:
-      - application/json
-      description: Fetch All misc data
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.MiscResDto'
-      summary: Fetch All misc data
-      tags:
-      - services
-  /provider/get-provider-info/{id}:
+  /provider/profile/get-provider-info:
     get:
       consumes:
       - application/json
@@ -1057,98 +771,7 @@ paths:
       summary: Fetch provider By ID
       tags:
       - provider authorization
-  /provider/get-status/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Fetch status By ID
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.StatusRes'
-      summary: Fetch status By ID
-      tags:
-      - services
-  /provider/login:
-    post:
-      consumes:
-      - application/json
-      description: Login provider
-      parameters:
-      - description: login provider
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.LoginProviderReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/providerAuth.LoginProviderResDto'
-      summary: Login provider
-      tags:
-      - provider authorization
-  /provider/reset-password:
-    put:
-      consumes:
-      - application/json
-      description: Reset provider password after OTP verification using the new password
-        and confirm password
-      parameters:
-      - description: Reset provider password after OTP verification
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.ResetPasswordAfterOtpReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
-      summary: Reset provider Password after OTP Verification
-      tags:
-      - provider authorization
-  /provider/signup:
-    post:
-      description: Signup provider
-      parameters:
-      - description: send 6 digit otp to email for signup
-        in: body
-        name: signup
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.ProviderSignupReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/providerAuth.ProviderResponseDto'
-      summary: Signup provider
-      tags:
-      - provider authorization
-  /provider/update-profile-image/{id}:
+  /provider/profile/update-profile-image:
     put:
       consumes:
       - multipart/form-data
@@ -1184,7 +807,7 @@ paths:
       summary: Update Profile Image
       tags:
       - provider authorization
-  /provider/update-provider-data/{id}:
+  /provider/profile/update-provider-data:
     put:
       consumes:
       - multipart/form-data
@@ -1236,6 +859,453 @@ paths:
           schema:
             $ref: '#/definitions/providerAuth.UpdateProviderResDto'
       summary: Update provider
+      tags:
+      - provider authorization
+  /provider/reset-password:
+    put:
+      consumes:
+      - application/json
+      description: Reset provider password after OTP verification using the new password
+        and confirm password
+      parameters:
+      - description: Reset provider password after OTP verification
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ResetPasswordAfterOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderPasswordResDto'
+      summary: Reset provider Password after OTP Verification
+      tags:
+      - provider authorization
+  /provider/services/add-doctor-profession:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add doctorProfession
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: doctorImage
+        in: formData
+        name: doctorImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorProfessionResDto'
+      summary: Add doctorProfession
+      tags:
+      - services
+  /provider/services/add-fitness-center:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add fitnessCenter
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: fitnessCenterImage
+        in: formData
+        name: fitnessCenterImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.FitnessCenterResDto'
+      summary: Add fitnessCenter
+      tags:
+      - services
+  /provider/services/add-hospitalClinic:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add HospitalClinic
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: hospitalImage
+        in: formData
+        name: hospitalImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.HospitalClinicResDto'
+      summary: Add HospitalClinic
+      tags:
+      - services
+  /provider/services/add-laboratory:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add laboratory
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: laboratoryImage
+        in: formData
+        name: laboratoryImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.LaboratoryResDto'
+      summary: Add laboratory
+      tags:
+      - services
+  /provider/services/add-medicalLab-scientist:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add MedicalLabScientist
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: physiotherapistImage
+        in: formData
+        name: medicalLabScientistImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MedicalLabScientistResDto'
+      summary: Add MedicalLabScientist
+      tags:
+      - services
+  /provider/services/add-nurse:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add nurse
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: nurseImage
+        in: formData
+        name: nurseImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NurseResDto'
+      summary: Add nurse
+      tags:
+      - services
+  /provider/services/add-pharmacy:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add pharmacy
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pharmacyImage
+        in: formData
+        name: pharmacyImage
+        type: file
+      - description: certificate
+        in: formData
+        name: certificate
+        type: file
+      - description: license
+        in: formData
+        name: license
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.PharmacyResDto'
+      summary: Add pharmacy
+      tags:
+      - services
+  /provider/services/add-physiotherapist:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add Physiotherapist
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: physiotherapistImage
+        in: formData
+        name: physiotherapistImage
+        type: file
+      - description: professionalCertificate
+        in: formData
+        name: professionalCertificate
+        type: file
+      - description: professionalLicense
+        in: formData
+        name: professionalLicense
+        type: file
+      - description: personalLicense
+        in: formData
+        name: personalLicense
+        type: file
+      - description: personalNimc
+        in: formData
+        name: personalNimc
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.PhysiotherapistResDto'
+      summary: Add Physiotherapist
+      tags:
+      - services
+  /provider/services/get-all-doctors:
+    get:
+      consumes:
+      - application/json
+      description: GetAllDoctors
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter by speciality
+        in: query
+        name: speciality
+        type: string
+      - description: service ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: GetAllDoctors
+      tags:
+      - services
+  /provider/services/get-doctor-info/{doctorId}:
+    get:
+      consumes:
+      - application/json
+      description: Get Doctor info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: doctor ID
+        in: path
+        name: doctorId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: Get Doctor info
+      tags:
+      - services
+  /provider/services/get-misc-data:
+    get:
+      consumes:
+      - application/json
+      description: Fetch All misc data
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MiscResDto'
+      summary: Fetch All misc data
+      tags:
+      - services
+  /provider/services/get-status/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch status By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.StatusRes'
+      summary: Fetch status By ID
+      tags:
+      - services
+  /provider/signup:
+    post:
+      description: Signup provider
+      parameters:
+      - description: send 6 digit otp to email for signup
+        in: body
+        name: signup
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderSignupReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderResponseDto'
+      summary: Signup provider
       tags:
       - provider authorization
   /provider/verify-otp:

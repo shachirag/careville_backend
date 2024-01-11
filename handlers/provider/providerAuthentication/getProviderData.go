@@ -2,12 +2,12 @@ package providerAuthenticate
 
 import (
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,26 +21,17 @@ import (
 // @Param id path string true "provider ID"
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
-// @Router /provider/get-provider-info/{id} [get]
+// @Router /provider/profile/get-provider-info [get]
 func FetchProviderById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
 
-	// Get the user ID from the URL parameter
-	userId := c.Params("id")
-	objId, err := primitive.ObjectIDFromHex(userId)
-
-	if err != nil {
-		return c.Status(400).JSON(providerAuth.GetProviderResDto{
-			Status:  false,
-			Message: "invalid objectId " + err.Error(),
-		})
-
-	}
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
 	serviceColl := database.GetCollection("service")
 
-	err = serviceColl.FindOne(ctx, bson.M{"_id": objId}).Decode(&provider)
+	err := serviceColl.FindOne(ctx, bson.M{"_id": providerData.ProviderId}).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(providerAuth.GetProviderResDto{

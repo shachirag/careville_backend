@@ -2,6 +2,7 @@ package providerAuthenticate
 
 import (
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 	"strconv"
@@ -9,7 +10,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,7 +25,7 @@ import (
 // @Param newProviderImage formData file false "provider profile image"
 // @Produce json
 // @Success 200 {object} providerAuth.UpdateProviderResDto
-// @Router /provider/update-provider-data/{id} [put]
+// @Router /provider/profile/update-provider-data [put]
 func UpdateProvider(c *fiber.Ctx) error {
 
 	var (
@@ -43,23 +43,10 @@ func UpdateProvider(c *fiber.Ctx) error {
 		})
 	}
 
-	providerID := c.Params("id")
-	if providerID == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.UpdateProviderResDto{
-			Status:  false,
-			Message: "provider ID is missing in the request",
-		})
-	}
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
-	objID, err := primitive.ObjectIDFromHex(providerID)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.UpdateProviderResDto{
-			Status:  false,
-			Message: "Invalid provider ID",
-		})
-	}
-
-	filter := bson.M{"_id": objID}
+	filter := bson.M{"_id": providerData.ProviderId}
 	err = serviceColl.FindOne(ctx, filter).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -114,8 +101,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                             time.Now().UTC(),
@@ -132,8 +119,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                                time.Now().UTC(),
@@ -150,8 +137,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                           time.Now().UTC(),
@@ -168,8 +155,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                                      time.Now().UTC(),
@@ -186,8 +173,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                        time.Now().UTC(),
@@ -204,8 +191,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                         time.Now().UTC(),
@@ -222,8 +209,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"name": data.Name,
 			"phoneNumber": bson.M{
-				"dialCode": data.DialCode,
-				"number":   data.PhoneNumber,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                                  time.Now().UTC(),

@@ -74,10 +74,12 @@ func LoginProvider(c *fiber.Ctx) error {
 	_secret := os.Getenv("JWT_SECRET_KEY")
 	month := (time.Hour * 24) * 30
 	claims := jtoken.MapClaims{
-		"Id":    provider.Id,
-		"email": provider.Email,
-		"role":  "provider",
-		"exp":   time.Now().Add(month * 6).Unix(),
+		"Id":                   provider.Id,
+		"email":                provider.Email,
+		"role":                 "provider",
+		"serviceRole":          provider.Role,
+		"facilityOrProfession": provider.FacilityOrProfession,
+		"exp":                  time.Now().Add(month * 6).Unix(),
 	}
 	token := jtoken.NewWithClaims(jtoken.SigningMethodHS256, claims)
 	_token, err := token.SignedString([]byte(_secret))
@@ -129,8 +131,9 @@ func LoginProvider(c *fiber.Ctx) error {
 				Email: provider.Email,
 				Image: image,
 				PhoneNumber: providerAuth.PhoneNumber{
-					DialCode: provider.PhoneNumber.DialCode,
-					Number:   provider.PhoneNumber.Number,
+					DialCode:    provider.PhoneNumber.DialCode,
+					Number:      provider.PhoneNumber.Number,
+					CountryCode: provider.PhoneNumber.CountryCode,
 				},
 				Notification: providerAuth.Notification{
 					DeviceToken: provider.Notification.DeviceToken,

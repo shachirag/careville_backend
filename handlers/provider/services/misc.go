@@ -18,7 +18,7 @@ import (
 //
 // @Produce json
 // @Success 200 {object} services.MiscResDto
-// @Router /provider/get-misc-data [get]
+// @Router /provider/services/get-misc-data [get]
 func FetchAllMiscData(c *fiber.Ctx) error {
 	miscColl := database.GetCollection("misc")
 
