@@ -89,15 +89,17 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		medicalLabScientist.MedicalLabScientist.Information.Image = physiotherapistImage
+		if medicalLabScientist.MedicalLabScientist != nil {
+			medicalLabScientist.MedicalLabScientist.Information.Image = physiotherapistImage
+		}
+
 	}
 
 	formFiles = form.File["professionalCertificate"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
-			Message: "No certificate uploaded",
+			Message: "No professional certificate uploaded",
 		})
 	}
 
@@ -107,7 +109,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
@@ -120,19 +122,21 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.MedicalLabScientistResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
-		// Append the image URL to the Images field
-		medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate = certificateURL
+		if medicalLabScientist.MedicalLabScientist != nil {
+			medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate = certificateURL
+		}
+
 	}
 
 	formFiles = form.File["professionalLicense"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
-			Message: "No license uploaded",
+			Message: "No professional license uploaded",
 		})
 	}
 
@@ -142,7 +146,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
@@ -155,12 +159,14 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.MedicalLabScientistResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
-		// Append the image URL to the Images field
-		medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License = licenseURL
+		if medicalLabScientist.MedicalLabScientist != nil {
+			medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License = licenseURL
+		}
+
 	}
 
 	formFiles = form.File["personalNimc"]
@@ -194,8 +200,10 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc = nimcURL
+		if medicalLabScientist.MedicalLabScientist != nil {
+			medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc = nimcURL
+		}
+
 	}
 
 	formFiles = form.File["personalLicense"]
@@ -229,8 +237,10 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License = licenseURL
+		if medicalLabScientist.MedicalLabScientist != nil {
+			medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License = licenseURL
+		}
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.MedicalLabScientistReqDto.Longitude, 64)
@@ -264,13 +274,28 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		schedule = append(schedule, scheduleData)
 	}
 
-	medicalLabScientist.MedicalLabScientist.ServiceAndSchedule = schedule
+	if medicalLabScientist.MedicalLabScientist != nil {
+		medicalLabScientist.MedicalLabScientist.ServiceAndSchedule = schedule
+	}
+
+	var medicalLabScientistImage string
+	var nimcDoc string
+	var personalLicense string
+	var professionalLicense string
+	var professionalCertificate string
+	if medicalLabScientist.MedicalLabScientist != nil {
+		medicalLabScientistImage = medicalLabScientist.MedicalLabScientist.Information.Image
+		nimcDoc = medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc
+		personalLicense = medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License
+		professionalLicense = medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License
+		professionalCertificate = medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate
+	}
 
 	MedicalLabScientistData := entity.MedicalLabScientist{
 		Information: entity.Information{
 			Name:           data.MedicalLabScientistReqDto.InformationName,
 			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
-			Image:          medicalLabScientist.MedicalLabScientist.Information.Image,
+			Image:          medicalLabScientistImage,
 			Address: entity.Address{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.MedicalLabScientistReqDto.Address,
@@ -282,12 +307,12 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			Document:   data.MedicalLabScientistReqDto.Document,
 		},
 		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-			Nimc:    medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc,
-			License: medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License,
+			Nimc:    nimcDoc,
+			License: personalLicense,
 		},
 		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-			Certificate: medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate,
-			License:     medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License,
+			Certificate: professionalCertificate,
+			License:     professionalLicense,
 		},
 		ServiceAndSchedule: schedule,
 	}

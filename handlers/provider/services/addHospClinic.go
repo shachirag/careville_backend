@@ -90,8 +90,10 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		hospClinic.HospClinic.Information.Image = hospitalImage
+		if hospClinic.HospClinic != nil {
+			hospClinic.HospClinic.Information.Image = hospitalImage
+		}
+
 	}
 
 	formFiles = form.File["certificate"]
@@ -125,8 +127,10 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		hospClinic.HospClinic.Documents.Certificate = certificateURL
+		if hospClinic.HospClinic != nil {
+			hospClinic.HospClinic.Documents.Certificate = certificateURL
+		}
+
 	}
 
 	formFiles = form.File["license"]
@@ -160,8 +164,10 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		hospClinic.HospClinic.Documents.License = licenseURL
+		if hospClinic.HospClinic != nil {
+			hospClinic.HospClinic.Documents.License = licenseURL
+		}
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.HospitalClinicReqDto.Longitude, 64)
@@ -199,11 +205,20 @@ func AddHospClinic(c *fiber.Ctx) error {
 		}
 	}
 
+	var hospitalImage string
+	var licenseDoc string
+	var certificate string
+	if hospClinic.HospClinic != nil {
+		hospitalImage = hospClinic.HospClinic.Information.Image
+		licenseDoc = hospClinic.HospClinic.Documents.License
+		certificate = hospClinic.HospClinic.Documents.Certificate
+	}
+
 	hospClinicData := entity.HospClinic{
 		Information: entity.Information{
 			Name:           data.HospitalClinicReqDto.InformationName,
 			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
-			Image:          hospClinic.HospClinic.Information.Image,
+			Image:          hospitalImage,
 			Address: entity.Address{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.HospitalClinicReqDto.Address,
@@ -211,8 +226,8 @@ func AddHospClinic(c *fiber.Ctx) error {
 			},
 		},
 		Documents: entity.Documents{
-			Certificate: hospClinic.HospClinic.Documents.Certificate,
-			License:     hospClinic.HospClinic.Documents.License,
+			Certificate: certificate,
+			License:     licenseDoc,
 		},
 		OtherServices: data.HospitalClinicReqDto.OtherServices,
 		Insurances:    data.HospitalClinicReqDto.Insurances,

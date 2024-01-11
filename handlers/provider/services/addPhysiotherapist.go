@@ -89,15 +89,17 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		physiotherapist.Physiotherapist.Information.Image = physiotherapistImage
+		if physiotherapist.Physiotherapist != nil {
+			physiotherapist.Physiotherapist.Information.Image = physiotherapistImage
+		}
+
 	}
 
 	formFiles = form.File["professionalCertificate"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
-			Message: "No certificate uploaded",
+			Message: "No professional certificate uploaded",
 		})
 	}
 
@@ -107,7 +109,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
@@ -120,19 +122,21 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
-		// Append the image URL to the Images field
-		physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate = certificateURL
+		if physiotherapist.Physiotherapist != nil {
+			physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate = certificateURL
+		}
+
 	}
 
 	formFiles = form.File["professionalLicense"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
-			Message: "No license uploaded",
+			Message: "No professional license uploaded",
 		})
 	}
 
@@ -142,7 +146,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
@@ -155,12 +159,14 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
-		// Append the image URL to the Images field
-		physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License = licenseURL
+		if physiotherapist.Physiotherapist != nil {
+			physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License = licenseURL
+		}
+
 	}
 
 	formFiles = form.File["personalNimc"]
@@ -194,8 +200,10 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc = nimcURL
+		if physiotherapist.Physiotherapist != nil {
+			physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc = nimcURL
+		}
+
 	}
 
 	formFiles = form.File["personalLicense"]
@@ -229,8 +237,10 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		physiotherapist.Physiotherapist.PersonalIdentificationDocs.License = licenseURL
+		if physiotherapist.Physiotherapist != nil {
+			physiotherapist.Physiotherapist.PersonalIdentificationDocs.License = licenseURL
+		}
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.PhysiotherapistReqDto.Longitude, 64)
@@ -249,7 +259,6 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		})
 	}
 
-	// Parse and add DoctorSchedule data
 	// Parse and add NurseSchedule data
 	var schedule []entity.ServiceAndSchedule
 	for _, scheduleItem := range data.PhysiotherapistReqDto.Schedule {
@@ -266,13 +275,28 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		schedule = append(schedule, scheduleData)
 	}
 
-	physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
+	if physiotherapist.Physiotherapist != nil {
+		physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
+	}
+
+	var physiotherapistImage string
+	var nimcDoc string
+	var personalLicense string
+	var professionalLicense string
+	var professionalCertificate string
+	if physiotherapist.Physiotherapist != nil {
+		physiotherapistImage = physiotherapist.Physiotherapist.Information.Image
+		nimcDoc = physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc
+		personalLicense = physiotherapist.Physiotherapist.PersonalIdentificationDocs.License
+		professionalLicense = physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License
+		professionalCertificate = physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate
+	}
 
 	physiotherapistData := entity.Physiotherapist{
 		Information: entity.Information{
 			Name:           data.PhysiotherapistReqDto.InformationName,
 			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
-			Image:          physiotherapist.Physiotherapist.Information.Image,
+			Image:          physiotherapistImage,
 			Address: entity.Address{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PhysiotherapistReqDto.Address,
@@ -283,12 +307,12 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			Qualifications: data.PhysiotherapistReqDto.Qualifications,
 		},
 		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-			Nimc:    physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc,
-			License: physiotherapist.Physiotherapist.PersonalIdentificationDocs.License,
+			Nimc:    nimcDoc,
+			License: personalLicense,
 		},
 		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-			Certificate: physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate,
-			License:     physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License,
+			Certificate: professionalCertificate,
+			License:     professionalLicense,
 		},
 		ServiceAndSchedule: schedule,
 	}

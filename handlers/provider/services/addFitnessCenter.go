@@ -86,9 +86,11 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 				Message: "Failed to upload fitnessCenterImage to S3: " + err.Error(),
 			})
 		}
+		
+		if fitnessCenter.FitnessCenter != nil {
+			fitnessCenter.FitnessCenter.Information.Image = fitnessCenterImage
+		}
 
-		// Append the image URL to the Images field
-		fitnessCenter.FitnessCenter.Information.Image = fitnessCenterImage
 	}
 
 	formFiles = form.File["certificate"]
@@ -122,8 +124,10 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
+		if fitnessCenter.FitnessCenter != nil {
+			fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
+		}
+
 	}
 
 	formFiles = form.File["license"]
@@ -157,8 +161,10 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		fitnessCenter.FitnessCenter.Documents.License = licenseURL
+		if fitnessCenter.FitnessCenter != nil {
+			fitnessCenter.FitnessCenter.Documents.License = licenseURL
+		}
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.FitnessCenterReqDto.Longitude, 64)
@@ -207,11 +213,20 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		subscription = append(subscription, convertedInv)
 	}
 
+	var fitnessCenterImage string
+	var licenseDoc string
+	var certificate string
+	if fitnessCenter.FitnessCenter != nil {
+		fitnessCenterImage = fitnessCenter.FitnessCenter.Information.Image
+		licenseDoc = fitnessCenter.FitnessCenter.Documents.License
+		certificate = fitnessCenter.FitnessCenter.Documents.Certificate
+	}
+
 	fitnessCenterData := entity.FitnessCenter{
 		Information: entity.Information{
 			Name:           data.FitnessCenterReqDto.InformationName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
-			Image:          fitnessCenter.FitnessCenter.Information.Image,
+			Image:          fitnessCenterImage,
 			Address: entity.Address{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.FitnessCenterReqDto.Address,
@@ -219,8 +234,8 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			},
 		},
 		Documents: entity.Documents{
-			Certificate: fitnessCenter.FitnessCenter.Documents.Certificate,
-			License:     fitnessCenter.FitnessCenter.Documents.License,
+			Certificate: certificate,
+			License:     licenseDoc,
 		},
 		AdditionalServices: additionalServices,
 		Trainers:           trainers,

@@ -99,7 +99,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 			Status:  false,
-			Message: "No certificate uploaded",
+			Message: "No professional certificate uploaded",
 		})
 	}
 
@@ -109,7 +109,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
@@ -122,13 +122,13 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
+
 		if doctorProfession.Doctor != nil {
 			doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate = certificateURL
 		}
-		// Append the image URL to the Images field
 
 	}
 
@@ -136,7 +136,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 			Status:  false,
-			Message: "No license uploaded",
+			Message: "No professional license uploaded",
 		})
 	}
 
@@ -146,7 +146,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
@@ -159,13 +159,13 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
+
 		if doctorProfession.Doctor != nil {
 			doctorProfession.Doctor.ProfessionalDetailsDocs.License = licenseURL
 		}
-		// Append the image URL to the Images field
 
 	}
 
@@ -199,10 +199,10 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Message: "Failed to upload personalNimc to S3: " + err.Error(),
 			})
 		}
+
 		if doctorProfession.Doctor != nil {
 			doctorProfession.Doctor.PersonalIdentificationDocs.Nimc = nimcURL
 		}
-		// Append the image URL to the Images field
 
 	}
 
@@ -236,10 +236,10 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Message: "Failed to upload personalLicense to S3: " + err.Error(),
 			})
 		}
+
 		if doctorProfession.Doctor != nil {
 			doctorProfession.Doctor.PersonalIdentificationDocs.License = licenseURL
 		}
-		// Append the image URL to the Images field
 
 	}
 
@@ -279,27 +279,15 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	}
 
 	var doctoryImage string
-	if doctorProfession.Doctor != nil {
-		doctoryImage = doctorProfession.Doctor.Information.Image
-	}
-
 	var nimcDoc string
-	if doctorProfession.Doctor != nil {
-		nimcDoc = doctorProfession.Doctor.PersonalIdentificationDocs.Nimc
-	}
-
 	var personalLicense string
-	if doctorProfession.Doctor != nil {
-		personalLicense = doctorProfession.Doctor.PersonalIdentificationDocs.License
-	}
-
 	var professionalLicense string
-	if doctorProfession.Doctor != nil {
-		professionalLicense = doctorProfession.Doctor.ProfessionalDetailsDocs.License
-	}
-
 	var professionalCertificate string
 	if doctorProfession.Doctor != nil {
+		doctoryImage = doctorProfession.Doctor.Information.Image
+		nimcDoc = doctorProfession.Doctor.PersonalIdentificationDocs.Nimc
+		personalLicense = doctorProfession.Doctor.PersonalIdentificationDocs.License
+		professionalLicense = doctorProfession.Doctor.ProfessionalDetailsDocs.License
 		professionalCertificate = doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate
 	}
 

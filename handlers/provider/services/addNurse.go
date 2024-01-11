@@ -89,15 +89,17 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		nurse.Nurse.Information.Image = nurseImage
+		if nurse.Nurse != nil {
+			nurse.Nurse.Information.Image = nurseImage
+		}
+
 	}
 
 	formFiles = form.File["professionalCertificate"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 			Status:  false,
-			Message: "No certificate uploaded",
+			Message: "No professional certificate uploaded",
 		})
 	}
 
@@ -107,7 +109,7 @@ func AddNurse(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
@@ -120,19 +122,21 @@ func AddNurse(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.NurseResDto{
 				Status:  false,
-				Message: "Failed to upload certificate to S3: " + err.Error(),
+				Message: "Failed to upload professional certificate to S3: " + err.Error(),
 			})
 		}
 
-		// Append the image URL to the Images field
-		nurse.Nurse.ProfessionalDetailsDocs.Certificate = certificateURL
+		if nurse.Nurse != nil {
+			nurse.Nurse.ProfessionalDetailsDocs.Certificate = certificateURL
+		}
+
 	}
 
 	formFiles = form.File["professionalLicense"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 			Status:  false,
-			Message: "No license uploaded",
+			Message: "No professional license uploaded",
 		})
 	}
 
@@ -142,7 +146,7 @@ func AddNurse(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
@@ -155,12 +159,14 @@ func AddNurse(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.NurseResDto{
 				Status:  false,
-				Message: "Failed to upload license to S3: " + err.Error(),
+				Message: "Failed to upload professional license to S3: " + err.Error(),
 			})
 		}
 
-		// Append the image URL to the Images field
-		nurse.Nurse.ProfessionalDetailsDocs.License = licenseURL
+		if nurse.Nurse != nil {
+			nurse.Nurse.ProfessionalDetailsDocs.License = licenseURL
+		}
+
 	}
 
 	formFiles = form.File["personalNimc"]
@@ -194,8 +200,10 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		nurse.Nurse.PersonalIdentificationDocs.Nimc = nimcURL
+		if nurse.Nurse != nil {
+			nurse.Nurse.PersonalIdentificationDocs.Nimc = nimcURL
+		}
+
 	}
 
 	formFiles = form.File["personalLicense"]
@@ -229,8 +237,10 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		nurse.Nurse.PersonalIdentificationDocs.License = licenseURL
+		if nurse.Nurse != nil {
+			nurse.Nurse.PersonalIdentificationDocs.License = licenseURL
+		}
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.NurseReqDto.Longitude, 64)
@@ -266,13 +276,28 @@ func AddNurse(c *fiber.Ctx) error {
 		schedule = append(schedule, scheduleData)
 	}
 
-	nurse.Nurse.Schedule = schedule
+	if nurse.Nurse != nil {
+		nurse.Nurse.Schedule = schedule
+	}
+
+	var nurseImage string
+	var nimcDoc string
+	var personalLicense string
+	var professionalLicense string
+	var professionalCertificate string
+	if nurse.Nurse != nil {
+		nurseImage = nurse.Nurse.Information.Image
+		nimcDoc = nurse.Nurse.PersonalIdentificationDocs.Nimc
+		personalLicense = nurse.Nurse.PersonalIdentificationDocs.License
+		professionalLicense = nurse.Nurse.ProfessionalDetailsDocs.License
+		professionalCertificate = nurse.Nurse.ProfessionalDetailsDocs.Certificate
+	}
 
 	NurseData := entity.Nurse{
 		Information: entity.Information{
 			Name:           data.NurseReqDto.InformationName,
 			AdditionalText: data.NurseReqDto.AdditionalText,
-			Image:          nurse.Nurse.Information.Image,
+			Image:          nurseImage,
 			Address: entity.Address{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.NurseReqDto.Address,
@@ -283,12 +308,12 @@ func AddNurse(c *fiber.Ctx) error {
 			Qualifications: data.NurseReqDto.Qualifications,
 		},
 		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
-			Nimc:    nurse.Nurse.PersonalIdentificationDocs.Nimc,
-			License: nurse.Nurse.PersonalIdentificationDocs.License,
+			Nimc:    nimcDoc,
+			License: personalLicense,
 		},
 		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
-			Certificate: nurse.Nurse.ProfessionalDetailsDocs.Certificate,
-			License:     nurse.Nurse.ProfessionalDetailsDocs.License,
+			Certificate: professionalCertificate,
+			License:     professionalLicense,
 		},
 		Schedule: schedule,
 	}

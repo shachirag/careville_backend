@@ -46,7 +46,6 @@ func AddLaboratory(c *fiber.Ctx) error {
 			Message: err.Error(),
 		})
 	}
-	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve23449")
 
 	// Access the MultipartForm directly from the fiber.Ctx
 	form, err := c.MultipartForm()
@@ -64,7 +63,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 			Message: "No laboratoryImage uploaded",
 		})
 	}
-	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve23467")
+
 	// Upload each image to S3 and get the S3 URLs
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
@@ -90,7 +89,6 @@ func AddLaboratory(c *fiber.Ctx) error {
 		if laboratory.Laboratory != nil {
 			laboratory.Laboratory.Information.Image = laboratoryImage
 		}
-		fmt.Println("93")
 	}
 
 	formFiles = form.File["certificate"]
@@ -100,7 +98,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 			Message: "No certificate uploaded",
 		})
 	}
-	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve234102")
+
 	// Upload each image to S3 and get the S3 URLs
 	for _, formFile := range formFiles {
 		file, err := formFile.Open()
@@ -129,7 +127,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 		// Append the image URL to the Images field
 
 	}
-	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve23129")
+
 	formFiles = form.File["license"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
@@ -166,7 +164,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 		// Append the image URL to the Images field
 
 	}
-	fmt.Println("1fdfsddsvdvdfvdfvfdvvvvvvvvvvve234")
+
 	longitude, err := strconv.ParseFloat(data.LaboratoryReqDto.Longitude, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
@@ -195,17 +193,11 @@ func AddLaboratory(c *fiber.Ctx) error {
 	}
 
 	var laboratoryImage string
-	if laboratory.Laboratory != nil {
-		laboratoryImage = laboratory.Laboratory.Information.Image
-	}
-
 	var licenseDoc string
-	if laboratory.Laboratory != nil {
-		licenseDoc = laboratory.Laboratory.Documents.License
-	}
-
 	var certificate string
 	if laboratory.Laboratory != nil {
+		laboratoryImage = laboratory.Laboratory.Information.Image
+		licenseDoc = laboratory.Laboratory.Documents.License
 		certificate = laboratory.Laboratory.Documents.Certificate
 	}
 
@@ -226,12 +218,6 @@ func AddLaboratory(c *fiber.Ctx) error {
 		},
 		Investigations: investigations,
 	}
-
-	// if &laboratoryData != nil {
-
-	// }
-
-	fmt.Println("1234")
 
 	laboratory = entity.ServiceEntity{
 		Id:                   primitive.NewObjectID(),

@@ -87,8 +87,10 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		pharmacy.Pharmacy.Information.Image = pharmacyImage
+		if pharmacy.Pharmacy != nil {
+			pharmacy.Pharmacy.Information.Image = pharmacyImage
+		}
+
 	}
 
 	formFiles = form.File["certificate"]
@@ -122,8 +124,10 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		pharmacy.Pharmacy.Documents.Certificate = certificateURL
+		if pharmacy.Pharmacy != nil {
+			pharmacy.Pharmacy.Documents.Certificate = certificateURL
+		}
+
 	}
 
 	formFiles = form.File["license"]
@@ -157,8 +161,10 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		// Append the image URL to the Images field
-		pharmacy.Pharmacy.Documents.License = licenseURL
+		if pharmacy.Pharmacy != nil {
+			pharmacy.Pharmacy.Documents.License = licenseURL
+		}
+
 	}
 
 	longitude, err := strconv.ParseFloat(data.PharmacyReqDto.Longitude, 64)
@@ -186,11 +192,20 @@ func AddPharmacy(c *fiber.Ctx) error {
 		additionalServices = append(additionalServices, convertedInv)
 	}
 
+	var pharmacyImage string
+	var licenseDoc string
+	var certificate string
+	if pharmacy.Pharmacy != nil {
+		pharmacyImage = pharmacy.Pharmacy.Information.Image
+		licenseDoc = pharmacy.Pharmacy.Documents.License
+		certificate = pharmacy.Pharmacy.Documents.Certificate
+	}
+
 	pharmacyData := entity.Pharmacy{
 		Information: entity.Information{
 			Name:           data.PharmacyReqDto.InformationName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
-			Image:          pharmacy.Pharmacy.Information.Image,
+			Image:          pharmacyImage,
 			Address: entity.Address{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PharmacyReqDto.Address,
@@ -198,8 +213,8 @@ func AddPharmacy(c *fiber.Ctx) error {
 			},
 		},
 		Documents: entity.Documents{
-			Certificate: pharmacy.Pharmacy.Documents.Certificate,
-			License:     pharmacy.Pharmacy.Documents.License,
+			Certificate: certificate,
+			License:     licenseDoc,
 		},
 		AdditionalServices: additionalServices,
 	}
