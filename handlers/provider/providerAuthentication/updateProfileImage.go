@@ -165,19 +165,6 @@ func UpdateImage(c *fiber.Ctx) error {
 		})
 	}
 
-	// Construct a filter to retrieve the updated user data
-	updatedFilter := bson.M{"_id": providerData.ProviderId}
-
-	// Retrieve the updated user data from MongoDB
-	var provider entity.ServiceEntity
-	err = serviceColl.FindOne(ctx, updatedFilter).Decode(&provider)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
-			Status:  false,
-			Message: "Failed to retrieve updated admin data: " + err.Error(),
-		})
-	}
-
 	response := providerAuth.UpdateProviderResDto{
 		Status:  true,
 		Message: "Successfully updated image",

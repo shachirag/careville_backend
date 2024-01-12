@@ -24,10 +24,9 @@ type ProviderRespDto struct {
 }
 
 type Role struct {
-	ProviderId           primitive.ObjectID `json:"providerId" bson:"providerId"`
-	Role                 string             `json:"role" bson:"role"`
-	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	Status               string             `json:"status" bson:"status"`
+	Role                 string `json:"role" bson:"role"`
+	FacilityOrProfession string `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	Status               string `json:"status" bson:"status"`
 }
 
 type User struct {

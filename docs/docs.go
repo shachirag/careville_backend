@@ -958,6 +958,115 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/update-doctor-info/{doctorId}": {
+            "put": {
+                "description": "Update doctor info",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Update doctor info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "doctor ID",
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "speciality",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "provider profile image",
+                        "name": "newProviderImage",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/update-profile-image/{doctorId}": {
+            "put": {
+                "description": "Update Doctor Profile Image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Update Doctor Profile Image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of doctor image",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorImageReqDto"
+                        }
+                    },
+                    {
+                        "type": "file",
+                        "description": "profile image",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorImageResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/signup": {
             "post": {
                 "description": "Signup provider",
@@ -1250,12 +1359,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "notification": {
-                    "description": "Image                string             ` + "`" + `json:\"image\" bson:\"image\"` + "`" + `",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/providerAuth.Notification"
-                        }
-                    ]
+                    "$ref": "#/definitions/providerAuth.Notification"
                 },
                 "phoneNumber": {
                     "$ref": "#/definitions/providerAuth.PhoneNumber"
@@ -1371,9 +1475,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "facilityOrProfession": {
-                    "type": "string"
-                },
-                "providerId": {
                     "type": "string"
                 },
                 "role": {
@@ -1523,6 +1624,9 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "image": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1543,7 +1647,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/services.DoctorRes"
+                        "$ref": "#/definitions/services.SpecialityDoctorsRes"
                     }
                 },
                 "message": {
@@ -2023,6 +2127,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.SpecialityDoctorsRes": {
+            "type": "object",
+            "properties": {
+                "doctors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.DoctorRes"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
         "services.StatusRes": {
             "type": "object",
             "properties": {
@@ -2076,6 +2194,39 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
+                }
+            }
+        },
+        "services.UpdateDoctorImageReqDto": {
+            "type": "object",
+            "properties": {
+                "oldImage": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.UpdateDoctorImageResDto": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateDoctorResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         }

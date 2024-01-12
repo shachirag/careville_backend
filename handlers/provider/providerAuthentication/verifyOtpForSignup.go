@@ -168,7 +168,6 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 			Id:    provider.Id,
 			Name:  provider.Name,
 			Email: provider.Email,
-			// Image:                provider.Image,
 			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
 			Notification: providerAuth.Notification{
 				DeviceToken: provider.Notification.DeviceToken,

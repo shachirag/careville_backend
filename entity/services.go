@@ -65,6 +65,7 @@ type Address struct {
 
 type Doctor struct {
 	Id         primitive.ObjectID `json:"id" bson:"id"`
+	Image      string             `json:"image" bson:"image"`
 	Name       string             `json:"name" bson:"name"`
 	Speciality string             `json:"speciality" bson:"speciality"`
 	Schedule   []Schedule         `json:"schedule" bson:"schedule"`

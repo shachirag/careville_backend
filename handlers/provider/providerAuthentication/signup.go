@@ -80,6 +80,8 @@ func SignupProvider(c *fiber.Ctx) error {
 		})
 	}
 
+	smallEmail := strings.ToLower(data.Email)
+
 	// Generate a 6-digit OTP
 	otp := utils.Generate6DigitOtp()
 
@@ -87,7 +89,7 @@ func SignupProvider(c *fiber.Ctx) error {
 	otpData := entity.OtpEntity{
 		Id:        primitive.NewObjectID(),
 		Otp:       otp,
-		Email:     data.Email,
+		Email:     smallEmail,
 		CreatedAt: time.Now().UTC(),
 	}
 

@@ -65,7 +65,7 @@ func ForgotPassword(c *fiber.Ctx) error {
 	otpData := entity.OtpEntity{
 		Id:        primitive.NewObjectID(),
 		Otp:       otp,
-		Email:     data.Email,
+		Email:     smallEmail,
 		CreatedAt: time.Now().UTC(),
 	}
 

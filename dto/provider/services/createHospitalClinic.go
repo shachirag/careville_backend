@@ -31,3 +31,30 @@ type HospitalClinicResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
 }
+
+type UpdateDoctorImageReqDto struct {
+	OldImage string `json:"oldImage" bson:"oldImage"`
+}
+
+type UpdateDoctorImageResDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+	Image   string `json:"image" bson:"image"`
+}
+
+type UpdateDoctorReqDto struct {
+	Name       string     `json:"name" form:"name"`
+	Speciality string     `json:"speciality" form:"speciality"`
+	Schedule   []Schedule `json:"schedule" form:"schedule"`
+}
+
+// type Schedule struct {
+// 	StartTime string   `json:"startTime" form:"startTime"`
+// 	EndTime   string   `json:"endTime" form:"endTime"`
+// 	Days      []string `json:"days" form:"days"`
+// }
+
+type UpdateDoctorResDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+}

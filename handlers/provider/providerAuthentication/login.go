@@ -93,7 +93,6 @@ func LoginProvider(c *fiber.Ctx) error {
 	role := providerAuth.Role{}
 	if err == nil {
 		role = providerAuth.Role{
-			ProviderId:           provider.Id,
 			Role:                 provider.Role,
 			FacilityOrProfession: provider.FacilityOrProfession,
 			Status:               provider.Status,

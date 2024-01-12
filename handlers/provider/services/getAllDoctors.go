@@ -35,20 +35,15 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 	serviceColl := database.GetCollection("service")
 
-	specialityFilter := c.Query("speciality")
 	filter := bson.M{
 		"_id": providerData.ProviderId,
-		"hospClinic.doctor": bson.M{
-			"$elemMatch": bson.M{
-				"speciality": specialityFilter,
-			},
-		},
 	}
 
 	projection := bson.M{
 		"hospClinic.doctor.id":         1,
 		"hospClinic.doctor.name":       1,
 		"hospClinic.doctor.speciality": 1,
+		"hospClinic.doctor.image":      1,
 		"hospClinic.doctor.schedule": bson.M{
 			"startTime": 1,
 			"endTime":   1,
@@ -79,12 +74,16 @@ func GetAllDoctors(c *fiber.Ctx) error {
 		})
 	}
 
-	var doctorsRes []services.DoctorRes
+	// Group doctors by speciality
+	doctorsBySpeciality := make(map[string][]services.DoctorRes)
+
+	// var doctorsRes []services.DoctorRes
 
 	for _, doctor := range service.HospClinic.Doctor {
 		doctorRes := services.DoctorRes{
 			Id:         doctor.Id,
 			Name:       doctor.Name,
+			Image:      doctor.Image,
 			Speciality: doctor.Speciality,
 		}
 
@@ -98,12 +97,22 @@ func GetAllDoctors(c *fiber.Ctx) error {
 			}
 		}
 
-		doctorsRes = append(doctorsRes, doctorRes)
+		doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
+	}
+
+	// Convert the map to an array for response
+	var response []services.SpecialityDoctorsRes
+
+	for speciality, doctors := range doctorsBySpeciality {
+		response = append(response, services.SpecialityDoctorsRes{
+			Speciality: speciality,
+			Doctors:    doctors,
+		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.DoctorResDto{
 		Status:  true,
 		Message: "doctors retrieved successfully",
-		Data:    doctorsRes,
+		Data:    response,
 	})
 }

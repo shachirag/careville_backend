@@ -124,9 +124,7 @@ definitions:
       name:
         type: string
       notification:
-        allOf:
-        - $ref: '#/definitions/providerAuth.Notification'
-        description: Image                string             `json:"image" bson:"image"`
+        $ref: '#/definitions/providerAuth.Notification'
       phoneNumber:
         $ref: '#/definitions/providerAuth.PhoneNumber'
       role:
@@ -201,8 +199,6 @@ definitions:
   providerAuth.Role:
     properties:
       facilityOrProfession:
-        type: string
-      providerId:
         type: string
       role:
         type: string
@@ -299,6 +295,8 @@ definitions:
     properties:
       id:
         type: string
+      image:
+        type: string
       name:
         type: string
       schedule:
@@ -312,7 +310,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/services.DoctorRes'
+          $ref: '#/definitions/services.SpecialityDoctorsRes'
         type: array
       message:
         type: string
@@ -623,6 +621,15 @@ definitions:
       startTime:
         type: string
     type: object
+  services.SpecialityDoctorsRes:
+    properties:
+      doctors:
+        items:
+          $ref: '#/definitions/services.DoctorRes'
+        type: array
+      speciality:
+        type: string
+    type: object
   services.StatusRes:
     properties:
       data:
@@ -658,6 +665,27 @@ definitions:
         type: string
       price:
         type: number
+    type: object
+  services.UpdateDoctorImageReqDto:
+    properties:
+      oldImage:
+        type: string
+    type: object
+  services.UpdateDoctorImageResDto:
+    properties:
+      image:
+        type: string
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateDoctorResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
 host: mmpn2atpcm.eu-west-1.awsapprunner.com
 info:
@@ -1286,6 +1314,78 @@ paths:
           schema:
             $ref: '#/definitions/services.StatusRes'
       summary: Fetch status By ID
+      tags:
+      - services
+  /provider/services/update-doctor-info/{doctorId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update doctor info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: doctor ID
+        in: path
+        name: doctorId
+        required: true
+        type: string
+      - in: formData
+        name: name
+        type: string
+      - in: formData
+        name: speciality
+        type: string
+      - description: provider profile image
+        in: formData
+        name: newProviderImage
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorResDto'
+      summary: Update doctor info
+      tags:
+      - services
+  /provider/services/update-profile-image/{doctorId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update Doctor Profile Image
+      parameters:
+      - description: service ID
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of doctor image
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateDoctorImageReqDto'
+      - description: profile image
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorImageResDto'
+      summary: Update Doctor Profile Image
       tags:
       - services
   /provider/signup:

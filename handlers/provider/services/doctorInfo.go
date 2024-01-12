@@ -2,6 +2,7 @@ package services
 
 import (
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
 	"context"
@@ -30,15 +31,8 @@ func GetDoctorsInfo(c *fiber.Ctx) error {
 
 	var service entity.ServiceEntity
 
-	serviceID := c.Params("serviceId")
-	serviceObjID, err := primitive.ObjectIDFromHex(serviceID)
-
-	if err != nil {
-		return c.Status(400).JSON(services.GetDoctorResDto{
-			Status:  false,
-			Message: "invalid objectId " + err.Error(),
-		})
-	}
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
 	doctorId := c.Params("doctorId")
 	doctorObjID, err := primitive.ObjectIDFromHex(doctorId)
@@ -53,7 +47,7 @@ func GetDoctorsInfo(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	filter := bson.M{
-		"_id": serviceObjID,
+		"_id": providerData.ProviderId,
 		"hospClinic.doctor": bson.M{
 			"$elemMatch": bson.M{
 				"id": doctorObjID,
@@ -65,6 +59,7 @@ func GetDoctorsInfo(c *fiber.Ctx) error {
 		"hospClinic.doctor.id":         1,
 		"hospClinic.doctor.name":       1,
 		"hospClinic.doctor.speciality": 1,
+		"hospClinic.doctor.image":      1,
 		"hospClinic.doctor.schedule": bson.M{
 			"startTime": 1,
 			"endTime":   1,
@@ -98,28 +93,32 @@ func GetDoctorsInfo(c *fiber.Ctx) error {
 	var doctorsRes services.DoctorRes
 
 	for _, doctor := range service.HospClinic.Doctor {
-		doctorRes := services.DoctorRes{
-			Id:         doctor.Id,
-			Name:       doctor.Name,
-			Speciality: doctor.Speciality,
-		}
-
-		if len(doctor.Schedule) > 0 {
-			for _, schedule := range doctor.Schedule {
-				doctorRes.Schedule = append(doctorRes.Schedule, services.DoctorScheduleRes{
-					StartTime: schedule.StartTime,
-					EndTime:   schedule.EndTime,
-					Days:      schedule.Days,
-				})
+		if doctor.Id == doctorObjID {
+			doctorRes := services.DoctorRes{
+				Id:         doctor.Id,
+				Name:       doctor.Name,
+				Image:      doctor.Image,
+				Speciality: doctor.Speciality,
 			}
-		}
 
-		doctorsRes = doctorRes
+			if len(doctor.Schedule) > 0 {
+				for _, schedule := range doctor.Schedule {
+					doctorRes.Schedule = append(doctorRes.Schedule, services.DoctorScheduleRes{
+						StartTime: schedule.StartTime,
+						EndTime:   schedule.EndTime,
+						Days:      schedule.Days,
+					})
+				}
+			}
+
+			doctorsRes = doctorRes
+			break
+		}
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.GetDoctorResDto{
 		Status:  true,
-		Message: "doctors retrieved successfully",
+		Message: "Doctor retrieved successfully",
 		Data:    doctorsRes,
 	})
 }
