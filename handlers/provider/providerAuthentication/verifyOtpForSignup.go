@@ -144,10 +144,12 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	month := (time.Hour * 24) * 30
 	// Create the JWT claims, which includes the user ID and expiry time
 	claims := jtoken.MapClaims{
-		"Id":    provider.Id,
-		"email": provider.Email,
-		"role":  "provider",
-		"exp":   time.Now().Add(month * 6).Unix(),
+		"Id":                   provider.Id,
+		"email":                provider.Email,
+		"role":                 "provider",
+		"serviceRole":          provider.Role,
+		"facilityOrProfession": provider.FacilityOrProfession,
+		"exp":                  time.Now().Add(month * 6).Unix(),
 	}
 	// Create token
 	token := jtoken.NewWithClaims(jtoken.SigningMethodHS256, claims)
@@ -165,9 +167,9 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		Message: "OTP verified successfully and provider data inserted",
 		Token:   _token,
 		Provider: providerAuth.ProviderResDto{
-			Id:    provider.Id,
-			Name:  provider.Name,
-			Email: provider.Email,
+			Id:          provider.Id,
+			Name:        provider.Name,
+			Email:       provider.Email,
 			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
 			Notification: providerAuth.Notification{
 				DeviceToken: provider.Notification.DeviceToken,
