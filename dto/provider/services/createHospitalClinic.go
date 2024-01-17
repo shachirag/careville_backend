@@ -48,13 +48,19 @@ type UpdateDoctorReqDto struct {
 	Schedule   []Schedule `json:"schedule" form:"schedule"`
 }
 
+type UpdateDoctorResDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+}
+
+type MoreDoctorReqDto struct {
+	Name       string     `json:"name" form:"name"`
+	Speciality string     `json:"speciality" form:"speciality"`
+	Schedule   []Schedule `json:"schedule" form:"schedule"`
+}
+
 // type Schedule struct {
 // 	StartTime string   `json:"startTime" form:"startTime"`
 // 	EndTime   string   `json:"endTime" form:"endTime"`
 // 	Days      []string `json:"days" form:"days"`
 // }
-
-type UpdateDoctorResDto struct {
-	Status  bool   `json:"status" bson:"status"`
-	Message string `json:"message" bson:"message"`
-}
