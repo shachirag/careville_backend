@@ -95,16 +95,16 @@ func AddNurse(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["professionalCertificate"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
+	professionalCertificateFiles := form.File["professionalCertificate"]
+	professionalLicenseFormFiles := form.File["professionalLicense"]
+	if len(professionalCertificateFiles) == 0 && len(professionalLicenseFormFiles) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 			Status:  false,
-			Message: "No professional certificate uploaded",
+			Message: "At least one document is mandatary",
 		})
 	}
-
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range professionalCertificateFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
@@ -132,16 +132,8 @@ func AddNurse(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["professionalLicense"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
-			Status:  false,
-			Message: "No professional license uploaded",
-		})
-	}
-
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range professionalLicenseFormFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
@@ -169,16 +161,17 @@ func AddNurse(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["personalNimc"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
+	personalNimcFiles := form.File["personalNimc"]
+	personalLicenseFiles := form.File["personalLicense"]
+	if len(personalNimcFiles) == 0 && len(personalLicenseFiles) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 			Status:  false,
-			Message: "No personalNimc uploaded",
+			Message: "At least one document is mandatary",
 		})
 	}
 
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range personalNimcFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
@@ -206,16 +199,8 @@ func AddNurse(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["personalLicense"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
-			Status:  false,
-			Message: "No personalLicense uploaded",
-		})
-	}
-
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range personalLicenseFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{

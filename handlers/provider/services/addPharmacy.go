@@ -93,16 +93,17 @@ func AddPharmacy(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["certificate"]
-	if len(formFiles) == 0 {
+	cerificateFiles := form.File["certificate"]
+	licenseFiles := form.File["license"]
+	if len(cerificateFiles) == 0 && len(licenseFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.PharmacyResDto{
 			Status:  false,
-			Message: "No certificate uploaded",
+			Message: "At least one document is mandatary",
 		})
 	}
 
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range cerificateFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.PharmacyResDto{
@@ -130,16 +131,8 @@ func AddPharmacy(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["license"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.PharmacyResDto{
-			Status:  false,
-			Message: "No license uploaded",
-		})
-	}
-
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range licenseFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.PharmacyResDto{

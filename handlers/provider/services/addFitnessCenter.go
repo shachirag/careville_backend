@@ -56,8 +56,8 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		})
 	}
 
-	formFiles := form.File["fitnessCenterImage"]
-	if len(formFiles) == 0 {
+	fitnessCenterImageFiles := form.File["fitnessCenterImage"]
+	if len(fitnessCenterImageFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
 			Status:  false,
 			Message: "No fitnessCenterImage uploaded",
@@ -65,7 +65,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 	}
 
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range fitnessCenterImageFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
@@ -93,16 +93,16 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 
 	}
 
-	formFiles = form.File["certificate"]
-	if len(formFiles) == 0 {
+	cerificateFiles := form.File["certificate"]
+	licenseFiles := form.File["license"]
+	if len(cerificateFiles) == 0 && len(licenseFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
 			Status:  false,
-			Message: "No certificate uploaded",
+			Message: "At least one document is mandatary",
 		})
 	}
-
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range cerificateFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
@@ -128,18 +128,13 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
 		}
 
+		// fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
 	}
 
-	formFiles = form.File["license"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
-			Status:  false,
-			Message: "No license uploaded",
-		})
-	}
+	// Combine the loops for license and certificate
 
 	// Upload each image to S3 and get the S3 URLs
-	for _, formFile := range formFiles {
+	for _, formFile := range licenseFiles {
 		file, err := formFile.Open()
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
@@ -152,7 +147,6 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		id := primitive.NewObjectID()
 		fileName := fmt.Sprintf("license/%v-doc-%s", id.Hex(), formFile.Filename)
 
-		// Upload the image to S3 and get the S3 URL
 		licenseURL, err := utils.UploadToS3(fileName, file)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.FitnessCenterResDto{
