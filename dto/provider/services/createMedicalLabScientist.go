@@ -5,7 +5,8 @@ type MedicalLabScientistRequestDto struct {
 }
 
 type MedicalLabScientistReqDto struct {
-	InformationName      string                    `json:"informationName" form:"informationName"`
+	InformationFirstName string                    `json:"informationFirstName" form:"informationFirstName"`
+	InformationLastName  string                    `json:"informationLastName" form:"informationLastName"`
 	Address              string                    `json:"address" form:"address"`
 	Longitude            string                    `json:"longitude" form:"longitude"`
 	Latitude             string                    `json:"latitude" form:"latitude"`

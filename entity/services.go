@@ -9,7 +9,8 @@ import (
 type ServiceEntity struct {
 	Id                   primitive.ObjectID   `json:"id" bson:"_id"`
 	Role                 string               `json:"role" bson:"role"`
-	Name                 string               `json:"name" bson:"name"`
+	FirstName            string               `json:"firstName" bson:"firstName"`
+	LastName             string               `json:"lastName" bson:"lastName"`
 	Email                string               `json:"email" bson:"email"`
 	Password             string               `json:"password" bson:"password"`
 	Notification         Notification         `json:"notification" bson:"notification"`
@@ -37,7 +38,8 @@ type HospClinic struct {
 }
 
 type Information struct {
-	Name                 string  `json:"name" bson:"name"`
+	FirstName            string  `json:"firstName" bson:"firstName"`
+	LastName             string  `json:"lastName" bson:"lastName"`
 	AdditionalText       string  `json:"additionalText" bson:"additionalText"`
 	Image                string  `json:"image" bson:"image"`
 	Address              Address `json:"address" bson:"address"`

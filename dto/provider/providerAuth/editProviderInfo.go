@@ -1,7 +1,8 @@
 package providerAuth
 
 type UpdateProviderReqDto struct {
-	Name           string `json:"name" form:"name"`
+	FirstName      string `json:"firstName" form:"firstName"`
+	LastName       string `json:"lastName" form:"lastName"`
 	DialCode       string `json:"dialCode" form:"dialCode"`
 	PhoneNumber    string `json:"phoneNumber" form:"phoneNumber"`
 	CountryCode    string `json:"countryCode" form:"countryCode"`

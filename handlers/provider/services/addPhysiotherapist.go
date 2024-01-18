@@ -294,7 +294,8 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 
 	physiotherapistData := entity.Physiotherapist{
 		Information: entity.Information{
-			Name:           data.PhysiotherapistReqDto.InformationName,
+			FirstName:      data.PhysiotherapistReqDto.InformationFirstName,
+			LastName:       data.PhysiotherapistReqDto.InformationLastName,
 			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
 			Image:          physiotherapistImage,
 			Address: entity.Address{

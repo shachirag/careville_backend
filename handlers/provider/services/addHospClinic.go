@@ -217,7 +217,8 @@ func AddHospClinic(c *fiber.Ctx) error {
 
 	hospClinicData := entity.HospClinic{
 		Information: entity.Information{
-			Name:           data.HospitalClinicReqDto.InformationName,
+			FirstName:      data.HospitalClinicReqDto.InformationFirstName,
+			LastName:       data.HospitalClinicReqDto.InformationLastName,
 			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
 			Image:          hospitalImage,
 			Address: entity.Address{

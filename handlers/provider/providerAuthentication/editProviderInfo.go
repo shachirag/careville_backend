@@ -81,14 +81,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 
 	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                             time.Now().UTC(),
-			"hospClinic.information.name":           data.Name,
+			"hospClinic.information.firstName":      data.FirstName,
+			"hospClinic.information.lastName":       data.LastName,
 			"hospClinic.information.additionalText": data.AdditionalText,
 			"hospClinic.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -99,14 +101,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                             time.Now().UTC(),
-			"laboratory.information.name":           data.Name,
+			"laboratory.information.firstName":      data.FirstName,
+			"laboratory.information.lastName":       data.LastName,
 			"laboratory.information.additionalText": data.AdditionalText,
 			"laboratory.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -117,14 +121,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                                time.Now().UTC(),
-			"fitnessCenter.information.name":           data.Name,
+			"fitnessCenter.information.firstName":      data.FirstName,
+			"fitnessCenter.information.lastName":       data.LastName,
 			"fitnessCenter.information.additionalText": data.AdditionalText,
 			"fitnessCenter.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -135,14 +141,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                           time.Now().UTC(),
-			"pharmacy.information.name":           data.Name,
+			"pharmacy.information.firstName":      data.FirstName,
+			"pharmacy.information.lastName":       data.LastName,
 			"pharmacy.information.additionalText": data.AdditionalText,
 			"pharmacy.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -153,14 +161,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"updatedAt":                                      time.Now().UTC(),
-			"medicalLabScientist.information.name":           data.Name,
+			"updatedAt": time.Now().UTC(),
+			"medicalLabScientist.information.firstName":      data.FirstName,
+			"medicalLabScientist.information.lastName":       data.LastName,
 			"medicalLabScientist.information.additionalText": data.AdditionalText,
 			"medicalLabScientist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -171,14 +181,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "nurse" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                        time.Now().UTC(),
-			"nurse.information.name":           data.Name,
+			"nurse.information.firstName":      data.FirstName,
+			"nurse.information.lastName":       data.LastName,
 			"nurse.information.additionalText": data.AdditionalText,
 			"nurse.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -189,14 +201,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "doctor" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                         time.Now().UTC(),
-			"doctor.information.name":           data.Name,
+			"doctor.information.firstName":      data.FirstName,
+			"doctor.information.lastName":       data.LastName,
 			"doctor.information.additionalText": data.AdditionalText,
 			"doctor.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
@@ -207,14 +221,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "physiotherapist" {
 		update = bson.M{"$set": bson.M{
-			"name": data.Name,
+			"firstName": data.FirstName,
+			"lastName":  data.LastName,
 			"phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
 			"updatedAt":                                  time.Now().UTC(),
-			"physiotherapist.information.name":           data.Name,
+			"physiotherapist.information.firstName":      data.FirstName,
+			"physiotherapist.information.lastName":       data.LastName,
 			"physiotherapist.information.additionalText": data.AdditionalText,
 			"physiotherapist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},

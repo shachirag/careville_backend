@@ -5,7 +5,8 @@ type PharmacyRequestDto struct {
 }
 
 type PharmacyReqDto struct {
-	InformationName      string               `json:"informationName" form:"informationName"`
+	InformationFirstName string               `json:"informationFirstName" form:"informationFirstName"`
+	InformationLastName  string               `json:"informationLastName" form:"informationLastName"`
 	Address              string               `json:"address" form:"address"`
 	Longitude            string               `json:"longitude" form:"longitude"`
 	Latitude             string               `json:"latitude" form:"latitude"`
@@ -17,4 +18,3 @@ type PharmacyResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
 }
-

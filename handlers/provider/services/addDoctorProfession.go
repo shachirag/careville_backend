@@ -293,7 +293,8 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 
 	doctorData := entity.DoctorEntityDto{
 		Information: entity.Information{
-			Name:           data.DoctorProfessionReqDto.InformationName,
+			FirstName:      data.DoctorProfessionReqDto.InformationFirstName,
+			LastName:       data.DoctorProfessionReqDto.InformationLastName,
 			AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
 			Image:          doctoryImage,
 			Address: entity.Address{

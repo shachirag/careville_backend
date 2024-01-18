@@ -19,7 +19,8 @@ type (
 )
 
 type ProviderSignupVerifyOtpReqDto struct {
-	Name        string `json:"name" bson:"name"`
+	FirstName   string `json:"firstName" bson:"firstName"`
+	LastName    string `json:"lastName" bson:"lastName"`
 	Email       string `json:"email" bson:"email"`
 	DialCode    string `json:"dialCode" bson:"dialCode"`
 	PhoneNumber string `json:"phoneNumber" bson:"phoneNumber"`
@@ -39,7 +40,8 @@ type ProviderSignupVerifyOtpResDto struct {
 
 type ProviderResDto struct {
 	Id                   primitive.ObjectID `json:"id" bson:"_id"`
-	Name                 string             `json:"name" bson:"name"`
+	FirstName            string             `json:"firstName" bson:"firstName"`
+	LastName             string             `json:"lastName" bson:"lastName"`
 	Email                string             `json:"email" bson:"email"`
 	Notification         Notification       `json:"notification" bson:"notification"`
 	PhoneNumber          PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`

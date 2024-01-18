@@ -203,7 +203,8 @@ func AddPharmacy(c *fiber.Ctx) error {
 
 	pharmacyData := entity.Pharmacy{
 		Information: entity.Information{
-			Name:           data.PharmacyReqDto.InformationName,
+			FirstName:      data.PharmacyReqDto.InformationFirstName,
+			LastName:       data.PharmacyReqDto.InformationLastName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
 			Image:          pharmacyImage,
 			Address: entity.Address{

@@ -7,15 +7,16 @@ type DoctorProfessionRequestDto struct {
 }
 
 type DoctorProfessionReqDto struct {
-	InformationName string             `json:"informationName" form:"informationName"`
-	Address         string             `json:"address" form:"address"`
-	Longitude       string             `json:"longitude" form:"longitude"`
-	Latitude        string             `json:"latitude" form:"latitude"`
-	AdditionalText  string             `json:"additionalText" form:"additionalText"`
-	Certificate     string             `json:"certificate" form:"certificate"`
-	Speciality      string             `json:"speciality" bson:"speciality"`
-	Qualifications  string             `json:"qualifications" bson:"qualifications"`
-	Schedule        []DoctorSchedule   `json:"schedule" form:"schedule"`
+	InformationFirstName string           `json:"informationFirstName" form:"informationFirstName"`
+	InformationLastName  string           `json:"informationLastName" form:"informationLastName"`
+	Address              string           `json:"address" form:"address"`
+	Longitude            string           `json:"longitude" form:"longitude"`
+	Latitude             string           `json:"latitude" form:"latitude"`
+	AdditionalText       string           `json:"additionalText" form:"additionalText"`
+	Certificate          string           `json:"certificate" form:"certificate"`
+	Speciality           string           `json:"speciality" bson:"speciality"`
+	Qualifications       string           `json:"qualifications" bson:"qualifications"`
+	Schedule             []DoctorSchedule `json:"schedule" form:"schedule"`
 }
 
 type PersonalIdentificationDocs struct {

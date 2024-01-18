@@ -86,7 +86,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 				Message: "Failed to upload fitnessCenterImage to S3: " + err.Error(),
 			})
 		}
-		
+
 		if fitnessCenter.FitnessCenter != nil {
 			fitnessCenter.FitnessCenter.Information.Image = fitnessCenterImage
 		}
@@ -224,7 +224,8 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 
 	fitnessCenterData := entity.FitnessCenter{
 		Information: entity.Information{
-			Name:           data.FitnessCenterReqDto.InformationName,
+			FirstName:      data.FitnessCenterReqDto.InformationFirstName,
+			LastName:       data.FitnessCenterReqDto.InformationLastName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
 			Image:          fitnessCenterImage,
 			Address: entity.Address{

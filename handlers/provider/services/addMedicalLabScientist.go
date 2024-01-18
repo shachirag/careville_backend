@@ -293,7 +293,8 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 
 	MedicalLabScientistData := entity.MedicalLabScientist{
 		Information: entity.Information{
-			Name:           data.MedicalLabScientistReqDto.InformationName,
+			FirstName:      data.MedicalLabScientistReqDto.InformationFirstName,
+			LastName:       data.MedicalLabScientistReqDto.InformationLastName,
 			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
 			Image:          medicalLabScientistImage,
 			Address: entity.Address{

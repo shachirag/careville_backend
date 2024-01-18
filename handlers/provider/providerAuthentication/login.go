@@ -125,10 +125,11 @@ func LoginProvider(c *fiber.Ctx) error {
 		Provider: providerAuth.ProviderRespDto{
 			Role: role,
 			User: providerAuth.User{
-				Id:    provider.Id,
-				Name:  provider.Name,
-				Email: provider.Email,
-				Image: image,
+				Id:        provider.Id,
+				FirstName: provider.FirstName,
+				LastName:  provider.LastName,
+				Email:     provider.Email,
+				Image:     image,
 				PhoneNumber: providerAuth.PhoneNumber{
 					DialCode:    provider.PhoneNumber.DialCode,
 					Number:      provider.PhoneNumber.Number,

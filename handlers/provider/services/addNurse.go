@@ -295,7 +295,8 @@ func AddNurse(c *fiber.Ctx) error {
 
 	NurseData := entity.Nurse{
 		Information: entity.Information{
-			Name:           data.NurseReqDto.InformationName,
+			FirstName:      data.NurseReqDto.InformationFirstName,
+			LastName:       data.NurseReqDto.InformationLastName,
 			AdditionalText: data.NurseReqDto.AdditionalText,
 			Image:          nurseImage,
 			Address: entity.Address{

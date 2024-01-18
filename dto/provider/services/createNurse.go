@@ -5,13 +5,14 @@ type NurseRequestDto struct {
 }
 
 type NurseReqDto struct {
-	InformationName            string                     `json:"informationName" form:"informationName"`
-	Address                    string                     `json:"address" form:"address"`
-	Longitude                  string                     `json:"longitude" form:"longitude"`
-	Latitude                   string                     `json:"latitude" form:"latitude"`
-	AdditionalText             string                     `json:"additionalText" form:"additionalText"`
-	Qualifications             string                     `json:"qualifications" bson:"qualifications"`
-	Schedule                   []NurseSchedule            `json:"schedule" form:"schedule"`
+	InformationFirstName string          `json:"informationFirstName" form:"informationFirstName"`
+	InformationLastName  string          `json:"informationLastName" form:"informationLastName"`
+	Address              string          `json:"address" form:"address"`
+	Longitude            string          `json:"longitude" form:"longitude"`
+	Latitude             string          `json:"latitude" form:"latitude"`
+	AdditionalText       string          `json:"additionalText" form:"additionalText"`
+	Qualifications       string          `json:"qualifications" bson:"qualifications"`
+	Schedule             []NurseSchedule `json:"schedule" form:"schedule"`
 }
 
 type NurseSchedule struct {

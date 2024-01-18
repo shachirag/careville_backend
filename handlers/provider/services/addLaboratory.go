@@ -203,7 +203,8 @@ func AddLaboratory(c *fiber.Ctx) error {
 
 	laboratoryData := entity.Laboratory{
 		Information: entity.Information{
-			Name:           data.LaboratoryReqDto.InformationName,
+			FirstName:      data.LaboratoryReqDto.InformationFirstName,
+			LastName:       data.LaboratoryReqDto.InformationLastName,
 			AdditionalText: data.LaboratoryReqDto.AdditionalText,
 			Image:          laboratoryImage,
 			Address: entity.Address{

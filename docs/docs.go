@@ -279,17 +279,22 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "name": "firstName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "lastName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
                         "name": "latitude",
                         "in": "formData"
                     },
                     {
                         "type": "string",
                         "name": "longitude",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
                         "in": "formData"
                     },
                     {
@@ -1295,6 +1300,9 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -1304,7 +1312,7 @@ const docTemplate = `{
                 "isEmergencyAvailable": {
                     "type": "boolean"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "notification": {
@@ -1349,13 +1357,16 @@ const docTemplate = `{
                 "facilityOrProfession": {
                     "type": "string"
                 },
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "isApproved": {
                     "type": "boolean"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "notification": {
@@ -1426,7 +1437,10 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "name": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
                     "type": "string"
                 },
                 "otp": {
@@ -1513,13 +1527,16 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "image": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "notification": {
@@ -1584,7 +1601,10 @@ const docTemplate = `{
                 "certificate": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1712,7 +1732,10 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1778,7 +1801,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/services.Doctor"
                     }
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "insurances": {
@@ -1849,7 +1875,10 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "investigations": {
@@ -1892,7 +1921,10 @@ const docTemplate = `{
                 "document": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1957,7 +1989,10 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2017,7 +2052,10 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2048,7 +2086,10 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationName": {
+                "informationFirstName": {
+                    "type": "string"
+                },
+                "informationLastName": {
                     "type": "string"
                 },
                 "latitude": {

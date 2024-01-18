@@ -31,7 +31,8 @@ type Role struct {
 
 type User struct {
 	Id           primitive.ObjectID `json:"id" bson:"_id"`
-	Name         string             `json:"name" bson:"name"`
+	FirstName    string             `json:"firstName" bson:"firstName"`
+	LastName     string             `json:"lastName" bson:"lastName"`
 	Email        string             `json:"email" bson:"email"`
 	Image        string             `json:"image" bson:"image"`
 	Notification Notification       `json:"notification" bson:"notification"`

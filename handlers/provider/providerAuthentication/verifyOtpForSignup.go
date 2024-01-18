@@ -111,9 +111,10 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	// Now that OTP is verified, proceed to insert the data into the database
 	provider := entity.ServiceEntity{
-		Id:    id,
-		Name:  data.Name,
-		Email: smallEmail,
+		Id:        id,
+		FirstName: data.FirstName,
+		LastName:  data.LastName,
+		Email:     smallEmail,
 		PhoneNumber: entity.PhoneNumber{
 			DialCode:    data.DialCode,
 			Number:      data.PhoneNumber,
@@ -168,7 +169,8 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		Token:   _token,
 		Provider: providerAuth.ProviderResDto{
 			Id:          provider.Id,
-			Name:        provider.Name,
+			FirstName:   provider.FirstName,
+			LastName:    provider.LastName,
 			Email:       provider.Email,
 			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
 			Notification: providerAuth.Notification{

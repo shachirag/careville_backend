@@ -5,12 +5,13 @@ type LaboratoryRequestDto struct {
 }
 
 type LaboratoryReqDto struct {
-	InformationName string           `json:"informationName" form:"informationName"`
-	Address         string           `json:"address" form:"address"`
-	Longitude       string           `json:"longitude" form:"longitude"`
-	Latitude        string           `json:"latitude" form:"latitude"`
-	AdditionalText  string           `json:"additionalText" form:"additionalText"`
-	Investigations  []Investigations `json:"investigations" form:"investigations"`
+	InformationFirstName string           `json:"informationFirstName" form:"informationFirstName"`
+	InformationLastName  string           `json:"informationLastName" form:"informationLastName"`
+	Address              string           `json:"address" form:"address"`
+	Longitude            string           `json:"longitude" form:"longitude"`
+	Latitude             string           `json:"latitude" form:"latitude"`
+	AdditionalText       string           `json:"additionalText" form:"additionalText"`
+	Investigations       []Investigations `json:"investigations" form:"investigations"`
 }
 
 type Investigations struct {

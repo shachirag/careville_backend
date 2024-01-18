@@ -82,13 +82,15 @@ definitions:
         type: string
       email:
         type: string
+      firstName:
+        type: string
       id:
         type: string
       image:
         type: string
       isEmergencyAvailable:
         type: boolean
-      name:
+      lastName:
         type: string
       notification:
         $ref: '#/definitions/providerAuth.Notification'
@@ -117,11 +119,13 @@ definitions:
         type: string
       facilityOrProfession:
         type: string
+      firstName:
+        type: string
       id:
         type: string
       isApproved:
         type: boolean
-      name:
+      lastName:
         type: string
       notification:
         $ref: '#/definitions/providerAuth.Notification'
@@ -167,7 +171,9 @@ definitions:
         type: string
       email:
         type: string
-      name:
+      firstName:
+        type: string
+      lastName:
         type: string
       otp:
         type: string
@@ -223,11 +229,13 @@ definitions:
         type: string
       email:
         type: string
+      firstName:
+        type: string
       id:
         type: string
       image:
         type: string
-      name:
+      lastName:
         type: string
       notification:
         $ref: '#/definitions/providerAuth.Notification'
@@ -269,7 +277,9 @@ definitions:
         type: string
       certificate:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       latitude:
         type: string
@@ -352,7 +362,9 @@ definitions:
         type: string
       address:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       latitude:
         type: string
@@ -395,7 +407,9 @@ definitions:
         items:
           $ref: '#/definitions/services.Doctor'
         type: array
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       insurances:
         items:
@@ -441,7 +455,9 @@ definitions:
         type: string
       address:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       investigations:
         items:
@@ -469,7 +485,9 @@ definitions:
         type: string
       document:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       latitude:
         type: string
@@ -511,7 +529,9 @@ definitions:
         type: string
       address:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       latitude:
         type: string
@@ -550,7 +570,9 @@ definitions:
         type: string
       address:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       latitude:
         type: string
@@ -570,7 +592,9 @@ definitions:
         type: string
       address:
         type: string
-      informationName:
+      informationFirstName:
+        type: string
+      informationLastName:
         type: string
       latitude:
         type: string
@@ -864,13 +888,16 @@ paths:
         name: dialCode
         type: string
       - in: formData
+        name: firstName
+        type: string
+      - in: formData
+        name: lastName
+        type: string
+      - in: formData
         name: latitude
         type: string
       - in: formData
         name: longitude
-        type: string
-      - in: formData
-        name: name
         type: string
       - in: formData
         name: phoneNumber

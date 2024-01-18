@@ -94,7 +94,8 @@ func FetchProviderById(c *fiber.Ctx) error {
 
 	providerRes := providerAuth.ProviderData{
 		Id:                   provider.Id,
-		Name:                 provider.Name,
+		FirstName:            provider.FirstName,
+		LastName:             provider.LastName,
 		Email:                provider.Email,
 		Image:                image,
 		AdditionalDetails:    additionalDetails,
