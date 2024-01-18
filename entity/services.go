@@ -37,12 +37,11 @@ type HospClinic struct {
 }
 
 type Information struct {
-	Name                 string       `json:"name" bson:"name"`
-	AdditionalText       string       `json:"additionalText" bson:"additionalText"`
-	Notification         Notification `json:"notification" bson:"notification"`
-	Image                string       `json:"image" bson:"image"`
-	Address              Address      `json:"address" bson:"address"`
-	IsEmergencyAvailable bool         `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
+	Name                 string  `json:"name" bson:"name"`
+	AdditionalText       string  `json:"additionalText" bson:"additionalText"`
+	Image                string  `json:"image" bson:"image"`
+	Address              Address `json:"address" bson:"address"`
+	IsEmergencyAvailable bool    `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
 }
 
 type Notification struct {
