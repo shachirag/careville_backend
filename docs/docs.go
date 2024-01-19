@@ -1494,7 +1494,7 @@ const docTemplate = `{
                 "role": {
                     "type": "string"
                 },
-                "status": {
+                "serviceStatus": {
                     "type": "string"
                 }
             }
@@ -1601,10 +1601,7 @@ const docTemplate = `{
                 "certificate": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1732,10 +1729,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1801,10 +1795,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/services.Doctor"
                     }
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "insurances": {
@@ -1875,10 +1866,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "investigations": {
@@ -1921,10 +1909,7 @@ const docTemplate = `{
                 "document": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1989,10 +1974,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2052,10 +2034,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2086,10 +2065,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2112,6 +2088,10 @@ const docTemplate = `{
         "services.PhysiotherapistResDto": {
             "type": "object",
             "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {}
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2202,7 +2182,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "status": {
+                "serviceStatus": {
                     "type": "string"
                 }
             }

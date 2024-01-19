@@ -1488,7 +1488,7 @@
                 "role": {
                     "type": "string"
                 },
-                "status": {
+                "serviceStatus": {
                     "type": "string"
                 }
             }
@@ -1595,10 +1595,7 @@
                 "certificate": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1726,10 +1723,7 @@
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1795,10 +1789,7 @@
                         "$ref": "#/definitions/services.Doctor"
                     }
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "insurances": {
@@ -1869,10 +1860,7 @@
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "investigations": {
@@ -1915,10 +1903,7 @@
                 "document": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -1983,10 +1968,7 @@
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2046,10 +2028,7 @@
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2080,10 +2059,7 @@
                 "address": {
                     "type": "string"
                 },
-                "informationFirstName": {
-                    "type": "string"
-                },
-                "informationLastName": {
+                "informationName": {
                     "type": "string"
                 },
                 "latitude": {
@@ -2106,6 +2082,10 @@
         "services.PhysiotherapistResDto": {
             "type": "object",
             "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {}
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2196,7 +2176,7 @@
                 "id": {
                     "type": "string"
                 },
-                "status": {
+                "serviceStatus": {
                     "type": "string"
                 }
             }

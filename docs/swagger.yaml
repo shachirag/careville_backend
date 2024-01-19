@@ -208,7 +208,7 @@ definitions:
         type: string
       role:
         type: string
-      status:
+      serviceStatus:
         type: string
     type: object
   providerAuth.UpdateImageReqDto:
@@ -277,9 +277,7 @@ definitions:
         type: string
       certificate:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       latitude:
         type: string
@@ -362,9 +360,7 @@ definitions:
         type: string
       address:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       latitude:
         type: string
@@ -407,9 +403,7 @@ definitions:
         items:
           $ref: '#/definitions/services.Doctor'
         type: array
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       insurances:
         items:
@@ -455,9 +449,7 @@ definitions:
         type: string
       address:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       investigations:
         items:
@@ -485,9 +477,7 @@ definitions:
         type: string
       document:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       latitude:
         type: string
@@ -529,9 +519,7 @@ definitions:
         type: string
       address:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       latitude:
         type: string
@@ -570,9 +558,7 @@ definitions:
         type: string
       address:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       latitude:
         type: string
@@ -592,9 +578,7 @@ definitions:
         type: string
       address:
         type: string
-      informationFirstName:
-        type: string
-      informationLastName:
+      informationName:
         type: string
       latitude:
         type: string
@@ -609,6 +593,9 @@ definitions:
     type: object
   services.PhysiotherapistResDto:
     properties:
+      errors:
+        items: {}
+        type: array
       message:
         type: string
       status:
@@ -667,7 +654,7 @@ definitions:
     properties:
       id:
         type: string
-      status:
+      serviceStatus:
         type: string
     type: object
   services.Subscription:
