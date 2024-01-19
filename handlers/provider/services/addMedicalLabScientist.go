@@ -279,8 +279,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 
 	MedicalLabScientistData := entity.MedicalLabScientist{
 		Information: entity.Information{
-			FirstName:      data.MedicalLabScientistReqDto.InformationFirstName,
-			LastName:       data.MedicalLabScientistReqDto.InformationLastName,
+			Name:           data.MedicalLabScientistReqDto.InformationName,
 			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
 			Image:          medicalLabScientistImage,
 			Address: entity.Address{
@@ -308,7 +307,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "medicalLabScientist",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		MedicalLabScientist:  &MedicalLabScientistData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

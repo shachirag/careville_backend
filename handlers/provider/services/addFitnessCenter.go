@@ -218,8 +218,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 
 	fitnessCenterData := entity.FitnessCenter{
 		Information: entity.Information{
-			FirstName:      data.FitnessCenterReqDto.InformationFirstName,
-			LastName:       data.FitnessCenterReqDto.InformationLastName,
+			Name:           data.FitnessCenterReqDto.InformationName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
 			Image:          fitnessCenterImage,
 			Address: entity.Address{
@@ -241,7 +240,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthFacility",
 		FacilityOrProfession: "fitnessCenter",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		FitnessCenter:        &fitnessCenterData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

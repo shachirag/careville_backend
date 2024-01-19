@@ -9,12 +9,7 @@ import (
 type ServiceEntity struct {
 	Id                   primitive.ObjectID   `json:"id" bson:"_id"`
 	Role                 string               `json:"role" bson:"role"`
-	FirstName            string               `json:"firstName" bson:"firstName"`
-	LastName             string               `json:"lastName" bson:"lastName"`
-	Email                string               `json:"email" bson:"email"`
-	Password             string               `json:"password" bson:"password"`
-	Notification         Notification         `json:"notification" bson:"notification"`
-	PhoneNumber          PhoneNumber          `json:"phoneNumber" bson:"phoneNumber"`
+	User                 ProviderUser         `json:"user" bson:"user"`
 	FacilityOrProfession string               `json:"facilityOrProfession" bson:"facilityOrProfession"`
 	HospClinic           *HospClinic          `json:"hospClinic" bson:"hospClinic,omitempty"`
 	FitnessCenter        *FitnessCenter       `json:"fitnessCenter" bson:"fitnessCenter,omitempty"`
@@ -24,9 +19,18 @@ type ServiceEntity struct {
 	Doctor               *DoctorEntityDto     `json:"doctor" bson:"doctor,omitempty"`
 	Physiotherapist      *Physiotherapist     `json:"physiotherapist" bson:"physiotherapist,omitempty"`
 	Nurse                *Nurse               `json:"nurse" bson:"nurse,omitempty"`
-	Status               string               `json:"status" bson:"status"`
+	ServiceStatus        string               `json:"serviceStatus" bson:"serviceStatus"`
 	CreatedAt            time.Time            `json:"createdAt" bson:"createdAt"`
 	UpdatedAt            time.Time            `json:"updatedAt" bson:"updatedAt"`
+}
+
+type ProviderUser struct {
+	FirstName    string       `json:"firstName" bson:"firstName"`
+	LastName     string       `json:"lastName" bson:"lastName"`
+	Email        string       `json:"email" bson:"email"`
+	Password     string       `json:"password" bson:"password"`
+	Notification Notification `json:"notification" bson:"notification"`
+	PhoneNumber  PhoneNumber  `json:"phoneNumber" bson:"phoneNumber"`
 }
 
 type HospClinic struct {
@@ -38,8 +42,7 @@ type HospClinic struct {
 }
 
 type Information struct {
-	FirstName            string  `json:"firstName" bson:"firstName"`
-	LastName             string  `json:"lastName" bson:"lastName"`
+	Name                 string  `json:"name" bson:"name"`
 	AdditionalText       string  `json:"additionalText" bson:"additionalText"`
 	Image                string  `json:"image" bson:"image"`
 	Address              Address `json:"address" bson:"address"`

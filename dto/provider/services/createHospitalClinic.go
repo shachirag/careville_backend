@@ -5,15 +5,14 @@ type HospitalClinicRequestDto struct {
 }
 
 type HospitalClinicReqDto struct {
-	InformationFirstName string   `json:"informationFirstName" form:"informationFirstName"`
-	InformationLastName  string   `json:"informationLastName" form:"informationLastName"`
-	Address              string   `json:"address" form:"address"`
-	Longitude            string   `json:"longitude" form:"longitude"`
-	Latitude             string   `json:"latitude" form:"latitude"`
-	AdditionalText       string   `json:"additionalText" form:"additionalText"`
-	OtherServices        []string `json:"otherServices" form:"otherServices"`
-	Insurances           []string `json:"insurances" form:"insurances"`
-	Doctor               []Doctor `json:"doctor" form:"doctor"`
+	InformationName string   `json:"informationName" form:"informationName"`
+	Address         string   `json:"address" form:"address"`
+	Longitude       string   `json:"longitude" form:"longitude"`
+	Latitude        string   `json:"latitude" form:"latitude"`
+	AdditionalText  string   `json:"additionalText" form:"additionalText"`
+	OtherServices   []string `json:"otherServices" form:"otherServices"`
+	Insurances      []string `json:"insurances" form:"insurances"`
+	Doctor          []Doctor `json:"doctor" form:"doctor"`
 }
 
 type Doctor struct {

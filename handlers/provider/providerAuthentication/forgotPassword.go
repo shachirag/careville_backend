@@ -42,7 +42,7 @@ func ForgotPassword(c *fiber.Ctx) error {
 	smallEmail := strings.ToLower(data.Email)
 
 	// Find the user with email address from client
-	err = serviceColl.FindOne(ctx, bson.M{"email": smallEmail}).Decode(&provider)
+	err = serviceColl.FindOne(ctx, bson.M{"user.email": smallEmail}).Decode(&provider)
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {

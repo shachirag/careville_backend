@@ -46,8 +46,8 @@ func FetchStatusById(c *fiber.Ctx) error {
 	}
 
 	statusRes := services.StatusRespDto{
-		Id:     service.Id,
-		Status: service.Status,
+		Id:            service.Id,
+		ServiceStatus: service.ServiceStatus,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.StatusRes{

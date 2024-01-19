@@ -196,8 +196,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 
 	pharmacyData := entity.Pharmacy{
 		Information: entity.Information{
-			FirstName:      data.PharmacyReqDto.InformationFirstName,
-			LastName:       data.PharmacyReqDto.InformationLastName,
+			Name:           data.PharmacyReqDto.InformationName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
 			Image:          pharmacyImage,
 			Address: entity.Address{
@@ -217,7 +216,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthFacility",
 		FacilityOrProfession: "pharmacy",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		Pharmacy:             &pharmacyData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

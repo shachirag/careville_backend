@@ -280,8 +280,7 @@ func AddNurse(c *fiber.Ctx) error {
 
 	NurseData := entity.Nurse{
 		Information: entity.Information{
-			FirstName:      data.NurseReqDto.InformationFirstName,
-			LastName:       data.NurseReqDto.InformationLastName,
+			Name:           data.NurseReqDto.InformationName,
 			AdditionalText: data.NurseReqDto.AdditionalText,
 			Image:          nurseImage,
 			Address: entity.Address{
@@ -308,7 +307,7 @@ func AddNurse(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "nurse",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		Nurse:                &NurseData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

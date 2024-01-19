@@ -26,7 +26,7 @@ type ProviderRespDto struct {
 type Role struct {
 	Role                 string `json:"role" bson:"role"`
 	FacilityOrProfession string `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	Status               string `json:"status" bson:"status"`
+	ServiceStatus        string `json:"serviceStatus" bson:"serviceStatus"`
 }
 
 type User struct {

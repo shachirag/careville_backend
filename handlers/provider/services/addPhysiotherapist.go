@@ -280,8 +280,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 
 	physiotherapistData := entity.Physiotherapist{
 		Information: entity.Information{
-			FirstName:      data.PhysiotherapistReqDto.InformationFirstName,
-			LastName:       data.PhysiotherapistReqDto.InformationLastName,
+			Name:           data.PhysiotherapistReqDto.InformationName,
 			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
 			Image:          physiotherapistImage,
 			Address: entity.Address{
@@ -308,7 +307,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "physiotherpist",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		Physiotherapist:      &physiotherapistData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

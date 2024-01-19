@@ -70,7 +70,7 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 
 	if data.CurrentPassword != "" {
 		// Validate the current password
-		err = bcrypt.CompareHashAndPassword([]byte(provider.Password), []byte(data.CurrentPassword))
+		err = bcrypt.CompareHashAndPassword([]byte(provider.User.Password), []byte(data.CurrentPassword))
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(providerAuth.ProviderChangePasswordResDto{
 				Status:  false,
@@ -90,7 +90,7 @@ func ChangeProviderPassword(c *fiber.Ctx) error {
 
 	update := bson.M{
 		"$set": bson.M{
-			"password": string(hashedNewPassword),
+			"user.password": string(hashedNewPassword),
 		},
 	}
 

@@ -41,7 +41,7 @@ func LoginProvider(c *fiber.Ctx) error {
 	}
 
 	filter := bson.M{
-		"email": strings.ToLower(data.Email),
+		"user.email": strings.ToLower(data.Email),
 	}
 
 	// Find the user with email address from client
@@ -62,7 +62,7 @@ func LoginProvider(c *fiber.Ctx) error {
 	}
 
 	// Checking if passwords match
-	err = bcrypt.CompareHashAndPassword([]byte(provider.Password), []byte(strings.TrimSpace(data.Password)))
+	err = bcrypt.CompareHashAndPassword([]byte(provider.User.Password), []byte(strings.TrimSpace(data.Password)))
 	if err != nil {
 		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
@@ -75,7 +75,7 @@ func LoginProvider(c *fiber.Ctx) error {
 	month := (time.Hour * 24) * 30
 	claims := jtoken.MapClaims{
 		"Id":                   provider.Id,
-		"email":                provider.Email,
+		"email":                provider.User.Email,
 		"role":                 "provider",
 		"serviceRole":          provider.Role,
 		"facilityOrProfession": provider.FacilityOrProfession,
@@ -95,7 +95,7 @@ func LoginProvider(c *fiber.Ctx) error {
 		role = providerAuth.Role{
 			Role:                 provider.Role,
 			FacilityOrProfession: provider.FacilityOrProfession,
-			Status:               provider.Status,
+			ServiceStatus:        provider.ServiceStatus,
 		}
 	}
 
@@ -126,19 +126,19 @@ func LoginProvider(c *fiber.Ctx) error {
 			Role: role,
 			User: providerAuth.User{
 				Id:        provider.Id,
-				FirstName: provider.FirstName,
-				LastName:  provider.LastName,
-				Email:     provider.Email,
+				FirstName: provider.User.FirstName,
+				LastName:  provider.User.LastName,
+				Email:     provider.User.Email,
 				Image:     image,
 				PhoneNumber: providerAuth.PhoneNumber{
-					DialCode:    provider.PhoneNumber.DialCode,
-					Number:      provider.PhoneNumber.Number,
-					CountryCode: provider.PhoneNumber.CountryCode,
+					DialCode:    provider.User.PhoneNumber.DialCode,
+					Number:      provider.User.PhoneNumber.Number,
+					CountryCode: provider.User.PhoneNumber.CountryCode,
 				},
 				Notification: providerAuth.Notification{
-					DeviceToken: provider.Notification.DeviceToken,
-					DeviceType:  provider.Notification.DeviceType,
-					IsEnabled:   provider.Notification.IsEnabled,
+					DeviceToken: provider.User.Notification.DeviceToken,
+					DeviceType:  provider.User.Notification.DeviceType,
+					IsEnabled:   provider.User.Notification.IsEnabled,
 				},
 				CreatedAt: provider.CreatedAt,
 				UpdatedAt: provider.UpdatedAt,

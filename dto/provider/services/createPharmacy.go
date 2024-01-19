@@ -5,13 +5,12 @@ type PharmacyRequestDto struct {
 }
 
 type PharmacyReqDto struct {
-	InformationFirstName string               `json:"informationFirstName" form:"informationFirstName"`
-	InformationLastName  string               `json:"informationLastName" form:"informationLastName"`
-	Address              string               `json:"address" form:"address"`
-	Longitude            string               `json:"longitude" form:"longitude"`
-	Latitude             string               `json:"latitude" form:"latitude"`
-	AdditionalText       string               `json:"additionalText" form:"additionalText"`
-	AdditionalServices   []AdditionalServices `json:"additionalServices" form:"additionalServices"`
+	InformationName    string               `json:"informationName" form:"informationName"`
+	Address            string               `json:"address" form:"address"`
+	Longitude          string               `json:"longitude" form:"longitude"`
+	Latitude           string               `json:"latitude" form:"latitude"`
+	AdditionalText     string               `json:"additionalText" form:"additionalText"`
+	AdditionalServices []AdditionalServices `json:"additionalServices" form:"additionalServices"`
 }
 
 type PharmacyResDto struct {

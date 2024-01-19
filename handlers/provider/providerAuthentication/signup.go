@@ -41,7 +41,7 @@ func SignupProvider(c *fiber.Ctx) error {
 
 	// Check if email is not already used
 	filter := bson.M{
-		"email": strings.ToLower(data.Email),
+		"user.email": strings.ToLower(data.Email),
 	}
 
 	exists, err := serviceColl.CountDocuments(ctx, filter)
@@ -61,8 +61,8 @@ func SignupProvider(c *fiber.Ctx) error {
 
 	// Check if dial code and phone number combination is already in use
 	filter = bson.M{
-		"phoneNumber.dialCode": data.DialCode,
-		"phoneNumber.number":   data.PhoneNumber,
+		"user.phoneNumber.dialCode": data.DialCode,
+		"user.phoneNumber.number":   data.PhoneNumber,
 	}
 
 	exists, err = serviceColl.CountDocuments(ctx, filter)

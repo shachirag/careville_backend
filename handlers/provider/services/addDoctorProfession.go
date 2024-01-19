@@ -279,8 +279,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 
 	doctorData := entity.DoctorEntityDto{
 		Information: entity.Information{
-			FirstName:      data.DoctorProfessionReqDto.InformationFirstName,
-			LastName:       data.DoctorProfessionReqDto.InformationLastName,
+			Name:           data.DoctorProfessionReqDto.InformationName,
 			AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
 			Image:          doctoryImage,
 			Address: entity.Address{
@@ -308,7 +307,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "doctor",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		Doctor:               &doctorData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

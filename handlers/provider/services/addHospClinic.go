@@ -210,8 +210,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 
 	hospClinicData := entity.HospClinic{
 		Information: entity.Information{
-			FirstName:      data.HospitalClinicReqDto.InformationFirstName,
-			LastName:       data.HospitalClinicReqDto.InformationLastName,
+			Name:           data.HospitalClinicReqDto.InformationName,
 			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
 			Image:          hospitalImage,
 			Address: entity.Address{
@@ -233,7 +232,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "hospitalFacility",
 		FacilityOrProfession: "hospClinic",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		HospClinic:           &hospClinicData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

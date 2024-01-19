@@ -196,8 +196,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 
 	laboratoryData := entity.Laboratory{
 		Information: entity.Information{
-			FirstName:      data.LaboratoryReqDto.InformationFirstName,
-			LastName:       data.LaboratoryReqDto.InformationLastName,
+			Name:           data.LaboratoryReqDto.InformationName,
 			AdditionalText: data.LaboratoryReqDto.AdditionalText,
 			Image:          laboratoryImage,
 			Address: entity.Address{
@@ -217,7 +216,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 		Id:                   primitive.NewObjectID(),
 		Role:                 "healthFacility",
 		FacilityOrProfession: "laboratory",
-		Status:               "pending",
+		ServiceStatus:        "pending",
 		Laboratory:           &laboratoryData,
 		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),

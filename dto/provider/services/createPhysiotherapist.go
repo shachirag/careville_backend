@@ -5,14 +5,13 @@ type PhysiotherapistRequestDto struct {
 }
 
 type PhysiotherapistReqDto struct {
-	InformationFirstName string                    `json:"informationFirstName" form:"informationFirstName"`
-	InformationLastName  string                    `json:"informationLastName" form:"informationLastName"`
-	Address              string                    `json:"address" form:"address"`
-	Longitude            string                    `json:"longitude" form:"longitude"`
-	Latitude             string                    `json:"latitude" form:"latitude"`
-	AdditionalText       string                    `json:"additionalText" form:"additionalText"`
-	Qualifications       string                    `json:"qualifications" bson:"qualifications"`
-	Schedule             []PhysiotherapistSchedule `json:"schedule" form:"schedule"`
+	InformationName string                    `json:"informationName" form:"informationName"`
+	Address         string                    `json:"address" form:"address"`
+	Longitude       string                    `json:"longitude" form:"longitude"`
+	Latitude        string                    `json:"latitude" form:"latitude"`
+	AdditionalText  string                    `json:"additionalText" form:"additionalText"`
+	Qualifications  string                    `json:"qualifications" bson:"qualifications"`
+	Schedule        []PhysiotherapistSchedule `json:"schedule" form:"schedule"`
 }
 
 type PhysiotherapistSchedule struct {
@@ -22,6 +21,7 @@ type PhysiotherapistSchedule struct {
 }
 
 type PhysiotherapistResDto struct {
-	Status  bool   `json:"status" bson:"status"`
-	Message string `json:"message" bson:"message"`
+	Status  bool    `json:"status"`
+	Message string  `json:"message"`
+	Errors  []error `json:"errors,omitempty"`
 }

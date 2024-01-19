@@ -37,7 +37,7 @@ func ResetPasswordAfterOtp(c *fiber.Ctx) error {
 	}
 
 	filter := bson.M{
-		"email": strings.ToLower(data.Email),
+		"user.email": strings.ToLower(data.Email),
 	}
 
 	// Find the user with email address from client
@@ -66,7 +66,7 @@ func ResetPasswordAfterOtp(c *fiber.Ctx) error {
 		})
 	}
 
-	_, err = serviceColl.UpdateOne(ctx, bson.M{"_id": provider.Id}, bson.M{"$set": bson.M{"password": hashedPassword}})
+	_, err = serviceColl.UpdateOne(ctx, bson.M{"_id": provider.Id}, bson.M{"$set": bson.M{"user.password": hashedPassword}})
 	if err != nil {
 		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
 			Status:  false,

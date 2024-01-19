@@ -5,15 +5,14 @@ type FitnessCenterRequestDto struct {
 }
 
 type FitnessCenterReqDto struct {
-	InformationFirstName string               `json:"informationFirstName" form:"informationFirstName"`
-	InformationLastName  string               `json:"informationLastName" form:"informationLastName"`
-	Address              string               `json:"address" form:"address"`
-	Longitude            string               `json:"longitude" form:"longitude"`
-	Latitude             string               `json:"latitude" form:"latitude"`
-	AdditionalText       string               `json:"additionalText" form:"additionalText"`
-	AdditionalServices   []AdditionalServices `json:"additionalServices" form:"additionalServices"`
-	Trainers             []Trainers           `json:"trainers" form:"trainers"`
-	Subscription         []Subscription       `json:"subscription" form:"subscription"`
+	InformationName    string               `json:"informationName" form:"informationName"`
+	Address            string               `json:"address" form:"address"`
+	Longitude          string               `json:"longitude" form:"longitude"`
+	Latitude           string               `json:"latitude" form:"latitude"`
+	AdditionalText     string               `json:"additionalText" form:"additionalText"`
+	AdditionalServices []AdditionalServices `json:"additionalServices" form:"additionalServices"`
+	Trainers           []Trainers           `json:"trainers" form:"trainers"`
+	Subscription       []Subscription       `json:"subscription" form:"subscription"`
 }
 
 type AdditionalServices struct {

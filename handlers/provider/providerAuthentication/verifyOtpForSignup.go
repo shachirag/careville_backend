@@ -88,7 +88,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	}
 
 	filter := bson.M{
-		"email": strings.ToLower(data.Email),
+		"user.email": strings.ToLower(data.Email),
 	}
 
 	exists, err := serviceColl.CountDocuments(ctx, filter)
@@ -111,21 +111,23 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	// Now that OTP is verified, proceed to insert the data into the database
 	provider := entity.ServiceEntity{
-		Id:        id,
-		FirstName: data.FirstName,
-		LastName:  data.LastName,
-		Email:     smallEmail,
-		PhoneNumber: entity.PhoneNumber{
-			DialCode:    data.DialCode,
-			Number:      data.PhoneNumber,
-			CountryCode: data.CountryCode,
+		Id: id,
+		User: entity.ProviderUser{
+			FirstName: data.FirstName,
+			LastName:  data.LastName,
+			Email:     smallEmail,
+			PhoneNumber: entity.PhoneNumber{
+				DialCode:    data.DialCode,
+				Number:      data.PhoneNumber,
+				CountryCode: data.CountryCode,
+			},
+			Notification: entity.Notification{
+				DeviceToken: data.DeviceToken,
+				DeviceType:  data.DeviceType,
+				IsEnabled:   false,
+			},
+			Password: string(hashedPassword),
 		},
-		Notification: entity.Notification{
-			DeviceToken: data.DeviceToken,
-			DeviceType:  data.DeviceType,
-			IsEnabled:   false,
-		},
-		Password:  string(hashedPassword),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}
@@ -146,7 +148,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	// Create the JWT claims, which includes the user ID and expiry time
 	claims := jtoken.MapClaims{
 		"Id":                   provider.Id,
-		"email":                provider.Email,
+		"email":                provider.User.Email,
 		"role":                 "provider",
 		"serviceRole":          provider.Role,
 		"facilityOrProfession": provider.FacilityOrProfession,
@@ -169,14 +171,14 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		Token:   _token,
 		Provider: providerAuth.ProviderResDto{
 			Id:          provider.Id,
-			FirstName:   provider.FirstName,
-			LastName:    provider.LastName,
-			Email:       provider.Email,
-			PhoneNumber: providerAuth.PhoneNumber(provider.PhoneNumber),
+			FirstName:   provider.User.FirstName,
+			LastName:    provider.User.LastName,
+			Email:       provider.User.Email,
+			PhoneNumber: providerAuth.PhoneNumber(provider.User.PhoneNumber),
 			Notification: providerAuth.Notification{
-				DeviceToken: provider.Notification.DeviceToken,
-				DeviceType:  provider.Notification.DeviceType,
-				IsEnabled:   provider.Notification.IsEnabled,
+				DeviceToken: provider.User.Notification.DeviceToken,
+				DeviceType:  provider.User.Notification.DeviceType,
+				IsEnabled:   provider.User.Notification.IsEnabled,
 			},
 			CreatedAt: provider.CreatedAt,
 			UpdatedAt: provider.UpdatedAt,
