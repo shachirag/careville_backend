@@ -330,7 +330,9 @@ definitions:
       consultationFees:
         type: string
       slots:
-        $ref: '#/definitions/services.Slots'
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
     type: object
   services.DoctorScheduleRes:
     properties:
@@ -485,7 +487,7 @@ definitions:
         type: string
       schedule:
         items:
-          $ref: '#/definitions/services.PhysiotherapistSchedule'
+          $ref: '#/definitions/services.MedicalLabScientistSchedule'
         type: array
     type: object
   services.MedicalLabScientistResDto:
@@ -494,6 +496,17 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.MedicalLabScientistSchedule:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: string
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
     type: object
   services.MiscRes:
     properties:
@@ -546,7 +559,9 @@ definitions:
       serviceFees:
         type: string
       slots:
-        $ref: '#/definitions/services.Slots'
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
     type: object
   services.PharmacyReqDto:
     properties:
@@ -608,7 +623,9 @@ definitions:
       serviceFees:
         type: string
       slots:
-        $ref: '#/definitions/services.Slots'
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
     type: object
   services.Schedule:
     properties:

@@ -246,17 +246,22 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	}
 
 	// Parse and add DoctorSchedule data
+	// Parse and add DoctorSchedule data
 	var schedule []entity.DoctorSchedule
 	for _, scheduleItem := range data.DoctorProfessionReqDto.Schedule {
+		var slots []entity.Slots
+		for _, slot := range scheduleItem.Slots {
+			scheduleSlot := entity.Slots{ 
+				StartTime: slot.StartTime,
+				EndTime:   slot.EndTime,
+				Days:      slot.Days,
+			}
+			slots = append(slots, scheduleSlot)
+		}
 		scheduleData := entity.DoctorSchedule{
 			ConsultationFees: scheduleItem.ConsultationFees,
-			Slots: entity.Slots{
-				StartTime: scheduleItem.Slots.StartTime,
-				EndTime:   scheduleItem.Slots.EndTime,
-				Days:      scheduleItem.Slots.Days,
-			},
+			Slots:            slots,
 		}
-
 		schedule = append(schedule, scheduleData)
 	}
 

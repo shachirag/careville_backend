@@ -1682,7 +1682,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "slots": {
-                    "$ref": "#/definitions/services.Slots"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
                 }
             }
         },
@@ -1921,7 +1924,7 @@ const docTemplate = `{
                 "schedule": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/services.PhysiotherapistSchedule"
+                        "$ref": "#/definitions/services.MedicalLabScientistSchedule"
                     }
                 }
             }
@@ -1934,6 +1937,23 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.MedicalLabScientistSchedule": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "string"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
                 }
             }
         },
@@ -2015,7 +2035,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "slots": {
-                    "$ref": "#/definitions/services.Slots"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
                 }
             }
         },
@@ -2110,7 +2133,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "slots": {
-                    "$ref": "#/definitions/services.Slots"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
                 }
             }
         },

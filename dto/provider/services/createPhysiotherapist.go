@@ -17,7 +17,7 @@ type PhysiotherapistReqDto struct {
 type PhysiotherapistSchedule struct {
 	Name        string `json:"name" bson:"name"`
 	ServiceFees string `json:"serviceFees" bson:"serviceFees"`
-	Slots       Slots  `json:"slots" bson:"slots"`
+	Slots       []Slots  `json:"slots" bson:"slots"`
 }
 
 type PhysiotherapistResDto struct {

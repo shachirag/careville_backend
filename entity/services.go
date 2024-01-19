@@ -156,7 +156,7 @@ type ProfessionalDetailsDocs struct {
 
 type DoctorSchedule struct {
 	ConsultationFees string `json:"consultationFees" bson:"consultationFees"`
-	Slots            Slots  `json:"slots" bson:"slots"`
+	Slots            []Slots  `json:"slots" bson:"slots"`
 }
 
 type Slots struct {
@@ -191,9 +191,9 @@ type ProfessionalDetails struct {
 }
 
 type ServiceAndSchedule struct {
-	Name        string `json:"name" bson:"name"`
-	ServiceFees string `json:"serviceFees" bson:"serviceFees"`
-	Slots       Slots  `json:"slots" bson:"slots"`
+	Name        string  `json:"name" bson:"name"`
+	ServiceFees string  `json:"serviceFees" bson:"serviceFees"`
+	Slots       []Slots `json:"slots" bson:"slots"`
 }
 
 type Physiotherapist struct {

@@ -30,7 +30,7 @@ type ProfessionalDetailsDocs struct {
 
 type DoctorSchedule struct {
 	ConsultationFees string `json:"consultationFees" bson:"consultationFees"`
-	Slots            Slots  `json:"slots" bson:"slots"`
+	Slots            []Slots  `json:"slots" bson:"slots"`
 }
 
 type Slots struct {

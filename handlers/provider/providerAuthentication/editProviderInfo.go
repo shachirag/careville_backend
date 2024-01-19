@@ -84,9 +84,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"hospClinic.information.additionalText": data.AdditionalText,
 			"hospClinic.information.address": providerAuth.Address{
@@ -102,9 +102,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"laboratory.information.additionalText": data.AdditionalText,
 			"laboratory.information.address": providerAuth.Address{
@@ -120,9 +120,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"fitnessCenter.information.additionalText": data.AdditionalText,
 			"fitnessCenter.information.address": providerAuth.Address{
@@ -138,9 +138,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"pharmacy.information.additionalText": data.AdditionalText,
 			"pharmacy.information.address": providerAuth.Address{
@@ -156,9 +156,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"medicalLabScientist.information.additionalText": data.AdditionalText,
 			"medicalLabScientist.information.address": providerAuth.Address{
@@ -174,9 +174,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"nurse.information.additionalText": data.AdditionalText,
 			"nurse.information.address": providerAuth.Address{
@@ -192,9 +192,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"doctor.information.additionalText": data.AdditionalText,
 			"doctor.information.address": providerAuth.Address{
@@ -210,9 +210,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
 			"user.phoneNumber": bson.M{
-				"user.phoneNumber.dialCode":    data.DialCode,
-				"user.phoneNumber.number":      data.PhoneNumber,
-				"user.phoneNumber.countryCode": data.CountryCode,
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
 			},
 			"physiotherapist.information.additionalText": data.AdditionalText,
 			"physiotherapist.information.address": providerAuth.Address{

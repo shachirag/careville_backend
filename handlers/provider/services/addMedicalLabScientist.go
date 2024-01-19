@@ -247,14 +247,19 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 
 	var schedule []entity.ServiceAndSchedule
 	for _, scheduleItem := range data.MedicalLabScientistReqDto.Schedule {
+		var slots []entity.Slots
+		for _, slot := range scheduleItem.Slots {
+			scheduleSlot := entity.Slots{
+				StartTime: slot.StartTime,
+				EndTime:   slot.EndTime,
+				Days:      slot.Days,
+			}
+			slots = append(slots, scheduleSlot)
+		}
 		scheduleData := entity.ServiceAndSchedule{
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
-			Slots: entity.Slots{
-				StartTime: scheduleItem.Slots.StartTime,
-				EndTime:   scheduleItem.Slots.EndTime,
-				Days:      scheduleItem.Slots.Days,
-			},
+			Slots:       slots,
 		}
 
 		schedule = append(schedule, scheduleData)
