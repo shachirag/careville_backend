@@ -21,7 +21,6 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param serviceId path string true "service ID"
 // @Param doctorId path string true "doctor ID"
 // @Produce json
 // @Success 200 {object} services.DoctorResDto

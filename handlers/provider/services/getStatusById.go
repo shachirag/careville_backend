@@ -18,7 +18,6 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param id path string true "service ID"
 // @Produce json
 // @Success 200 {object} services.StatusRes
 // @Router /provider/services/get-status/{id} [get]

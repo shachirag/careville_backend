@@ -427,6 +427,30 @@ definitions:
       status:
         type: boolean
     type: object
+  services.InvestigationRes:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  services.InvestigationResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.InvestigationRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.Investigations:
     properties:
       information:
@@ -1028,18 +1052,6 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: hospitalImage
-        in: formData
-        name: hospitalImage
-        type: file
-      - description: certificate
-        in: formData
-        name: certificate
-        type: file
-      - description: license
-        in: formData
-        name: license
-        type: file
       produces:
       - application/json
       responses:
@@ -1165,6 +1177,33 @@ paths:
       summary: Add nurse
       tags:
       - services
+  /provider/services/add-other-services:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add HospitalClinic
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - collectionFormat: csv
+        in: formData
+        items:
+          type: string
+        name: otherServices
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorResDto'
+      summary: Add other services
+      tags:
+      - services
   /provider/services/add-pharmacy:
     post:
       consumes:
@@ -1254,11 +1293,6 @@ paths:
         in: query
         name: speciality
         type: string
-      - description: service ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -1280,11 +1314,6 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: service ID
-        in: path
-        name: serviceId
-        required: true
-        type: string
       - description: doctor ID
         in: path
         name: doctorId
@@ -1298,6 +1327,57 @@ paths:
           schema:
             $ref: '#/definitions/services.DoctorResDto'
       summary: Get Doctor info
+      tags:
+      - services
+  /provider/services/get-investigation-info/{investigationId}:
+    get:
+      consumes:
+      - application/json
+      description: Get investigation info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: investigation ID
+        in: path
+        name: investigationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: Get investigation info
+      tags:
+      - services
+  /provider/services/get-investigations:
+    get:
+      consumes:
+      - application/json
+      description: GetAllDoctors
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter by speciality
+        in: query
+        name: speciality
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.InvestigationResDto'
+      summary: GetAllDoctors
       tags:
       - services
   /provider/services/get-misc-data:
@@ -1330,11 +1410,6 @@ paths:
       - description: Authentication header
         in: header
         name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: path
-        name: id
         required: true
         type: string
       produces:
@@ -1389,9 +1464,9 @@ paths:
       - multipart/form-data
       description: Update Doctor Profile Image
       parameters:
-      - description: service ID
+      - description: doctor ID
         in: path
-        name: serviceId
+        name: doctrId
         required: true
         type: string
       - description: Authentication header

@@ -19,7 +19,7 @@ import (
 // @Description Update Doctor Profile Image
 // @Tags services
 // @Accept multipart/form-data
-// @Param serviceId path string true "service ID"
+// @Param doctrId path string true "doctor ID"
 //
 //	@Param Authorization header	string true	"Authentication header"
 //

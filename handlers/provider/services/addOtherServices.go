@@ -8,25 +8,24 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// @Summary Add HospitalClinic
+// @Summary Add other services
 // @Tags services
 // @Description Add HospitalClinic
 // @Accept multipart/form-data
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param  provider formData services.HospitalClinicRequestDto true "add HospitalClinic"
+// @Param  provider formData services.OtherServiceReqDto true "add HospitalClinic"
 // @Produce json
-// @Success 200 {object} services.HospitalClinicResDto
-// @Router /provider/services/add-hospitalClinic [post]
-func AddMoreDoctors(c *fiber.Ctx) error {
+// @Success 200 {object} services.UpdateDoctorResDto
+// @Router /provider/services/add-other-services [post]
+func AddServices(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
-		data         services.MoreDoctorReqDto
+		data         services.OtherServiceReqDto
 		provider     entity.ServiceEntity
 	)
 
@@ -59,27 +58,10 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 		})
 	}
 
-	var schedule []entity.Schedule
-	for _, inv := range data.Schedule {
-		convertedInv := entity.Schedule{
-			StartTime: inv.StartTime,
-			EndTime:   inv.EndTime,
-			Days:      inv.Days,
-		}
-		schedule = append(schedule, convertedInv)
-	}
-
 	update := bson.M{
 		"$addToSet": bson.M{
-			"hospClinic.doctor": bson.M{
-				"$each": []entity.Doctor{
-					{
-						Id:         primitive.NewObjectID(),
-						Name:       data.Name,
-						Speciality: data.Speciality,
-						Schedule:   schedule,
-					},
-				},
+			"hospClinic.otherServices": bson.M{
+				"$each": data.OtherServices,
 			},
 		},
 	}
@@ -101,7 +83,7 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 
 	hospClinicRes := services.HospitalClinicResDto{
 		Status:  true,
-		Message: "doctor added successfully",
+		Message: "other services added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

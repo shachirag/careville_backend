@@ -95,57 +95,89 @@ func UpdateImage(c *fiber.Ctx) error {
 	if providers.Role == "healthFacility" && providers.FacilityOrProfession == "hospClinic" {
 		update = bson.M{
 			"$set": bson.M{
-				"hospClinic.information.image": imageURL,
-				"updatedAt":                    time.Now().UTC(),
+				"hospClinic": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthFacility" && providers.FacilityOrProfession == "laboratory" {
 		update = bson.M{
 			"$set": bson.M{
-				"laboratory.information.image": imageURL,
-				"updatedAt":                    time.Now().UTC(),
+				"laboratory": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthFacility" && providers.FacilityOrProfession == "fitnessCenter" {
 		update = bson.M{
 			"$set": bson.M{
-				"fitnessCenter.information.image": imageURL,
-				"updatedAt":                       time.Now().UTC(),
+				"fitnessCenter": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthFacility" && providers.FacilityOrProfession == "pharmacy" {
 		update = bson.M{
 			"$set": bson.M{
-				"pharmacy.information.image": imageURL,
-				"updatedAt":                  time.Now().UTC(),
+				"pharmacy": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "medicalLabScientist" {
 		update = bson.M{
 			"$set": bson.M{
-				"medicalLabScientist.information.image": imageURL,
-				"updatedAt":                             time.Now().UTC(),
+				"medicalLabScientist": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "nurse" {
 		update = bson.M{
 			"$set": bson.M{
-				"nurse.information.image": imageURL,
-				"updatedAt":               time.Now().UTC(),
+				"doctor": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "doctor" {
 		update = bson.M{
 			"$set": bson.M{
-				"doctor.information.image": imageURL,
-				"updatedAt":                time.Now().UTC(),
+				"doctor": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	} else if providers.Role == "healthProfessional" && providers.FacilityOrProfession == "physiotherapist" {
 		update = bson.M{
 			"$set": bson.M{
-				"physiotherapist.information.image": imageURL,
-				"updatedAt":                         time.Now().UTC(),
+				"physiotherapist": bson.M{
+					"information": bson.M{
+						"image": imageURL,
+					},
+				},
+				"updatedAt": time.Now().UTC(),
 			},
 		}
 	}

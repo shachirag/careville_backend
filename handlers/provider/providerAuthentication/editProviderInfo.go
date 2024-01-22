@@ -88,7 +88,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"hospClinic.information.additionalText": data.AdditionalText,
+			"hospClinic": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"hospClinic.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -106,7 +112,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"laboratory.information.additionalText": data.AdditionalText,
+			"laboratory": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"laboratory.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -124,7 +136,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"fitnessCenter.information.additionalText": data.AdditionalText,
+			"fitnessCenter": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"fitnessCenter.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -142,7 +160,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"pharmacy.information.additionalText": data.AdditionalText,
+			"pharmacy": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"pharmacy.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -160,7 +184,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"medicalLabScientist.information.additionalText": data.AdditionalText,
+			"medicalLabScientist": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"medicalLabScientist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -178,7 +208,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"nurse.information.additionalText": data.AdditionalText,
+			"nurse": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"nurse.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -196,7 +232,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"doctor.information.additionalText": data.AdditionalText,
+			"doctor": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"doctor.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -214,7 +256,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"physiotherapist.information.additionalText": data.AdditionalText,
+			"physiotherapist": bson.M{
+				"information": bson.M{
+					"additionalText": entity.Information{
+						AdditionalText: data.AdditionalText,
+					},
+				},
+			},
 			"physiotherapist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",

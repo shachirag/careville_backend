@@ -485,24 +485,6 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "hospitalImage",
-                        "name": "hospitalImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "certificate",
-                        "name": "certificate",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "license",
-                        "name": "license",
-                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -689,6 +671,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-other-services": {
+            "post": {
+                "description": "Add HospitalClinic",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add other services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "otherServices",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-pharmacy": {
             "post": {
                 "description": "Add pharmacy",
@@ -827,13 +850,6 @@ const docTemplate = `{
                         "description": "Filter by speciality",
                         "name": "speciality",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -869,13 +885,6 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "service ID",
-                        "name": "serviceId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "doctor ID",
                         "name": "doctorId",
                         "in": "path",
@@ -887,6 +896,83 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-investigation-info/{investigationId}": {
+            "get": {
+                "description": "Get investigation info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Get investigation info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "investigation ID",
+                        "name": "investigationId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-investigations": {
+            "get": {
+                "description": "GetAllDoctors",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "GetAllDoctors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by speciality",
+                        "name": "speciality",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.InvestigationResDto"
                         }
                     }
                 }
@@ -943,13 +1029,6 @@ const docTemplate = `{
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "id",
-                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1034,8 +1113,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "service ID",
-                        "name": "serviceId",
+                        "description": "doctor ID",
+                        "name": "doctrId",
                         "in": "path",
                         "required": true
                     },
@@ -1824,6 +1903,43 @@ const docTemplate = `{
         "services.HospitalClinicResDto": {
             "type": "object",
             "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.InvestigationRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.InvestigationResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.InvestigationRes"
+                    }
+                },
                 "message": {
                     "type": "string"
                 },

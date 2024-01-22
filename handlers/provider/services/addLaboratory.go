@@ -177,6 +177,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 	var investigations []entity.Investigations
 	for _, inv := range data.LaboratoryReqDto.Investigations {
 		convertedInv := entity.Investigations{
+			Id:          primitive.NewObjectID(),
 			Type:        inv.Type,
 			Name:        inv.Name,
 			Information: inv.Information,

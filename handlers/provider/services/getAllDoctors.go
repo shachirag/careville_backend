@@ -21,7 +21,6 @@ import (
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param speciality query string false "Filter by speciality"
-// @Param id path string true "service ID"
 // @Produce json
 // @Success 200 {object} services.DoctorResDto
 // @Router /provider/services/get-all-doctors [get]

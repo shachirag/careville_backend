@@ -50,8 +50,12 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	// provider.Put("/change-status/:id", jwt, services.ChangeStatus)
 	providerServices.Get("/get-status", services.FetchStatusById)
 	providerServices.Get("/get-all-doctors", services.GetAllDoctors)
+	providerServices.Get("/get-investigations", services.GetInvestigations)
+	providerServices.Post("/add-more-doctor", services.AddMoreDoctors)
 	providerServices.Get("/get-doctor-info/:doctorId", services.GetDoctorsInfo)
+	providerServices.Get("/get-investigation-info/:investigationId", services.GetInvesitagtionInfo)
 	providerServices.Put("/update-doctor-image/:doctorId", services.UpdateDoctorImage)
+	providerServices.Post("/add-other-services", services.AddServices)
 	providerServices.Put("/update-doctor-info/:doctorId", services.UpdateDoctorInfo)
 
 }

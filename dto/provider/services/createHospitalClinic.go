@@ -59,6 +59,10 @@ type MoreDoctorReqDto struct {
 	Schedule   []Schedule `json:"schedule" form:"schedule"`
 }
 
+type OtherServiceReqDto struct {
+	OtherServices []string `json:"otherServices" form:"otherServices"`
+}
+
 // type Schedule struct {
 // 	StartTime string   `json:"startTime" form:"startTime"`
 // 	EndTime   string   `json:"endTime" form:"endTime"`

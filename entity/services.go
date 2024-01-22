@@ -119,10 +119,11 @@ type Laboratory struct {
 }
 
 type Investigations struct {
-	Type        string  `json:"type" bson:"type"`
-	Name        string  `json:"name" bson:"name"`
-	Information string  `json:"information" bson:"information"`
-	Price       float64 `json:"price" bson:"price"`
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Type        string             `json:"type" bson:"type"`
+	Name        string             `json:"name" bson:"name"`
+	Information string             `json:"information" bson:"information"`
+	Price       float64            `json:"price" bson:"price"`
 }
 
 type Pharmacy struct {
@@ -155,8 +156,8 @@ type ProfessionalDetailsDocs struct {
 }
 
 type DoctorSchedule struct {
-	ConsultationFees string `json:"consultationFees" bson:"consultationFees"`
-	Slots            []Slots  `json:"slots" bson:"slots"`
+	ConsultationFees string  `json:"consultationFees" bson:"consultationFees"`
+	Slots            []Slots `json:"slots" bson:"slots"`
 }
 
 type Slots struct {
