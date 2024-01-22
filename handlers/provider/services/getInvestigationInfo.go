@@ -46,7 +46,7 @@ func GetInvesitagtionInfo(c *fiber.Ctx) error {
 
 	filter := bson.M{
 		"_id": providerData.ProviderId,
-		"hospClinic.doctor": bson.M{
+		"laboratory.investigations": bson.M{
 			"$elemMatch": bson.M{
 				"id": investigationObjID,
 			},
@@ -84,7 +84,7 @@ func GetInvesitagtionInfo(c *fiber.Ctx) error {
 		})
 	}
 
-	var investigationRes services.InvestigationRes
+	var investigationsRes services.InvestigationRes
 
 	for _, investigation := range service.Laboratory.Investigations {
 		if investigation.Id == investigationObjID {
@@ -96,7 +96,7 @@ func GetInvesitagtionInfo(c *fiber.Ctx) error {
 				Price:       investigation.Price,
 			}
 
-			investigationRes = investigationRes
+			investigationsRes = investigationRes
 			break
 		}
 	}
@@ -104,6 +104,6 @@ func GetInvesitagtionInfo(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(services.GetInvestigationResDto{
 		Status:  true,
 		Message: "investigation retrieved successfully",
-		Data:    investigationRes,
+		Data:    investigationsRes,
 	})
 }
