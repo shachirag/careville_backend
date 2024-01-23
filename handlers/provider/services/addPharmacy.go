@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -33,7 +35,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
 		data         services.PharmacyRequestDto
-		pharmacy     entity.ServiceEntity
+		pharmacy     subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -176,9 +178,9 @@ func AddPharmacy(c *fiber.Ctx) error {
 		})
 	}
 
-	var additionalServices []entity.AdditionalServices
+	var additionalServices []subEntity.AdditionalServicesUpdateServiceSubEntity
 	for _, inv := range data.PharmacyReqDto.AdditionalServices {
-		convertedInv := entity.AdditionalServices{
+		convertedInv := subEntity.AdditionalServicesUpdateServiceSubEntity{
 			Name:        inv.Name,
 			Information: inv.Information,
 		}
@@ -194,35 +196,40 @@ func AddPharmacy(c *fiber.Ctx) error {
 		certificate = pharmacy.Pharmacy.Documents.Certificate
 	}
 
-	pharmacyData := entity.Pharmacy{
-		Information: entity.Information{
+	pharmacyData := subEntity.PharmacyUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PharmacyReqDto.InformationName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
 			Image:          pharmacyImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PharmacyReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		Documents: entity.Documents{
+		Documents: subEntity.DocumentsUpdateServiceSubEntity{
 			Certificate: certificate,
 			License:     licenseDoc,
 		},
 		AdditionalServices: additionalServices,
 	}
 
-	pharmacy = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	pharmacy = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "pharmacy",
 		ServiceStatus:        "pending",
 		Pharmacy:             &pharmacyData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, pharmacy)
+	pharmacyUpdate := bson.M{"$set": pharmacy}
+
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, pharmacyUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.PharmacyResDto{
 			Status:  false,

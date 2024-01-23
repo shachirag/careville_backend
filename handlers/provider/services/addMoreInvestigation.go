@@ -12,28 +12,28 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// @Summary Add AddMoreDoctors
+// @Summary Add more investigations
 // @Tags services
-// @Description Add AddMoreDoctors
+// @Description Add more investigations
 // @Accept multipart/form-data
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param  provider body services.MoreDoctorReqDto true "add AddMoreDoctors"
+// @Param  provider body services.HospitalClinicRequestDto true "add investigation"
 // @Produce json
-// @Success 200 {object} services.UpdateDoctorResDto
-// @Router /provider/services/add-more-doctor [post]
-func AddMoreDoctors(c *fiber.Ctx) error {
+// @Success 200 {object} services.InvestigationResponseDto
+// @Router /provider/services/add-more-investigation [post]
+func AddMoreInvestigstions(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
-		data         services.MoreDoctorReqDto
+		data         services.InvestigationReqDto
 		provider     entity.ServiceEntity
 	)
 
 	// Parsing the request body
 	err := c.BodyParser(&data)
 	if err != nil {
-		return c.Status(500).JSON(services.UpdateDoctorResDto{
+		return c.Status(500).JSON(services.InvestigationResponseDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -59,25 +59,16 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 		})
 	}
 
-	var schedule []entity.Schedule
-	for _, inv := range data.Schedule {
-		convertedInv := entity.Schedule{
-			StartTime: inv.StartTime,
-			EndTime:   inv.EndTime,
-			Days:      inv.Days,
-		}
-		schedule = append(schedule, convertedInv)
-	}
-
 	update := bson.M{
 		"$addToSet": bson.M{
-			"hospClinic.doctor": bson.M{
-				"$each": []entity.Doctor{
+			"laboratory.investigations": bson.M{
+				"$each": []entity.Investigations{
 					{
-						Id:         primitive.NewObjectID(),
-						Name:       data.Name,
-						Speciality: data.Speciality,
-						Schedule:   schedule,
+						Id:          primitive.NewObjectID(),
+						Name:        data.Name,
+						Type:        data.Type,
+						Information: data.Information,
+						Price:       data.Price,
 					},
 				},
 			},
@@ -86,22 +77,22 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 
 	updateRes, err := servicesColl.UpdateOne(ctx, filter, update)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.InvestigationResponseDto{
 			Status:  false,
 			Message: "Failed to update provider data in MongoDB: " + err.Error(),
 		})
 	}
 
 	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.HospitalClinicResDto{
+		return c.Status(fiber.StatusNotFound).JSON(services.InvestigationResponseDto{
 			Status:  false,
 			Message: "provider not found",
 		})
 	}
 
-	hospClinicRes := services.HospitalClinicResDto{
+	hospClinicRes := services.InvestigationResponseDto{
 		Status:  true,
-		Message: "doctor added successfully",
+		Message: "investigation added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -35,7 +37,7 @@ func AddNurse(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
 		data         services.NurseRequestDto
-		nurse        entity.ServiceEntity
+		nurse        subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -246,18 +248,18 @@ func AddNurse(c *fiber.Ctx) error {
 
 	// Parse and add DoctorSchedule data
 	// Parse and add NurseSchedule data
-	var schedule []entity.ServiceAndSchedule
+	var schedule []subEntity.ServiceAndScheduleUpdateServiceSubEntity
 	for _, scheduleItem := range data.NurseReqDto.Schedule {
-		var slots []entity.Slots
+		var slots []subEntity.SlotsUpdateServiceSubEntity
 		for _, slot := range scheduleItem.Slots {
-			scheduleSlot := entity.Slots{
+			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
 				StartTime: slot.StartTime,
 				EndTime:   slot.EndTime,
 				Days:      slot.Days,
 			}
 			slots = append(slots, scheduleSlot)
 		}
-		scheduleData := entity.ServiceAndSchedule{
+		scheduleData := subEntity.ServiceAndScheduleUpdateServiceSubEntity{
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
 			Slots:       slots,
@@ -283,46 +285,51 @@ func AddNurse(c *fiber.Ctx) error {
 		professionalCertificate = nurse.Nurse.ProfessionalDetailsDocs.Certificate
 	}
 
-	NurseData := entity.Nurse{
-		Information: entity.Information{
+	NurseData := subEntity.NurseUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.NurseReqDto.InformationName,
 			AdditionalText: data.NurseReqDto.AdditionalText,
 			Image:          nurseImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.NurseReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		ProfessionalDetails: entity.ProfessionalDetails{
+		ProfessionalDetails: subEntity.ProfessionalDetailsUpdateServiceSubEntity{
 			Qualifications: data.NurseReqDto.Qualifications,
 		},
-		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+		PersonalIdentificationDocs: subEntity.PersonalIdentificationDocsUpdateServiceSubEntity{
 			Nimc:    nimcDoc,
 			License: personalLicense,
 		},
-		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+		ProfessionalDetailsDocs: subEntity.ProfessionalDetailsDocsUpdateServiceSubEntity{
 			Certificate: professionalCertificate,
 			License:     professionalLicense,
 		},
 		Schedule: schedule,
 	}
 
-	nurse = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	nurse = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "nurse",
 		ServiceStatus:        "pending",
 		Nurse:                &NurseData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, nurse)
+	nurseUpdate := bson.M{"$set": nurse}
+
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, nurseUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.NurseResDto{
 			Status:  false,
-			Message: "Failed to insert doctor profession data into MongoDB: " + err.Error(),
+			Message: "Failed to insert nurse data into MongoDB: " + err.Error(),
 		})
 	}
 

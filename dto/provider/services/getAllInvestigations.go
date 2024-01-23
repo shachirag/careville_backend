@@ -22,6 +22,18 @@ type GetInvestigationResDto struct {
 	Data    InvestigationRes `json:"data" bson:"data"`
 }
 
+type InvestigationReqDto struct {
+	Type        string  `json:"type" bson:"type"`
+	Name        string  `json:"name" bson:"name"`
+	Information string  `json:"information" bson:"information"`
+	Price       float64 `json:"price" bson:"price"`
+}
+
+type InvestigationResponseDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+}
+
 // type MoreDoctorReqDto struct {
 // 	Name       string     `json:"name" form:"name"`
 // 	Speciality string     `json:"speciality" form:"speciality"`

@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -35,7 +37,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 	var (
 		servicesColl        = database.GetCollection("service")
 		data                services.MedicalLabScientistRequestDto
-		medicalLabScientist entity.ServiceEntity
+		medicalLabScientist subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -245,18 +247,18 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		})
 	}
 
-	var schedule []entity.ServiceAndSchedule
+	var schedule []subEntity.ServiceAndScheduleUpdateServiceSubEntity
 	for _, scheduleItem := range data.MedicalLabScientistReqDto.Schedule {
-		var slots []entity.Slots
+		var slots []subEntity.SlotsUpdateServiceSubEntity
 		for _, slot := range scheduleItem.Slots {
-			scheduleSlot := entity.Slots{
+			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
 				StartTime: slot.StartTime,
 				EndTime:   slot.EndTime,
 				Days:      slot.Days,
 			}
 			slots = append(slots, scheduleSlot)
 		}
-		scheduleData := entity.ServiceAndSchedule{
+		scheduleData := subEntity.ServiceAndScheduleUpdateServiceSubEntity{
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
 			Slots:       slots,
@@ -282,51 +284,56 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		professionalCertificate = medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate
 	}
 
-	MedicalLabScientistData := entity.MedicalLabScientist{
-		Information: entity.Information{
+	MedicalLabScientistData := subEntity.MedicalLabScientistUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.MedicalLabScientistReqDto.InformationName,
 			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
 			Image:          medicalLabScientistImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.MedicalLabScientistReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		PersonalDetails: entity.PersonalDetails{
+		PersonalDetails: subEntity.PersonalDetailsUpdateServiceSubEntity{
 			Department: data.MedicalLabScientistReqDto.Department,
 			Document:   data.MedicalLabScientistReqDto.Document,
 		},
-		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+		PersonalIdentificationDocs: subEntity.PersonalIdentificationDocsUpdateServiceSubEntity{
 			Nimc:    nimcDoc,
 			License: personalLicense,
 		},
-		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+		ProfessionalDetailsDocs: subEntity.ProfessionalDetailsDocsUpdateServiceSubEntity{
 			Certificate: professionalCertificate,
 			License:     professionalLicense,
 		},
 		ServiceAndSchedule: schedule,
 	}
 
-	medicalLabScientist = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	medicalLabScientist = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "medicalLabScientist",
 		ServiceStatus:        "pending",
 		MedicalLabScientist:  &MedicalLabScientistData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, medicalLabScientist)
+	medicalLabScientistUpdate := bson.M{"$set": medicalLabScientist}
+
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, medicalLabScientistUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
-			Message: "Failed to insert   medicalLabScientist data into MongoDB: " + err.Error(),
+			Message: "Failed to insert medicalLabScientist data into MongoDB: " + err.Error(),
 		})
 	}
 
-	fitnessRes := services.NurseResDto{
+	fitnessRes := services.MedicalLabScientistResDto{
 		Status:  true,
 		Message: "medicalLabScientist added successfully",
 	}

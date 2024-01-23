@@ -20,7 +20,6 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param speciality query string false "Filter by speciality"
 // @Produce json
 // @Success 200 {object} services.InvestigationResDto
 // @Router /provider/services/get-investigations [get]

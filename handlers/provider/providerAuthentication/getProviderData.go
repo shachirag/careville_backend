@@ -18,7 +18,6 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param id path string true "provider ID"
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
 // @Router /provider/profile/get-provider-info [get]

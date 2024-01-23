@@ -20,12 +20,11 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param id path string true "provider ID"
 // @Param provider formData providerAuth.UpdateProviderReqDto true "Update data of provider"
 // @Param newProviderImage formData file false "provider profile image"
 // @Produce json
 // @Success 200 {object} providerAuth.UpdateProviderResDto
-// @Router /provider/profile/update-provider-data [put]
+// @Router /provider/profile/update-provider-info [put]
 func UpdateProvider(c *fiber.Ctx) error {
 
 	var (
@@ -88,13 +87,7 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"hospClinic": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"hospClinic.information.additionalText": data.AdditionalText,
 			"hospClinic.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -112,13 +105,7 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"laboratory": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"laboratory.information.additionalText": data.AdditionalText,
 			"laboratory.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -136,13 +123,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"fitnessCenter": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"fitnessCenter.information.additionalText": data.AdditionalText,
+
 			"fitnessCenter.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -160,13 +142,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"pharmacy": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"pharmacy.information.additionalText": data.AdditionalText,
+
 			"pharmacy.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -184,13 +161,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"medicalLabScientist": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"medicalLabScientist.information.additionalText": data.AdditionalText,
+
 			"medicalLabScientist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -208,13 +180,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"nurse": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"nurse.information.additionalText": data.AdditionalText,
+
 			"nurse.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -232,13 +199,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"doctor": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"doctor.information.additionalText": data.AdditionalText,
+
 			"doctor.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -256,13 +218,8 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
-			"physiotherapist": bson.M{
-				"information": bson.M{
-					"additionalText": entity.Information{
-						AdditionalText: data.AdditionalText,
-					},
-				},
-			},
+			"physiotherapist.information.additionalText": data.AdditionalText,
+
 			"physiotherapist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",

@@ -8,11 +8,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -36,7 +38,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
 		data         services.HospitalClinicRequestDto
-		hospClinic   entity.ServiceEntity
+		hospClinic   subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -180,18 +182,18 @@ func AddHospClinic(c *fiber.Ctx) error {
 	}
 
 	// Convert Doctor data from request into the required structure
-	doctors := make([]entity.Doctor, len(data.HospitalClinicReqDto.Doctor))
+	doctors := make([]subEntity.DoctorUpdateServiceSubEntity, len(data.HospitalClinicReqDto.Doctor))
 	for i, doc := range data.HospitalClinicReqDto.Doctor {
-		schedule := make([]entity.Schedule, len(doc.Schedule))
+		schedule := make([]subEntity.ScheduleUpdateServiceSubEntity, len(doc.Schedule))
 		for j, sch := range doc.Schedule {
-			schedule[j] = entity.Schedule{
+			schedule[j] = subEntity.ScheduleUpdateServiceSubEntity{
 				StartTime: sch.StartTime,
 				EndTime:   sch.EndTime,
 				Days:      sch.Days,
 			}
 		}
 
-		doctors[i] = entity.Doctor{
+		doctors[i] = subEntity.DoctorUpdateServiceSubEntity{
 			Id:         primitive.NewObjectID(),
 			Name:       doc.Name,
 			Speciality: doc.Speciality,
@@ -208,18 +210,18 @@ func AddHospClinic(c *fiber.Ctx) error {
 		certificate = hospClinic.HospClinic.Documents.Certificate
 	}
 
-	hospClinicData := entity.HospClinic{
-		Information: entity.Information{
+	hospClinicData := subEntity.HospClinicUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.HospitalClinicReqDto.InformationName,
 			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
 			Image:          hospitalImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.HospitalClinicReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		Documents: entity.Documents{
+		Documents: subEntity.DocumentsUpdateServiceSubEntity{
 			Certificate: certificate,
 			License:     licenseDoc,
 		},
@@ -228,17 +230,21 @@ func AddHospClinic(c *fiber.Ctx) error {
 		Doctor:        doctors,
 	}
 
-	hospClinic = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
-		Role:                 "hospitalFacility",
+	hospClinic = subEntity.UpdateServiceSubEntity{
+		Role:                 "healthFacility",
 		FacilityOrProfession: "hospClinic",
 		ServiceStatus:        "pending",
 		HospClinic:           &hospClinicData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
+	healthUpdate := bson.M{"$set": hospClinic}
 
-	_, err = servicesColl.InsertOne(ctx, hospClinic)
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, healthUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicResDto{
 			Status:  false,

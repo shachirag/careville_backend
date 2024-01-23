@@ -25,6 +25,11 @@ type ProviderData struct {
 	Address              Address            `json:"address" bson:"address"`
 	IsEmergencyAvailable bool               `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
 	Notification         Notification       `json:"notification" bson:"notification"`
+	Documents            Documents          `json:"documents" bson:"documents"`
+}
+
+type Documents struct {
+	
 }
 
 type Address struct {

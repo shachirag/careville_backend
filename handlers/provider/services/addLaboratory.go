@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -33,7 +35,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
 		data         services.LaboratoryRequestDto
-		laboratory   entity.ServiceEntity
+		laboratory   subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -174,9 +176,9 @@ func AddLaboratory(c *fiber.Ctx) error {
 		})
 	}
 
-	var investigations []entity.Investigations
+	var investigations []subEntity.InvestigationsUpdateServiceSubEntity
 	for _, inv := range data.LaboratoryReqDto.Investigations {
-		convertedInv := entity.Investigations{
+		convertedInv := subEntity.InvestigationsUpdateServiceSubEntity{
 			Id:          primitive.NewObjectID(),
 			Type:        inv.Type,
 			Name:        inv.Name,
@@ -195,39 +197,44 @@ func AddLaboratory(c *fiber.Ctx) error {
 		certificate = laboratory.Laboratory.Documents.Certificate
 	}
 
-	laboratoryData := entity.Laboratory{
-		Information: entity.Information{
+	laboratoryData := subEntity.LaboratoryUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.LaboratoryReqDto.InformationName,
 			AdditionalText: data.LaboratoryReqDto.AdditionalText,
 			Image:          laboratoryImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.LaboratoryReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		Documents: entity.Documents{
+		Documents: subEntity.DocumentsUpdateServiceSubEntity{
 			Certificate: certificate,
 			License:     licenseDoc,
 		},
 		Investigations: investigations,
 	}
 
-	laboratory = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	laboratory = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "laboratory",
 		ServiceStatus:        "pending",
 		Laboratory:           &laboratoryData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, laboratory)
+	laboratoryUpdate := bson.M{"$set": laboratory}
+
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, laboratoryUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.LaboratoryResDto{
 			Status:  false,
-			Message: "Failed to insert laboratory data into MongoDB: " + err.Error(),
+			Message: "Failed to insert laboratoryUpdate data into MongoDB: " + err.Error(),
 		})
 	}
 

@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -33,7 +35,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 	var (
 		servicesColl  = database.GetCollection("service")
 		data          services.FitnessCenterRequestDto
-		fitnessCenter entity.ServiceEntity
+		fitnessCenter subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -177,18 +179,18 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		})
 	}
 
-	var additionalServices []entity.AdditionalServices
+	var additionalServices []subEntity.AdditionalServicesUpdateServiceSubEntity
 	for _, inv := range data.FitnessCenterReqDto.AdditionalServices {
-		convertedInv := entity.AdditionalServices{
+		convertedInv := subEntity.AdditionalServicesUpdateServiceSubEntity{
 			Name:        inv.Name,
 			Information: inv.Information,
 		}
 		additionalServices = append(additionalServices, convertedInv)
 	}
 
-	var trainers []entity.Trainers
+	var trainers []subEntity.TrainersUpdateServiceSubEntity
 	for _, inv := range data.FitnessCenterReqDto.Trainers {
-		convertedInv := entity.Trainers{
+		convertedInv := subEntity.TrainersUpdateServiceSubEntity{
 			Category:    inv.Category,
 			Name:        inv.Name,
 			Information: inv.Information,
@@ -197,9 +199,9 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		trainers = append(trainers, convertedInv)
 	}
 
-	var subscription []entity.Subscription
+	var subscription []subEntity.SubscriptionUpdateServiceSubEntity
 	for _, inv := range data.FitnessCenterReqDto.Subscription {
-		convertedInv := entity.Subscription{
+		convertedInv := subEntity.SubscriptionUpdateServiceSubEntity{
 			Type:    inv.Type,
 			Details: inv.Details,
 			Price:   inv.Price,
@@ -216,18 +218,18 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		certificate = fitnessCenter.FitnessCenter.Documents.Certificate
 	}
 
-	fitnessCenterData := entity.FitnessCenter{
-		Information: entity.Information{
+	fitnessCenterData := subEntity.FitnessCenterUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.FitnessCenterReqDto.InformationName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
 			Image:          fitnessCenterImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.FitnessCenterReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		Documents: entity.Documents{
+		Documents: subEntity.DocumentsUpdateServiceSubEntity{
 			Certificate: certificate,
 			License:     licenseDoc,
 		},
@@ -236,17 +238,19 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		Subscription:       subscription,
 	}
 
-	fitnessCenter = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	fitnessCenter = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "fitnessCenter",
 		ServiceStatus:        "pending",
 		FitnessCenter:        &fitnessCenterData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, fitnessCenter)
+	fitnessCenterUpdate := bson.M{"$set": fitnessCenter}
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+	_, err = servicesColl.UpdateOne(ctx, filter, fitnessCenterUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.FitnessCenterResDto{
 			Status:  false,

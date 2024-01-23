@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -35,7 +37,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	var (
 		servicesColl     = database.GetCollection("service")
 		data             services.DoctorProfessionRequestDto
-		doctorProfession entity.ServiceEntity
+		doctorProfession subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -247,18 +249,18 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 
 	// Parse and add DoctorSchedule data
 	// Parse and add DoctorSchedule data
-	var schedule []entity.DoctorSchedule
+	var schedule []subEntity.DoctorScheduleUpdateServiceSubEntity
 	for _, scheduleItem := range data.DoctorProfessionReqDto.Schedule {
-		var slots []entity.Slots
+		var slots []subEntity.SlotsUpdateServiceSubEntity
 		for _, slot := range scheduleItem.Slots {
-			scheduleSlot := entity.Slots{ 
+			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
 				StartTime: slot.StartTime,
 				EndTime:   slot.EndTime,
 				Days:      slot.Days,
 			}
 			slots = append(slots, scheduleSlot)
 		}
-		scheduleData := entity.DoctorSchedule{
+		scheduleData := subEntity.DoctorScheduleUpdateServiceSubEntity{
 			ConsultationFees: scheduleItem.ConsultationFees,
 			Slots:            slots,
 		}
@@ -282,43 +284,45 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		professionalCertificate = doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate
 	}
 
-	doctorData := entity.DoctorEntityDto{
-		Information: entity.Information{
+	doctorData := subEntity.DoctorProfessionUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.DoctorProfessionReqDto.InformationName,
 			AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
 			Image:          doctoryImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.DoctorProfessionReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		AdditionalServices: entity.AdditionalService{
+		AdditionalServices: subEntity.AdditionalServiceUpdateServiceSubEntity{
 			Qualifications: data.DoctorProfessionReqDto.Qualifications,
 			Speciality:     data.DoctorProfessionReqDto.Speciality,
 		},
-		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+		PersonalIdentificationDocs: subEntity.PersonalIdentificationDocsUpdateServiceSubEntity{
 			Nimc:    nimcDoc,
 			License: personalLicense,
 		},
-		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+		ProfessionalDetailsDocs: subEntity.ProfessionalDetailsDocsUpdateServiceSubEntity{
 			Certificate: professionalCertificate,
 			License:     professionalLicense,
 		},
 		Schedule: schedule,
 	}
 
-	doctorProfession = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	doctorProfession = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "doctor",
 		ServiceStatus:        "pending",
 		Doctor:               &doctorData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, doctorProfession)
+	doctorProfessionUpdate := bson.M{"$set": doctorProfession}
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+	_, err = servicesColl.UpdateOne(ctx, filter, doctorProfessionUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
 			Status:  false,

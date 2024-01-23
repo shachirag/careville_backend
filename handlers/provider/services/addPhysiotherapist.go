@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"careville_backend/database"
+	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
-	"careville_backend/entity"
+	"careville_backend/entity/subEntity"
 	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -35,7 +37,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 	var (
 		servicesColl    = database.GetCollection("service")
 		data            services.PhysiotherapistRequestDto
-		physiotherapist entity.ServiceEntity
+		physiotherapist subEntity.UpdateServiceSubEntity
 	)
 
 	dataStr := c.FormValue("data")
@@ -246,18 +248,18 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 	}
 
 	// Parse and add NurseSchedule data
-	var schedule []entity.ServiceAndSchedule
+	var schedule []subEntity.ServiceAndScheduleUpdateServiceSubEntity
 	for _, scheduleItem := range data.PhysiotherapistReqDto.Schedule {
-		var slots []entity.Slots
+		var slots []subEntity.SlotsUpdateServiceSubEntity
 		for _, slot := range scheduleItem.Slots {
-			scheduleSlot := entity.Slots{
+			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
 				StartTime: slot.StartTime,
 				EndTime:   slot.EndTime,
 				Days:      slot.Days,
 			}
 			slots = append(slots, scheduleSlot)
 		}
-		scheduleData := entity.ServiceAndSchedule{
+		scheduleData := subEntity.ServiceAndScheduleUpdateServiceSubEntity{
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
 			Slots:       slots,
@@ -283,50 +285,55 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		professionalCertificate = physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate
 	}
 
-	physiotherapistData := entity.Physiotherapist{
-		Information: entity.Information{
+	physiotherapistData := subEntity.PhysiotherapistUpdateServiceSubEntity{
+		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PhysiotherapistReqDto.InformationName,
 			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
 			Image:          physiotherapistImage,
-			Address: entity.Address{
+			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PhysiotherapistReqDto.Address,
 				Type:        "Point",
 			},
 		},
-		ProfessionalDetails: entity.ProfessionalDetails{
+		ProfessionalDetails: subEntity.ProfessionalDetailsUpdateServiceSubEntity{
 			Qualifications: data.PhysiotherapistReqDto.Qualifications,
 		},
-		PersonalIdentificationDocs: entity.PersonalIdentificationDocs{
+		PersonalIdentificationDocs: subEntity.PersonalIdentificationDocsUpdateServiceSubEntity{
 			Nimc:    nimcDoc,
 			License: personalLicense,
 		},
-		ProfessionalDetailsDocs: entity.ProfessionalDetailsDocs{
+		ProfessionalDetailsDocs: subEntity.ProfessionalDetailsDocsUpdateServiceSubEntity{
 			Certificate: professionalCertificate,
 			License:     professionalLicense,
 		},
 		ServiceAndSchedule: schedule,
 	}
 
-	physiotherapist = entity.ServiceEntity{
-		Id:                   primitive.NewObjectID(),
+	physiotherapist = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "physiotherpist",
 		ServiceStatus:        "pending",
 		Physiotherapist:      &physiotherapistData,
-		CreatedAt:            time.Now().UTC(),
 		UpdatedAt:            time.Now().UTC(),
 	}
 
-	_, err = servicesColl.InsertOne(ctx, physiotherapist)
+	physiotherapistUpdate := bson.M{"$set": physiotherapist}
+
+	// Get provider data from middleware
+	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+
+	filter := bson.M{"_id": providerData.ProviderId}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, physiotherapistUpdate)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.PhysiotherapistResDto{
 			Status:  false,
-			Message: "Failed to insert Physiotherapist data into MongoDB: " + err.Error(),
+			Message: "Failed to insert physiotherapist data into MongoDB: " + err.Error(),
 		})
 	}
 
-	fitnessRes := services.NurseResDto{
+	fitnessRes := services.PhysiotherapistResDto{
 		Status:  true,
 		Message: "Physiotherapist added successfully",
 	}

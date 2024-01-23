@@ -110,13 +110,6 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "provider ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
                         "description": "Change password of provider",
                         "name": "provider",
                         "in": "body",
@@ -155,13 +148,6 @@ const docTemplate = `{
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "provider ID",
-                        "name": "id",
-                        "in": "path",
                         "required": true
                     }
                 ],
@@ -229,7 +215,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/profile/update-provider-data": {
+        "/provider/profile/update-provider-info": {
             "put": {
                 "description": "Update provider",
                 "consumes": [
@@ -248,13 +234,6 @@ const docTemplate = `{
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "provider ID",
-                        "name": "id",
-                        "in": "path",
                         "required": true
                     },
                     {
@@ -485,6 +464,24 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "hospitalImage",
+                        "name": "hospitalImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "certificate",
+                        "name": "certificate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "license",
+                        "name": "license",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -604,6 +601,88 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.MedicalLabScientistResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-more-doctor": {
+            "post": {
+                "description": "Add AddMoreDoctors",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add AddMoreDoctors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add AddMoreDoctors",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.MoreDoctorReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-more-investigation": {
+            "post": {
+                "description": "Add more investigations",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add more investigations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add investigation",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.HospitalClinicRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.InvestigationResponseDto"
                         }
                     }
                 }
@@ -960,12 +1039,6 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by speciality",
-                        "name": "speciality",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1005,6 +1078,38 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.MiscResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-other-services": {
+            "get": {
+                "description": "get other services for provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "get other services for provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.OtherServicesResDto"
                         }
                     }
                 }
@@ -1269,6 +1374,9 @@ const docTemplate = `{
                 }
             }
         },
+        "providerAuth.Documents": {
+            "type": "object"
+        },
         "providerAuth.GetProviderResDto": {
             "type": "object",
             "properties": {
@@ -1375,6 +1483,9 @@ const docTemplate = `{
                 },
                 "createdAt": {
                     "type": "string"
+                },
+                "documents": {
+                    "$ref": "#/definitions/providerAuth.Documents"
                 },
                 "email": {
                     "type": "string"
@@ -1900,6 +2011,14 @@ const docTemplate = `{
                 }
             }
         },
+        "services.HospitalClinicRequestDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.HospitalClinicReqDto"
+                }
+            }
+        },
         "services.HospitalClinicResDto": {
             "type": "object",
             "properties": {
@@ -1940,6 +2059,17 @@ const docTemplate = `{
                         "$ref": "#/definitions/services.InvestigationRes"
                     }
                 },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.InvestigationResponseDto": {
+            "type": "object",
+            "properties": {
                 "message": {
                     "type": "string"
                 },
@@ -2101,6 +2231,23 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MoreDoctorReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Schedule"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
         "services.NurseReqDto": {
             "type": "object",
             "properties": {
@@ -2155,6 +2302,31 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.Slots"
                     }
+                }
+            }
+        },
+        "services.OtherServicesRes": {
+            "type": "object",
+            "properties": {
+                "otherServices": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "services.OtherServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.OtherServicesRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },

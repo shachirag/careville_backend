@@ -18,7 +18,6 @@ import (
 // @Tags provider authorization
 // @Accept application/json
 // @Param Authorization header string true "Authentication header"
-// @Param id path string true "provider ID"
 // @Param provider body providerAuth.ProviderChangePasswordReqDto true "Change password of provider"
 // @Produce json
 // @Success 200 {object} providerAuth.ProviderChangePasswordResDto
