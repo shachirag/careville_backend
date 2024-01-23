@@ -577,6 +577,13 @@ definitions:
       speciality:
         type: string
     type: object
+  services.NotificationResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.NurseReqDto:
     properties:
       additionalText:
@@ -1372,6 +1379,31 @@ paths:
       summary: Add Physiotherapist
       tags:
       - services
+  /provider/services/change-notification:
+    put:
+      consumes:
+      - application/json
+      description: provider notification
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: isEnable value (true or false)
+        in: query
+        name: isEnable
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResDto'
+      summary: provider notification
+      tags:
+      - recovery homes in subadmin pannel
   /provider/services/get-all-doctors:
     get:
       consumes:

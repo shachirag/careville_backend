@@ -897,6 +897,44 @@
                 }
             }
         },
+        "/provider/services/change-notification": {
+            "put": {
+                "description": "provider notification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "recovery homes in subadmin pannel"
+                ],
+                "summary": "provider notification",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEnable value (true or false)",
+                        "name": "isEnable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-all-doctors": {
             "get": {
                 "description": "GetAllDoctors",
@@ -2239,6 +2277,17 @@
                 },
                 "speciality": {
                     "type": "string"
+                }
+            }
+        },
+        "services.NotificationResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },

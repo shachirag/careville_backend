@@ -42,3 +42,8 @@ type OtherServicesResDto struct {
 type OtherServicesRes struct {
 	OtherServices []string `json:"otherServices" bson:"otherServices"`
 }
+
+type NotificationResDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+}

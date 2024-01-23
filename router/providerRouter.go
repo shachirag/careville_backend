@@ -53,6 +53,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	providerServices.Get("/get-other-services", services.GetOtherServices)
 	providerServices.Get("/get-investigations", services.GetInvestigations)
 	providerServices.Post("/add-more-doctor", services.AddMoreDoctors)
+	providerServices.Put("/change-notification", services.ProviderNotification)
 	providerServices.Post("/add-more-investigation", services.AddMoreInvestigstions)
 	providerServices.Get("/get-investigation-info/:investigationId", services.GetInvesitagtionInfo)
 	providerServices.Get("/get-doctor-info/:doctorId", services.GetDoctorsInfo)
