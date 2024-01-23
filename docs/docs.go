@@ -913,7 +913,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "recovery homes in subadmin pannel"
+                    "services"
                 ],
                 "summary": "provider notification",
                 "parameters": [

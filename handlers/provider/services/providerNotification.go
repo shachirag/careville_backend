@@ -11,7 +11,7 @@ import (
 )
 
 // @Summary provider notification
-// @Tags recovery homes in subadmin pannel
+// @Tags services
 // @Description provider notification
 // @Accept json
 //

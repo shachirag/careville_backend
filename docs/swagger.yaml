@@ -1403,7 +1403,7 @@ paths:
             $ref: '#/definitions/services.NotificationResDto'
       summary: provider notification
       tags:
-      - recovery homes in subadmin pannel
+      - services
   /provider/services/get-all-doctors:
     get:
       consumes:
