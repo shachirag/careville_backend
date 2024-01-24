@@ -342,7 +342,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "doctorProfession"
                 ],
                 "summary": "Add doctorProfession",
                 "parameters": [
@@ -404,7 +404,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "fitnessCenter"
                 ],
                 "summary": "Add fitnessCenter",
                 "parameters": [
@@ -454,7 +454,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "Add HospitalClinic",
                 "parameters": [
@@ -504,7 +504,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "laboratory"
                 ],
                 "summary": "Add laboratory",
                 "parameters": [
@@ -554,7 +554,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "medicalLabScientist"
                 ],
                 "summary": "Add MedicalLabScientist",
                 "parameters": [
@@ -616,7 +616,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "Add AddMoreDoctors",
                 "parameters": [
@@ -657,7 +657,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "laboratory"
                 ],
                 "summary": "Add more investigations",
                 "parameters": [
@@ -688,6 +688,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-more-trainer": {
+            "post": {
+                "description": "Add more trainers",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Add more trainers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add trainer",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerResponseDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-nurse": {
             "post": {
                 "description": "Add nurse",
@@ -698,7 +739,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "nurse"
                 ],
                 "summary": "Add nurse",
                 "parameters": [
@@ -750,6 +791,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-other-service": {
+            "post": {
+                "description": "Add other service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pharmacy"
+                ],
+                "summary": "Add other service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add other services",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.AddPharmacyOtherServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePharmacyOtherServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-other-services": {
             "post": {
                 "description": "Add HospitalClinic",
@@ -760,7 +842,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "Add other services",
                 "parameters": [
@@ -801,7 +883,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "pharmacy"
                 ],
                 "summary": "Add pharmacy",
                 "parameters": [
@@ -851,7 +933,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "physiotherapist"
                 ],
                 "summary": "Add Physiotherapist",
                 "parameters": [
@@ -913,7 +995,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "providerCommonApis"
                 ],
                 "summary": "provider notification",
                 "parameters": [
@@ -951,7 +1033,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "GetAllDoctors",
                 "parameters": [
@@ -961,12 +1043,6 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by speciality",
-                        "name": "speciality",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -974,6 +1050,38 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-all-trainers": {
+            "get": {
+                "description": "Get all trainers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Get all trainers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerResDto"
                         }
                     }
                 }
@@ -989,7 +1097,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "Get Doctor info",
                 "parameters": [
@@ -1028,7 +1136,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "laboratory"
                 ],
                 "summary": "Get investigation info",
                 "parameters": [
@@ -1067,7 +1175,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "laboratory"
                 ],
                 "summary": "GetAllDoctors",
                 "parameters": [
@@ -1099,7 +1207,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "providerCommonApis"
                 ],
                 "summary": "Fetch All misc data",
                 "parameters": [
@@ -1121,9 +1229,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/services/get-other-services": {
+        "/provider/services/get-other-service-info/{otherServiceId}": {
             "get": {
-                "description": "get other services for provider",
+                "description": "Get other service info",
                 "consumes": [
                     "application/json"
                 ],
@@ -1131,9 +1239,48 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "pharmacy"
                 ],
-                "summary": "get other services for provider",
+                "summary": "Get other service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "other service ID",
+                        "name": "otherServiceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.PharmacyOtherServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-other-services": {
+            "get": {
+                "description": "Get other services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pharmacy"
+                ],
+                "summary": "Get other services",
                 "parameters": [
                     {
                         "type": "string",
@@ -1147,7 +1294,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.OtherServicesResDto"
+                            "$ref": "#/definitions/services.GetPharmacyOtherServicesResDto"
                         }
                     }
                 }
@@ -1163,7 +1310,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "providerCommonApis"
                 ],
                 "summary": "Fetch status By ID",
                 "parameters": [
@@ -1185,6 +1332,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/get-trainer-info/{trainerId}": {
+            "get": {
+                "description": "Get trainer info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Get trainer info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "trainer ID",
+                        "name": "trainerId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetTrainerResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/update-doctor-info/{doctorId}": {
             "put": {
                 "description": "Update doctor info",
@@ -1195,7 +1381,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "Update doctor info",
                 "parameters": [
@@ -1250,7 +1436,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "laboratory"
                 ],
                 "summary": "Update investigation info",
                 "parameters": [
@@ -1299,6 +1485,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/update-other-service-info/{otherServiceId}": {
+            "put": {
+                "description": "Update other service info",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pharmacy"
+                ],
+                "summary": "Update other service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of trainer",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePharmacyOtherServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePharmacyOtherServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/update-profile-image/{doctorId}": {
             "put": {
                 "description": "Update Doctor Profile Image",
@@ -1309,7 +1536,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "services"
+                    "hospClinic"
                 ],
                 "summary": "Update Doctor Profile Image",
                 "parameters": [
@@ -1348,6 +1575,54 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.UpdateDoctorImageResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/update-trainer-info/{trainerId}": {
+            "put": {
+                "description": "Update trainer info",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Update trainer info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "trainer ID",
+                        "name": "trainerId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of trainer",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateTrainerReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateTrainerResDto"
                         }
                     }
                 }
@@ -1856,6 +2131,17 @@ const docTemplate = `{
                 }
             }
         },
+        "services.AddPharmacyOtherServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "services.AdditionalServices": {
             "type": "object",
             "properties": {
@@ -2012,6 +2298,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.FitnessCenterOtherServiceResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.FitnessOtherServiceRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.FitnessCenterReqDto": {
             "type": "object",
             "properties": {
@@ -2053,6 +2353,68 @@ const docTemplate = `{
         "services.FitnessCenterResDto": {
             "type": "object",
             "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.FitnessOtherServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.GetFitnessOtherServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.FitnessOtherServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetPharmacyOtherServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.PharmacyOtherServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetTrainerResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.TrainerRes"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2455,6 +2817,34 @@ const docTemplate = `{
                 }
             }
         },
+        "services.PharmacyOtherServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.PharmacyOtherServiceResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.PharmacyOtherServiceRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.PharmacyReqDto": {
             "type": "object",
             "properties": {
@@ -2601,6 +2991,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.SpecialityTrainerRes": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "trainers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.TrainerRes"
+                    }
+                }
+            }
+        },
         "services.StatusRes": {
             "type": "object",
             "properties": {
@@ -2637,6 +3041,82 @@ const docTemplate = `{
                 },
                 "type": {
                     "type": "string"
+                }
+            }
+        },
+        "services.TrainerOtherServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.TrainerReqDto": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "services.TrainerRes": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "services.TrainerResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.SpecialityTrainerRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.TrainerResponseDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -2691,6 +3171,56 @@ const docTemplate = `{
             }
         },
         "services.UpdateInvestigationResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdatePharmacyOtherServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.UpdatePharmacyOtherServiceResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateTrainerReqDto": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "services.UpdateTrainerResDto": {
             "type": "object",
             "properties": {
                 "message": {

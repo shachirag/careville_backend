@@ -92,10 +92,11 @@ type FitnessCenterUpdateServiceSubEntity struct {
 }
 
 type TrainersUpdateServiceSubEntity struct {
-	Category    string  `json:"category" bson:"category"`
-	Name        string  `json:"name" bson:"name"`
-	Information string  `json:"information" bson:"information"`
-	Price       float64 `json:"price" bson:"price"`
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Category    string             `json:"category" bson:"category"`
+	Name        string             `json:"name" bson:"name"`
+	Information string             `json:"information" bson:"information"`
+	Price       float64            `json:"price" bson:"price"`
 }
 
 type SubscriptionUpdateServiceSubEntity struct {
@@ -105,8 +106,9 @@ type SubscriptionUpdateServiceSubEntity struct {
 }
 
 type AdditionalServicesUpdateServiceSubEntity struct {
-	Name        string `json:"name" bson:"name"`
-	Information string `json:"information" bson:"information"`
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Name        string             `json:"name" bson:"name"`
+	Information string             `json:"information" bson:"information"`
 }
 
 type LaboratoryUpdateServiceSubEntity struct {

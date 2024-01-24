@@ -95,10 +95,11 @@ type FitnessCenter struct {
 }
 
 type Trainers struct {
-	Category    string  `json:"category" bson:"category"`
-	Name        string  `json:"name" bson:"name"`
-	Information string  `json:"information" bson:"information"`
-	Price       float64 `json:"price" bson:"price"`
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Category    string             `json:"category" bson:"category"`
+	Name        string             `json:"name" bson:"name"`
+	Information string             `json:"information" bson:"information"`
+	Price       float64            `json:"price" bson:"price"`
 }
 
 type Subscription struct {
@@ -108,8 +109,9 @@ type Subscription struct {
 }
 
 type AdditionalServices struct {
-	Name        string `json:"name" bson:"name"`
-	Information string `json:"information" bson:"information"`
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Name        string             `json:"name" bson:"name"`
+	Information string             `json:"information" bson:"information"`
 }
 
 type Laboratory struct {

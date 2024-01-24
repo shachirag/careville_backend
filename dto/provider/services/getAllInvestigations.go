@@ -45,3 +45,5 @@ type UpdateInvestigationReqDto struct {
 	Information string  `json:"information" bson:"information"`
 	Price       float64 `json:"price" bson:"price"`
 }
+
+

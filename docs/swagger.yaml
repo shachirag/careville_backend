@@ -260,6 +260,13 @@ definitions:
       otp:
         type: string
     type: object
+  services.AddPharmacyOtherServiceReqDto:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+    type: object
   services.AdditionalServices:
     properties:
       information:
@@ -361,6 +368,15 @@ definitions:
           type: string
         type: array
     type: object
+  services.FitnessCenterOtherServiceResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.FitnessOtherServiceRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.FitnessCenterReqDto:
     properties:
       additionalServices:
@@ -388,6 +404,46 @@ definitions:
     type: object
   services.FitnessCenterResDto:
     properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.FitnessOtherServiceRes:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  services.GetFitnessOtherServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.FitnessOtherServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetPharmacyOtherServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.PharmacyOtherServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetTrainerResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.TrainerRes'
       message:
         type: string
       status:
@@ -648,6 +704,24 @@ definitions:
       status:
         type: boolean
     type: object
+  services.PharmacyOtherServiceRes:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  services.PharmacyOtherServiceResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.PharmacyOtherServiceRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.PharmacyReqDto:
     properties:
       additionalServices:
@@ -743,6 +817,15 @@ definitions:
       speciality:
         type: string
     type: object
+  services.SpecialityTrainerRes:
+    properties:
+      category:
+        type: string
+      trainers:
+        items:
+          $ref: '#/definitions/services.TrainerRes'
+        type: array
+    type: object
   services.StatusRes:
     properties:
       data:
@@ -767,6 +850,55 @@ definitions:
         type: number
       type:
         type: string
+    type: object
+  services.TrainerOtherServiceReqDto:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  services.TrainerReqDto:
+    properties:
+      category:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  services.TrainerRes:
+    properties:
+      category:
+        type: string
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  services.TrainerResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.SpecialityTrainerRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.TrainerResponseDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   services.Trainers:
     properties:
@@ -801,6 +933,38 @@ definitions:
         type: boolean
     type: object
   services.UpdateInvestigationResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdatePharmacyOtherServiceReqDto:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  services.UpdatePharmacyOtherServiceResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateTrainerReqDto:
+    properties:
+      category:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  services.UpdateTrainerResDto:
     properties:
       message:
         type: string
@@ -1060,7 +1224,7 @@ paths:
             $ref: '#/definitions/services.DoctorProfessionResDto'
       summary: Add doctorProfession
       tags:
-      - services
+      - doctorProfession
   /provider/services/add-fitness-center:
     post:
       consumes:
@@ -1093,7 +1257,7 @@ paths:
             $ref: '#/definitions/services.FitnessCenterResDto'
       summary: Add fitnessCenter
       tags:
-      - services
+      - fitnessCenter
   /provider/services/add-hospitalClinic:
     post:
       consumes:
@@ -1126,7 +1290,7 @@ paths:
             $ref: '#/definitions/services.HospitalClinicResDto'
       summary: Add HospitalClinic
       tags:
-      - services
+      - hospClinic
   /provider/services/add-laboratory:
     post:
       consumes:
@@ -1159,7 +1323,7 @@ paths:
             $ref: '#/definitions/services.LaboratoryResDto'
       summary: Add laboratory
       tags:
-      - services
+      - laboratory
   /provider/services/add-medicalLab-scientist:
     post:
       consumes:
@@ -1200,7 +1364,7 @@ paths:
             $ref: '#/definitions/services.MedicalLabScientistResDto'
       summary: Add MedicalLabScientist
       tags:
-      - services
+      - medicalLabScientist
   /provider/services/add-more-doctor:
     post:
       consumes:
@@ -1227,7 +1391,7 @@ paths:
             $ref: '#/definitions/services.UpdateDoctorResDto'
       summary: Add AddMoreDoctors
       tags:
-      - services
+      - hospClinic
   /provider/services/add-more-investigation:
     post:
       consumes:
@@ -1254,7 +1418,34 @@ paths:
             $ref: '#/definitions/services.InvestigationResponseDto'
       summary: Add more investigations
       tags:
-      - services
+      - laboratory
+  /provider/services/add-more-trainer:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add more trainers
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add trainer
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.TrainerReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.TrainerResponseDto'
+      summary: Add more trainers
+      tags:
+      - fitnessCenter
   /provider/services/add-nurse:
     post:
       consumes:
@@ -1295,7 +1486,34 @@ paths:
             $ref: '#/definitions/services.NurseResDto'
       summary: Add nurse
       tags:
-      - services
+      - nurse
+  /provider/services/add-other-service:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add other service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add other services
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.AddPharmacyOtherServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdatePharmacyOtherServiceResDto'
+      summary: Add other service
+      tags:
+      - pharmacy
   /provider/services/add-other-services:
     post:
       consumes:
@@ -1322,7 +1540,7 @@ paths:
             $ref: '#/definitions/services.UpdateDoctorResDto'
       summary: Add other services
       tags:
-      - services
+      - hospClinic
   /provider/services/add-pharmacy:
     post:
       consumes:
@@ -1355,7 +1573,7 @@ paths:
             $ref: '#/definitions/services.PharmacyResDto'
       summary: Add pharmacy
       tags:
-      - services
+      - pharmacy
   /provider/services/add-physiotherapist:
     post:
       consumes:
@@ -1396,7 +1614,7 @@ paths:
             $ref: '#/definitions/services.PhysiotherapistResDto'
       summary: Add Physiotherapist
       tags:
-      - services
+      - physiotherapist
   /provider/services/change-notification:
     put:
       consumes:
@@ -1421,7 +1639,7 @@ paths:
             $ref: '#/definitions/services.NotificationResDto'
       summary: provider notification
       tags:
-      - services
+      - providerCommonApis
   /provider/services/get-all-doctors:
     get:
       consumes:
@@ -1433,10 +1651,6 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Filter by speciality
-        in: query
-        name: speciality
-        type: string
       produces:
       - application/json
       responses:
@@ -1446,7 +1660,28 @@ paths:
             $ref: '#/definitions/services.DoctorResDto'
       summary: GetAllDoctors
       tags:
-      - services
+      - hospClinic
+  /provider/services/get-all-trainers:
+    get:
+      consumes:
+      - application/json
+      description: Get all trainers
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.TrainerResDto'
+      summary: Get all trainers
+      tags:
+      - fitnessCenter
   /provider/services/get-doctor-info/{doctorId}:
     get:
       consumes:
@@ -1472,7 +1707,7 @@ paths:
             $ref: '#/definitions/services.DoctorResDto'
       summary: Get Doctor info
       tags:
-      - services
+      - hospClinic
   /provider/services/get-investigation-info/{investigationId}:
     get:
       consumes:
@@ -1498,7 +1733,7 @@ paths:
             $ref: '#/definitions/services.DoctorResDto'
       summary: Get investigation info
       tags:
-      - services
+      - laboratory
   /provider/services/get-investigations:
     get:
       consumes:
@@ -1519,7 +1754,7 @@ paths:
             $ref: '#/definitions/services.InvestigationResDto'
       summary: GetAllDoctors
       tags:
-      - services
+      - laboratory
   /provider/services/get-misc-data:
     get:
       consumes:
@@ -1540,12 +1775,38 @@ paths:
             $ref: '#/definitions/services.MiscResDto'
       summary: Fetch All misc data
       tags:
-      - services
+      - providerCommonApis
+  /provider/services/get-other-service-info/{otherServiceId}:
+    get:
+      consumes:
+      - application/json
+      description: Get other service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: other service ID
+        in: path
+        name: otherServiceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.PharmacyOtherServiceResDto'
+      summary: Get other service info
+      tags:
+      - pharmacy
   /provider/services/get-other-services:
     get:
       consumes:
       - application/json
-      description: get other services for provider
+      description: Get other services
       parameters:
       - description: Authentication header
         in: header
@@ -1558,10 +1819,10 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.OtherServicesResDto'
-      summary: get other services for provider
+            $ref: '#/definitions/services.GetPharmacyOtherServicesResDto'
+      summary: Get other services
       tags:
-      - services
+      - pharmacy
   /provider/services/get-status/{id}:
     get:
       consumes:
@@ -1582,7 +1843,33 @@ paths:
             $ref: '#/definitions/services.StatusRes'
       summary: Fetch status By ID
       tags:
-      - services
+      - providerCommonApis
+  /provider/services/get-trainer-info/{trainerId}:
+    get:
+      consumes:
+      - application/json
+      description: Get trainer info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: trainer ID
+        in: path
+        name: trainerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetTrainerResDto'
+      summary: Get trainer info
+      tags:
+      - fitnessCenter
   /provider/services/update-doctor-info/{doctorId}:
     put:
       consumes:
@@ -1618,7 +1905,7 @@ paths:
             $ref: '#/definitions/services.UpdateDoctorResDto'
       summary: Update doctor info
       tags:
-      - services
+      - hospClinic
   /provider/services/update-investigation-info/{investigationId}:
     put:
       consumes:
@@ -1656,7 +1943,34 @@ paths:
             $ref: '#/definitions/services.UpdateInvestigationResDto'
       summary: Update investigation info
       tags:
-      - services
+      - laboratory
+  /provider/services/update-other-service-info/{otherServiceId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update other service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of trainer
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdatePharmacyOtherServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdatePharmacyOtherServiceResDto'
+      summary: Update other service info
+      tags:
+      - pharmacy
   /provider/services/update-profile-image/{doctorId}:
     put:
       consumes:
@@ -1692,7 +2006,39 @@ paths:
             $ref: '#/definitions/services.UpdateDoctorImageResDto'
       summary: Update Doctor Profile Image
       tags:
-      - services
+      - hospClinic
+  /provider/services/update-trainer-info/{trainerId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update trainer info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: trainer ID
+        in: path
+        name: trainerId
+        required: true
+        type: string
+      - description: Update data of trainer
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateTrainerReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateTrainerResDto'
+      summary: Update trainer info
+      tags:
+      - fitnessCenter
   /provider/signup:
     post:
       description: Signup provider
