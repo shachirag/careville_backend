@@ -8,6 +8,7 @@ import (
 	"careville_backend/utils"
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -109,6 +110,7 @@ func UpdateDoctorImage(c *fiber.Ctx) error {
 	update := bson.M{
 		"$set": bson.M{
 			"hospClinic.doctor.$.image": imageURL,
+			"updatedAt":                 time.Now().UTC(),
 		},
 	}
 

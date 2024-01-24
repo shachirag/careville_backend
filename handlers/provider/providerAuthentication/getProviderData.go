@@ -48,27 +48,38 @@ func FetchProviderById(c *fiber.Ctx) error {
 	var additionalDetails string
 	var isEmergencyAvailable bool
 	var address providerAuth.Address
+	var license string
+	var certificate string
 
 	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
 		image = provider.HospClinic.Information.Image
 		additionalDetails = provider.HospClinic.Information.AdditionalText
 		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
 		address = providerAuth.Address(provider.HospClinic.Information.Address)
+		license = provider.HospClinic.Documents.License
+		certificate = provider.HospClinic.Documents.Certificate
+
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
 		image = provider.Laboratory.Information.Image
 		additionalDetails = provider.Laboratory.Information.AdditionalText
 		isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
 		address = providerAuth.Address(provider.Laboratory.Information.Address)
+		license = provider.Laboratory.Documents.License
+		certificate = provider.Laboratory.Documents.Certificate
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
 		image = provider.FitnessCenter.Information.Image
 		additionalDetails = provider.FitnessCenter.Information.AdditionalText
 		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
 		address = providerAuth.Address(provider.FitnessCenter.Information.Address)
+		license = provider.FitnessCenter.Documents.License
+		certificate = provider.FitnessCenter.Documents.Certificate
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
 		image = provider.Pharmacy.Information.Image
 		additionalDetails = provider.Pharmacy.Information.AdditionalText
 		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
 		address = providerAuth.Address(provider.Pharmacy.Information.Address)
+		license = provider.Pharmacy.Documents.License
+		certificate = provider.Pharmacy.Documents.Certificate
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
 		image = provider.MedicalLabScientist.Information.Image
 		additionalDetails = provider.MedicalLabScientist.Information.AdditionalText
@@ -107,6 +118,10 @@ func FetchProviderById(c *fiber.Ctx) error {
 			DeviceToken: provider.User.Notification.DeviceToken,
 			DeviceType:  provider.User.Notification.DeviceType,
 			IsEnabled:   provider.User.Notification.IsEnabled,
+		},
+		Documents: providerAuth.Documents{
+			License:     license,
+			Certificate: certificate,
 		},
 	}
 

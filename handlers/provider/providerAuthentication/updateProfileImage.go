@@ -14,6 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // @Summary Update Profile Image
@@ -182,7 +183,8 @@ func UpdateImage(c *fiber.Ctx) error {
 		}
 	}
 
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
+	opts := options.Update().SetUpsert(true)
+	updateRes, err := serviceColl.UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
 			Status:  false,

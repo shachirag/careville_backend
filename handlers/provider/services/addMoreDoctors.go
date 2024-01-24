@@ -69,19 +69,17 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 		schedule = append(schedule, convertedInv)
 	}
 
-	update := bson.M{
-		"$addToSet": bson.M{
-			"hospClinic.doctor": bson.M{
-				"$each": []entity.Doctor{
-					{
-						Id:         primitive.NewObjectID(),
-						Name:       data.Name,
-						Speciality: data.Speciality,
-						Schedule:   schedule,
-					},
-				},
-			},
+	moreDoctor := []entity.Doctor{
+		{
+			Id:         primitive.NewObjectID(),
+			Name:       data.Name,
+			Speciality: data.Speciality,
+			Schedule:   schedule,
 		},
+	}
+
+	update := bson.M{
+		"$push": bson.M{"hospClinic.doctor": bson.M{"$each": moreDoctor}},
 	}
 
 	updateRes, err := servicesColl.UpdateOne(ctx, filter, update)

@@ -19,7 +19,7 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param  provider body services.HospitalClinicRequestDto true "add investigation"
+// @Param  provider body services.InvestigationReqDto true "add investigation"
 // @Produce json
 // @Success 200 {object} services.InvestigationResponseDto
 // @Router /provider/services/add-more-investigation [post]

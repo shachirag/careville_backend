@@ -143,7 +143,6 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"countryCode": data.CountryCode,
 			},
 			"pharmacy.information.additionalText": data.AdditionalText,
-
 			"pharmacy.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",

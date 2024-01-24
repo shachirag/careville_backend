@@ -5,6 +5,7 @@ import (
 	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -83,6 +84,7 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 			"hospClinic.doctor.$.speciality": data.Speciality,
 			"hospClinic.doctor.$.name":       data.Name,
 			"hospClinic.doctor.$.schedule":   bson.A{},
+			"updatedAt":                      time.Now().UTC(),
 		},
 	}
 

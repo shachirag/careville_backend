@@ -29,9 +29,9 @@ type ProviderData struct {
 }
 
 type Documents struct {
-	
+	Certificate string `json:"certificate" bson:"certificate"`
+	License     string `json:"license" bson:"license"`
 }
-
 type Address struct {
 	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
 	Add         string    `json:"add" bson:"add"`

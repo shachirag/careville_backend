@@ -77,28 +77,29 @@ func GetAllDoctors(c *fiber.Ctx) error {
 	doctorsBySpeciality := make(map[string][]services.DoctorRes)
 
 	// var doctorsRes []services.DoctorRes
+	if service.HospClinic != nil && len(service.HospClinic.Doctor) > 0 {
 
-	for _, doctor := range service.HospClinic.Doctor {
-		doctorRes := services.DoctorRes{
-			Id:         doctor.Id,
-			Name:       doctor.Name,
-			Image:      doctor.Image,
-			Speciality: doctor.Speciality,
-		}
-
-		if len(doctor.Schedule) > 0 {
-			for _, schedule := range doctor.Schedule {
-				doctorRes.Schedule = append(doctorRes.Schedule, services.DoctorScheduleRes{
-					StartTime: schedule.StartTime,
-					EndTime:   schedule.EndTime,
-					Days:      schedule.Days,
-				})
+		for _, doctor := range service.HospClinic.Doctor {
+			doctorRes := services.DoctorRes{
+				Id:         doctor.Id,
+				Name:       doctor.Name,
+				Image:      doctor.Image,
+				Speciality: doctor.Speciality,
 			}
+
+			if len(doctor.Schedule) > 0 {
+				for _, schedule := range doctor.Schedule {
+					doctorRes.Schedule = append(doctorRes.Schedule, services.DoctorScheduleRes{
+						StartTime: schedule.StartTime,
+						EndTime:   schedule.EndTime,
+						Days:      schedule.Days,
+					})
+				}
+			}
+
+			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 		}
-
-		doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 	}
-
 	// Convert the map to an array for response
 	var response []services.SpecialityDoctorsRes
 

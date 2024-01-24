@@ -56,6 +56,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	providerServices.Put("/change-notification", services.ProviderNotification)
 	providerServices.Post("/add-more-investigation", services.AddMoreInvestigstions)
 	providerServices.Get("/get-investigation-info/:investigationId", services.GetInvesitagtionInfo)
+	providerServices.Put("/update-investigation-info/:investigationId", services.UpdateinvestigationInfo)
 	providerServices.Get("/get-doctor-info/:doctorId", services.GetDoctorsInfo)
 	providerServices.Put("/update-doctor-image/:doctorId", services.UpdateDoctorImage)
 	providerServices.Post("/add-other-services", services.AddServices)

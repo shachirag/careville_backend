@@ -674,7 +674,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/services.HospitalClinicRequestDto"
+                            "$ref": "#/definitions/services.InvestigationReqDto"
                         }
                     }
                 ],
@@ -1240,6 +1240,65 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/update-investigation-info/{investigationId}": {
+            "put": {
+                "description": "Update investigation info",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Update investigation info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "investigation ID",
+                        "name": "investigationId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "information",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "name": "price",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "type",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateInvestigationResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/update-profile-image/{doctorId}": {
             "put": {
                 "description": "Update Doctor Profile Image",
@@ -1413,7 +1472,15 @@ const docTemplate = `{
             }
         },
         "providerAuth.Documents": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "certificate": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                }
+            }
         },
         "providerAuth.GetProviderResDto": {
             "type": "object",
@@ -2049,14 +2116,6 @@ const docTemplate = `{
                 }
             }
         },
-        "services.HospitalClinicRequestDto": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/services.HospitalClinicReqDto"
-                }
-            }
-        },
         "services.HospitalClinicResDto": {
             "type": "object",
             "properties": {
@@ -2065,6 +2124,23 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.InvestigationReqDto": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
@@ -2604,6 +2680,17 @@ const docTemplate = `{
             }
         },
         "services.UpdateDoctorResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateInvestigationResDto": {
             "type": "object",
             "properties": {
                 "message": {

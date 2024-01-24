@@ -12,6 +12,11 @@ definitions:
         type: string
     type: object
   providerAuth.Documents:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
     type: object
   providerAuth.GetProviderResDto:
     properties:
@@ -424,17 +429,23 @@ definitions:
           type: string
         type: array
     type: object
-  services.HospitalClinicRequestDto:
-    properties:
-      data:
-        $ref: '#/definitions/services.HospitalClinicReqDto'
-    type: object
   services.HospitalClinicResDto:
     properties:
       message:
         type: string
       status:
         type: boolean
+    type: object
+  services.InvestigationReqDto:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
     type: object
   services.InvestigationRes:
     properties:
@@ -783,6 +794,13 @@ definitions:
         type: boolean
     type: object
   services.UpdateDoctorResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateInvestigationResDto:
     properties:
       message:
         type: string
@@ -1226,7 +1244,7 @@ paths:
         name: provider
         required: true
         schema:
-          $ref: '#/definitions/services.HospitalClinicRequestDto'
+          $ref: '#/definitions/services.InvestigationReqDto'
       produces:
       - application/json
       responses:
@@ -1599,6 +1617,44 @@ paths:
           schema:
             $ref: '#/definitions/services.UpdateDoctorResDto'
       summary: Update doctor info
+      tags:
+      - services
+  /provider/services/update-investigation-info/{investigationId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update investigation info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: investigation ID
+        in: path
+        name: investigationId
+        required: true
+        type: string
+      - in: formData
+        name: information
+        type: string
+      - in: formData
+        name: name
+        type: string
+      - in: formData
+        name: price
+        type: number
+      - in: formData
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateInvestigationResDto'
+      summary: Update investigation info
       tags:
       - services
   /provider/services/update-profile-image/{doctorId}:

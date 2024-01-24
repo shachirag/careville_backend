@@ -61,17 +61,17 @@ func GetInvestigations(c *fiber.Ctx) error {
 	}
 
 	investigationData := make([]services.InvestigationRes, 0)
-
-	for _, investigation := range service.Laboratory.Investigations {
-		investigationData = append(investigationData, services.InvestigationRes{
-			Id:          investigation.Id,
-			Type:        investigation.Type,
-			Name:        investigation.Name,
-			Information: investigation.Information,
-			Price:       investigation.Price,
-		})
+	if service.Laboratory != nil && len(service.Laboratory.Investigations) > 0 {
+		for _, investigation := range service.Laboratory.Investigations {
+			investigationData = append(investigationData, services.InvestigationRes{
+				Id:          investigation.Id,
+				Type:        investigation.Type,
+				Name:        investigation.Name,
+				Information: investigation.Information,
+				Price:       investigation.Price,
+			})
+		}
 	}
-
 	if len(investigationData) == 0 {
 		return c.Status(fiber.StatusOK).JSON(services.InvestigationResDto{
 			Status:  false,

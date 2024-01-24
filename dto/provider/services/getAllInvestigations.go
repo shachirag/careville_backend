@@ -34,8 +34,14 @@ type InvestigationResponseDto struct {
 	Message string `json:"message" bson:"message"`
 }
 
-// type MoreDoctorReqDto struct {
-// 	Name       string     `json:"name" form:"name"`
-// 	Speciality string     `json:"speciality" form:"speciality"`
-// 	Schedule   []Schedule `json:"schedule" form:"schedule"`
-// }
+type UpdateInvestigationResDto struct {
+	Status  bool   `json:"status" bson:"status"`
+	Message string `json:"message" bson:"message"`
+}
+
+type UpdateInvestigationReqDto struct {
+	Type        string  `json:"type" bson:"type"`
+	Name        string  `json:"name" bson:"name"`
+	Information string  `json:"information" bson:"information"`
+	Price       float64 `json:"price" bson:"price"`
+}
