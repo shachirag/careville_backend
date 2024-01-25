@@ -3,6 +3,7 @@ package router
 import (
 	"careville_backend/handlers"
 	providerAuthenticate "careville_backend/handlers/provider/providerAuthentication"
+	"careville_backend/handlers/provider/services/commonApis"
 	"careville_backend/handlers/provider/services/doctorProfession"
 	"careville_backend/handlers/provider/services/fitnessCenter"
 	"careville_backend/handlers/provider/services/hospClinic"
@@ -55,9 +56,9 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	providerServices.Post("/add-physiotherapist", physiotherapist.AddPhysiotherapist)
 	providerServices.Post("/add-medicalLab-scientist", medicalLabScientist.AddMedicalLabScientist)
 
-	providerServices.Get("/get-misc-data", hospClinic.FetchAllMiscData)
+	providerServices.Get("/get-misc-data", common.FetchAllMiscData)
 	// provider.Put("/change-status/:id", jwt, services.ChangeStatus)
-	providerServices.Get("/get-status", hospClinic.FetchStatusById)
+	providerServices.Get("/get-status", common.FetchStatusById)
 
 	providerServices.Get("/get-all-doctors", hospClinic.GetAllDoctors)
 	providerServices.Get("/get-all-trainers", fitnessCenter.GetAllTrainers)
@@ -78,7 +79,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	providerServices.Post("/add-more-doctor", hospClinic.AddMoreDoctors)
 	providerServices.Get("/get-investigations", laboratory.GetInvestigations)
 
-	providerServices.Put("/change-notification", hospClinic.ProviderNotification)
+	providerServices.Put("/change-notification", common.ProviderNotification)
 	providerServices.Post("/add-more-investigation", laboratory.AddMoreInvestigstions)
 	providerServices.Post("/add-more-trainer", fitnessCenter.AddMoreTrainers)
 	providerServices.Post("/add-other-service", fitnessCenter.AddOtherServices)

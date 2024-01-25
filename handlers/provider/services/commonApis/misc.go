@@ -1,4 +1,4 @@
-package hospClinic
+package common
 
 import (
 	"careville_backend/database"

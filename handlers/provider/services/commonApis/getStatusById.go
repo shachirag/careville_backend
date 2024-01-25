@@ -1,15 +1,18 @@
-package hospClinic
+package common
 
 import (
 	"careville_backend/database"
 	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
+	"context"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var ctx = context.Background()
 
 // @Summary Fetch status By ID
 // @Description Fetch status By ID
