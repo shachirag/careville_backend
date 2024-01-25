@@ -65,7 +65,7 @@ func GetAllDoctors(c *fiber.Ctx) error {
 		})
 	}
 
-	if service.HospClinic != nil {
+	if service.HospClinic == nil {
 		return c.Status(fiber.StatusNotFound).JSON(services.DoctorResDto{
 			Status:  false,
 			Message: "No HospClinic information found for the service",

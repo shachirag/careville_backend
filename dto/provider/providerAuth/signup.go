@@ -47,9 +47,10 @@ type ProviderResDto struct {
 	PhoneNumber          PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
 	Role                 string             `json:"role" bson:"role"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	IsApproved           bool               `json:"isApproved" bson:"isApproved"`
-	CreatedAt            time.Time          `json:"createdAt" bson:"createdAt"`
-	UpdatedAt            time.Time          `json:"updatedAt" bson:"updatedAt"`
+	
+	// IsApproved           bool               `json:"isApproved" bson:"isApproved"`
+	CreatedAt time.Time `json:"createdAt" bson:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt" bson:"updatedAt"`
 }
 
 type Notification struct {

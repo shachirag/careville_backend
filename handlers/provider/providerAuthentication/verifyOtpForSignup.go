@@ -180,8 +180,9 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 				DeviceType:  provider.User.Notification.DeviceType,
 				IsEnabled:   provider.User.Notification.IsEnabled,
 			},
-			CreatedAt: provider.CreatedAt,
-			UpdatedAt: provider.UpdatedAt,
+			// IsApproved: provider.ServiceStatus,/
+			CreatedAt:  provider.CreatedAt,
+			UpdatedAt:  provider.UpdatedAt,
 		},
 	})
 }
