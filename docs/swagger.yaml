@@ -690,6 +690,10 @@ definitions:
     type: object
   services.OtherServicesRes:
     properties:
+      insurances:
+        items:
+          type: string
+        type: array
       otherServices:
         items:
           type: string
@@ -1525,6 +1529,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - collectionFormat: csv
+        in: formData
+        items:
+          type: string
+        name: insurances
+        type: array
       - collectionFormat: csv
         in: formData
         items:

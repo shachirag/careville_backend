@@ -41,6 +41,7 @@ type OtherServicesResDto struct {
 
 type OtherServicesRes struct {
 	OtherServices []string `json:"otherServices" bson:"otherServices"`
+	Insurances    []string `json:"insurances" bson:"insurances"`
 }
 
 type NotificationResDto struct {

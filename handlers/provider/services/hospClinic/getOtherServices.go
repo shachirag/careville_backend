@@ -38,6 +38,7 @@ func GetOtherServices(c *fiber.Ctx) error {
 
 	projection := bson.M{
 		"hospClinic.otherServices": 1,
+		"hospClinic.insurances":    1,
 	}
 
 	findOptions := options.FindOne().SetProjection(projection)
@@ -68,6 +69,7 @@ func GetOtherServices(c *fiber.Ctx) error {
 		Message: "Other services retrieved successfully",
 		Data: services.OtherServicesRes{
 			OtherServices: service.HospClinic.OtherServices,
+			Insurances:    service.HospClinic.Insurances,
 		},
 	}
 

@@ -62,6 +62,8 @@ func AddServices(c *fiber.Ctx) error {
 		"$addToSet": bson.M{
 			"hospClinic.otherServices": bson.M{
 				"$each": data.OtherServices,
+			}, "hospClinic.insurances": bson.M{
+				"$each": data.Insurances,
 			},
 		},
 	}
@@ -83,7 +85,7 @@ func AddServices(c *fiber.Ctx) error {
 
 	hospClinicRes := services.HospitalClinicResDto{
 		Status:  true,
-		Message: "other services added successfully",
+		Message: "other services and insurances added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

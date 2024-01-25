@@ -61,6 +61,7 @@ type MoreDoctorReqDto struct {
 
 type OtherServiceReqDto struct {
 	OtherServices []string `json:"otherServices" form:"otherServices"`
+	Insurances    []string `json:"insurances" form:"insurances"`
 }
 
 // type Schedule struct {

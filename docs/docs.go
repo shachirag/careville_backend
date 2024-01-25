@@ -859,6 +859,15 @@ const docTemplate = `{
                             "type": "string"
                         },
                         "collectionFormat": "csv",
+                        "name": "insurances",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
                         "name": "otherServices",
                         "in": "formData"
                     }
@@ -2795,6 +2804,12 @@ const docTemplate = `{
         "services.OtherServicesRes": {
             "type": "object",
             "properties": {
+                "insurances": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "otherServices": {
                     "type": "array",
                     "items": {
