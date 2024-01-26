@@ -23,7 +23,7 @@ import (
 // @Accept application/json
 // @Param provider body providerAuth.ProviderSignupVerifyOtpReqDto true "Verify 6 digit OTP and insert data into database"
 // @Produce json
-// @Success 200 {object} providerAuth.ProviderSignupVerifyOtpResDto
+// @Success 200 {object} providerAuth.LoginProviderResDto
 // @Router /provider/verify-otp-for-signup [post]
 func VerifyOtpForSignup(c *fiber.Ctx) error {
 	var (
@@ -36,7 +36,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	// Parsing the request body
 	err := c.BodyParser(&data)
 	if err != nil {
-		return c.Status(500).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(500).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -44,7 +44,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	// Error handling
 	if data.EnteredOTP == "" {
-		return c.Status(400).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Entered OTP is required",
 		})
@@ -57,13 +57,13 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	if err != nil {
 		// Check if there is no documents found error
 		if err == mongo.ErrNoDocuments {
-			return c.Status(400).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+			return c.Status(400).JSON(providerAuth.LoginProviderResDto{
 				Status:  false,
 				Message: "Invalid OTP",
 			})
 		}
 
-		return c.Status(500).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(500).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Internal server error, while getting the provider: " + err.Error(),
 		})
@@ -72,7 +72,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	// Compare the entered OTP with the OTP from the database
 	if data.EnteredOTP != otpData.Otp {
 
-		return c.Status(400).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Invalid OTP",
 		})
@@ -81,7 +81,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	// Hash the password using bcrypt
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Failed to hash the password: " + err.Error(),
 		})
@@ -93,14 +93,14 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	exists, err := serviceColl.CountDocuments(ctx, filter)
 	if err != nil {
-		return c.Status(500).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(500).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
 	}
 
 	if exists > 0 {
-		return c.Status(400).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Email is already in use",
 		})
@@ -134,7 +134,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	_, err = serviceColl.InsertOne(ctx, provider)
 	if err != nil {
-		return c.Status(500).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(500).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Failed to insert provider data: " + err.Error(),
 		})
@@ -159,30 +159,76 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 	// Generate encoded token and send it as response.
 	_token, err := token.SignedString([]byte(_secret))
 	if err != nil {
-		return c.Status(400).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
 			Status:  false,
 			Message: "Token is not valid" + err.Error(),
 		})
 	}
 
-	return c.Status(200).JSON(providerAuth.ProviderSignupVerifyOtpResDto{
+	var image string
+	var name string
+
+	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+		image = provider.HospClinic.Information.Image
+		name = provider.HospClinic.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+		image = provider.Laboratory.Information.Image
+		name = provider.Laboratory.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+		image = provider.FitnessCenter.Information.Image
+		name = provider.FitnessCenter.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+		image = provider.Pharmacy.Information.Image
+		name = provider.Pharmacy.Information.Name
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+		image = provider.MedicalLabScientist.Information.Image
+		name = provider.MedicalLabScientist.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "nurse" {
+		image = provider.Nurse.Information.Image
+		name = provider.Nurse.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "doctor" {
+		image = provider.Doctor.Information.Image
+		name = provider.Doctor.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "physiotherapist" {
+		image = provider.Physiotherapist.Information.Image
+		name = provider.Physiotherapist.Information.Name
+	}
+
+	role := providerAuth.Role{}
+	if err == nil {
+		role = providerAuth.Role{
+			Role:                 provider.Role,
+			FacilityOrProfession: provider.FacilityOrProfession,
+			ServiceStatus:        provider.ServiceStatus,
+			Image:                image,
+			Name:                 name,
+		}
+	}
+
+	return c.Status(200).JSON(providerAuth.LoginProviderResDto{
 		Status:  true,
 		Message: "OTP verified successfully and provider data inserted",
-		Token:   _token,
-		Provider: providerAuth.ProviderResDto{
-			Id:          provider.Id,
-			FirstName:   provider.User.FirstName,
-			LastName:    provider.User.LastName,
-			Email:       provider.User.Email,
-			PhoneNumber: providerAuth.PhoneNumber(provider.User.PhoneNumber),
-			Notification: providerAuth.Notification{
-				DeviceToken: provider.User.Notification.DeviceToken,
-				DeviceType:  provider.User.Notification.DeviceType,
-				IsEnabled:   provider.User.Notification.IsEnabled,
+		Provider: providerAuth.ProviderRespDto{
+			Role: role,
+			User: providerAuth.User{
+				Id:        provider.Id,
+				FirstName: provider.User.FirstName,
+				LastName:  provider.User.LastName,
+				Email:     provider.User.Email,
+				PhoneNumber: providerAuth.PhoneNumber{
+					DialCode:    provider.User.PhoneNumber.DialCode,
+					Number:      provider.User.PhoneNumber.Number,
+					CountryCode: provider.User.PhoneNumber.CountryCode,
+				},
+				Notification: providerAuth.Notification{
+					DeviceToken: provider.User.Notification.DeviceToken,
+					DeviceType:  provider.User.Notification.DeviceType,
+					IsEnabled:   provider.User.Notification.IsEnabled,
+				},
+				CreatedAt: provider.CreatedAt,
+				UpdatedAt: provider.UpdatedAt,
 			},
-			// IsApproved: provider.ServiceStatus,/
-			CreatedAt:  provider.CreatedAt,
-			UpdatedAt:  provider.UpdatedAt,
 		},
+		Token: _token,
 	})
 }

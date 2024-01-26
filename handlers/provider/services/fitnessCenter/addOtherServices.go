@@ -22,7 +22,7 @@ import (
 // @Param  provider body services.TrainerOtherServiceReqDto true "add other services"
 // @Produce json
 // @Success 200 {object} services.TrainerResponseDto
-// @Router /provider/services/add-other-service [post]
+// @Router /provider/services/add-fitnessCenter-other-service [post]
 func AddOtherServices(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")

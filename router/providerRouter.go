@@ -3,7 +3,7 @@ package router
 import (
 	"careville_backend/handlers"
 	providerAuthenticate "careville_backend/handlers/provider/providerAuthentication"
-	"careville_backend/handlers/provider/services/commonApis"
+	common "careville_backend/handlers/provider/services/commonApis"
 	"careville_backend/handlers/provider/services/doctorProfession"
 	"careville_backend/handlers/provider/services/fitnessCenter"
 	"careville_backend/handlers/provider/services/hospClinic"
@@ -62,27 +62,27 @@ func ProviderSetupsRoutes(app *fiber.App) {
 
 	providerServices.Get("/get-all-doctors", hospClinic.GetAllDoctors)
 	providerServices.Get("/get-all-trainers", fitnessCenter.GetAllTrainers)
-	providerServices.Get("/get-other-services", pharmacy.GetOtherServices)
-	providerServices.Get("/get-other-services", fitnessCenter.GetOtherServices)
-	providerServices.Get("/get-other-services", hospClinic.GetOtherServices)
+	providerServices.Get("/get-pharmacy-other-services", pharmacy.GetOtherServices)
+	providerServices.Get("/get-fitness-other-services", fitnessCenter.GetOtherServices)
+	providerServices.Get("/get-hospClinic-other-services", hospClinic.GetOtherServices)
 	providerServices.Get("/get-doctor-info/:doctorId", hospClinic.GetDoctorsInfo)
-	providerServices.Get("/get-other-service-info/:otherServiceId", pharmacy.GetOtherServiceInfo)
+	providerServices.Get("/get-pharmacy-other-service-info/:otherServiceId", pharmacy.GetOtherServiceInfo)
 	providerServices.Get("/get-trainer-info/:trainerId", fitnessCenter.GetTrainerInfo)
-	providerServices.Get("/get-other-service-info/:otherServiceId", fitnessCenter.GetOtherServiceInfo)
-	providerServices.Put("/update-other-service-info/:otherServiceId", pharmacy.UpdateOtherServiceInfo)
-	providerServices.Post("/add-other-service", pharmacy.AddOtherServices)
+	providerServices.Get("/get-fitness-other-service-info/:otherServiceId", fitnessCenter.GetOtherServiceInfo)
+	providerServices.Put("/update-pharmacy-other-service-info/:otherServiceId", pharmacy.UpdateOtherServiceInfo)
+	providerServices.Post("/add-pharmacy-other-service", pharmacy.AddOtherServices)
 	providerServices.Put("/update-doctor-image/:doctorId", hospClinic.UpdateDoctorImage)
-	providerServices.Post("/add-other-services", hospClinic.AddServices)
+	providerServices.Post("/add-hospClinic-other-services", hospClinic.AddServices)
 	providerServices.Put("/update-doctor-info/:doctorId", hospClinic.UpdateDoctorInfo)
 	providerServices.Put("/update-trainer-info/:trainerId", fitnessCenter.UpdateTrainerInfo)
-	providerServices.Put("/update-other-service-info/:otherServiceId", fitnessCenter.UpdateOtherServiceInfo)
+	providerServices.Put("/update-fitnessCenter-other-service-info/:otherServiceId", fitnessCenter.UpdateOtherServiceInfo)
 	providerServices.Post("/add-more-doctor", hospClinic.AddMoreDoctors)
 	providerServices.Get("/get-investigations", laboratory.GetInvestigations)
 
 	providerServices.Put("/change-notification", common.ProviderNotification)
 	providerServices.Post("/add-more-investigation", laboratory.AddMoreInvestigstions)
 	providerServices.Post("/add-more-trainer", fitnessCenter.AddMoreTrainers)
-	providerServices.Post("/add-other-service", fitnessCenter.AddOtherServices)
+	providerServices.Post("/add-fitnessCenter-other-service", fitnessCenter.AddOtherServices)
 	providerServices.Get("/get-investigation-info/:investigationId", laboratory.GetInvesitagtionInfo)
 	providerServices.Put("/update-investigation-info/:investigationId", laboratory.UpdateinvestigationInfo)
 

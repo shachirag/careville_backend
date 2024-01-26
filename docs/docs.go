@@ -444,6 +444,97 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-fitnessCenter-other-service": {
+            "post": {
+                "description": "Add other service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Add other service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add other services",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerOtherServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-hospClinic-other-services": {
+            "post": {
+                "description": "Add HospitalClinic",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hospClinic"
+                ],
+                "summary": "Add other services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "insurances",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "otherServices",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-hospitalClinic": {
             "post": {
                 "description": "Add HospitalClinic",
@@ -791,97 +882,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/services/add-other-service": {
-            "post": {
-                "description": "Add other service",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "pharmacy"
-                ],
-                "summary": "Add other service",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "add other services",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/services.AddPharmacyOtherServiceReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.UpdatePharmacyOtherServiceResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/services/add-other-services": {
-            "post": {
-                "description": "Add HospitalClinic",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "hospClinic"
-                ],
-                "summary": "Add other services",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "insurances",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "otherServices",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.UpdateDoctorResDto"
-                        }
-                    }
-                }
-            }
-        },
         "/provider/services/add-pharmacy": {
             "post": {
                 "description": "Add pharmacy",
@@ -927,6 +927,47 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.PharmacyResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-pharmacy-other-service": {
+            "post": {
+                "description": "Add other service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pharmacy"
+                ],
+                "summary": "Add other service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add other services",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.AddPharmacyOtherServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePharmacyOtherServiceResDto"
                         }
                     }
                 }
@@ -1135,6 +1176,109 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/get-fitness-other-service-info/{otherServiceId}": {
+            "get": {
+                "description": "Get other service info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Get other service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "other service ID",
+                        "name": "otherServiceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.FitnessCenterOtherServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-fitness-other-services": {
+            "get": {
+                "description": "Get other services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Get other services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetFitnessOtherServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-hospClinic-other-services": {
+            "get": {
+                "description": "get other services for provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hospClinic"
+                ],
+                "summary": "get other services for provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.OtherServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-investigation-info/{investigationId}": {
             "get": {
                 "description": "Get investigation info",
@@ -1238,7 +1382,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/services/get-other-service-info/{otherServiceId}": {
+        "/provider/services/get-pharmacy-other-service-info/{otherServiceId}": {
             "get": {
                 "description": "Get other service info",
                 "consumes": [
@@ -1277,7 +1421,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/services/get-other-services": {
+        "/provider/services/get-pharmacy-other-services": {
             "get": {
                 "description": "Get other services",
                 "consumes": [
@@ -1435,6 +1579,48 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/update-fitnessCenter-other-service-info/{otherServiceId}": {
+            "put": {
+                "description": "Update other service info",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Update other service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "information",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateTrainerResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/update-investigation-info/{investigationId}": {
             "put": {
                 "description": "Update investigation info",
@@ -1494,7 +1680,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/services/update-other-service-info/{otherServiceId}": {
+        "/provider/services/update-pharmacy-other-service-info/{otherServiceId}": {
             "put": {
                 "description": "Update other service info",
                 "consumes": [
@@ -1730,7 +1916,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderSignupVerifyOtpResDto"
+                            "$ref": "#/definitions/providerAuth.LoginProviderResDto"
                         }
                     }
                 }
@@ -1738,6 +1924,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "providerAuth.AdditionalInformation": {
+            "type": "object",
+            "properties": {
+                "additionalDetails": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/providerAuth.Address"
+                },
+                "documents": {
+                    "$ref": "#/definitions/providerAuth.Documents"
+                },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                }
+            }
+        },
         "providerAuth.Address": {
             "type": "object",
             "properties": {
@@ -1769,8 +1972,11 @@ const docTemplate = `{
         "providerAuth.GetProviderResDto": {
             "type": "object",
             "properties": {
+                "additionalInformation": {
+                    "$ref": "#/definitions/providerAuth.AdditionalInformation"
+                },
                 "data": {
-                    "$ref": "#/definitions/providerAuth.ProviderData"
+                    "$ref": "#/definitions/providerAuth.ProviderRespDto"
                 },
                 "message": {
                     "type": "string"
@@ -1861,50 +2067,6 @@ const docTemplate = `{
                 }
             }
         },
-        "providerAuth.ProviderData": {
-            "type": "object",
-            "properties": {
-                "additionalDetails": {
-                    "type": "string"
-                },
-                "address": {
-                    "$ref": "#/definitions/providerAuth.Address"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "documents": {
-                    "$ref": "#/definitions/providerAuth.Documents"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "firstName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "isEmergencyAvailable": {
-                    "type": "boolean"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "notification": {
-                    "$ref": "#/definitions/providerAuth.Notification"
-                },
-                "phoneNumber": {
-                    "$ref": "#/definitions/providerAuth.PhoneNumber"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
         "providerAuth.ProviderForgotPasswordReqDto": {
             "type": "object",
             "properties": {
@@ -1921,44 +2083,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
-                }
-            }
-        },
-        "providerAuth.ProviderResDto": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "facilityOrProfession": {
-                    "type": "string"
-                },
-                "firstName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isApproved": {
-                    "type": "boolean"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "notification": {
-                    "$ref": "#/definitions/providerAuth.Notification"
-                },
-                "phoneNumber": {
-                    "$ref": "#/definitions/providerAuth.PhoneNumber"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
@@ -2033,23 +2157,6 @@ const docTemplate = `{
                 }
             }
         },
-        "providerAuth.ProviderSignupVerifyOtpResDto": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/providerAuth.ProviderResDto"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                },
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
         "providerAuth.ResetPasswordAfterOtpReqDto": {
             "type": "object",
             "properties": {
@@ -2068,6 +2175,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "facilityOrProfession": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 },
                 "role": {
@@ -2110,9 +2223,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "image": {
                     "type": "string"
                 },
                 "lastName": {

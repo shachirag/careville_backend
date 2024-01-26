@@ -90,33 +90,44 @@ func LoginProvider(c *fiber.Ctx) error {
 		})
 	}
 
+	var image string
+	var name string
+
+	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+		image = provider.HospClinic.Information.Image
+		name = provider.HospClinic.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+		image = provider.Laboratory.Information.Image
+		name = provider.Laboratory.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+		image = provider.FitnessCenter.Information.Image
+		name = provider.FitnessCenter.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+		image = provider.Pharmacy.Information.Image
+		name = provider.Pharmacy.Information.Name
+	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+		image = provider.MedicalLabScientist.Information.Image
+		name = provider.MedicalLabScientist.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "nurse" {
+		image = provider.Nurse.Information.Image
+		name = provider.Nurse.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "doctor" {
+		image = provider.Doctor.Information.Image
+		name = provider.Doctor.Information.Name
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "physiotherapist" {
+		image = provider.Physiotherapist.Information.Image
+		name = provider.Physiotherapist.Information.Name
+	}
+
 	role := providerAuth.Role{}
 	if err == nil {
 		role = providerAuth.Role{
 			Role:                 provider.Role,
 			FacilityOrProfession: provider.FacilityOrProfession,
 			ServiceStatus:        provider.ServiceStatus,
+			Image:                image,
+			Name:                 name,
 		}
-	}
-
-	var image string
-
-	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
-		image = provider.HospClinic.Information.Image
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
-		image = provider.Laboratory.Information.Image
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
-		image = provider.FitnessCenter.Information.Image
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
-		image = provider.Pharmacy.Information.Image
-	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
-		image = provider.MedicalLabScientist.Information.Image
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "nurse" {
-		image = provider.Nurse.Information.Image
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "doctor" {
-		image = provider.Doctor.Information.Image
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "physiotherapist" {
-		image = provider.Physiotherapist.Information.Image
 	}
 
 	return c.Status(200).JSON(providerAuth.LoginProviderResDto{
@@ -129,7 +140,6 @@ func LoginProvider(c *fiber.Ctx) error {
 				FirstName: provider.User.FirstName,
 				LastName:  provider.User.LastName,
 				Email:     provider.User.Email,
-				Image:     image,
 				PhoneNumber: providerAuth.PhoneNumber{
 					DialCode:    provider.User.PhoneNumber.DialCode,
 					Number:      provider.User.PhoneNumber.Number,

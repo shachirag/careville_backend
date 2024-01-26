@@ -21,7 +21,7 @@ import (
 // @Param  provider formData services.OtherServiceReqDto true "add HospitalClinic"
 // @Produce json
 // @Success 200 {object} services.UpdateDoctorResDto
-// @Router /provider/services/add-other-services [post]
+// @Router /provider/services/add-hospClinic-other-services [post]
 func AddServices(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")

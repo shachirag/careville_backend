@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  providerAuth.AdditionalInformation:
+    properties:
+      additionalDetails:
+        type: string
+      address:
+        $ref: '#/definitions/providerAuth.Address'
+      documents:
+        $ref: '#/definitions/providerAuth.Documents'
+      isEmergencyAvailable:
+        type: boolean
+    type: object
   providerAuth.Address:
     properties:
       add:
@@ -20,8 +31,10 @@ definitions:
     type: object
   providerAuth.GetProviderResDto:
     properties:
+      additionalInformation:
+        $ref: '#/definitions/providerAuth.AdditionalInformation'
       data:
-        $ref: '#/definitions/providerAuth.ProviderData'
+        $ref: '#/definitions/providerAuth.ProviderRespDto'
       message:
         type: string
       status:
@@ -79,35 +92,6 @@ definitions:
       status:
         type: boolean
     type: object
-  providerAuth.ProviderData:
-    properties:
-      additionalDetails:
-        type: string
-      address:
-        $ref: '#/definitions/providerAuth.Address'
-      createdAt:
-        type: string
-      documents:
-        $ref: '#/definitions/providerAuth.Documents'
-      email:
-        type: string
-      firstName:
-        type: string
-      id:
-        type: string
-      image:
-        type: string
-      isEmergencyAvailable:
-        type: boolean
-      lastName:
-        type: string
-      notification:
-        $ref: '#/definitions/providerAuth.Notification'
-      phoneNumber:
-        $ref: '#/definitions/providerAuth.PhoneNumber'
-      updatedAt:
-        type: string
-    type: object
   providerAuth.ProviderForgotPasswordReqDto:
     properties:
       email:
@@ -119,31 +103,6 @@ definitions:
         type: string
       status:
         type: boolean
-    type: object
-  providerAuth.ProviderResDto:
-    properties:
-      createdAt:
-        type: string
-      email:
-        type: string
-      facilityOrProfession:
-        type: string
-      firstName:
-        type: string
-      id:
-        type: string
-      isApproved:
-        type: boolean
-      lastName:
-        type: string
-      notification:
-        $ref: '#/definitions/providerAuth.Notification'
-      phoneNumber:
-        $ref: '#/definitions/providerAuth.PhoneNumber'
-      role:
-        type: string
-      updatedAt:
-        type: string
     type: object
   providerAuth.ProviderRespDto:
     properties:
@@ -191,17 +150,6 @@ definitions:
       phoneNumber:
         type: string
     type: object
-  providerAuth.ProviderSignupVerifyOtpResDto:
-    properties:
-      data:
-        $ref: '#/definitions/providerAuth.ProviderResDto'
-      message:
-        type: string
-      status:
-        type: boolean
-      token:
-        type: string
-    type: object
   providerAuth.ResetPasswordAfterOtpReqDto:
     properties:
       confirmPassword:
@@ -214,6 +162,10 @@ definitions:
   providerAuth.Role:
     properties:
       facilityOrProfession:
+        type: string
+      image:
+        type: string
+      name:
         type: string
       role:
         type: string
@@ -241,8 +193,6 @@ definitions:
       firstName:
         type: string
       id:
-        type: string
-      image:
         type: string
       lastName:
         type: string
@@ -1262,6 +1212,66 @@ paths:
       summary: Add fitnessCenter
       tags:
       - fitnessCenter
+  /provider/services/add-fitnessCenter-other-service:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add other service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add other services
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.TrainerOtherServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.TrainerResponseDto'
+      summary: Add other service
+      tags:
+      - fitnessCenter
+  /provider/services/add-hospClinic-other-services:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add HospitalClinic
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - collectionFormat: csv
+        in: formData
+        items:
+          type: string
+        name: insurances
+        type: array
+      - collectionFormat: csv
+        in: formData
+        items:
+          type: string
+        name: otherServices
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorResDto'
+      summary: Add other services
+      tags:
+      - hospClinic
   /provider/services/add-hospitalClinic:
     post:
       consumes:
@@ -1491,66 +1501,6 @@ paths:
       summary: Add nurse
       tags:
       - nurse
-  /provider/services/add-other-service:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add other service
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: add other services
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/services.AddPharmacyOtherServiceReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.UpdatePharmacyOtherServiceResDto'
-      summary: Add other service
-      tags:
-      - pharmacy
-  /provider/services/add-other-services:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add HospitalClinic
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - collectionFormat: csv
-        in: formData
-        items:
-          type: string
-        name: insurances
-        type: array
-      - collectionFormat: csv
-        in: formData
-        items:
-          type: string
-        name: otherServices
-        type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.UpdateDoctorResDto'
-      summary: Add other services
-      tags:
-      - hospClinic
   /provider/services/add-pharmacy:
     post:
       consumes:
@@ -1582,6 +1532,33 @@ paths:
           schema:
             $ref: '#/definitions/services.PharmacyResDto'
       summary: Add pharmacy
+      tags:
+      - pharmacy
+  /provider/services/add-pharmacy-other-service:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add other service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add other services
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.AddPharmacyOtherServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdatePharmacyOtherServiceResDto'
+      summary: Add other service
       tags:
       - pharmacy
   /provider/services/add-physiotherapist:
@@ -1718,6 +1695,74 @@ paths:
       summary: Get Doctor info
       tags:
       - hospClinic
+  /provider/services/get-fitness-other-service-info/{otherServiceId}:
+    get:
+      consumes:
+      - application/json
+      description: Get other service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: other service ID
+        in: path
+        name: otherServiceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.FitnessCenterOtherServiceResDto'
+      summary: Get other service info
+      tags:
+      - fitnessCenter
+  /provider/services/get-fitness-other-services:
+    get:
+      consumes:
+      - application/json
+      description: Get other services
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetFitnessOtherServicesResDto'
+      summary: Get other services
+      tags:
+      - fitnessCenter
+  /provider/services/get-hospClinic-other-services:
+    get:
+      consumes:
+      - application/json
+      description: get other services for provider
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.OtherServicesResDto'
+      summary: get other services for provider
+      tags:
+      - hospClinic
   /provider/services/get-investigation-info/{investigationId}:
     get:
       consumes:
@@ -1786,7 +1831,7 @@ paths:
       summary: Fetch All misc data
       tags:
       - providerCommonApis
-  /provider/services/get-other-service-info/{otherServiceId}:
+  /provider/services/get-pharmacy-other-service-info/{otherServiceId}:
     get:
       consumes:
       - application/json
@@ -1812,7 +1857,7 @@ paths:
       summary: Get other service info
       tags:
       - pharmacy
-  /provider/services/get-other-services:
+  /provider/services/get-pharmacy-other-services:
     get:
       consumes:
       - application/json
@@ -1916,6 +1961,33 @@ paths:
       summary: Update doctor info
       tags:
       - hospClinic
+  /provider/services/update-fitnessCenter-other-service-info/{otherServiceId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update other service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: formData
+        name: information
+        type: string
+      - in: formData
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateTrainerResDto'
+      summary: Update other service info
+      tags:
+      - fitnessCenter
   /provider/services/update-investigation-info/{investigationId}:
     put:
       consumes:
@@ -1954,7 +2026,7 @@ paths:
       summary: Update investigation info
       tags:
       - laboratory
-  /provider/services/update-other-service-info/{otherServiceId}:
+  /provider/services/update-pharmacy-other-service-info/{otherServiceId}:
     put:
       consumes:
       - multipart/form-data
@@ -2109,7 +2181,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/providerAuth.ProviderSignupVerifyOtpResDto'
+            $ref: '#/definitions/providerAuth.LoginProviderResDto'
       summary: Verify OTP for signup
       tags:
       - provider authorization

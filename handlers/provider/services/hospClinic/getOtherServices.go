@@ -22,7 +22,7 @@ import (
 //
 // @Produce json
 // @Success 200 {object} services.OtherServicesResDto
-// @Router /provider/services/get-other-services [get]
+// @Router /provider/services/get-hospClinic-other-services [get]
 func GetOtherServices(c *fiber.Ctx) error {
 	ctx := context.TODO()
 

@@ -23,7 +23,7 @@ import (
 // @Param otherServiceId path string true "other service ID"
 // @Produce json
 // @Success 200 {object} services.FitnessCenterOtherServiceResDto
-// @Router /provider/services/get-other-service-info/{otherServiceId} [get]
+// @Router /provider/services/get-fitness-other-service-info/{otherServiceId} [get]
 func GetOtherServiceInfo(c *fiber.Ctx) error {
 
 	var service entity.ServiceEntity

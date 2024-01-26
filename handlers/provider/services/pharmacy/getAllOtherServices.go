@@ -21,7 +21,7 @@ import (
 //
 // @Produce json
 // @Success 200 {object} services.GetPharmacyOtherServicesResDto
-// @Router /provider/services/get-other-services [get]
+// @Router /provider/services/get-pharmacy-other-services [get]
 func GetOtherServices(c *fiber.Ctx) error {
 
 	var service entity.ServiceEntity

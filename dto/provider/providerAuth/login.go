@@ -27,6 +27,8 @@ type Role struct {
 	Role                 string `json:"role" bson:"role"`
 	FacilityOrProfession string `json:"facilityOrProfession" bson:"facilityOrProfession"`
 	ServiceStatus        string `json:"serviceStatus" bson:"serviceStatus"`
+	Name                 string `json:"name" bson:"name"`
+	Image                string `json:"image" bson:"image"`
 }
 
 type User struct {
@@ -34,7 +36,6 @@ type User struct {
 	FirstName    string             `json:"firstName" bson:"firstName"`
 	LastName     string             `json:"lastName" bson:"lastName"`
 	Email        string             `json:"email" bson:"email"`
-	Image        string             `json:"image" bson:"image"`
 	Notification Notification       `json:"notification" bson:"notification"`
 	PhoneNumber  PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
 	CreatedAt    time.Time          `json:"createdAt" bson:"createdAt"`
@@ -42,7 +43,7 @@ type User struct {
 }
 
 type GetProvideResDto struct {
-	Status   bool           `json:"status"`
-	Message  string         `json:"message"`
-	Provider ProviderResDto `json:"data"`
+	Status  bool   `json:"status"`
+	Message string `json:"message"`
+	// Provider ProviderResDto `json:"data"`
 }

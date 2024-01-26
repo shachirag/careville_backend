@@ -23,7 +23,7 @@ import (
 // @Param provider formData services.UpdateOtherServiceReqDto true "Update data of trainer"
 // @Produce json
 // @Success 200 {object} services.UpdateTrainerResDto
-// @Router /provider/services/update-other-service-info/{otherServiceId} [put]
+// @Router /provider/services/update-fitnessCenter-other-service-info/{otherServiceId} [put]
 func UpdateOtherServiceInfo(c *fiber.Ctx) error {
 
 	var (
