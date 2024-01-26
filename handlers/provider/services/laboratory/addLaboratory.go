@@ -36,9 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-laboratory [post]
 func AddLaboratory(c *fiber.Ctx) error {
 	var (
-		servicesColl = database.GetCollection("service")
-		data         services.LaboratoryRequestDto
-		laboratory   subEntity.UpdateServiceSubEntity
+		servicesColl             = database.GetCollection("service")
+		data                     services.LaboratoryRequestDto
+		laboratory               subEntity.UpdateServiceSubEntity
+		laboratoryImageUrl       string
+		laboratoryLicenceUrl     string
+		laboratoryCertificateUrl string
 	)
 
 	dataStr := c.FormValue("data")
@@ -91,9 +94,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 				Message: "Failed to upload laboratoryImage to S3: " + err.Error(),
 			})
 		}
-		if laboratory.Laboratory != nil {
-			laboratory.Laboratory.Information.Image = laboratoryImage
-		}
+		laboratoryImageUrl = laboratoryImage
 	}
 
 	cerificateFiles := form.File["certificate"]
@@ -127,9 +128,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 				Message: "Failed to upload certificate to S3: " + err.Error(),
 			})
 		}
-		if laboratory.Laboratory != nil {
-			laboratory.Laboratory.Documents.Certificate = certificateURL
-		}
+		laboratoryLicenceUrl = certificateURL
 		// Append the image URL to the Images field
 
 	}
@@ -156,9 +155,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 				Message: "Failed to upload license to S3: " + err.Error(),
 			})
 		}
-		if laboratory.Laboratory != nil {
-			laboratory.Laboratory.Documents.License = licenseURL
-		}
+		laboratoryLicenceUrl = licenseURL
 		// Append the image URL to the Images field
 
 	}
@@ -191,29 +188,21 @@ func AddLaboratory(c *fiber.Ctx) error {
 		investigations = append(investigations, convertedInv)
 	}
 
-	var laboratoryImage string
-	var licenseDoc string
-	var certificate string
-	if laboratory.Laboratory != nil {
-		laboratoryImage = laboratory.Laboratory.Information.Image
-		licenseDoc = laboratory.Laboratory.Documents.License
-		certificate = laboratory.Laboratory.Documents.Certificate
-	}
-
-	laboratoryData := subEntity.LaboratoryUpdateServiceSubEntity{
+	laboratoryData := &subEntity.LaboratoryUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.LaboratoryReqDto.InformationName,
 			AdditionalText: data.LaboratoryReqDto.AdditionalText,
-			Image:          laboratoryImage,
+			Image:          laboratoryImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.LaboratoryReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificate,
-			License:     licenseDoc,
+			Certificate: laboratoryCertificateUrl,
+			License:     laboratoryLicenceUrl,
 		},
 		Investigations: investigations,
 	}
@@ -222,7 +211,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 		Role:                 "healthFacility",
 		FacilityOrProfession: "laboratory",
 		ServiceStatus:        "pending",
-		Laboratory:           &laboratoryData,
+		Laboratory:           laboratoryData,
 		UpdatedAt:            time.Now().UTC(),
 	}
 
@@ -244,6 +233,14 @@ func AddLaboratory(c *fiber.Ctx) error {
 	laboratoryRes := services.LaboratoryResDto{
 		Status:  true,
 		Message: "laboratory added successfully",
+		Role: services.Role{
+			Role:                 "healthFacility",
+			FacilityOrProfession: "laboratory",
+			ServiceStatus:        "pending",
+			Image:                laboratoryImageUrl,
+			Name:                 data.LaboratoryReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(laboratoryRes)
 }

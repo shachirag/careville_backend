@@ -38,9 +38,14 @@ var ctx = context.Background()
 // @Router /provider/services/add-physiotherapist [post]
 func AddPhysiotherapist(c *fiber.Ctx) error {
 	var (
-		servicesColl    = database.GetCollection("service")
-		data            services.PhysiotherapistRequestDto
-		physiotherapist subEntity.UpdateServiceSubEntity
+		servicesColl            = database.GetCollection("service")
+		data                    services.PhysiotherapistRequestDto
+		physiotherapist         subEntity.UpdateServiceSubEntity
+		physiotherapistImage    string
+		nimcDoc                 string
+		personalLicense         string
+		professionalLicense     string
+		professionalCertificate string
 	)
 
 	dataStr := c.FormValue("data")
@@ -94,16 +99,14 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		if physiotherapist.Physiotherapist != nil {
-			physiotherapist.Physiotherapist.Information.Image = physiotherapistImage
-		}
+		physiotherapistImage = physiotherapistImage
 
 	}
 
 	professionalCertificateFiles := form.File["professionalCertificate"]
 	professionalLicenseFormFiles := form.File["professionalLicense"]
 	if len(professionalCertificateFiles) == 0 && len(professionalLicenseFormFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "At least one document is mandatary",
 		})
@@ -132,10 +135,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		if physiotherapist.Physiotherapist != nil {
-			physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate = certificateURL
-		}
-
+		professionalCertificate = certificateURL
 	}
 
 	// Upload each image to S3 and get the S3 URLs
@@ -161,16 +161,14 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		if physiotherapist.Physiotherapist != nil {
-			physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License = licenseURL
-		}
+		professionalLicense = licenseURL
 
 	}
 
 	personalNimcFiles := form.File["personalNimc"]
 	personalLicenseFiles := form.File["personalLicense"]
 	if len(personalNimcFiles) == 0 && len(personalLicenseFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
 			Message: "At least one document is mandatary",
 		})
@@ -199,9 +197,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		if physiotherapist.Physiotherapist != nil {
-			physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc = nimcURL
-		}
+		nimcDoc = nimcURL
 
 	}
 
@@ -228,9 +224,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		if physiotherapist.Physiotherapist != nil {
-			physiotherapist.Physiotherapist.PersonalIdentificationDocs.License = licenseURL
-		}
+		personalLicense = licenseURL
 
 	}
 
@@ -273,19 +267,6 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 
 	if physiotherapist.Physiotherapist != nil {
 		physiotherapist.Physiotherapist.ServiceAndSchedule = schedule
-	}
-
-	var physiotherapistImage string
-	var nimcDoc string
-	var personalLicense string
-	var professionalLicense string
-	var professionalCertificate string
-	if physiotherapist.Physiotherapist != nil {
-		physiotherapistImage = physiotherapist.Physiotherapist.Information.Image
-		nimcDoc = physiotherapist.Physiotherapist.PersonalIdentificationDocs.Nimc
-		personalLicense = physiotherapist.Physiotherapist.PersonalIdentificationDocs.License
-		professionalLicense = physiotherapist.Physiotherapist.ProfessionalDetailsDocs.License
-		professionalCertificate = physiotherapist.Physiotherapist.ProfessionalDetailsDocs.Certificate
 	}
 
 	physiotherapistData := subEntity.PhysiotherapistUpdateServiceSubEntity{
@@ -339,6 +320,13 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 	fitnessRes := services.PhysiotherapistResDto{
 		Status:  true,
 		Message: "Physiotherapist added successfully",
+		Role: services.Role{
+			Role:                 "healthProfessional",
+			FacilityOrProfession: "physiotherpist",
+			ServiceStatus:        "pending",
+			Image:                physiotherapistImage,
+			Name:                 data.PhysiotherapistReqDto.InformationName,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
 }

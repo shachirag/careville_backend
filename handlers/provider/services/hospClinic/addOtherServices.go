@@ -71,7 +71,7 @@ func AddServices(c *fiber.Ctx) error {
 
 	_, err = servicesColl.UpdateOne(ctx, filter, update)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicServiceResDto{
 			Status:  false,
 			Message: "Failed to update provider data in MongoDB: " + err.Error(),
 		})
@@ -89,20 +89,20 @@ func AddServices(c *fiber.Ctx) error {
 
 	updateRes, err := servicesColl.UpdateOne(ctx, filter, update)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicServiceResDto{
 			Status:  false,
 			Message: "Failed to update provider data in MongoDB: " + err.Error(),
 		})
 	}
 
 	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.HospitalClinicResDto{
+		return c.Status(fiber.StatusNotFound).JSON(services.HospitalClinicServiceResDto{
 			Status:  false,
 			Message: "provider not found",
 		})
 	}
 
-	hospClinicRes := services.HospitalClinicResDto{
+	hospClinicRes := services.HospitalClinicServiceResDto{
 		Status:  true,
 		Message: "other services and insurances added successfully",
 	}

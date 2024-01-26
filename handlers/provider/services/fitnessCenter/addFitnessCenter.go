@@ -36,9 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-fitness-center [post]
 func AddFitnessCenter(c *fiber.Ctx) error {
 	var (
-		servicesColl  = database.GetCollection("service")
-		data          services.FitnessCenterRequestDto
-		fitnessCenter subEntity.UpdateServiceSubEntity
+		servicesColl   = database.GetCollection("service")
+		data           services.FitnessCenterRequestDto
+		fitnessCenter  subEntity.UpdateServiceSubEntity
+		imageUrl       string
+		licenceUrl     string
+		certificateUrl string
 	)
 
 	dataStr := c.FormValue("data")
@@ -92,9 +95,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		if fitnessCenter.FitnessCenter != nil {
-			fitnessCenter.FitnessCenter.Information.Image = fitnessCenterImage
-		}
+		fitnessCenterImage = fitnessCenterImage
 
 	}
 
@@ -129,9 +130,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		if fitnessCenter.FitnessCenter != nil {
-			fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
-		}
+		certificateURL = certificateURL
 
 		// fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
 	}
@@ -160,9 +159,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		if fitnessCenter.FitnessCenter != nil {
-			fitnessCenter.FitnessCenter.Documents.License = licenseURL
-		}
+		licenceUrl = licenseURL
 
 	}
 
@@ -213,30 +210,21 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		}
 		subscription = append(subscription, convertedInv)
 	}
-
-	var fitnessCenterImage string
-	var licenseDoc string
-	var certificate string
-	if fitnessCenter.FitnessCenter != nil {
-		fitnessCenterImage = fitnessCenter.FitnessCenter.Information.Image
-		licenseDoc = fitnessCenter.FitnessCenter.Documents.License
-		certificate = fitnessCenter.FitnessCenter.Documents.Certificate
-	}
-
 	fitnessCenterData := subEntity.FitnessCenterUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.FitnessCenterReqDto.InformationName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
-			Image:          fitnessCenterImage,
+			Image:          imageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.FitnessCenterReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificate,
-			License:     licenseDoc,
+			Certificate: certificateUrl,
+			License:     licenceUrl,
 		},
 		AdditionalServices: additionalServices,
 		Trainers:           trainers,
@@ -266,6 +254,14 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 	fitnessRes := services.FitnessCenterResDto{
 		Status:  true,
 		Message: "fitness center added successfully",
+		Role: services.Role{
+			Role:                 "healthFacility",
+			FacilityOrProfession: "fitnessCenter",
+			ServiceStatus:        "pending",
+			Image:                imageUrl,
+			Name:                 data.FitnessCenterReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
 }

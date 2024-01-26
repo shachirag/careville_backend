@@ -13,8 +13,14 @@ type UpdateProviderReqDto struct {
 }
 
 type UpdateProviderResDto struct {
-	Status  bool   `json:"status"`
-	Message string `json:"message"`
+	Status  bool              `json:"status"`
+	Message string            `json:"message"`
+	Data    UpdateProfileData `json:"data"`
+}
+
+type UpdateProfileData struct {
+	Role Role `json:"role"`
+	User User `json:"user"`
 }
 
 type UpdateImageReqDto struct {

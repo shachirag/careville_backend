@@ -8,8 +8,6 @@ definitions:
         $ref: '#/definitions/providerAuth.Address'
       documents:
         $ref: '#/definitions/providerAuth.Documents'
-      isEmergencyAvailable:
-        type: boolean
     type: object
   providerAuth.Address:
     properties:
@@ -106,10 +104,8 @@ definitions:
     properties:
       additionalInformation:
         $ref: '#/definitions/providerAuth.AdditionalInformation'
-      role:
-        $ref: '#/definitions/providerAuth.Role'
-      user:
-        $ref: '#/definitions/providerAuth.User'
+      userData:
+        $ref: '#/definitions/providerAuth.UserData'
     type: object
   providerAuth.ProviderRespDto:
     properties:
@@ -172,6 +168,8 @@ definitions:
         type: string
       image:
         type: string
+      isEmergencyAvailable:
+        type: boolean
       name:
         type: string
       role:
@@ -184,8 +182,17 @@ definitions:
       oldImage:
         type: string
     type: object
+  providerAuth.UpdateProfileData:
+    properties:
+      role:
+        $ref: '#/definitions/providerAuth.Role'
+      user:
+        $ref: '#/definitions/providerAuth.User'
+    type: object
   providerAuth.UpdateProviderResDto:
     properties:
+      data:
+        $ref: '#/definitions/providerAuth.UpdateProfileData'
       message:
         type: string
       status:
@@ -209,6 +216,13 @@ definitions:
         $ref: '#/definitions/providerAuth.PhoneNumber'
       updatedAt:
         type: string
+    type: object
+  providerAuth.UserData:
+    properties:
+      role:
+        $ref: '#/definitions/providerAuth.Role'
+      user:
+        $ref: '#/definitions/providerAuth.User'
     type: object
   providerAuth.VerifyOtpReqDto:
     properties:
@@ -267,6 +281,8 @@ definitions:
     type: object
   services.DoctorProfessionResDto:
     properties:
+      data:
+        $ref: '#/definitions/services.Role'
       message:
         type: string
       status:
@@ -361,6 +377,8 @@ definitions:
     type: object
   services.FitnessCenterResDto:
     properties:
+      data:
+        $ref: '#/definitions/services.Role'
       message:
         type: string
       status:
@@ -444,6 +462,8 @@ definitions:
     type: object
   services.HospitalClinicResDto:
     properties:
+      data:
+        $ref: '#/definitions/services.Role'
       message:
         type: string
       status:
@@ -528,6 +548,8 @@ definitions:
     type: object
   services.LaboratoryResDto:
     properties:
+      data:
+        $ref: '#/definitions/services.Role'
       message:
         type: string
       status:
@@ -556,6 +578,8 @@ definitions:
     type: object
   services.MedicalLabScientistResDto:
     properties:
+      data:
+        $ref: '#/definitions/services.Role'
       message:
         type: string
       status:
@@ -629,6 +653,8 @@ definitions:
     type: object
   services.NurseResDto:
     properties:
+      data:
+        $ref: '#/definitions/services.Role'
       message:
         type: string
       status:
@@ -704,6 +730,8 @@ definitions:
     properties:
       message:
         type: string
+      role:
+        $ref: '#/definitions/services.Role'
       status:
         type: boolean
     type: object
@@ -728,11 +756,10 @@ definitions:
     type: object
   services.PhysiotherapistResDto:
     properties:
-      errors:
-        items: {}
-        type: array
       message:
         type: string
+      role:
+        $ref: '#/definitions/services.Role'
       status:
         type: boolean
     type: object
@@ -746,6 +773,21 @@ definitions:
         items:
           $ref: '#/definitions/services.Slots'
         type: array
+    type: object
+  services.Role:
+    properties:
+      facilityOrProfession:
+        type: string
+      image:
+        type: string
+      isEmergencyAvailable:
+        type: boolean
+      name:
+        type: string
+      role:
+        type: string
+      serviceStatus:
+        type: string
     type: object
   services.Schedule:
     properties:

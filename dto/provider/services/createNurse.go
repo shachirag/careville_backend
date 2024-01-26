@@ -15,12 +15,13 @@ type NurseReqDto struct {
 }
 
 type NurseSchedule struct {
-	Name        string `json:"name" bson:"name"`
-	ServiceFees string `json:"serviceFees" bson:"serviceFees"`
-	Slots       []Slots  `json:"slots" bson:"slots"`
+	Name        string  `json:"name" bson:"name"`
+	ServiceFees string  `json:"serviceFees" bson:"serviceFees"`
+	Slots       []Slots `json:"slots" bson:"slots"`
 }
 
 type NurseResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+	Role    Role   `json:"data" bson:"data"`
 }

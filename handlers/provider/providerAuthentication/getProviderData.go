@@ -112,49 +112,39 @@ func FetchProviderById(c *fiber.Ctx) error {
 	}
 
 	providerRes := providerAuth.ProviderResDto{
-		Role: providerAuth.Role{
-			Role:                 provider.Role,
-			FacilityOrProfession: provider.FacilityOrProfession,
-			ServiceStatus:        provider.ServiceStatus,
-			Image:                image,
-			Name:                 name,
-		},
-		User: providerAuth.User{
-			Id:          provider.Id,
-			FirstName:   provider.User.FirstName,
-			LastName:    provider.User.LastName,
-			Email:       provider.User.Email,
-			PhoneNumber: providerAuth.PhoneNumber(provider.User.PhoneNumber),
-			Notification: providerAuth.Notification{
-				DeviceToken: provider.User.Notification.DeviceToken,
-				DeviceType:  provider.User.Notification.DeviceType,
-				IsEnabled:   provider.User.Notification.IsEnabled,
+		User: providerAuth.UserData{
+			Role: providerAuth.Role{
+				Role:                 provider.Role,
+				FacilityOrProfession: provider.FacilityOrProfession,
+				ServiceStatus:        provider.ServiceStatus,
+				Image:                image,
+				Name:                 name,
+				IsEmergencyAvailable: isEmergencyAvailable,
 			},
-			CreatedAt: provider.CreatedAt,
-			UpdatedAt: provider.UpdatedAt,
+			User: providerAuth.User{
+				Id:          provider.Id,
+				FirstName:   provider.User.FirstName,
+				LastName:    provider.User.LastName,
+				Email:       provider.User.Email,
+				PhoneNumber: providerAuth.PhoneNumber(provider.User.PhoneNumber),
+				Notification: providerAuth.Notification{
+					DeviceToken: provider.User.Notification.DeviceToken,
+					DeviceType:  provider.User.Notification.DeviceType,
+					IsEnabled:   provider.User.Notification.IsEnabled,
+				},
+				CreatedAt: provider.CreatedAt,
+				UpdatedAt: provider.UpdatedAt,
+			},
 		},
 		AdditionalInformation: providerAuth.AdditionalInformation{
-			AdditionalDetails:    additionalDetails,
-			Address:              address,
-			IsEmergencyAvailable: isEmergencyAvailable,
+			AdditionalDetails: additionalDetails,
+			Address:           address,
 			Documents: providerAuth.Documents{
 				Certificate: certificate,
 				License:     license,
 			},
 		},
 	}
-
-	// providerRes := providerAuth.ProviderRespDto{
-
-	// 	AdditionalDetails:    additionalDetails,
-	// 	Address:              address,
-	// 	IsEmergencyAvailable: isEmergencyAvailable,
-
-	// 	Documents: providerAuth.Documents{
-	// 		License:     license,
-	// 		Certificate: certificate,
-	// 	},
-	// }
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.GetProviderResDto{
 		Status:   true,

@@ -15,13 +15,13 @@ type PhysiotherapistReqDto struct {
 }
 
 type PhysiotherapistSchedule struct {
-	Name        string `json:"name" bson:"name"`
-	ServiceFees string `json:"serviceFees" bson:"serviceFees"`
-	Slots       []Slots  `json:"slots" bson:"slots"`
+	Name        string  `json:"name" bson:"name"`
+	ServiceFees string  `json:"serviceFees" bson:"serviceFees"`
+	Slots       []Slots `json:"slots" bson:"slots"`
 }
 
 type PhysiotherapistResDto struct {
-	Status  bool    `json:"status"`
-	Message string  `json:"message"`
-	Errors  []error `json:"errors,omitempty"`
+	Status  bool   `json:"status"`
+	Message string `json:"message"`
+	Role    Role   `json:"role"`
 }

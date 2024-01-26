@@ -38,9 +38,14 @@ var ctx = context.Background()
 // @Router /provider/services/add-doctor-profession [post]
 func AddDoctorProfession(c *fiber.Ctx) error {
 	var (
-		servicesColl     = database.GetCollection("service")
-		data             services.DoctorProfessionRequestDto
-		doctorProfession subEntity.UpdateServiceSubEntity
+		servicesColl            = database.GetCollection("service")
+		data                    services.DoctorProfessionRequestDto
+		doctorProfession        subEntity.UpdateServiceSubEntity
+		doctoryImage            string
+		nimcDoc                 string
+		personalLicense         string
+		professionalLicense     string
+		professionalCertificate string
 	)
 
 	dataStr := c.FormValue("data")
@@ -94,9 +99,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			})
 		}
 
-		if doctorProfession.Doctor != nil {
-			doctorProfession.Doctor.Information.Image = doctorImage
-		}
+		doctoryImage = doctorImage
 
 	}
 
@@ -132,9 +135,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			})
 		}
 
-		if doctorProfession.Doctor != nil {
-			doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate = certificateURL
-		}
+		professionalCertificate = certificateURL
 
 	}
 
@@ -161,9 +162,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			})
 		}
 
-		if doctorProfession.Doctor != nil {
-			doctorProfession.Doctor.ProfessionalDetailsDocs.License = licenseURL
-		}
+		professionalLicense = licenseURL
 
 	}
 
@@ -199,9 +198,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			})
 		}
 
-		if doctorProfession.Doctor != nil {
-			doctorProfession.Doctor.PersonalIdentificationDocs.Nimc = nimcURL
-		}
+		nimcDoc = nimcURL
 
 	}
 
@@ -228,9 +225,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			})
 		}
 
-		if doctorProfession.Doctor != nil {
-			doctorProfession.Doctor.PersonalIdentificationDocs.License = licenseURL
-		}
+		personalLicense = licenseURL
 
 	}
 
@@ -274,19 +269,6 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		doctorProfession.Doctor.Schedule = schedule
 	}
 
-	var doctoryImage string
-	var nimcDoc string
-	var personalLicense string
-	var professionalLicense string
-	var professionalCertificate string
-	if doctorProfession.Doctor != nil {
-		doctoryImage = doctorProfession.Doctor.Information.Image
-		nimcDoc = doctorProfession.Doctor.PersonalIdentificationDocs.Nimc
-		personalLicense = doctorProfession.Doctor.PersonalIdentificationDocs.License
-		professionalLicense = doctorProfession.Doctor.ProfessionalDetailsDocs.License
-		professionalCertificate = doctorProfession.Doctor.ProfessionalDetailsDocs.Certificate
-	}
-
 	doctorData := subEntity.DoctorProfessionUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.DoctorProfessionReqDto.InformationName,
@@ -297,6 +279,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 				Add:         data.DoctorProfessionReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		AdditionalServices: subEntity.AdditionalServiceUpdateServiceSubEntity{
 			Qualifications: data.DoctorProfessionReqDto.Qualifications,
@@ -336,6 +319,14 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	fitnessRes := services.DoctorProfessionResDto{
 		Status:  true,
 		Message: "doctor profession added successfully",
+		Role: services.Role{
+			Role:                 "healthProfessional",
+			FacilityOrProfession: "doctor",
+			ServiceStatus:        "pending",
+			Image:                doctoryImage,
+			Name:                 data.DoctorProfessionReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
 }

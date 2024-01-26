@@ -29,8 +29,8 @@ type ProfessionalDetailsDocs struct {
 }
 
 type DoctorSchedule struct {
-	ConsultationFees string `json:"consultationFees" bson:"consultationFees"`
-	Slots            []Slots  `json:"slots" bson:"slots"`
+	ConsultationFees string  `json:"consultationFees" bson:"consultationFees"`
+	Slots            []Slots `json:"slots" bson:"slots"`
 }
 
 type Slots struct {
@@ -42,6 +42,16 @@ type Slots struct {
 type DoctorProfessionResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+	Role    Role   `json:"data" bson:"data"`
+}
+
+type Role struct {
+	Role                 string `json:"role" bson:"role"`
+	FacilityOrProfession string `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	ServiceStatus        string `json:"serviceStatus" bson:"serviceStatus"`
+	Name                 string `json:"name" bson:"name"`
+	Image                string `json:"image" bson:"image"`
+	IsEmergencyAvailable bool   `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
 }
 
 type StatusResDto struct {

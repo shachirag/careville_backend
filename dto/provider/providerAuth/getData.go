@@ -8,14 +8,16 @@ type GetProviderResDto struct {
 
 type ProviderResDto struct {
 	AdditionalInformation AdditionalInformation `json:"additionalInformation"`
-	Role                  Role                  `json:"role"`
-	User                  User                  `json:"user"`
+	User                  UserData              `json:"userData"`
+}
+type UserData struct {
+	Role Role `json:"role"`
+	User User `json:"user"`
 }
 
 type AdditionalInformation struct {
 	AdditionalDetails    string    `json:"additionalDetails" bson:"additionalDetails"`
 	Address              Address   `json:"address" bson:"address"`
-	IsEmergencyAvailable bool      `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
 	Documents            Documents `json:"documents" bson:"documents"`
 }
 

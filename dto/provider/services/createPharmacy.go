@@ -16,4 +16,5 @@ type PharmacyReqDto struct {
 type PharmacyResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+	Role    Role   `json:"role" bson:"role"`
 }

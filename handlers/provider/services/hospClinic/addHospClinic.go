@@ -36,9 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-hospitalClinic [post]
 func AddHospClinic(c *fiber.Ctx) error {
 	var (
-		servicesColl = database.GetCollection("service")
-		data         services.HospitalClinicRequestDto
-		hospClinic   subEntity.UpdateServiceSubEntity
+		servicesColl     = database.GetCollection("service")
+		data             services.HospitalClinicRequestDto
+		hospClinic       subEntity.UpdateServiceSubEntity
+		hospitalImageUrl string
+		licenceUrl       string
+		certificateUrl   string
 	)
 
 	dataStr := c.FormValue("data")
@@ -92,9 +95,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		if hospClinic.HospClinic != nil {
-			hospClinic.HospClinic.Information.Image = hospitalImage
-		}
+		hospitalImageUrl = hospitalImage
 
 	}
 
@@ -130,9 +131,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		if hospClinic.HospClinic != nil {
-			hospClinic.HospClinic.Documents.Certificate = certificateURL
-		}
+		certificateUrl = certificateURL
 
 	}
 
@@ -159,9 +158,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		if hospClinic.HospClinic != nil {
-			hospClinic.HospClinic.Documents.License = licenseURL
-		}
+		licenceUrl = licenseURL
 
 	}
 
@@ -201,29 +198,21 @@ func AddHospClinic(c *fiber.Ctx) error {
 		}
 	}
 
-	var hospitalImage string
-	var licenseDoc string
-	var certificate string
-	if hospClinic.HospClinic != nil {
-		hospitalImage = hospClinic.HospClinic.Information.Image
-		licenseDoc = hospClinic.HospClinic.Documents.License
-		certificate = hospClinic.HospClinic.Documents.Certificate
-	}
-
 	hospClinicData := subEntity.HospClinicUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.HospitalClinicReqDto.InformationName,
 			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
-			Image:          hospitalImage,
+			Image:          hospitalImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.HospitalClinicReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificate,
-			License:     licenseDoc,
+			Certificate: certificateUrl,
+			License:     licenceUrl,
 		},
 		OtherServices: data.HospitalClinicReqDto.OtherServices,
 		Insurances:    data.HospitalClinicReqDto.Insurances,
@@ -255,6 +244,14 @@ func AddHospClinic(c *fiber.Ctx) error {
 	hospClinicRes := services.HospitalClinicResDto{
 		Status:  true,
 		Message: "hospital/clinic added successfully",
+		Role: services.Role{
+			Role:                 "healthFacility",
+			FacilityOrProfession: "hospClinic",
+			ServiceStatus:        "pending",
+			Image:                hospitalImageUrl,
+			Name:                 data.HospitalClinicReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

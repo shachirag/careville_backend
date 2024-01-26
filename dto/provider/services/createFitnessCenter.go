@@ -36,4 +36,5 @@ type Subscription struct {
 type FitnessCenterResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+	Role    Role   `json:"data" bson:"data"`
 }

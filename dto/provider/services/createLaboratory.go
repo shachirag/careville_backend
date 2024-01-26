@@ -23,4 +23,5 @@ type Investigations struct {
 type LaboratoryResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+	Role    Role   `json:"data" bson:"data"`
 }

@@ -36,9 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-pharmacy [post]
 func AddPharmacy(c *fiber.Ctx) error {
 	var (
-		servicesColl = database.GetCollection("service")
-		data         services.PharmacyRequestDto
-		pharmacy     subEntity.UpdateServiceSubEntity
+		servicesColl   = database.GetCollection("service")
+		data           services.PharmacyRequestDto
+		pharmacy       subEntity.UpdateServiceSubEntity
+		imageUrl       string
+		licenceUrl     string
+		certificateUrl string
 	)
 
 	dataStr := c.FormValue("data")
@@ -92,9 +95,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		if pharmacy.Pharmacy != nil {
-			pharmacy.Pharmacy.Information.Image = pharmacyImage
-		}
+		imageUrl = pharmacyImage
 
 	}
 
@@ -130,9 +131,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		if pharmacy.Pharmacy != nil {
-			pharmacy.Pharmacy.Documents.Certificate = certificateURL
-		}
+		certificateURL = certificateURL
 
 	}
 
@@ -159,10 +158,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		if pharmacy.Pharmacy != nil {
-			pharmacy.Pharmacy.Documents.License = licenseURL
-		}
-
+		licenseURL = licenseURL
 	}
 
 	longitude, err := strconv.ParseFloat(data.PharmacyReqDto.Longitude, 64)
@@ -191,29 +187,21 @@ func AddPharmacy(c *fiber.Ctx) error {
 		additionalServices = append(additionalServices, convertedInv)
 	}
 
-	var pharmacyImage string
-	var licenseDoc string
-	var certificate string
-	if pharmacy.Pharmacy != nil {
-		pharmacyImage = pharmacy.Pharmacy.Information.Image
-		licenseDoc = pharmacy.Pharmacy.Documents.License
-		certificate = pharmacy.Pharmacy.Documents.Certificate
-	}
-
 	pharmacyData := subEntity.PharmacyUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PharmacyReqDto.InformationName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
-			Image:          pharmacyImage,
+			Image:          imageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PharmacyReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificate,
-			License:     licenseDoc,
+			Certificate: certificateUrl,
+			License:     licenceUrl,
 		},
 		AdditionalServices: additionalServices,
 	}
@@ -244,6 +232,14 @@ func AddPharmacy(c *fiber.Ctx) error {
 	pharmacyRes := services.PharmacyResDto{
 		Status:  true,
 		Message: "pharmacy added successfully",
+		Role: services.Role{
+			Role:                 "healthFacility",
+			FacilityOrProfession: "pharmacy",
+			ServiceStatus:        "pending",
+			Image:                imageUrl,
+			Name:                 data.PharmacyReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(pharmacyRes)
 }

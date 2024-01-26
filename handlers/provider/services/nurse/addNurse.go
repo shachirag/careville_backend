@@ -38,9 +38,14 @@ var ctx = context.Background()
 // @Router /provider/services/add-nurse [post]
 func AddNurse(c *fiber.Ctx) error {
 	var (
-		servicesColl = database.GetCollection("service")
-		data         services.NurseRequestDto
-		nurse        subEntity.UpdateServiceSubEntity
+		servicesColl            = database.GetCollection("service")
+		data                    services.NurseRequestDto
+		nurse                   subEntity.UpdateServiceSubEntity
+		nurseImage              string
+		nimcDoc                 string
+		personalLicense         string
+		professionalLicense     string
+		professionalCertificate string
 	)
 
 	dataStr := c.FormValue("data")
@@ -94,16 +99,14 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		if nurse.Nurse != nil {
-			nurse.Nurse.Information.Image = nurseImage
-		}
+		nurseImage = nurseImage
 
 	}
 
 	professionalCertificateFiles := form.File["professionalCertificate"]
 	professionalLicenseFormFiles := form.File["professionalLicense"]
 	if len(professionalCertificateFiles) == 0 && len(professionalLicenseFormFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 			Status:  false,
 			Message: "At least one document is mandatary",
 		})
@@ -131,9 +134,7 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		if nurse.Nurse != nil {
-			nurse.Nurse.ProfessionalDetailsDocs.Certificate = certificateURL
-		}
+		professionalCertificate = certificateURL
 
 	}
 
@@ -160,16 +161,14 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		if nurse.Nurse != nil {
-			nurse.Nurse.ProfessionalDetailsDocs.License = licenseURL
-		}
+		professionalLicense = licenseURL
 
 	}
 
 	personalNimcFiles := form.File["personalNimc"]
 	personalLicenseFiles := form.File["personalLicense"]
 	if len(personalNimcFiles) == 0 && len(personalLicenseFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 			Status:  false,
 			Message: "At least one document is mandatary",
 		})
@@ -198,9 +197,7 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		if nurse.Nurse != nil {
-			nurse.Nurse.PersonalIdentificationDocs.Nimc = nimcURL
-		}
+		nimcDoc = nimcURL
 
 	}
 
@@ -227,10 +224,7 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		if nurse.Nurse != nil {
-			nurse.Nurse.PersonalIdentificationDocs.License = licenseURL
-		}
-
+		personalLicense = licenseURL
 	}
 
 	longitude, err := strconv.ParseFloat(data.NurseReqDto.Longitude, 64)
@@ -275,19 +269,6 @@ func AddNurse(c *fiber.Ctx) error {
 		nurse.Nurse.Schedule = schedule
 	}
 
-	var nurseImage string
-	var nimcDoc string
-	var personalLicense string
-	var professionalLicense string
-	var professionalCertificate string
-	if nurse.Nurse != nil {
-		nurseImage = nurse.Nurse.Information.Image
-		nimcDoc = nurse.Nurse.PersonalIdentificationDocs.Nimc
-		personalLicense = nurse.Nurse.PersonalIdentificationDocs.License
-		professionalLicense = nurse.Nurse.ProfessionalDetailsDocs.License
-		professionalCertificate = nurse.Nurse.ProfessionalDetailsDocs.Certificate
-	}
-
 	NurseData := subEntity.NurseUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.NurseReqDto.InformationName,
@@ -298,6 +279,7 @@ func AddNurse(c *fiber.Ctx) error {
 				Add:         data.NurseReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		ProfessionalDetails: subEntity.ProfessionalDetailsUpdateServiceSubEntity{
 			Qualifications: data.NurseReqDto.Qualifications,
@@ -339,6 +321,14 @@ func AddNurse(c *fiber.Ctx) error {
 	fitnessRes := services.NurseResDto{
 		Status:  true,
 		Message: "doctor profession added successfully",
+		Role: services.Role{
+			Role:                 "healthProfessional",
+			FacilityOrProfession: "nurse",
+			ServiceStatus:        "pending",
+			Image:                nurseImage,
+			Name:                 data.NurseReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
 }

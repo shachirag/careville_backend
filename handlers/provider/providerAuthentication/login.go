@@ -92,31 +92,40 @@ func LoginProvider(c *fiber.Ctx) error {
 
 	var image string
 	var name string
+	var isEmergencyAvailable bool
 
 	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
 		image = provider.HospClinic.Information.Image
 		name = provider.HospClinic.Information.Name
+		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
 		image = provider.Laboratory.Information.Image
 		name = provider.Laboratory.Information.Name
+		isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
 		image = provider.FitnessCenter.Information.Image
 		name = provider.FitnessCenter.Information.Name
+		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
 		image = provider.Pharmacy.Information.Image
 		name = provider.Pharmacy.Information.Name
+		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
 		image = provider.MedicalLabScientist.Information.Image
 		name = provider.MedicalLabScientist.Information.Name
+		isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "nurse" {
 		image = provider.Nurse.Information.Image
 		name = provider.Nurse.Information.Name
+		isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "doctor" {
 		image = provider.Doctor.Information.Image
 		name = provider.Doctor.Information.Name
+		isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "physiotherapist" {
 		image = provider.Physiotherapist.Information.Image
 		name = provider.Physiotherapist.Information.Name
+		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
 	}
 
 	role := providerAuth.Role{}
@@ -127,6 +136,7 @@ func LoginProvider(c *fiber.Ctx) error {
 			ServiceStatus:        provider.ServiceStatus,
 			Image:                image,
 			Name:                 name,
+			IsEmergencyAvailable: isEmergencyAvailable,
 		}
 	}
 

@@ -77,8 +77,14 @@ func UpdateProvider(c *fiber.Ctx) error {
 	}
 
 	update := bson.M{}
+	var image string
+	var name string
+	var isEmergencyAvailable bool
 
 	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+		image = provider.HospClinic.Information.Image
+		name = provider.HospClinic.Information.Name
+		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -97,6 +103,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+		image = provider.Laboratory.Information.Image
+		name = provider.Laboratory.Information.Name
+		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -115,6 +124,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+		image = provider.FitnessCenter.Information.Image
+		name = provider.FitnessCenter.Information.Name
+		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -134,6 +146,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+		image = provider.Pharmacy.Information.Image
+		name = provider.Pharmacy.Information.Name
+		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -152,6 +167,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+		image = provider.MedicalLabScientist.Information.Image
+		name = provider.MedicalLabScientist.Information.Name
+		isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -171,6 +189,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "nurse" {
+		image = provider.Nurse.Information.Image
+		name = provider.Nurse.Information.Name
+		isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -190,6 +211,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "doctor" {
+		image = provider.Doctor.Information.Image
+		name = provider.Doctor.Information.Name
+		isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -209,6 +233,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		},
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "physiotherapist" {
+		image = provider.Physiotherapist.Information.Image
+		name = provider.Physiotherapist.Information.Name
+		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -247,5 +274,33 @@ func UpdateProvider(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(providerAuth.UpdateProviderResDto{
 		Status:  true,
 		Message: "provider data updated successfully",
+		Data: providerAuth.UpdateProfileData{
+			Role: providerAuth.Role{
+				Role:                 provider.Role,
+				FacilityOrProfession: provider.FacilityOrProfession,
+				ServiceStatus:        provider.ServiceStatus,
+				Name:                 name,
+				Image:                image,
+				IsEmergencyAvailable: isEmergencyAvailable,
+			},
+			User: providerAuth.User{
+				Id:        providerData.ProviderId,
+				FirstName: data.FirstName,
+				LastName:  data.LastName,
+				Email:     provider.User.Email,
+				Notification: providerAuth.Notification{
+					DeviceToken: provider.User.Notification.DeviceToken,
+					DeviceType:  provider.User.Notification.DeviceType,
+					IsEnabled:   provider.User.Notification.IsEnabled,
+				},
+				PhoneNumber: providerAuth.PhoneNumber{
+					DialCode:    provider.User.PhoneNumber.DialCode,
+					Number:      provider.User.PhoneNumber.Number,
+					CountryCode: provider.User.PhoneNumber.CountryCode,
+				},
+				UpdatedAt: time.Now().UTC(),
+				CreatedAt: provider.CreatedAt,
+			},
+		},
 	})
 }

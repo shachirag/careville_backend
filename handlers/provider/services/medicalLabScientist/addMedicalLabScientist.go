@@ -38,9 +38,14 @@ var ctx = context.Background()
 // @Router /provider/services/add-medicalLab-scientist [post]
 func AddMedicalLabScientist(c *fiber.Ctx) error {
 	var (
-		servicesColl        = database.GetCollection("service")
-		data                services.MedicalLabScientistRequestDto
-		medicalLabScientist subEntity.UpdateServiceSubEntity
+		servicesColl             = database.GetCollection("service")
+		data                     services.MedicalLabScientistRequestDto
+		medicalLabScientist      subEntity.UpdateServiceSubEntity
+		medicalLabScientistImage string
+		nimcDoc                  string
+		personalLicense          string
+		professionalLicense      string
+		professionalCertificate  string
 	)
 
 	dataStr := c.FormValue("data")
@@ -86,7 +91,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		fileName := fmt.Sprintf("physiotherapist/%v-image-%s", id.Hex(), formFile.Filename)
 
 		// Upload the image to S3 and get the S3 URL
-		physiotherapistImage, err := utils.UploadToS3(fileName, file)
+		medicalLabScientistImage, err := utils.UploadToS3(fileName, file)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.MedicalLabScientistResDto{
 				Status:  false,
@@ -94,16 +99,13 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		if medicalLabScientist.MedicalLabScientist != nil {
-			medicalLabScientist.MedicalLabScientist.Information.Image = physiotherapistImage
-		}
-
+		medicalLabScientistImage = medicalLabScientistImage
 	}
 
 	professionalCertificateFiles := form.File["professionalCertificate"]
 	professionalLicenseFormFiles := form.File["professionalLicense"]
 	if len(professionalCertificateFiles) == 0 && len(professionalLicenseFormFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
 			Message: "At least one document is mandatary",
 		})
@@ -132,9 +134,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		if medicalLabScientist.MedicalLabScientist != nil {
-			medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate = certificateURL
-		}
+		professionalCertificate = certificateURL
 
 	}
 
@@ -161,16 +161,14 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		if medicalLabScientist.MedicalLabScientist != nil {
-			medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License = licenseURL
-		}
+		professionalLicense = licenseURL
 
 	}
 
 	personalNimcFiles := form.File["personalNimc"]
 	personalLicenseFiles := form.File["personalLicense"]
 	if len(personalNimcFiles) == 0 && len(personalLicenseFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
 			Message: "At least one document is mandatary",
 		})
@@ -199,9 +197,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		if medicalLabScientist.MedicalLabScientist != nil {
-			medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc = nimcURL
-		}
+		nimcDoc = nimcURL
 
 	}
 
@@ -228,9 +224,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		if medicalLabScientist.MedicalLabScientist != nil {
-			medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License = licenseURL
-		}
+		personalLicense = licenseURL
 
 	}
 
@@ -274,19 +268,6 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		medicalLabScientist.MedicalLabScientist.ServiceAndSchedule = schedule
 	}
 
-	var medicalLabScientistImage string
-	var nimcDoc string
-	var personalLicense string
-	var professionalLicense string
-	var professionalCertificate string
-	if medicalLabScientist.MedicalLabScientist != nil {
-		medicalLabScientistImage = medicalLabScientist.MedicalLabScientist.Information.Image
-		nimcDoc = medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.Nimc
-		personalLicense = medicalLabScientist.MedicalLabScientist.PersonalIdentificationDocs.License
-		professionalLicense = medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.License
-		professionalCertificate = medicalLabScientist.MedicalLabScientist.ProfessionalDetailsDocs.Certificate
-	}
-
 	MedicalLabScientistData := subEntity.MedicalLabScientistUpdateServiceSubEntity{
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.MedicalLabScientistReqDto.InformationName,
@@ -297,6 +278,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 				Add:         data.MedicalLabScientistReqDto.Address,
 				Type:        "Point",
 			},
+			IsEmergencyAvailable: false,
 		},
 		PersonalDetails: subEntity.PersonalDetailsUpdateServiceSubEntity{
 			Department: data.MedicalLabScientistReqDto.Department,
@@ -339,6 +321,14 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 	fitnessRes := services.MedicalLabScientistResDto{
 		Status:  true,
 		Message: "medicalLabScientist added successfully",
+		Role: services.Role{
+			Role:                 "healthProfessional",
+			FacilityOrProfession: "medicalLabScientist",
+			ServiceStatus:        "pending",
+			Image:                medicalLabScientistImage,
+			Name:                 data.MedicalLabScientistReqDto.InformationName,
+			IsEmergencyAvailable: false,
+		},
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
 }

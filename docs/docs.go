@@ -1923,9 +1923,6 @@ const docTemplate = `{
                 },
                 "documents": {
                     "$ref": "#/definitions/providerAuth.Documents"
-                },
-                "isEmergencyAvailable": {
-                    "type": "boolean"
                 }
             }
         },
@@ -2077,11 +2074,8 @@ const docTemplate = `{
                 "additionalInformation": {
                     "$ref": "#/definitions/providerAuth.AdditionalInformation"
                 },
-                "role": {
-                    "$ref": "#/definitions/providerAuth.Role"
-                },
-                "user": {
-                    "$ref": "#/definitions/providerAuth.User"
+                "userData": {
+                    "$ref": "#/definitions/providerAuth.UserData"
                 }
             }
         },
@@ -2179,6 +2173,9 @@ const docTemplate = `{
                 "image": {
                     "type": "string"
                 },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -2198,9 +2195,23 @@ const docTemplate = `{
                 }
             }
         },
+        "providerAuth.UpdateProfileData": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "$ref": "#/definitions/providerAuth.Role"
+                },
+                "user": {
+                    "$ref": "#/definitions/providerAuth.User"
+                }
+            }
+        },
         "providerAuth.UpdateProviderResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/providerAuth.UpdateProfileData"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2235,6 +2246,17 @@ const docTemplate = `{
                 },
                 "updatedAt": {
                     "type": "string"
+                }
+            }
+        },
+        "providerAuth.UserData": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "$ref": "#/definitions/providerAuth.Role"
+                },
+                "user": {
+                    "$ref": "#/definitions/providerAuth.User"
                 }
             }
         },
@@ -2326,6 +2348,9 @@ const docTemplate = `{
         "services.DoctorProfessionResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2471,6 +2496,9 @@ const docTemplate = `{
         "services.FitnessCenterResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2599,6 +2627,9 @@ const docTemplate = `{
         "services.HospitalClinicResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2729,6 +2760,9 @@ const docTemplate = `{
         "services.LaboratoryResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2772,6 +2806,9 @@ const docTemplate = `{
         "services.MedicalLabScientistResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -2885,6 +2922,9 @@ const docTemplate = `{
         "services.NurseResDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -3001,6 +3041,9 @@ const docTemplate = `{
                 "message": {
                     "type": "string"
                 },
+                "role": {
+                    "$ref": "#/definitions/services.Role"
+                },
                 "status": {
                     "type": "boolean"
                 }
@@ -3038,12 +3081,11 @@ const docTemplate = `{
         "services.PhysiotherapistResDto": {
             "type": "object",
             "properties": {
-                "errors": {
-                    "type": "array",
-                    "items": {}
-                },
                 "message": {
                     "type": "string"
+                },
+                "role": {
+                    "$ref": "#/definitions/services.Role"
                 },
                 "status": {
                     "type": "boolean"
@@ -3064,6 +3106,29 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.Slots"
                     }
+                }
+            }
+        },
+        "services.Role": {
+            "type": "object",
+            "properties": {
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "serviceStatus": {
+                    "type": "string"
                 }
             }
         },

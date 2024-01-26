@@ -29,6 +29,7 @@ type Role struct {
 	ServiceStatus        string `json:"serviceStatus" bson:"serviceStatus"`
 	Name                 string `json:"name" bson:"name"`
 	Image                string `json:"image" bson:"image"`
+	IsEmergencyAvailable bool   `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
 }
 
 type User struct {

@@ -29,6 +29,11 @@ type Schedule struct {
 
 type HospitalClinicResDto struct {
 	Status  bool   `json:"status" bson:"status"`
+	Role    Role   `json:"data" bson:"data"`
+	Message string `json:"message" bson:"message"`
+}
+type HospitalClinicServiceResDto struct {
+	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
 }
 

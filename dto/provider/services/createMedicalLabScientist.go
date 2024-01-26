@@ -5,23 +5,24 @@ type MedicalLabScientistRequestDto struct {
 }
 
 type MedicalLabScientistReqDto struct {
-	InformationName string                    `json:"informationName" form:"informationName"`
-	Address         string                    `json:"address" form:"address"`
-	Longitude       string                    `json:"longitude" form:"longitude"`
-	Latitude        string                    `json:"latitude" form:"latitude"`
-	AdditionalText  string                    `json:"additionalText" form:"additionalText"`
-	Department      string                    `json:"department" form:"department"`
-	Document        string                    `json:"document" form:"document"`
+	InformationName string                        `json:"informationName" form:"informationName"`
+	Address         string                        `json:"address" form:"address"`
+	Longitude       string                        `json:"longitude" form:"longitude"`
+	Latitude        string                        `json:"latitude" form:"latitude"`
+	AdditionalText  string                        `json:"additionalText" form:"additionalText"`
+	Department      string                        `json:"department" form:"department"`
+	Document        string                        `json:"document" form:"document"`
 	Schedule        []MedicalLabScientistSchedule `json:"schedule" form:"schedule"`
 }
 
 type MedicalLabScientistSchedule struct {
-	Name        string `json:"name" bson:"name"`
-	ServiceFees string `json:"serviceFees" bson:"serviceFees"`
-	Slots       []Slots  `json:"slots" bson:"slots"`
+	Name        string  `json:"name" bson:"name"`
+	ServiceFees string  `json:"serviceFees" bson:"serviceFees"`
+	Slots       []Slots `json:"slots" bson:"slots"`
 }
 
 type MedicalLabScientistResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
+	Role    Role `json:"data" bson:"data"`
 }
