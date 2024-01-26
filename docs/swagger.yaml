@@ -31,10 +31,8 @@ definitions:
     type: object
   providerAuth.GetProviderResDto:
     properties:
-      additionalInformation:
-        $ref: '#/definitions/providerAuth.AdditionalInformation'
       data:
-        $ref: '#/definitions/providerAuth.ProviderRespDto'
+        $ref: '#/definitions/providerAuth.ProviderResDto'
       message:
         type: string
       status:
@@ -103,6 +101,15 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  providerAuth.ProviderResDto:
+    properties:
+      additionalInformation:
+        $ref: '#/definitions/providerAuth.AdditionalInformation'
+      role:
+        $ref: '#/definitions/providerAuth.Role'
+      user:
+        $ref: '#/definitions/providerAuth.User'
     type: object
   providerAuth.ProviderRespDto:
     properties:
@@ -886,12 +893,30 @@ definitions:
       status:
         type: boolean
     type: object
+  services.UpdateInvestigationReqDto:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
   services.UpdateInvestigationResDto:
     properties:
       message:
         type: string
       status:
         type: boolean
+    type: object
+  services.UpdateOtherServiceReqDto:
+    properties:
+      information:
+        type: string
+      name:
+        type: string
     type: object
   services.UpdatePharmacyOtherServiceReqDto:
     properties:
@@ -1972,12 +1997,12 @@ paths:
         name: Authorization
         required: true
         type: string
-      - in: formData
-        name: information
-        type: string
-      - in: formData
-        name: name
-        type: string
+      - description: Update data of trainer
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateOtherServiceReqDto'
       produces:
       - application/json
       responses:
@@ -2004,18 +2029,12 @@ paths:
         name: investigationId
         required: true
         type: string
-      - in: formData
-        name: information
-        type: string
-      - in: formData
-        name: name
-        type: string
-      - in: formData
-        name: price
-        type: number
-      - in: formData
-        name: type
-        type: string
+      - description: Update data of investigation
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateInvestigationReqDto'
       produces:
       - application/json
       responses:

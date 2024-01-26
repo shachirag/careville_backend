@@ -59,6 +59,25 @@ func AddServices(c *fiber.Ctx) error {
 	}
 
 	update := bson.M{
+		"$pull": bson.M{
+			"hospClinic.otherServices": bson.M{
+				"$nin": data.OtherServices,
+			},
+			"hospClinic.insurances": bson.M{
+				"$nin": data.Insurances,
+			},
+		},
+	}
+
+	_, err = servicesColl.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicResDto{
+			Status:  false,
+			Message: "Failed to update provider data in MongoDB: " + err.Error(),
+		})
+	}
+
+	update = bson.M{
 		"$addToSet": bson.M{
 			"hospClinic.otherServices": bson.M{
 				"$each": data.OtherServices,

@@ -1601,14 +1601,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "name": "information",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "formData"
+                        "description": "Update data of trainer",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateOtherServiceReqDto"
+                        }
                     }
                 ],
                 "responses": {
@@ -1650,24 +1649,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "name": "information",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "number",
-                        "name": "price",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "type",
-                        "in": "formData"
+                        "description": "Update data of investigation",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateInvestigationReqDto"
+                        }
                     }
                 ],
                 "responses": {
@@ -1972,11 +1960,8 @@ const docTemplate = `{
         "providerAuth.GetProviderResDto": {
             "type": "object",
             "properties": {
-                "additionalInformation": {
-                    "$ref": "#/definitions/providerAuth.AdditionalInformation"
-                },
                 "data": {
-                    "$ref": "#/definitions/providerAuth.ProviderRespDto"
+                    "$ref": "#/definitions/providerAuth.ProviderResDto"
                 },
                 "message": {
                     "type": "string"
@@ -2083,6 +2068,20 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "providerAuth.ProviderResDto": {
+            "type": "object",
+            "properties": {
+                "additionalInformation": {
+                    "$ref": "#/definitions/providerAuth.AdditionalInformation"
+                },
+                "role": {
+                    "$ref": "#/definitions/providerAuth.Role"
+                },
+                "user": {
+                    "$ref": "#/definitions/providerAuth.User"
                 }
             }
         },
@@ -3295,6 +3294,23 @@ const docTemplate = `{
                 }
             }
         },
+        "services.UpdateInvestigationReqDto": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "services.UpdateInvestigationResDto": {
             "type": "object",
             "properties": {
@@ -3303,6 +3319,17 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateOtherServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },

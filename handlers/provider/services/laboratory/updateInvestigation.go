@@ -21,7 +21,7 @@ import (
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param investigationId path string true "investigation ID"
-// @Param provider formData services.UpdateInvestigationReqDto true "Update data of investigation"
+// @Param provider body services.UpdateInvestigationReqDto true "Update data of investigation"
 // @Produce json
 // @Success 200 {object} services.UpdateInvestigationResDto
 // @Router /provider/services/update-investigation-info/{investigationId} [put]

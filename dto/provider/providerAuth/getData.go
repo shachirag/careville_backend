@@ -1,10 +1,15 @@
 package providerAuth
 
 type GetProviderResDto struct {
-	Status                bool                  `json:"status"`
-	Message               string                `json:"message"`
-	Provider              ProviderRespDto       `json:"data"`
+	Status   bool           `json:"status"`
+	Message  string         `json:"message"`
+	Provider ProviderResDto `json:"data"`
+}
+
+type ProviderResDto struct {
 	AdditionalInformation AdditionalInformation `json:"additionalInformation"`
+	Role                  Role                  `json:"role"`
+	User                  User                  `json:"user"`
 }
 
 type AdditionalInformation struct {

@@ -20,7 +20,7 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param provider formData services.UpdateOtherServiceReqDto true "Update data of trainer"
+// @Param provider body services.UpdateOtherServiceReqDto true "Update data of trainer"
 // @Produce json
 // @Success 200 {object} services.UpdateTrainerResDto
 // @Router /provider/services/update-fitnessCenter-other-service-info/{otherServiceId} [put]

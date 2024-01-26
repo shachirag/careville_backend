@@ -111,7 +111,7 @@ func FetchProviderById(c *fiber.Ctx) error {
 		name = provider.Physiotherapist.Information.Name
 	}
 
-	providerRes := providerAuth.ProviderRespDto{
+	providerRes := providerAuth.ProviderResDto{
 		Role: providerAuth.Role{
 			Role:                 provider.Role,
 			FacilityOrProfession: provider.FacilityOrProfession,
@@ -133,6 +133,15 @@ func FetchProviderById(c *fiber.Ctx) error {
 			CreatedAt: provider.CreatedAt,
 			UpdatedAt: provider.UpdatedAt,
 		},
+		AdditionalInformation: providerAuth.AdditionalInformation{
+			AdditionalDetails:    additionalDetails,
+			Address:              address,
+			IsEmergencyAvailable: isEmergencyAvailable,
+			Documents: providerAuth.Documents{
+				Certificate: certificate,
+				License:     license,
+			},
+		},
 	}
 
 	// providerRes := providerAuth.ProviderRespDto{
@@ -151,14 +160,5 @@ func FetchProviderById(c *fiber.Ctx) error {
 		Status:   true,
 		Message:  "provider data retrieved successfully",
 		Provider: providerRes,
-		AdditionalInformation: providerAuth.AdditionalInformation{
-			AdditionalDetails:    additionalDetails,
-			Address:              address,
-			IsEmergencyAvailable: isEmergencyAvailable,
-			Documents: providerAuth.Documents{
-				Certificate: certificate,
-				License:     license,
-			},
-		},
 	})
 }
