@@ -36,12 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-fitness-center [post]
 func AddFitnessCenter(c *fiber.Ctx) error {
 	var (
-		servicesColl   = database.GetCollection("service")
-		data           services.FitnessCenterRequestDto
-		fitnessCenter  subEntity.UpdateServiceSubEntity
-		imageUrl       string
-		licenceUrl     string
-		certificateUrl string
+		servicesColl                = database.GetCollection("service")
+		data                        services.FitnessCenterRequestDto
+		fitnessCenter               subEntity.UpdateServiceSubEntity
+		fitnessCenterImageUrl       string
+		fitnessCenterLicenceUrl     string
+		fitnessCenterCertificateUrl string
 	)
 
 	dataStr := c.FormValue("data")
@@ -95,7 +95,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		fitnessCenterImage = fitnessCenterImage
+		fitnessCenterImageUrl = fitnessCenterImage
 
 	}
 
@@ -130,7 +130,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		certificateURL = certificateURL
+		fitnessCenterLicenceUrl = certificateURL
 
 		// fitnessCenter.FitnessCenter.Documents.Certificate = certificateURL
 	}
@@ -159,7 +159,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			})
 		}
 
-		licenceUrl = licenseURL
+		fitnessCenterLicenceUrl = licenseURL
 
 	}
 
@@ -214,7 +214,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.FitnessCenterReqDto.InformationName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
-			Image:          imageUrl,
+			Image:          fitnessCenterImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.FitnessCenterReqDto.Address,
@@ -223,8 +223,8 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificateUrl,
-			License:     licenceUrl,
+			Certificate: fitnessCenterCertificateUrl,
+			License:     fitnessCenterLicenceUrl,
 		},
 		AdditionalServices: additionalServices,
 		Trainers:           trainers,
@@ -258,7 +258,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 			Role:                 "healthFacility",
 			FacilityOrProfession: "fitnessCenter",
 			ServiceStatus:        "pending",
-			Image:                imageUrl,
+			Image:                fitnessCenterImageUrl,
 			Name:                 data.FitnessCenterReqDto.InformationName,
 			IsEmergencyAvailable: false,
 		},

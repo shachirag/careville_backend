@@ -36,12 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-pharmacy [post]
 func AddPharmacy(c *fiber.Ctx) error {
 	var (
-		servicesColl   = database.GetCollection("service")
-		data           services.PharmacyRequestDto
-		pharmacy       subEntity.UpdateServiceSubEntity
-		imageUrl       string
-		licenceUrl     string
-		certificateUrl string
+		servicesColl           = database.GetCollection("service")
+		data                   services.PharmacyRequestDto
+		pharmacy               subEntity.UpdateServiceSubEntity
+		pharmacyImageUrl       string
+		pharmacyLicenceUrl     string
+		pharmacyCertificateUrl string
 	)
 
 	dataStr := c.FormValue("data")
@@ -95,7 +95,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		imageUrl = pharmacyImage
+		pharmacyImageUrl = pharmacyImage
 
 	}
 
@@ -131,7 +131,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		certificateURL = certificateURL
+		pharmacyCertificateUrl = certificateURL
 
 	}
 
@@ -158,7 +158,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			})
 		}
 
-		licenseURL = licenseURL
+		pharmacyLicenceUrl = licenseURL
 	}
 
 	longitude, err := strconv.ParseFloat(data.PharmacyReqDto.Longitude, 64)
@@ -191,7 +191,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PharmacyReqDto.InformationName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
-			Image:          imageUrl,
+			Image:          pharmacyImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PharmacyReqDto.Address,
@@ -200,8 +200,8 @@ func AddPharmacy(c *fiber.Ctx) error {
 			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificateUrl,
-			License:     licenceUrl,
+			Certificate: pharmacyCertificateUrl,
+			License:     pharmacyLicenceUrl,
 		},
 		AdditionalServices: additionalServices,
 	}
@@ -236,7 +236,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 			Role:                 "healthFacility",
 			FacilityOrProfession: "pharmacy",
 			ServiceStatus:        "pending",
-			Image:                imageUrl,
+			Image:                pharmacyImageUrl,
 			Name:                 data.PharmacyReqDto.InformationName,
 			IsEmergencyAvailable: false,
 		},

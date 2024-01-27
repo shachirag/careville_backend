@@ -36,12 +36,12 @@ var ctx = context.Background()
 // @Router /provider/services/add-hospitalClinic [post]
 func AddHospClinic(c *fiber.Ctx) error {
 	var (
-		servicesColl     = database.GetCollection("service")
-		data             services.HospitalClinicRequestDto
-		hospClinic       subEntity.UpdateServiceSubEntity
-		hospitalImageUrl string
-		licenceUrl       string
-		certificateUrl   string
+		servicesColl           = database.GetCollection("service")
+		data                   services.HospitalClinicRequestDto
+		hospClinic             subEntity.UpdateServiceSubEntity
+		hospitalImageUrl       string
+		hospitalLicenceUrl     string
+		hospitalCertificateUrl string
 	)
 
 	dataStr := c.FormValue("data")
@@ -131,7 +131,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		certificateUrl = certificateURL
+		hospitalCertificateUrl = certificateURL
 
 	}
 
@@ -158,7 +158,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		licenceUrl = licenseURL
+		hospitalLicenceUrl = licenseURL
 
 	}
 
@@ -211,8 +211,8 @@ func AddHospClinic(c *fiber.Ctx) error {
 			IsEmergencyAvailable: false,
 		},
 		Documents: subEntity.DocumentsUpdateServiceSubEntity{
-			Certificate: certificateUrl,
-			License:     licenceUrl,
+			Certificate: hospitalCertificateUrl,
+			License:     hospitalLicenceUrl,
 		},
 		OtherServices: data.HospitalClinicReqDto.OtherServices,
 		Insurances:    data.HospitalClinicReqDto.Insurances,
