@@ -100,9 +100,10 @@ type TrainersUpdateServiceSubEntity struct {
 }
 
 type SubscriptionUpdateServiceSubEntity struct {
-	Type    string  `json:"type" bson:"type"`
-	Details string  `json:"details" bson:"details"`
-	Price   float64 `json:"price" bson:"price"`
+	Id      primitive.ObjectID `json:"id" bson:"id"`
+	Type    string             `json:"type" bson:"type"`
+	Details string             `json:"details" bson:"details"`
+	Price   float64            `json:"price" bson:"price"`
 }
 
 type AdditionalServicesUpdateServiceSubEntity struct {

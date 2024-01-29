@@ -41,7 +41,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		servicesColl             = database.GetCollection("service")
 		data                     services.MedicalLabScientistRequestDto
 		medicalLabScientist      subEntity.UpdateServiceSubEntity
-		medicalLabScientistImage string
+		medicalLabScientistImageUrl string
 		nimcDoc                  string
 		personalLicense          string
 		professionalLicense      string
@@ -99,7 +99,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			})
 		}
 
-		medicalLabScientistImage = medicalLabScientistImage
+		medicalLabScientistImageUrl = medicalLabScientistImage
 	}
 
 	professionalCertificateFiles := form.File["professionalCertificate"]
@@ -272,7 +272,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.MedicalLabScientistReqDto.InformationName,
 			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
-			Image:          medicalLabScientistImage,
+			Image:          medicalLabScientistImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.MedicalLabScientistReqDto.Address,
@@ -320,12 +320,12 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 
 	fitnessRes := services.MedicalLabScientistResDto{
 		Status:  true,
-		Message: "medicalLabScientist added successfully",
+		Message: "MedicalLabScientist added successfully",
 		Role: services.Role{
 			Role:                 "healthProfessional",
 			FacilityOrProfession: "medicalLabScientist",
 			ServiceStatus:        "pending",
-			Image:                medicalLabScientistImage,
+			Image:                medicalLabScientistImageUrl,
 			Name:                 data.MedicalLabScientistReqDto.InformationName,
 			IsEmergencyAvailable: false,
 		},

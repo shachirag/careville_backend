@@ -5,6 +5,8 @@ import (
 	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
+	"careville_backend/utils"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -21,8 +23,8 @@ import (
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param doctorId path string true "doctor ID"
-// @Param provider formData services.UpdateDoctorReqDto true "Update data of doctor"
-// @Param newProviderImage formData file false "provider profile image"
+// @Param image formData file false "profile image"
+// @Param provider body services.UpdateDoctorReqDto true "Update data of doctor"
 // @Produce json
 // @Success 200 {object} services.UpdateDoctorResDto
 // @Router /provider/services/update-doctor-info/{doctorId} [put]
@@ -79,11 +81,36 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 		})
 	}
 
+	formFile, err := c.FormFile("image")
+	var imageURL string
+	if err != nil {
+		file, err := formFile.Open()
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorImageResDto{
+				Status:  false,
+				Message: "Failed to open image file: " + err.Error(),
+			})
+		}
+		defer file.Close()
+
+		id := primitive.NewObjectID()
+		fileName := fmt.Sprintf("doctor/%v-profilepic.jpg", id.Hex())
+
+		imageURL, err = utils.UploadToS3(fileName, file)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorImageResDto{
+				Status:  false,
+				Message: "Failed to upload image to S3: " + err.Error(),
+			})
+		}
+	}
+
 	update := bson.M{
 		"$set": bson.M{
 			"hospClinic.doctor.$.speciality": data.Speciality,
 			"hospClinic.doctor.$.name":       data.Name,
 			"hospClinic.doctor.$.schedule":   bson.A{},
+			"hospClinic.information.$.image": imageURL,
 			"updatedAt":                      time.Now().UTC(),
 		},
 	}

@@ -13,8 +13,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// @Summary GetAllDoctors
-// @Description GetAllDoctors
+// @Summary Get all investigations
+// @Description Get all investigations
 // @Tags laboratory
 // @Accept application/json
 //

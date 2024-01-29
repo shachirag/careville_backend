@@ -124,7 +124,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 			Notification: entity.Notification{
 				DeviceToken: data.DeviceToken,
 				DeviceType:  data.DeviceType,
-				IsEnabled:   false,
+				IsEnabled:   true,
 			},
 			Password: string(hashedPassword),
 		},

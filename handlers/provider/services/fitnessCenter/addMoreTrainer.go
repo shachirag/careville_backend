@@ -92,7 +92,7 @@ func AddMoreTrainers(c *fiber.Ctx) error {
 
 	hospClinicRes := services.TrainerResponseDto{
 		Status:  true,
-		Message: "trainer added successfully",
+		Message: "Trainer added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

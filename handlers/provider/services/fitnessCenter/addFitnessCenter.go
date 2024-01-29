@@ -204,6 +204,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 	var subscription []subEntity.SubscriptionUpdateServiceSubEntity
 	for _, inv := range data.FitnessCenterReqDto.Subscription {
 		convertedInv := subEntity.SubscriptionUpdateServiceSubEntity{
+			Id:      primitive.NewObjectID(),
 			Type:    inv.Type,
 			Details: inv.Details,
 			Price:   inv.Price,
@@ -253,7 +254,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 
 	fitnessRes := services.FitnessCenterResDto{
 		Status:  true,
-		Message: "fitness center added successfully",
+		Message: "Fitness Center added successfully",
 		Role: services.Role{
 			Role:                 "healthFacility",
 			FacilityOrProfession: "fitnessCenter",

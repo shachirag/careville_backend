@@ -41,7 +41,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		servicesColl            = database.GetCollection("service")
 		data                    services.PhysiotherapistRequestDto
 		physiotherapist         subEntity.UpdateServiceSubEntity
-		physiotherapistImage    string
+		physiotherapistImageUrl    string
 		nimcDoc                 string
 		personalLicense         string
 		professionalLicense     string
@@ -99,7 +99,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			})
 		}
 
-		physiotherapistImage = physiotherapistImage
+		physiotherapistImageUrl = physiotherapistImage
 
 	}
 
@@ -273,7 +273,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PhysiotherapistReqDto.InformationName,
 			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
-			Image:          physiotherapistImage,
+			Image:          physiotherapistImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.PhysiotherapistReqDto.Address,
@@ -324,7 +324,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			Role:                 "healthProfessional",
 			FacilityOrProfession: "physiotherpist",
 			ServiceStatus:        "pending",
-			Image:                physiotherapistImage,
+			Image:                physiotherapistImageUrl,
 			Name:                 data.PhysiotherapistReqDto.InformationName,
 		},
 	}

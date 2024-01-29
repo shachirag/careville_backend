@@ -90,7 +90,7 @@ func AddOtherServices(c *fiber.Ctx) error {
 
 	hospClinicRes := services.UpdatePharmacyOtherServiceResDto{
 		Status:  true,
-		Message: "other service added successfully",
+		Message: "Other Service added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

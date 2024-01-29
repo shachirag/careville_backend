@@ -243,7 +243,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 
 	hospClinicRes := services.HospitalClinicResDto{
 		Status:  true,
-		Message: "hospital/clinic added successfully",
+		Message: "Hospital/Clinic added successfully",
 		Role: services.Role{
 			Role:                 "healthFacility",
 			FacilityOrProfession: "hospClinic",

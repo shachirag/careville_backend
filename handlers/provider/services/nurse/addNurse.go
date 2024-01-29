@@ -41,7 +41,7 @@ func AddNurse(c *fiber.Ctx) error {
 		servicesColl            = database.GetCollection("service")
 		data                    services.NurseRequestDto
 		nurse                   subEntity.UpdateServiceSubEntity
-		nurseImage              string
+		nurseImageUrl              string
 		nimcDoc                 string
 		personalLicense         string
 		professionalLicense     string
@@ -99,7 +99,7 @@ func AddNurse(c *fiber.Ctx) error {
 			})
 		}
 
-		nurseImage = nurseImage
+		nurseImageUrl = nurseImage
 
 	}
 
@@ -273,7 +273,7 @@ func AddNurse(c *fiber.Ctx) error {
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.NurseReqDto.InformationName,
 			AdditionalText: data.NurseReqDto.AdditionalText,
-			Image:          nurseImage,
+			Image:          nurseImageUrl,
 			Address: subEntity.AddressUpdateServiceSubEntity{
 				Coordinates: []float64{longitude, latitude},
 				Add:         data.NurseReqDto.Address,
@@ -320,12 +320,12 @@ func AddNurse(c *fiber.Ctx) error {
 
 	fitnessRes := services.NurseResDto{
 		Status:  true,
-		Message: "doctor profession added successfully",
+		Message: "Nurse added successfully",
 		Role: services.Role{
 			Role:                 "healthProfessional",
 			FacilityOrProfession: "nurse",
 			ServiceStatus:        "pending",
-			Image:                nurseImage,
+			Image:                nurseImageUrl,
 			Name:                 data.NurseReqDto.InformationName,
 			IsEmergencyAvailable: false,
 		},

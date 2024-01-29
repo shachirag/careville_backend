@@ -232,7 +232,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 
 	laboratoryRes := services.LaboratoryResDto{
 		Status:  true,
-		Message: "laboratory added successfully",
+		Message: "Laboratory added successfully",
 		Role: services.Role{
 			Role:                 "healthFacility",
 			FacilityOrProfession: "laboratory",

@@ -20,6 +20,298 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/change-password/{adminId}": {
+            "put": {
+                "description": "Change provider Password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider authorization"
+                ],
+                "summary": "Change provider Password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Admin ID",
+                        "name": "adminId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Change password of provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderChangePasswordReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderChangePasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/change-status/{id}": {
+            "put": {
+                "description": "change status",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "change status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "change status approved or rejected",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.StatusResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/get-admin-info/{adminId}": {
+            "get": {
+                "description": "Fetch Admin By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "Fetch Admin By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Admin ID",
+                        "name": "adminId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.GetAdminResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "description": "send 6 digit otp for Login Admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "send 6 digit otp for Login Admin",
+                "parameters": [
+                    {
+                        "description": "send 6 digit otp for Login Admin",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginAdminReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginAdminResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/total-counts": {
+            "get": {
+                "description": "Count the number of documents in various collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard in admin pannel"
+                ],
+                "summary": "Count All",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by adminId",
+                        "name": "adminId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dashboard.GetAllCounts"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/update-admin-info/{adminId}": {
+            "put": {
+                "description": "Update Admin",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "Update Admin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Admin ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "firstName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "lastName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "oldImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "admin profile image",
+                        "name": "newAdminImage",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.UpdateAdminResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/verify-otp-for-login": {
+            "post": {
+                "description": "Verify the entered 6 digit OTP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "Verify OTP for login",
+                "parameters": [
+                    {
+                        "description": "Verify 6 digit OTP and then login",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginVerifyOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginVerifyOtpResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/forgot-password": {
             "post": {
                 "description": "Forgot Password",
@@ -779,6 +1071,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-more-subscription": {
+            "post": {
+                "description": "Add more subscription",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Add more subscription",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add trainer",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.SubscriptionReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerResponseDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-more-trainer": {
             "post": {
                 "description": "Add more trainers",
@@ -1073,6 +1406,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/currently-available": {
+            "put": {
+                "description": "currently available",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "providerCommonApis"
+                ],
+                "summary": "provider currently available",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEmergencyAvailable value (true or false)",
+                        "name": "isEmergencyAvailable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-all-doctors": {
             "get": {
                 "description": "GetAllDoctors",
@@ -1100,6 +1471,38 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-all-subscriptions": {
+            "get": {
+                "description": "Get all subscriptions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Get all subscriptions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.SubscriptionResDto"
                         }
                     }
                 }
@@ -1320,7 +1723,7 @@ const docTemplate = `{
         },
         "/provider/services/get-investigations": {
             "get": {
-                "description": "GetAllDoctors",
+                "description": "Get all investigations",
                 "consumes": [
                     "application/json"
                 ],
@@ -1330,7 +1733,7 @@ const docTemplate = `{
                 "tags": [
                     "laboratory"
                 ],
-                "summary": "GetAllDoctors",
+                "summary": "Get all investigations",
                 "parameters": [
                     {
                         "type": "string",
@@ -1485,6 +1888,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/get-subscription-info/{subscriptionId}": {
+            "get": {
+                "description": "Get other service info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "fitnessCenter"
+                ],
+                "summary": "Get other service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "other subscription ID",
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetSubscriptionResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-trainer-info/{trainerId}": {
             "get": {
                 "description": "Get trainer info",
@@ -1553,20 +1995,19 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "name": "name",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "speciality",
-                        "in": "formData"
-                    },
-                    {
                         "type": "file",
-                        "description": "provider profile image",
-                        "name": "newProviderImage",
+                        "description": "profile image",
+                        "name": "image",
                         "in": "formData"
+                    },
+                    {
+                        "description": "Update data of doctor",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorReqDto"
+                        }
                     }
                 ],
                 "responses": {
@@ -1704,60 +2145,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.UpdatePharmacyOtherServiceResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/services/update-profile-image/{doctorId}": {
-            "put": {
-                "description": "Update Doctor Profile Image",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "hospClinic"
-                ],
-                "summary": "Update Doctor Profile Image",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "doctor ID",
-                        "name": "doctrId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Update data of doctor image",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/services.UpdateDoctorImageReqDto"
-                        }
-                    },
-                    {
-                        "type": "file",
-                        "description": "profile image",
-                        "name": "image",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.UpdateDoctorImageResDto"
                         }
                     }
                 }
@@ -1912,6 +2299,166 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "adminAuth.GetAdminRes": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "adminAuth.GetAdminResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/adminAuth.GetAdminRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "adminAuth.LoginAdminReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "adminAuth.LoginAdminResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "adminAuth.LoginVerifyOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "otp": {
+                    "type": "string"
+                }
+            }
+        },
+        "adminAuth.LoginVerifyOtpResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/adminAuth.GetAdminRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "adminAuth.UpdateAdminResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dashboard.DashboardCount": {
+            "type": "object",
+            "properties": {
+                "healthFacilitities": {
+                    "$ref": "#/definitions/dashboard.HealthFacility"
+                },
+                "healthProfessionals": {
+                    "$ref": "#/definitions/dashboard.HealthProfessionals"
+                }
+            }
+        },
+        "dashboard.GetAllCounts": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dashboard.DashboardCount"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dashboard.HealthFacility": {
+            "type": "object",
+            "properties": {
+                "fitnessCenterCount": {
+                    "type": "integer"
+                },
+                "hospitalCount": {
+                    "type": "integer"
+                },
+                "laboratoryCount": {
+                    "type": "integer"
+                },
+                "pharmacyCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dashboard.HealthProfessionals": {
+            "type": "object",
+            "properties": {
+                "doctorCount": {
+                    "type": "integer"
+                },
+                "medicalLabScientistCount": {
+                    "type": "integer"
+                },
+                "nurseCount": {
+                    "type": "integer"
+                },
+                "physiotherapistCount": {
+                    "type": "integer"
+                }
+            }
+        },
         "providerAuth.AdditionalInformation": {
             "type": "object",
             "properties": {
@@ -2546,6 +3093,20 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.PharmacyOtherServiceRes"
                     }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetSubscriptionResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.SubscriptionRes"
                 },
                 "message": {
                     "type": "string"
@@ -3208,6 +3769,17 @@ const docTemplate = `{
                 }
             }
         },
+        "services.StatusResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.StatusRespDto": {
             "type": "object",
             "properties": {
@@ -3230,6 +3802,54 @@ const docTemplate = `{
                 },
                 "type": {
                     "type": "string"
+                }
+            }
+        },
+        "services.SubscriptionReqDto": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.SubscriptionRes": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.SubscriptionResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.SubscriptionRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -3326,25 +3946,20 @@ const docTemplate = `{
                 }
             }
         },
-        "services.UpdateDoctorImageReqDto": {
+        "services.UpdateDoctorReqDto": {
             "type": "object",
             "properties": {
-                "oldImage": {
-                    "type": "string"
-                }
-            }
-        },
-        "services.UpdateDoctorImageResDto": {
-            "type": "object",
-            "properties": {
-                "image": {
+                "name": {
                     "type": "string"
                 },
-                "message": {
-                    "type": "string"
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Schedule"
+                    }
                 },
-                "status": {
-                    "type": "boolean"
+                "speciality": {
+                    "type": "string"
                 }
             }
         },

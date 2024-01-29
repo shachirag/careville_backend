@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // @Summary Update provider
@@ -255,8 +256,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	}
 
+	opts := options.Update().SetUpsert(true)
 	// Execute the update operation
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
+	updateRes, err := serviceColl.UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
 			Status:  false,

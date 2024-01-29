@@ -46,10 +46,11 @@ func SetupAndRunApp() error {
 		Format: "[${ip}]:${port} ${status} - ${method} ${path} ${latency}\n",
 	}))
 
-	// set up the user routes
+	// set up the Provider routes
 	router.ProviderSetupsRoutes(app)
-	// set up the Businessman routes
-	// router.BusinessSetupsRoutes(app)
+
+	// set up the admin routes
+	router.AdminSetupsRoutes(app)
 
 	// Setup Swagger
 	config.AddSwaggerRoutes(app)
