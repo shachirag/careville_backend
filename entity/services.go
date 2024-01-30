@@ -140,7 +140,7 @@ type DoctorEntityDto struct {
 	AdditionalServices         AdditionalService          `json:"additionalServices" bson:"additionalServices"`
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
-	Schedule                   []DoctorSchedule           `json:"schedule" bson:"schedule"`
+	Schedule                   DoctorSchedule             `json:"schedule" bson:"schedule"`
 }
 
 type AdditionalService struct {
@@ -171,15 +171,15 @@ type Slots struct {
 
 type MedicalLabScientist struct {
 	Information                Information                `json:"information" bson:"information"`
-	PersonalDetails            PersonalDetails            `json:"personalDetails" bson:"personalDetails"`
+	ProfessionalDetails        ProfessionalDetailsEntity  `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndSchedule       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
 }
 
-type PersonalDetails struct {
-	Department string `json:"department" bson:"department"`
-	Document   string `json:"document" bson:"document"`
+type ProfessionalDetailsEntity struct {
+	Department    string `json:"department" bson:"department"`
+	Qualification string `json:"qualification" bson:"qualification"`
 }
 
 type Nurse struct {
@@ -195,9 +195,10 @@ type ProfessionalDetails struct {
 }
 
 type ServiceAndSchedule struct {
-	Name        string  `json:"name" bson:"name"`
-	ServiceFees string  `json:"serviceFees" bson:"serviceFees"`
-	Slots       []Slots `json:"slots" bson:"slots"`
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Name        string             `json:"name" bson:"name"`
+	ServiceFees string             `json:"serviceFees" bson:"serviceFees"`
+	Slots       []Slots            `json:"slots" bson:"slots"`
 }
 
 type Physiotherapist struct {

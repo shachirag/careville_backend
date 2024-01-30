@@ -38,14 +38,14 @@ var ctx = context.Background()
 // @Router /provider/services/add-medicalLab-scientist [post]
 func AddMedicalLabScientist(c *fiber.Ctx) error {
 	var (
-		servicesColl             = database.GetCollection("service")
-		data                     services.MedicalLabScientistRequestDto
-		medicalLabScientist      subEntity.UpdateServiceSubEntity
+		servicesColl                = database.GetCollection("service")
+		data                        services.MedicalLabScientistRequestDto
+		medicalLabScientist         subEntity.UpdateServiceSubEntity
 		medicalLabScientistImageUrl string
-		nimcDoc                  string
-		personalLicense          string
-		professionalLicense      string
-		professionalCertificate  string
+		nimcDoc                     string
+		personalLicense             string
+		professionalLicense         string
+		professionalCertificate     string
 	)
 
 	dataStr := c.FormValue("data")
@@ -280,9 +280,9 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			},
 			IsEmergencyAvailable: false,
 		},
-		PersonalDetails: subEntity.PersonalDetailsUpdateServiceSubEntity{
-			Department: data.MedicalLabScientistReqDto.Department,
-			Document:   data.MedicalLabScientistReqDto.Document,
+		ProfessionalDetails: subEntity.PersonalDetailsUpdateServiceSubEntity{
+			Department:    data.MedicalLabScientistReqDto.Department,
+			Qualification: data.MedicalLabScientistReqDto.Document,
 		},
 		PersonalIdentificationDocs: subEntity.PersonalIdentificationDocsUpdateServiceSubEntity{
 			Nimc:    nimcDoc,

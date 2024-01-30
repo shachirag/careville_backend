@@ -6,6 +6,7 @@ import (
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
 	"careville_backend/utils"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -24,7 +25,7 @@ import (
 //
 // @Param doctorId path string true "doctor ID"
 // @Param image formData file false "profile image"
-// @Param provider body services.UpdateDoctorReqDto true "Update data of doctor"
+// @Param provider formData services.UpdateDoctorReqDto true "Update data of doctor"
 // @Produce json
 // @Success 200 {object} services.UpdateDoctorResDto
 // @Router /provider/services/update-doctor-info/{doctorId} [put]
@@ -36,10 +37,12 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 		provider    entity.ServiceEntity
 	)
 
-	// Parsing the request body
-	err := c.BodyParser(&data)
+	dataStr := c.FormValue("data")
+	dataBytes := []byte(dataStr)
+
+	err := json.Unmarshal(dataBytes, &data)
 	if err != nil {
-		return c.Status(500).JSON(services.UpdateDoctorResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -81,28 +84,43 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 		})
 	}
 
-	formFile, err := c.FormFile("image")
-	var imageURL string
+	// Access the MultipartForm directly from the fiber.Ctx
+	form, err := c.MultipartForm()
 	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorResDto{
+			Status:  false,
+			Message: "Failed to get multipart form: " + err.Error(),
+		})
+	}
+
+	// Get the file header for the "images" field from the form
+	formFiles := form.File["image"]
+
+	// Upload each image to S3 and get the S3 URLs
+	for _, formFile := range formFiles {
 		file, err := formFile.Open()
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorImageResDto{
-				Status:  false,
-				Message: "Failed to open image file: " + err.Error(),
-			})
-		}
-		defer file.Close()
-
-		id := primitive.NewObjectID()
-		fileName := fmt.Sprintf("doctor/%v-profilepic.jpg", id.Hex())
-
-		imageURL, err = utils.UploadToS3(fileName, file)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorImageResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(services.UpdateDoctorResDto{
 				Status:  false,
 				Message: "Failed to upload image to S3: " + err.Error(),
 			})
 		}
+
+		// Generate a unique filename for each image
+		id := primitive.NewObjectID()
+		fileName := fmt.Sprintf("doctor/%v-image-%s", id.Hex(), formFile.Filename)
+
+		// Upload the image to S3 and get the S3 URL
+		imageURL, err := utils.UploadToS3(fileName, file)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorResDto{
+				Status:  false,
+				Message: "Failed to upload image to S3: " + err.Error(),
+			})
+		}
+
+		// Append the image URL to the Images field
+		provider.HospClinic.Information.Image = imageURL
 	}
 
 	update := bson.M{
@@ -110,10 +128,13 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 			"hospClinic.doctor.$.speciality": data.Speciality,
 			"hospClinic.doctor.$.name":       data.Name,
 			"hospClinic.doctor.$.schedule":   bson.A{},
-			"hospClinic.information.$.image": imageURL,
+			"hospClinic.doctor.$.image":      provider.HospClinic.Information.Image,
 			"updatedAt":                      time.Now().UTC(),
 		},
 	}
+
+	// Clearing existing schedule
+	update["$set"].(bson.M)["hospClinic.doctor.$.schedule"] = bson.A{}
 
 	for _, schedule := range data.Schedule {
 		scheduleUpdate := bson.M{
@@ -121,6 +142,7 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 			"endTime":   schedule.EndTime,
 			"days":      schedule.Days,
 		}
+		fmt.Print(schedule)
 		update["$set"].(bson.M)["hospClinic.doctor.$.schedule"] = append(update["$set"].(bson.M)["hospClinic.doctor.$.schedule"].(bson.A), scheduleUpdate)
 	}
 

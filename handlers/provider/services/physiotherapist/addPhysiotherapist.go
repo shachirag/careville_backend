@@ -41,7 +41,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		servicesColl            = database.GetCollection("service")
 		data                    services.PhysiotherapistRequestDto
 		physiotherapist         subEntity.UpdateServiceSubEntity
-		physiotherapistImageUrl    string
+		physiotherapistImageUrl string
 		nimcDoc                 string
 		personalLicense         string
 		professionalLicense     string
@@ -257,6 +257,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 			slots = append(slots, scheduleSlot)
 		}
 		scheduleData := subEntity.ServiceAndScheduleUpdateServiceSubEntity{
+			Id:          primitive.NewObjectID(),
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
 			Slots:       slots,

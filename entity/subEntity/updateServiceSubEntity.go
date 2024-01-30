@@ -137,7 +137,7 @@ type DoctorProfessionUpdateServiceSubEntity struct {
 	AdditionalServices         AdditionalServiceUpdateServiceSubEntity          `json:"additionalServices" bson:"additionalServices"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocsUpdateServiceSubEntity    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
-	Schedule                   []DoctorScheduleUpdateServiceSubEntity           `json:"schedule" bson:"schedule"`
+	Schedule                   DoctorScheduleUpdateServiceSubEntity             `json:"schedule" bson:"schedule"`
 }
 
 type AdditionalServiceUpdateServiceSubEntity struct {
@@ -168,15 +168,15 @@ type SlotsUpdateServiceSubEntity struct {
 
 type MedicalLabScientistUpdateServiceSubEntity struct {
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
-	PersonalDetails            PersonalDetailsUpdateServiceSubEntity            `json:"personalDetails" bson:"personalDetails"`
+	ProfessionalDetails        PersonalDetailsUpdateServiceSubEntity            `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocsUpdateServiceSubEntity    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndScheduleUpdateServiceSubEntity       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
 }
 
 type PersonalDetailsUpdateServiceSubEntity struct {
-	Department string `json:"department" bson:"department"`
-	Document   string `json:"document" bson:"document"`
+	Department    string `json:"department" bson:"department"`
+	Qualification string `json:"qualification" bson:"qualification"`
 }
 
 type NurseUpdateServiceSubEntity struct {
@@ -192,6 +192,7 @@ type ProfessionalDetailsUpdateServiceSubEntity struct {
 }
 
 type ServiceAndScheduleUpdateServiceSubEntity struct {
+	Id          primitive.ObjectID            `json:"id" bson:"id"`
 	Name        string                        `json:"name" bson:"name"`
 	ServiceFees string                        `json:"serviceFees" bson:"serviceFees"`
 	Slots       []SlotsUpdateServiceSubEntity `json:"slots" bson:"slots"`

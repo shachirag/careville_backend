@@ -1,4 +1,4 @@
-package providerAuthenticate
+package physiotherapist
 
 import (
 	"careville_backend/database"
@@ -11,17 +11,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// @Summary Fetch provider By ID
-// @Description Fetch provider By ID
-// @Tags provider authorization
+// @Summary Fetch personal information By ID
+// @Description Fetch personal information By ID
+// @Tags physiotherapist
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
-// @Router /provider/profile/get-provider-info [get]
-func FetchProviderById(c *fiber.Ctx) error {
+// @Router /provider/services/get-physiotherapist-personal-info [get]
+func FetchPersonalDetailsById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
 
@@ -49,44 +49,19 @@ func FetchProviderById(c *fiber.Ctx) error {
 	var isEmergencyAvailable bool
 	var address providerAuth.Address
 	var license string
-	var certificate string
+	var nimc string
 	var name string
 
-	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
-		image = provider.HospClinic.Information.Image
-		additionalDetails = provider.HospClinic.Information.AdditionalText
-		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.HospClinic.Information.Address)
-		license = provider.HospClinic.Documents.License
-		certificate = provider.HospClinic.Documents.Certificate
-		name = provider.HospClinic.Information.Name
-
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
-		image = provider.Laboratory.Information.Image
-		additionalDetails = provider.Laboratory.Information.AdditionalText
-		isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Laboratory.Information.Address)
-		license = provider.Laboratory.Documents.License
-		certificate = provider.Laboratory.Documents.Certificate
-		name = provider.Laboratory.Information.Name
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
-		image = provider.FitnessCenter.Information.Image
-		additionalDetails = provider.FitnessCenter.Information.AdditionalText
-		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.FitnessCenter.Information.Address)
-		license = provider.FitnessCenter.Documents.License
-		certificate = provider.FitnessCenter.Documents.Certificate
-		name = provider.FitnessCenter.Information.Name
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
-		image = provider.Pharmacy.Information.Image
-		additionalDetails = provider.Pharmacy.Information.AdditionalText
-		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Pharmacy.Information.Address)
-		license = provider.Pharmacy.Documents.License
-		certificate = provider.Pharmacy.Documents.Certificate
-		name = provider.Pharmacy.Information.Name
-	}
-
+	if provider.Physiotherapist != nil {
+			image = provider.Physiotherapist.Information.Image
+			additionalDetails = provider.Physiotherapist.Information.AdditionalText
+			isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
+			address = providerAuth.Address(provider.Physiotherapist.Information.Address)
+			license = provider.Physiotherapist.PersonalIdentificationDocs.License
+			nimc = provider.Physiotherapist.PersonalIdentificationDocs.Nimc
+			name = provider.Physiotherapist.Information.Name
+		}
+	
 	providerRes := providerAuth.ProviderResDto{
 		User: providerAuth.UserData{
 			Role: providerAuth.Role{
@@ -116,7 +91,7 @@ func FetchProviderById(c *fiber.Ctx) error {
 			AdditionalDetails: additionalDetails,
 			Address:           address,
 			Documents: providerAuth.Documents{
-				Certificate: certificate,
+				Certificate: nimc,
 				License:     license,
 			},
 		},

@@ -7,15 +7,17 @@ type DoctorProfessionRequestDto struct {
 }
 
 type DoctorProfessionReqDto struct {
-	InformationName string           `json:"informationName" form:"informationName"`
-	Address         string           `json:"address" form:"address"`
-	Longitude       string           `json:"longitude" form:"longitude"`
-	Latitude        string           `json:"latitude" form:"latitude"`
-	AdditionalText  string           `json:"additionalText" form:"additionalText"`
-	Certificate     string           `json:"certificate" form:"certificate"`
-	Speciality      string           `json:"speciality" bson:"speciality"`
-	Qualifications  string           `json:"qualifications" bson:"qualifications"`
-	Schedule        []DoctorSchedule `json:"schedule" form:"schedule"`
+	InformationName  string  `json:"informationName" form:"informationName"`
+	Address          string  `json:"address" form:"address"`
+	Longitude        string  `json:"longitude" form:"longitude"`
+	Latitude         string  `json:"latitude" form:"latitude"`
+	AdditionalText   string  `json:"additionalText" form:"additionalText"`
+	Certificate      string  `json:"certificate" form:"certificate"`
+	Speciality       string  `json:"speciality" bson:"speciality"`
+	Qualifications   string  `json:"qualifications" bson:"qualifications"`
+	Slots            []Slots `json:"slots" bson:"slots"`
+	ConsultationFees string  `json:"consultationFees" bson:"consultationFees"`
+	// Schedule         []DoctorSchedule `json:"schedule" form:"schedule"`
 }
 
 type PersonalIdentificationDocs struct {
@@ -26,11 +28,6 @@ type PersonalIdentificationDocs struct {
 type ProfessionalDetailsDocs struct {
 	Certificate string `json:"certificate" bson:"certificate"`
 	License     string `json:"license" bson:"license"`
-}
-
-type DoctorSchedule struct {
-	ConsultationFees string  `json:"consultationFees" bson:"consultationFees"`
-	Slots            []Slots `json:"slots" bson:"slots"`
 }
 
 type Slots struct {

@@ -245,28 +245,18 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		})
 	}
 
-	// Parse and add DoctorSchedule data
-	// Parse and add DoctorSchedule data
-	var schedule []subEntity.DoctorScheduleUpdateServiceSubEntity
-	for _, scheduleItem := range data.DoctorProfessionReqDto.Schedule {
-		var slots []subEntity.SlotsUpdateServiceSubEntity
-		for _, slot := range scheduleItem.Slots {
-			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
-				StartTime: slot.StartTime,
-				EndTime:   slot.EndTime,
-				Days:      slot.Days,
-			}
-			slots = append(slots, scheduleSlot)
+	var slots []subEntity.SlotsUpdateServiceSubEntity
+	for _, slot := range data.DoctorProfessionReqDto.Slots {
+		scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
+			StartTime: slot.StartTime,
+			EndTime:   slot.EndTime,
+			Days:      slot.Days,
 		}
-		scheduleData := subEntity.DoctorScheduleUpdateServiceSubEntity{
-			ConsultationFees: scheduleItem.ConsultationFees,
-			Slots:            slots,
-		}
-		schedule = append(schedule, scheduleData)
+		slots = append(slots, scheduleSlot)
 	}
 
-	if doctorProfession.Doctor != nil {
-		doctorProfession.Doctor.Schedule = schedule
+	if doctorProfession.Doctor != nil && len(doctorProfession.Doctor.Schedule.Slots) > 0 {
+		doctorProfession.Doctor.Schedule.Slots = slots
 	}
 
 	doctorData := subEntity.DoctorProfessionUpdateServiceSubEntity{
@@ -293,7 +283,10 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 			Certificate: professionalCertificate,
 			License:     professionalLicense,
 		},
-		Schedule: schedule,
+		Schedule: subEntity.DoctorScheduleUpdateServiceSubEntity{
+			ConsultationFees: data.DoctorProfessionReqDto.ConsultationFees,
+			Slots:            slots,
+		},
 	}
 
 	doctorProfession = subEntity.UpdateServiceSubEntity{

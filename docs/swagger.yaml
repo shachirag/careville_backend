@@ -367,6 +367,8 @@ definitions:
         type: string
       certificate:
         type: string
+      consultationFees:
+        type: string
       informationName:
         type: string
       latitude:
@@ -375,9 +377,9 @@ definitions:
         type: string
       qualifications:
         type: string
-      schedule:
+      slots:
         items:
-          $ref: '#/definitions/services.DoctorSchedule'
+          $ref: '#/definitions/services.Slots'
         type: array
       speciality:
         type: string
@@ -416,15 +418,6 @@ definitions:
         type: string
       status:
         type: boolean
-    type: object
-  services.DoctorSchedule:
-    properties:
-      consultationFees:
-        type: string
-      slots:
-        items:
-          $ref: '#/definitions/services.Slots'
-        type: array
     type: object
   services.DoctorScheduleRes:
     properties:
@@ -513,6 +506,24 @@ definitions:
         items:
           $ref: '#/definitions/services.PharmacyOtherServiceRes'
         type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetPhysiotherapistProfessionalDetailsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.PhysiotherapistDetailsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetPhysiotherapistServicesResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.PhysiotherapistServiceRes'
       message:
         type: string
       status:
@@ -737,6 +748,24 @@ definitions:
       speciality:
         type: string
     type: object
+  services.MorePhysiotherapistServiceReqDto:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: string
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.MorePhysiotherapistServiceResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.NotificationResDto:
     properties:
       message:
@@ -847,6 +876,15 @@ definitions:
       status:
         type: boolean
     type: object
+  services.PhysiotherapistDetailsRes:
+    properties:
+      professionalCertificate:
+        type: string
+      professionalLicense:
+        type: string
+      qualification:
+        type: string
+    type: object
   services.PhysiotherapistReqDto:
     properties:
       additionalText:
@@ -885,6 +923,30 @@ definitions:
         items:
           $ref: '#/definitions/services.Slots'
         type: array
+    type: object
+  services.PhysiotherapistServiceRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: string
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.PhysiotherapistServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.PhysiotherapistServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   services.Role:
     properties:
@@ -1064,17 +1126,6 @@ definitions:
       price:
         type: number
     type: object
-  services.UpdateDoctorReqDto:
-    properties:
-      name:
-        type: string
-      schedule:
-        items:
-          $ref: '#/definitions/services.Schedule'
-        type: array
-      speciality:
-        type: string
-    type: object
   services.UpdateDoctorResDto:
     properties:
       message:
@@ -1115,6 +1166,18 @@ definitions:
         type: string
     type: object
   services.UpdatePharmacyOtherServiceResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdatePhysiotherapistProfessionalInfoReqDto:
+    properties:
+      qualifications:
+        type: string
+    type: object
+  services.UpdatePhysiotherapistProfessionalInfoResDto:
     properties:
       message:
         type: string
@@ -1839,6 +1902,33 @@ paths:
       summary: Add more investigations
       tags:
       - laboratory
+  /provider/services/add-more-physiotherapist-service:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add more service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add AddMoreDoctors
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.MorePhysiotherapistServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MorePhysiotherapistServiceResDto'
+      summary: Add more service
+      tags:
+      - physiotherapist
   /provider/services/add-more-subscription:
     post:
       consumes:
@@ -2085,6 +2175,59 @@ paths:
       summary: provider currently available
       tags:
       - providerCommonApis
+  /provider/services/delete-physiotherapist-service/{serviceId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetPhysiotherapistServicesResDto'
+      summary: Delete service
+      tags:
+      - physiotherapist
+  /provider/services/edit-physiotherapist-professional-info:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update provider
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdatePhysiotherapistProfessionalInfoReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdatePhysiotherapistProfessionalInfoResDto'
+      summary: Update provider
+      tags:
+      - physiotherapist
   /provider/services/get-all-doctors:
     get:
       consumes:
@@ -2357,6 +2500,95 @@ paths:
       summary: Get other services
       tags:
       - pharmacy
+  /provider/services/get-physiotherapist-personal-info:
+    get:
+      consumes:
+      - application/json
+      description: Fetch personal information By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.GetProviderResDto'
+      summary: Fetch personal information By ID
+      tags:
+      - physiotherapist
+  /provider/services/get-physiotherapist-professional-details:
+    get:
+      consumes:
+      - application/json
+      description: Fetch professionalDetails By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetPhysiotherapistProfessionalDetailsResDto'
+      summary: Fetch professionalDetails By ID
+      tags:
+      - physiotherapist
+  /provider/services/get-physiotherapist-service-info/{serviceId}:
+    get:
+      consumes:
+      - application/json
+      description: Get service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: Get service info
+      tags:
+      - physiotherapist
+  /provider/services/get-physiotherapist-services:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.PhysiotherapistServicesResDto'
+      summary: Get all services
+      tags:
+      - physiotherapist
   /provider/services/get-status/{id}:
     get:
       consumes:
@@ -2450,12 +2682,12 @@ paths:
         in: formData
         name: image
         type: file
-      - description: Update data of doctor
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/services.UpdateDoctorReqDto'
+      - in: formData
+        name: name
+        type: string
+      - in: formData
+        name: speciality
+        type: string
       produces:
       - application/json
       responses:

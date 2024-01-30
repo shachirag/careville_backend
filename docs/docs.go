@@ -1071,6 +1071,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-more-physiotherapist-service": {
+            "post": {
+                "description": "Add more service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Add more service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add AddMoreDoctors",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.MorePhysiotherapistServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MorePhysiotherapistServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-more-subscription": {
             "post": {
                 "description": "Add more subscription",
@@ -1439,6 +1480,86 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/delete-physiotherapist-service/{serviceId}": {
+            "delete": {
+                "description": "Delete service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Delete service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetPhysiotherapistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/edit-physiotherapist-professional-info": {
+            "put": {
+                "description": "Update provider",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Update provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePhysiotherapistProfessionalInfoReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePhysiotherapistProfessionalInfoResDto"
                         }
                     }
                 }
@@ -1856,6 +1977,141 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/get-physiotherapist-personal-info": {
+            "get": {
+                "description": "Fetch personal information By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Fetch personal information By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.GetProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-physiotherapist-professional-details": {
+            "get": {
+                "description": "Fetch professionalDetails By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Fetch professionalDetails By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetPhysiotherapistProfessionalDetailsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-physiotherapist-service-info/{serviceId}": {
+            "get": {
+                "description": "Get service info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Get service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-physiotherapist-services": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Get all services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.PhysiotherapistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-status/{id}": {
             "get": {
                 "description": "Fetch status By ID",
@@ -2001,13 +2257,14 @@ const docTemplate = `{
                         "in": "formData"
                     },
                     {
-                        "description": "Update data of doctor",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/services.UpdateDoctorReqDto"
-                        }
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "speciality",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -2869,6 +3126,9 @@ const docTemplate = `{
                 "certificate": {
                     "type": "string"
                 },
+                "consultationFees": {
+                    "type": "string"
+                },
                 "informationName": {
                     "type": "string"
                 },
@@ -2881,10 +3141,10 @@ const docTemplate = `{
                 "qualifications": {
                     "type": "string"
                 },
-                "schedule": {
+                "slots": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/services.DoctorSchedule"
+                        "$ref": "#/definitions/services.Slots"
                     }
                 },
                 "speciality": {
@@ -2943,20 +3203,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
-                }
-            }
-        },
-        "services.DoctorSchedule": {
-            "type": "object",
-            "properties": {
-                "consultationFees": {
-                    "type": "string"
-                },
-                "slots": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/services.Slots"
-                    }
                 }
             }
         },
@@ -3093,6 +3339,34 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.PharmacyOtherServiceRes"
                     }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetPhysiotherapistProfessionalDetailsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.PhysiotherapistDetailsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetPhysiotherapistServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.PhysiotherapistServiceRes"
                 },
                 "message": {
                     "type": "string"
@@ -3440,6 +3714,34 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MorePhysiotherapistServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "string"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.MorePhysiotherapistServiceResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.NotificationResDto": {
             "type": "object",
             "properties": {
@@ -3610,6 +3912,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.PhysiotherapistDetailsRes": {
+            "type": "object",
+            "properties": {
+                "professionalCertificate": {
+                    "type": "string"
+                },
+                "professionalLicense": {
+                    "type": "string"
+                },
+                "qualification": {
+                    "type": "string"
+                }
+            }
+        },
         "services.PhysiotherapistReqDto": {
             "type": "object",
             "properties": {
@@ -3667,6 +3983,43 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.Slots"
                     }
+                }
+            }
+        },
+        "services.PhysiotherapistServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "string"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.PhysiotherapistServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.PhysiotherapistServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -3946,23 +4299,6 @@ const docTemplate = `{
                 }
             }
         },
-        "services.UpdateDoctorReqDto": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "schedule": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/services.Schedule"
-                    }
-                },
-                "speciality": {
-                    "type": "string"
-                }
-            }
-        },
         "services.UpdateDoctorResDto": {
             "type": "object",
             "properties": {
@@ -4025,6 +4361,25 @@ const docTemplate = `{
             }
         },
         "services.UpdatePharmacyOtherServiceResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdatePhysiotherapistProfessionalInfoReqDto": {
+            "type": "object",
+            "properties": {
+                "qualifications": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.UpdatePhysiotherapistProfessionalInfoResDto": {
             "type": "object",
             "properties": {
                 "message": {
