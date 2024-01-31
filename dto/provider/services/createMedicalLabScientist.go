@@ -17,12 +17,12 @@ type MedicalLabScientistReqDto struct {
 
 type MedicalLabScientistSchedule struct {
 	Name        string  `json:"name" bson:"name"`
-	ServiceFees string  `json:"serviceFees" bson:"serviceFees"`
+	ServiceFees float64 `json:"serviceFees" bson:"serviceFees"`
 	Slots       []Slots `json:"slots" bson:"slots"`
 }
 
 type MedicalLabScientistResDto struct {
 	Status  bool   `json:"status" bson:"status"`
 	Message string `json:"message" bson:"message"`
-	Role    Role `json:"data" bson:"data"`
+	Role    Role   `json:"data" bson:"data"`
 }

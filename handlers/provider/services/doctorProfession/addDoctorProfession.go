@@ -245,9 +245,10 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		})
 	}
 
-	var slots []subEntity.SlotsUpdateServiceSubEntity
+	var slots []subEntity.DoctorSlotsUpdateServiceSubEntity
 	for _, slot := range data.DoctorProfessionReqDto.Slots {
-		scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
+		scheduleSlot := subEntity.DoctorSlotsUpdateServiceSubEntity{
+			Id:        primitive.NewObjectID(),
 			StartTime: slot.StartTime,
 			EndTime:   slot.EndTime,
 			Days:      slot.Days,

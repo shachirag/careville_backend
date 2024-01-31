@@ -348,6 +348,13 @@ definitions:
       name:
         type: string
     type: object
+  services.DeleteNurseProfessionalInfoResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.Doctor:
     properties:
       name:
@@ -356,6 +363,19 @@ definitions:
         items:
           $ref: '#/definitions/services.Schedule'
         type: array
+      speciality:
+        type: string
+    type: object
+  services.DoctorProfessionProfessionDetailsRes:
+    properties:
+      consultingFees:
+        type: number
+      professionalCertificate:
+        type: string
+      professionalLicense:
+        type: string
+      qualification:
+        type: string
       speciality:
         type: string
     type: object
@@ -368,7 +388,7 @@ definitions:
       certificate:
         type: string
       consultationFees:
-        type: string
+        type: number
       informationName:
         type: string
       latitude:
@@ -392,6 +412,24 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.DoctorProfessionSlotsResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.DoctorProfessionSlotsResponseDto'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.DoctorProfessionSlotsResponseDto:
+    properties:
+      slots:
+        items:
+          $ref: '#/definitions/services.DoctorSlots'
+        type: array
     type: object
   services.DoctorRes:
     properties:
@@ -426,6 +464,19 @@ definitions:
           type: string
         type: array
       endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  services.DoctorSlots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      id:
         type: string
       startTime:
         type: string
@@ -489,12 +540,39 @@ definitions:
       name:
         type: string
     type: object
+  services.GetDoctorProfessionProfessionalDetailsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.DoctorProfessionProfessionDetailsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.GetFitnessOtherServicesResDto:
     properties:
       data:
         items:
           $ref: '#/definitions/services.FitnessOtherServiceRes'
         type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetMedicalLabScientistProfessionalDetailsResponseDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.MedicalLabScientistProfessionalDetailsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetNurseProfessionalDetailsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.PhysiotherapistDetailsRes'
       message:
         type: string
       status:
@@ -678,6 +756,17 @@ definitions:
       status:
         type: boolean
     type: object
+  services.MedicalLabScientistProfessionalDetailsRes:
+    properties:
+      department:
+        type: string
+      professionalCertificate:
+        type: string
+      professionalLicense:
+        type: string
+      qualification:
+        type: string
+    type: object
   services.MedicalLabScientistReqDto:
     properties:
       additionalText:
@@ -713,11 +802,35 @@ definitions:
       name:
         type: string
       serviceFees:
-        type: string
+        type: number
       slots:
         items:
           $ref: '#/definitions/services.Slots'
         type: array
+    type: object
+  services.MedicalLabScientistServiceRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.MedicalLabScientistServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.MedicalLabScientistServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   services.MiscRes:
     properties:
@@ -748,12 +861,48 @@ definitions:
       speciality:
         type: string
     type: object
+  services.MoreMedicalLabScientistServiceReqDto:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.MoreMedicalLabScientistServiceResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.MoreNurseServiceReqDto:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.MoreNurseServiceResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.MorePhysiotherapistServiceReqDto:
     properties:
       name:
         type: string
       serviceFees:
-        type: string
+        type: number
       slots:
         items:
           $ref: '#/definitions/services.Slots'
@@ -806,10 +955,45 @@ definitions:
       name:
         type: string
       serviceFees:
-        type: string
+        type: number
       slots:
         items:
           $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.NurseServiceRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.NurseServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.NurseServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.OtherServiceReqDto:
+    properties:
+      insurances:
+        items:
+          type: string
+        type: array
+      otherServices:
+        items:
+          type: string
         type: array
     type: object
   services.OtherServicesRes:
@@ -918,7 +1102,7 @@ definitions:
       name:
         type: string
       serviceFees:
-        type: string
+        type: number
       slots:
         items:
           $ref: '#/definitions/services.Slots'
@@ -931,7 +1115,7 @@ definitions:
       name:
         type: string
       serviceFees:
-        type: string
+        type: number
       slots:
         items:
           $ref: '#/definitions/services.Slots'
@@ -1126,6 +1310,36 @@ definitions:
       price:
         type: number
     type: object
+  services.UpdateDoctorProfessionProfessionalInfoReqDto:
+    properties:
+      consultingFees:
+        type: number
+      qualifications:
+        type: string
+      speciality:
+        type: string
+    type: object
+  services.UpdateDoctorProfessionProfessionalInfoResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateDoctorProfessionSlotReqDto:
+    properties:
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.UpdateDoctorProfessionSlotResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.UpdateDoctorResDto:
     properties:
       message:
@@ -1150,6 +1364,61 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.UpdateMedicalLabScientistProfessionalInfoReqDto:
+    properties:
+      department:
+        type: string
+      qualifications:
+        type: string
+    type: object
+  services.UpdateMedicalLabScientistProfessionalInfoResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateMedicalLabScientistServiceReqDto:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.UpdateMedicalLabScientistServiceResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateNurseProfessionalInfoReqDto:
+    properties:
+      qualifications:
+        type: string
+    type: object
+  services.UpdateNurseProfessionalInfoResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdateNurseServiceReqDto:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
     type: object
   services.UpdateOtherServiceReqDto:
     properties:
@@ -1178,6 +1447,24 @@ definitions:
         type: string
     type: object
   services.UpdatePhysiotherapistProfessionalInfoResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.UpdatePhysiotherapistServiceReqDto:
+    properties:
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/services.Slots'
+        type: array
+    type: object
+  services.UpdatePhysiotherapistServiceResDto:
     properties:
       message:
         type: string
@@ -1719,18 +2006,12 @@ paths:
         name: Authorization
         required: true
         type: string
-      - collectionFormat: csv
-        in: formData
-        items:
-          type: string
-        name: insurances
-        type: array
-      - collectionFormat: csv
-        in: formData
-        items:
-          type: string
-        name: otherServices
-        type: array
+      - description: add HospitalClinic
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.OtherServiceReqDto'
       produces:
       - application/json
       responses:
@@ -1875,6 +2156,33 @@ paths:
       summary: Add AddMoreDoctors
       tags:
       - hospClinic
+  /provider/services/add-more-doctorProfession-slot:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add more slot
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add AddMoreDoctors
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateDoctorProfessionSlotReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorProfessionSlotResDto'
+      summary: Add more slot
+      tags:
+      - doctorProfession
   /provider/services/add-more-investigation:
     post:
       consumes:
@@ -1902,6 +2210,60 @@ paths:
       summary: Add more investigations
       tags:
       - laboratory
+  /provider/services/add-more-medicalLabScientist-service:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add more service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add AddMoreDoctors
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.MoreMedicalLabScientistServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MoreMedicalLabScientistServiceResDto'
+      summary: Add more service
+      tags:
+      - medicalLabScientist
+  /provider/services/add-more-nurse-service:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add more service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add AddMoreDoctors
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.MoreNurseServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MoreNurseServiceResDto'
+      summary: Add more service
+      tags:
+      - nurse
   /provider/services/add-more-physiotherapist-service:
     post:
       consumes:
@@ -2175,6 +2537,84 @@ paths:
       summary: provider currently available
       tags:
       - providerCommonApis
+  /provider/services/delete-doctorProfession-slot/{slotId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete slot
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetPhysiotherapistServicesResDto'
+      summary: Delete slot
+      tags:
+      - doctorProfession
+  /provider/services/delete-medicalLabScientist-service/{serviceId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetPhysiotherapistServicesResDto'
+      summary: Delete service
+      tags:
+      - medicalLabScientist
+  /provider/services/delete-nurse-service/{serviceId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DeleteNurseProfessionalInfoResDto'
+      summary: Delete service
+      tags:
+      - nurse
   /provider/services/delete-physiotherapist-service/{serviceId}:
     delete:
       consumes:
@@ -2201,6 +2641,112 @@ paths:
       summary: Delete service
       tags:
       - physiotherapist
+  /provider/services/doctorProfession-currently-available:
+    put:
+      consumes:
+      - application/json
+      description: currently available
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: isEmergencyAvailable value (true or false)
+        in: query
+        name: isEmergencyAvailable
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResDto'
+      summary: provider currently available
+      tags:
+      - doctorProfession
+  /provider/services/edit-doctorProfession-professional-info:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update Professional details
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateDoctorProfessionProfessionalInfoReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorProfessionProfessionalInfoResDto'
+      summary: Update Professional details
+      tags:
+      - doctorProfession
+  /provider/services/edit-medicalLabScientist-professional-info:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update provider
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateMedicalLabScientistProfessionalInfoReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateMedicalLabScientistProfessionalInfoResDto'
+      summary: Update provider
+      tags:
+      - medicalLabScientist
+  /provider/services/edit-nurse-professional-info:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update provider
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update data of provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateNurseProfessionalInfoReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateNurseProfessionalInfoResDto'
+      summary: Update provider
+      tags:
+      - nurse
   /provider/services/edit-physiotherapist-professional-info:
     put:
       consumes:
@@ -2317,6 +2863,69 @@ paths:
       summary: Get Doctor info
       tags:
       - hospClinic
+  /provider/services/get-doctorProfession-personal-info:
+    get:
+      consumes:
+      - application/json
+      description: Fetch personal information By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.GetProviderResDto'
+      summary: Fetch personal information By ID
+      tags:
+      - doctorProfession
+  /provider/services/get-doctorProfession-professional-details:
+    get:
+      consumes:
+      - application/json
+      description: Fetch professionalDetails By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetDoctorProfessionProfessionalDetailsResDto'
+      summary: Fetch professionalDetails By ID
+      tags:
+      - doctorProfession
+  /provider/services/get-doctorProfession-slots:
+    get:
+      consumes:
+      - application/json
+      description: Get all slots
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorProfessionSlotsResDto'
+      summary: Get all slots
+      tags:
+      - doctorProfession
   /provider/services/get-fitness-other-service-info/{otherServiceId}:
     get:
       consumes:
@@ -2432,6 +3041,95 @@ paths:
       summary: Get all investigations
       tags:
       - laboratory
+  /provider/services/get-medicalLabScientist-personal-info:
+    get:
+      consumes:
+      - application/json
+      description: Fetch personal information By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.GetProviderResDto'
+      summary: Fetch personal information By ID
+      tags:
+      - medicalLabScientist
+  /provider/services/get-medicalLabScientist-professional-details:
+    get:
+      consumes:
+      - application/json
+      description: Fetch professionalDetails By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetMedicalLabScientistProfessionalDetailsResponseDto'
+      summary: Fetch professionalDetails By ID
+      tags:
+      - medicalLabScientist
+  /provider/services/get-medicalLabScientist-service-info/{serviceId}:
+    get:
+      consumes:
+      - application/json
+      description: Get service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: Get service info
+      tags:
+      - medicalLabScientist
+  /provider/services/get-medicalLabScientist-services:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.MedicalLabScientistServicesResDto'
+      summary: Get all services
+      tags:
+      - medicalLabScientist
   /provider/services/get-misc-data:
     get:
       consumes:
@@ -2453,6 +3151,95 @@ paths:
       summary: Fetch All misc data
       tags:
       - providerCommonApis
+  /provider/services/get-nurse-personal-info:
+    get:
+      consumes:
+      - application/json
+      description: Fetch personal information By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.GetProviderResDto'
+      summary: Fetch personal information By ID
+      tags:
+      - nurse
+  /provider/services/get-nurse-professional-details:
+    get:
+      consumes:
+      - application/json
+      description: Fetch professionalDetails By ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetNurseProfessionalDetailsResDto'
+      summary: Fetch professionalDetails By ID
+      tags:
+      - nurse
+  /provider/services/get-nurse-service-info/{serviceId}:
+    get:
+      consumes:
+      - application/json
+      description: Get service info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: serviceId
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DoctorResDto'
+      summary: Get service info
+      tags:
+      - nurse
+  /provider/services/get-nurse-services:
+    get:
+      consumes:
+      - application/json
+      description: Get all services
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NurseServicesResDto'
+      summary: Get all services
+      tags:
+      - nurse
   /provider/services/get-pharmacy-other-service-info/{otherServiceId}:
     get:
       consumes:
@@ -2564,7 +3351,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.DoctorResDto'
+            $ref: '#/definitions/services.GetPhysiotherapistServicesResDto'
       summary: Get service info
       tags:
       - physiotherapist
@@ -2662,6 +3449,81 @@ paths:
       summary: Get trainer info
       tags:
       - fitnessCenter
+  /provider/services/medicalLabScientist-currently-available:
+    put:
+      consumes:
+      - application/json
+      description: currently available
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: isEmergencyAvailable value (true or false)
+        in: query
+        name: isEmergencyAvailable
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResDto'
+      summary: provider currently available
+      tags:
+      - medicalLabScientist
+  /provider/services/nurse-currently-available:
+    put:
+      consumes:
+      - application/json
+      description: currently available
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: isEmergencyAvailable value (true or false)
+        in: query
+        name: isEmergencyAvailable
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResDto'
+      summary: provider currently available
+      tags:
+      - nurse
+  /provider/services/physiotherapist-currently-available:
+    put:
+      consumes:
+      - application/json
+      description: currently available
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: isEmergencyAvailable value (true or false)
+        in: query
+        name: isEmergencyAvailable
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResDto'
+      summary: provider currently available
+      tags:
+      - physiotherapist
   /provider/services/update-doctor-info/{doctorId}:
     put:
       consumes:
@@ -2698,6 +3560,38 @@ paths:
       summary: Update doctor info
       tags:
       - hospClinic
+  /provider/services/update-doctorProfession-slot/{slotId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update slot
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: slot ID
+        in: path
+        name: slotId
+        required: true
+        type: string
+      - description: Update data of service
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateDoctorProfessionSlotReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateDoctorProfessionSlotReqDto'
+      summary: Update slot
+      tags:
+      - doctorProfession
   /provider/services/update-fitnessCenter-other-service-info/{otherServiceId}:
     put:
       consumes:
@@ -2757,6 +3651,70 @@ paths:
       summary: Update investigation info
       tags:
       - laboratory
+  /provider/services/update-medicalLabScientist-service/{serviceId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update other service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Update data of service
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateMedicalLabScientistServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateMedicalLabScientistServiceResDto'
+      summary: Update other service
+      tags:
+      - medicalLabScientist
+  /provider/services/update-nurse-service/{serviceId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update other service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Update data of service
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateNurseServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DeleteNurseProfessionalInfoResDto'
+      summary: Update other service
+      tags:
+      - nurse
   /provider/services/update-pharmacy-other-service-info/{otherServiceId}:
     put:
       consumes:
@@ -2784,6 +3742,38 @@ paths:
       summary: Update other service info
       tags:
       - pharmacy
+  /provider/services/update-physiotherapist-service/{serviceId}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update other service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Update data of service
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdatePhysiotherapistServiceReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdatePhysiotherapistServiceResDto'
+      summary: Update other service
+      tags:
+      - physiotherapist
   /provider/services/update-trainer-info/{trainerId}:
     put:
       consumes:

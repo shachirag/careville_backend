@@ -1,4 +1,4 @@
-package physiotherapist
+package doctorProfession
 
 import (
 	"careville_backend/database"
@@ -14,15 +14,15 @@ import (
 
 // @Summary Fetch personal information By ID
 // @Description Fetch personal information By ID
-// @Tags physiotherapist
+// @Tags doctorProfession
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
-// @Router /provider/services/get-physiotherapist-personal-info [get]
-func FetchPersonalDetailsById(c *fiber.Ctx) error {
+// @Router /provider/services/get-doctorProfession-personal-info [get]
+func FetchDoctorProfessionPersonalDetailsById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
 
@@ -32,20 +32,20 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	projection := bson.M{
-		"role":                                             1,
-		"facilityOrProfession":                             1,
-		"serviceStatus":                                    1,
-		"physiotherapist.information.image":                1,
-		"physiotherapist.information.name":                 1,
-		"physiotherapist.information.additionalText":       1,
-		"physiotherapist.information.isEmergencyAvailable": 1,
-		"physiotherapist.information.address": bson.M{
+		"role":                                    1,
+		"facilityOrProfession":                    1,
+		"serviceStatus":                           1,
+		"doctor.information.image":                1,
+		"doctor.information.name":                 1,
+		"doctor.information.additionalText":       1,
+		"doctor.information.isEmergencyAvailable": 1,
+		"doctor.information.address": bson.M{
 			"coordinates": 1,
 			"type":        1,
 			"add":         1,
 		},
-		"physiotherapist.personalIdentificationDocs.nimc":    1,
-		"physiotherapist.personalIdentificationDocs.license": 1,
+		"doctor.personalIdentificationDocs.nimc":    1,
+		"doctor.personalIdentificationDocs.license": 1,
 		"user.id":                       1,
 		"user.firstName":                1,
 		"user.lastName":                 1,
@@ -67,12 +67,12 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(providerAuth.GetProviderResDto{
 				Status:  false,
-				Message: "provider not found",
+				Message: "service not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.GetProviderResDto{
 			Status:  false,
-			Message: "Failed to fetch provider from MongoDB: " + err.Error(),
+			Message: "Failed to fetch service from MongoDB: " + err.Error(),
 		})
 	}
 
@@ -84,14 +84,14 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 	var nimc string
 	var name string
 
-	if provider.Physiotherapist != nil {
-		image = provider.Physiotherapist.Information.Image
-		additionalDetails = provider.Physiotherapist.Information.AdditionalText
-		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Physiotherapist.Information.Address)
-		license = provider.Physiotherapist.PersonalIdentificationDocs.License
-		nimc = provider.Physiotherapist.PersonalIdentificationDocs.Nimc
-		name = provider.Physiotherapist.Information.Name
+	if provider.Doctor != nil {
+		image = provider.Doctor.Information.Image
+		additionalDetails = provider.Doctor.Information.AdditionalText
+		isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Doctor.Information.Address)
+		license = provider.Doctor.PersonalIdentificationDocs.License
+		nimc = provider.Doctor.PersonalIdentificationDocs.Nimc
+		name = provider.Doctor.Information.Name
 	}
 
 	providerRes := providerAuth.ProviderResDto{

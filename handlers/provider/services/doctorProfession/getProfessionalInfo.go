@@ -1,4 +1,4 @@
-package physiotherapist
+package doctorProfession
 
 import (
 	"careville_backend/database"
@@ -14,15 +14,15 @@ import (
 
 // @Summary Fetch professionalDetails By ID
 // @Description Fetch professionalDetails By ID
-// @Tags physiotherapist
+// @Tags doctorProfession
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
-// @Success 200 {object} services.GetPhysiotherapistProfessionalDetailsResDto
-// @Router /provider/services/get-physiotherapist-professional-details [get]
-func FetchProfessionalDetaiById(c *fiber.Ctx) error {
+// @Success 200 {object} services.GetDoctorProfessionProfessionalDetailsResDto
+// @Router /provider/services/get-doctorProfession-professional-details [get]
+func FetchDoctorProfessionProfessionalDetaiById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
 
@@ -32,9 +32,11 @@ func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	projection := bson.M{
-		"physiotherapist.professionalDetails.qualifications":  1,
-		"physiotherapist.professionalDetailsDocs.certificate": 1,
-		"physiotherapist.professionalDetailsDocs.license":     1,
+		"doctor.additionalServices.qualifications":   1,
+		"doctor.additionalServices.speciality":       1,
+		"doctor.professionalDetailsDocs.certificate": 1,
+		"doctor.professionalDetailsDocs.license":     1,
+		"doctor.schedule.consultationFees":           1,
 	}
 
 	findOptions := options.FindOne().SetProjection(projection)
@@ -42,34 +44,40 @@ func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 	err := serviceColl.FindOne(ctx, bson.M{"_id": providerData.ProviderId}, findOptions).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.GetPhysiotherapistProfessionalDetailsResDto{
+			return c.Status(fiber.StatusNotFound).JSON(services.GetDoctorProfessionProfessionalDetailsResDto{
 				Status:  false,
 				Message: "provider not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.GetPhysiotherapistProfessionalDetailsResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.GetDoctorProfessionProfessionalDetailsResDto{
 			Status:  false,
 			Message: "Failed to fetch provider from MongoDB: " + err.Error(),
 		})
 	}
 
 	var qualification string
+	var speciality string
 	var professionalLicense string
 	var professionalCertificate string
+	var consultingFees float64
 
-	if provider.Physiotherapist != nil {
-		qualification = provider.Physiotherapist.ProfessionalDetails.Qualifications
-		professionalLicense = provider.Physiotherapist.ProfessionalDetailsDocs.License
-		professionalCertificate = provider.Physiotherapist.ProfessionalDetailsDocs.Certificate
+	if provider.Doctor != nil {
+		qualification = provider.Doctor.AdditionalServices.Qualifications
+		speciality = provider.Doctor.AdditionalServices.Speciality
+		professionalLicense = provider.Doctor.ProfessionalDetailsDocs.License
+		professionalCertificate = provider.Doctor.ProfessionalDetailsDocs.Certificate
+		consultingFees = provider.Doctor.Schedule.ConsultationFees
 	}
 
-	professionalDetailsRes := services.PhysiotherapistDetailsRes{
+	professionalDetailsRes := services.DoctorProfessionProfessionDetailsRes{
 		Qualification:           qualification,
 		ProfessionalLicense:     professionalLicense,
 		ProfessionalCertificate: professionalCertificate,
+		ConsultingFees:          consultingFees,
+		Speciality:              speciality,
 	}
 
-	return c.Status(fiber.StatusOK).JSON(services.GetPhysiotherapistProfessionalDetailsResDto{
+	return c.Status(fiber.StatusOK).JSON(services.GetDoctorProfessionProfessionalDetailsResDto{
 		Status:  true,
 		Message: "Professional Details retrieved successfully",
 		Data:    professionalDetailsRes,

@@ -256,6 +256,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			slots = append(slots, scheduleSlot)
 		}
 		scheduleData := subEntity.ServiceAndScheduleUpdateServiceSubEntity{
+			Id:          primitive.NewObjectID(),
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
 			Slots:       slots,

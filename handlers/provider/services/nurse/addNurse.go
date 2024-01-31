@@ -41,7 +41,7 @@ func AddNurse(c *fiber.Ctx) error {
 		servicesColl            = database.GetCollection("service")
 		data                    services.NurseRequestDto
 		nurse                   subEntity.UpdateServiceSubEntity
-		nurseImageUrl              string
+		nurseImageUrl           string
 		nimcDoc                 string
 		personalLicense         string
 		professionalLicense     string
@@ -250,6 +250,7 @@ func AddNurse(c *fiber.Ctx) error {
 		var slots []subEntity.SlotsUpdateServiceSubEntity
 		for _, slot := range scheduleItem.Slots {
 			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
+
 				StartTime: slot.StartTime,
 				EndTime:   slot.EndTime,
 				Days:      slot.Days,
@@ -257,6 +258,7 @@ func AddNurse(c *fiber.Ctx) error {
 			slots = append(slots, scheduleSlot)
 		}
 		scheduleData := subEntity.ServiceAndScheduleUpdateServiceSubEntity{
+			Id:          primitive.NewObjectID(),
 			Name:        scheduleItem.Name,
 			ServiceFees: scheduleItem.ServiceFees,
 			Slots:       slots,

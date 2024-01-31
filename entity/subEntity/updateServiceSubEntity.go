@@ -156,14 +156,21 @@ type ProfessionalDetailsDocsUpdateServiceSubEntity struct {
 }
 
 type DoctorScheduleUpdateServiceSubEntity struct {
-	ConsultationFees string                        `json:"consultationFees" bson:"consultationFees"`
-	Slots            []SlotsUpdateServiceSubEntity `json:"slots" bson:"slots"`
+	ConsultationFees float64                             `json:"consultationFees" bson:"consultationFees"`
+	Slots            []DoctorSlotsUpdateServiceSubEntity `json:"slots" bson:"slots"`
 }
 
 type SlotsUpdateServiceSubEntity struct {
 	StartTime string   `json:"startTime" bson:"startTime"`
 	EndTime   string   `json:"endTime" bson:"endTime"`
 	Days      []string `json:"days" bson:"days"`
+}
+
+type DoctorSlotsUpdateServiceSubEntity struct {
+	Id        primitive.ObjectID `json:"id" bson:"id"`
+	StartTime string             `json:"startTime" bson:"startTime"`
+	EndTime   string             `json:"endTime" bson:"endTime"`
+	Days      []string           `json:"days" bson:"days"`
 }
 
 type MedicalLabScientistUpdateServiceSubEntity struct {
@@ -194,7 +201,7 @@ type ProfessionalDetailsUpdateServiceSubEntity struct {
 type ServiceAndScheduleUpdateServiceSubEntity struct {
 	Id          primitive.ObjectID            `json:"id" bson:"id"`
 	Name        string                        `json:"name" bson:"name"`
-	ServiceFees string                        `json:"serviceFees" bson:"serviceFees"`
+	ServiceFees float64                       `json:"serviceFees" bson:"serviceFees"`
 	Slots       []SlotsUpdateServiceSubEntity `json:"slots" bson:"slots"`
 }
 

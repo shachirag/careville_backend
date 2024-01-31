@@ -1,4 +1,4 @@
-package physiotherapist
+package nurse
 
 import (
 	"careville_backend/database"
@@ -14,14 +14,14 @@ import (
 
 // @Summary Fetch professionalDetails By ID
 // @Description Fetch professionalDetails By ID
-// @Tags physiotherapist
+// @Tags nurse
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
-// @Success 200 {object} services.GetPhysiotherapistProfessionalDetailsResDto
-// @Router /provider/services/get-physiotherapist-professional-details [get]
+// @Success 200 {object} services.GetNurseProfessionalDetailsResDto
+// @Router /provider/services/get-nurse-professional-details [get]
 func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
@@ -32,9 +32,9 @@ func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	projection := bson.M{
-		"physiotherapist.professionalDetails.qualifications":  1,
-		"physiotherapist.professionalDetailsDocs.certificate": 1,
-		"physiotherapist.professionalDetailsDocs.license":     1,
+		"nurse.professionalDetails.qualifications":  1,
+		"nurse.professionalDetailsDocs.certificate": 1,
+		"nurse.professionalDetailsDocs.license":     1,
 	}
 
 	findOptions := options.FindOne().SetProjection(projection)
@@ -42,12 +42,12 @@ func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 	err := serviceColl.FindOne(ctx, bson.M{"_id": providerData.ProviderId}, findOptions).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.GetPhysiotherapistProfessionalDetailsResDto{
+			return c.Status(fiber.StatusNotFound).JSON(services.GetNurseProfessionalDetailsResDto{
 				Status:  false,
 				Message: "provider not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.GetPhysiotherapistProfessionalDetailsResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.GetNurseProfessionalDetailsResDto{
 			Status:  false,
 			Message: "Failed to fetch provider from MongoDB: " + err.Error(),
 		})
@@ -57,10 +57,10 @@ func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 	var professionalLicense string
 	var professionalCertificate string
 
-	if provider.Physiotherapist != nil {
-		qualification = provider.Physiotherapist.ProfessionalDetails.Qualifications
-		professionalLicense = provider.Physiotherapist.ProfessionalDetailsDocs.License
-		professionalCertificate = provider.Physiotherapist.ProfessionalDetailsDocs.Certificate
+	if provider.Nurse != nil {
+		qualification = provider.Nurse.ProfessionalDetails.Qualifications
+		professionalLicense = provider.Nurse.ProfessionalDetailsDocs.License
+		professionalCertificate = provider.Nurse.ProfessionalDetailsDocs.Certificate
 	}
 
 	professionalDetailsRes := services.PhysiotherapistDetailsRes{
@@ -69,7 +69,7 @@ func FetchProfessionalDetaiById(c *fiber.Ctx) error {
 		ProfessionalCertificate: professionalCertificate,
 	}
 
-	return c.Status(fiber.StatusOK).JSON(services.GetPhysiotherapistProfessionalDetailsResDto{
+	return c.Status(fiber.StatusOK).JSON(services.GetNurseProfessionalDetailsResDto{
 		Status:  true,
 		Message: "Professional Details retrieved successfully",
 		Data:    professionalDetailsRes,

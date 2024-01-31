@@ -18,7 +18,7 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param  provider formData services.OtherServiceReqDto true "add HospitalClinic"
+// @Param  provider body services.OtherServiceReqDto true "add HospitalClinic"
 // @Produce json
 // @Success 200 {object} services.UpdateDoctorResDto
 // @Router /provider/services/add-hospClinic-other-services [post]

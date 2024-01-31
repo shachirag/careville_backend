@@ -1,4 +1,4 @@
-package physiotherapist
+package nurse
 
 import (
 	"careville_backend/database"
@@ -13,27 +13,27 @@ import (
 )
 
 // @Summary Add more service
-// @Tags physiotherapist
+// @Tags nurse
 // @Description Add more service
 // @Accept multipart/form-data
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param  provider body services.MorePhysiotherapistServiceReqDto true "add AddMoreDoctors"
+// @Param  provider body services.MoreNurseServiceReqDto true "add AddMoreDoctors"
 // @Produce json
-// @Success 200 {object} services.MorePhysiotherapistServiceResDto
-// @Router /provider/services/add-more-physiotherapist-service [post]
-func AddMorePhysiotherapistServices(c *fiber.Ctx) error {
+// @Success 200 {object} services.MoreNurseServiceResDto
+// @Router /provider/services/add-more-nurse-service [post]
+func AddMoreNurseServices(c *fiber.Ctx) error {
 	var (
 		servicesColl = database.GetCollection("service")
-		data         services.MorePhysiotherapistServiceReqDto
+		data         services.MoreNurseServiceReqDto
 		provider     entity.ServiceEntity
 	)
 
 	// Parsing the request body
 	err := c.BodyParser(&data)
 	if err != nil {
-		return c.Status(500).JSON(services.MorePhysiotherapistServiceResDto{
+		return c.Status(500).JSON(services.MoreNurseServiceResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -48,12 +48,12 @@ func AddMorePhysiotherapistServices(c *fiber.Ctx) error {
 	err = servicesColl.FindOne(ctx, filter).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.MorePhysiotherapistServiceResDto{
+			return c.Status(fiber.StatusNotFound).JSON(services.MoreNurseServiceResDto{
 				Status:  false,
 				Message: "service not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.MorePhysiotherapistServiceResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.MoreNurseServiceResDto{
 			Status:  false,
 			Message: "Failed to fetch service from MongoDB: " + err.Error(),
 		})
@@ -79,25 +79,25 @@ func AddMorePhysiotherapistServices(c *fiber.Ctx) error {
 	}
 
 	update := bson.M{
-		"$push": bson.M{"physiotherapist.serviceAndSchedule": bson.M{"$each": moreService}},
+		"$push": bson.M{"nurse.schedule": bson.M{"$each": moreService}},
 	}
-	
+
 	updateRes, err := servicesColl.UpdateOne(ctx, filter, update)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.MorePhysiotherapistServiceResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicServiceResDto{
 			Status:  false,
 			Message: "Failed to update service data in MongoDB: " + err.Error(),
 		})
 	}
 
 	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.MorePhysiotherapistServiceResDto{
+		return c.Status(fiber.StatusNotFound).JSON(services.HospitalClinicServiceResDto{
 			Status:  false,
 			Message: "service not found",
 		})
 	}
 
-	hospClinicRes := services.MorePhysiotherapistServiceResDto{
+	hospClinicRes := services.HospitalClinicServiceResDto{
 		Status:  true,
 		Message: "Service added successfully",
 	}

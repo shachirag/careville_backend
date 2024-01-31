@@ -799,22 +799,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "insurances",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
-                        "name": "otherServices",
-                        "in": "formData"
+                        "description": "add HospitalClinic",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.OtherServiceReqDto"
+                        }
                     }
                 ],
                 "responses": {
@@ -1030,6 +1021,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/add-more-doctorProfession-slot": {
+            "post": {
+                "description": "Add more slot",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Add more slot",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add AddMoreDoctors",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorProfessionSlotReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorProfessionSlotResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/add-more-investigation": {
             "post": {
                 "description": "Add more investigations",
@@ -1066,6 +1098,88 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.InvestigationResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-more-medicalLabScientist-service": {
+            "post": {
+                "description": "Add more service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Add more service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add AddMoreDoctors",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.MoreMedicalLabScientistServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MoreMedicalLabScientistServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/add-more-nurse-service": {
+            "post": {
+                "description": "Add more service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Add more service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add AddMoreDoctors",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.MoreNurseServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MoreNurseServiceResDto"
                         }
                     }
                 }
@@ -1485,6 +1599,123 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/delete-doctorProfession-slot/{slotId}": {
+            "delete": {
+                "description": "Delete slot",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Delete slot",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetPhysiotherapistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/delete-medicalLabScientist-service/{serviceId}": {
+            "delete": {
+                "description": "Delete service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Delete service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetPhysiotherapistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/delete-nurse-service/{serviceId}": {
+            "delete": {
+                "description": "Delete service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Delete service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DeleteNurseProfessionalInfoResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/delete-physiotherapist-service/{serviceId}": {
             "delete": {
                 "description": "Delete service",
@@ -1519,6 +1750,167 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.GetPhysiotherapistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/doctorProfession-currently-available": {
+            "put": {
+                "description": "currently available",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "provider currently available",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEmergencyAvailable value (true or false)",
+                        "name": "isEmergencyAvailable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/edit-doctorProfession-professional-info": {
+            "put": {
+                "description": "Update Professional details",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Update Professional details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorProfessionProfessionalInfoReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorProfessionProfessionalInfoResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/edit-medicalLabScientist-professional-info": {
+            "put": {
+                "description": "Update provider",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Update provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateMedicalLabScientistProfessionalInfoReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateMedicalLabScientistProfessionalInfoResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/edit-nurse-professional-info": {
+            "put": {
+                "description": "Update provider",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Update provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateNurseProfessionalInfoReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateNurseProfessionalInfoResDto"
                         }
                     }
                 }
@@ -1700,6 +2092,102 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/get-doctorProfession-personal-info": {
+            "get": {
+                "description": "Fetch personal information By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Fetch personal information By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.GetProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-doctorProfession-professional-details": {
+            "get": {
+                "description": "Fetch professionalDetails By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Fetch professionalDetails By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetDoctorProfessionProfessionalDetailsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-doctorProfession-slots": {
+            "get": {
+                "description": "Get all slots",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Get all slots",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorProfessionSlotsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-fitness-other-service-info/{otherServiceId}": {
             "get": {
                 "description": "Get other service info",
@@ -1874,6 +2362,141 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/get-medicalLabScientist-personal-info": {
+            "get": {
+                "description": "Fetch personal information By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Fetch personal information By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.GetProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-medicalLabScientist-professional-details": {
+            "get": {
+                "description": "Fetch professionalDetails By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Fetch professionalDetails By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetMedicalLabScientistProfessionalDetailsResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-medicalLabScientist-service-info/{serviceId}": {
+            "get": {
+                "description": "Get service info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Get service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-medicalLabScientist-services": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Get all services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.MedicalLabScientistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/get-misc-data": {
             "get": {
                 "description": "Fetch All misc data",
@@ -1901,6 +2524,141 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.MiscResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-nurse-personal-info": {
+            "get": {
+                "description": "Fetch personal information By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Fetch personal information By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.GetProviderResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-nurse-professional-details": {
+            "get": {
+                "description": "Fetch professionalDetails By ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Fetch professionalDetails By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetNurseProfessionalDetailsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-nurse-service-info/{serviceId}": {
+            "get": {
+                "description": "Get service info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Get service info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "serviceId",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-nurse-services": {
+            "get": {
+                "description": "Get all services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Get all services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NurseServicesResDto"
                         }
                     }
                 }
@@ -2074,7 +2832,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.DoctorResDto"
+                            "$ref": "#/definitions/services.GetPhysiotherapistServicesResDto"
                         }
                     }
                 }
@@ -2222,6 +2980,120 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/medicalLabScientist-currently-available": {
+            "put": {
+                "description": "currently available",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "provider currently available",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEmergencyAvailable value (true or false)",
+                        "name": "isEmergencyAvailable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/nurse-currently-available": {
+            "put": {
+                "description": "currently available",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "provider currently available",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEmergencyAvailable value (true or false)",
+                        "name": "isEmergencyAvailable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/physiotherapist-currently-available": {
+            "put": {
+                "description": "currently available",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "provider currently available",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEmergencyAvailable value (true or false)",
+                        "name": "isEmergencyAvailable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/update-doctor-info/{doctorId}": {
             "put": {
                 "description": "Update doctor info",
@@ -2272,6 +3144,54 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.UpdateDoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/update-doctorProfession-slot/{slotId}": {
+            "put": {
+                "description": "Update slot",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Update slot",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "slot ID",
+                        "name": "slotId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of service",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorProfessionSlotReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateDoctorProfessionSlotReqDto"
                         }
                     }
                 }
@@ -2366,6 +3286,102 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/update-medicalLabScientist-service/{serviceId}": {
+            "put": {
+                "description": "Update other service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicalLabScientist"
+                ],
+                "summary": "Update other service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of service",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateMedicalLabScientistServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateMedicalLabScientistServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/update-nurse-service/{serviceId}": {
+            "put": {
+                "description": "Update other service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "nurse"
+                ],
+                "summary": "Update other service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of service",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdateNurseServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.DeleteNurseProfessionalInfoResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/update-pharmacy-other-service-info/{otherServiceId}": {
             "put": {
                 "description": "Update other service info",
@@ -2402,6 +3418,54 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.UpdatePharmacyOtherServiceResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/update-physiotherapist-service/{serviceId}": {
+            "put": {
+                "description": "Update other service",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "physiotherapist"
+                ],
+                "summary": "Update other service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data of service",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePhysiotherapistServiceReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.UpdatePhysiotherapistServiceResDto"
                         }
                     }
                 }
@@ -3097,6 +4161,17 @@ const docTemplate = `{
                 }
             }
         },
+        "services.DeleteNurseProfessionalInfoResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.Doctor": {
             "type": "object",
             "properties": {
@@ -3108,6 +4183,26 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.Schedule"
                     }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.DoctorProfessionProfessionDetailsRes": {
+            "type": "object",
+            "properties": {
+                "consultingFees": {
+                    "type": "number"
+                },
+                "professionalCertificate": {
+                    "type": "string"
+                },
+                "professionalLicense": {
+                    "type": "string"
+                },
+                "qualification": {
+                    "type": "string"
                 },
                 "speciality": {
                     "type": "string"
@@ -3127,7 +4222,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "consultationFees": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "informationName": {
                     "type": "string"
@@ -3163,6 +4258,34 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.DoctorProfessionSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.DoctorProfessionSlotsResponseDto"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.DoctorProfessionSlotsResponseDto": {
+            "type": "object",
+            "properties": {
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.DoctorSlots"
+                    }
                 }
             }
         },
@@ -3216,6 +4339,26 @@ const docTemplate = `{
                     }
                 },
                 "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.DoctorSlots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "startTime": {
@@ -3314,6 +4457,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetDoctorProfessionProfessionalDetailsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.DoctorProfessionProfessionDetailsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.GetFitnessOtherServicesResDto": {
             "type": "object",
             "properties": {
@@ -3322,6 +4479,34 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.FitnessOtherServiceRes"
                     }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetMedicalLabScientistProfessionalDetailsResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.MedicalLabScientistProfessionalDetailsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetNurseProfessionalDetailsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.PhysiotherapistDetailsRes"
                 },
                 "message": {
                     "type": "string"
@@ -3606,6 +4791,23 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MedicalLabScientistProfessionalDetailsRes": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "string"
+                },
+                "professionalCertificate": {
+                    "type": "string"
+                },
+                "professionalLicense": {
+                    "type": "string"
+                },
+                "qualification": {
+                    "type": "string"
+                }
+            }
+        },
         "services.MedicalLabScientistReqDto": {
             "type": "object",
             "properties": {
@@ -3659,13 +4861,50 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceFees": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "slots": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/services.Slots"
                     }
+                }
+            }
+        },
+        "services.MedicalLabScientistServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.MedicalLabScientistServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.MedicalLabScientistServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -3714,6 +4953,62 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MoreMedicalLabScientistServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.MoreMedicalLabScientistServiceResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.MoreNurseServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.MoreNurseServiceResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.MorePhysiotherapistServiceReqDto": {
             "type": "object",
             "properties": {
@@ -3721,7 +5016,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceFees": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "slots": {
                     "type": "array",
@@ -3803,12 +5098,66 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceFees": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "slots": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.NurseServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.NurseServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.NurseServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.OtherServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "insurances": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "otherServices": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
                     }
                 }
             }
@@ -3976,7 +5325,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceFees": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "slots": {
                     "type": "array",
@@ -3996,7 +5345,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceFees": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "slots": {
                     "type": "array",
@@ -4299,6 +5648,53 @@ const docTemplate = `{
                 }
             }
         },
+        "services.UpdateDoctorProfessionProfessionalInfoReqDto": {
+            "type": "object",
+            "properties": {
+                "consultingFees": {
+                    "type": "number"
+                },
+                "qualifications": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.UpdateDoctorProfessionProfessionalInfoResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateDoctorProfessionSlotReqDto": {
+            "type": "object",
+            "properties": {
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.UpdateDoctorProfessionSlotResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.UpdateDoctorResDto": {
             "type": "object",
             "properties": {
@@ -4335,6 +5731,92 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateMedicalLabScientistProfessionalInfoReqDto": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "string"
+                },
+                "qualifications": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.UpdateMedicalLabScientistProfessionalInfoResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateMedicalLabScientistServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.UpdateMedicalLabScientistServiceResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateNurseProfessionalInfoReqDto": {
+            "type": "object",
+            "properties": {
+                "qualifications": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.UpdateNurseProfessionalInfoResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdateNurseServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
                 }
             }
         },
@@ -4380,6 +5862,34 @@ const docTemplate = `{
             }
         },
         "services.UpdatePhysiotherapistProfessionalInfoResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.UpdatePhysiotherapistServiceReqDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.Slots"
+                    }
+                }
+            }
+        },
+        "services.UpdatePhysiotherapistServiceResDto": {
             "type": "object",
             "properties": {
                 "message": {

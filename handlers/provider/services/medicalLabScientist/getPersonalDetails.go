@@ -1,4 +1,4 @@
-package physiotherapist
+package medicalLabScientist
 
 import (
 	"careville_backend/database"
@@ -14,15 +14,15 @@ import (
 
 // @Summary Fetch personal information By ID
 // @Description Fetch personal information By ID
-// @Tags physiotherapist
+// @Tags medicalLabScientist
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
-// @Router /provider/services/get-physiotherapist-personal-info [get]
-func FetchPersonalDetailsById(c *fiber.Ctx) error {
+// @Router /provider/services/get-medicalLabScientist-personal-info [get]
+func FetchMedicalLabScientistPersonalDetailsById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
 
@@ -32,32 +32,32 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	projection := bson.M{
-		"role":                                             1,
-		"facilityOrProfession":                             1,
-		"serviceStatus":                                    1,
-		"physiotherapist.information.image":                1,
-		"physiotherapist.information.name":                 1,
-		"physiotherapist.information.additionalText":       1,
-		"physiotherapist.information.isEmergencyAvailable": 1,
-		"physiotherapist.information.address": bson.M{
+		"role":                                                 1,
+		"facilityOrProfession":                                 1,
+		"serviceStatus":                                        1,
+		"medicalLabScientist.information.image":                1,
+		"medicalLabScientist.information.name":                 1,
+		"medicalLabScientist.information.additionalText":       1,
+		"medicalLabScientist.information.isEmergencyAvailable": 1,
+		"medicalLabScientist.information.address": bson.M{
 			"coordinates": 1,
 			"type":        1,
 			"add":         1,
 		},
-		"physiotherapist.personalIdentificationDocs.nimc":    1,
-		"physiotherapist.personalIdentificationDocs.license": 1,
-		"user.id":                       1,
-		"user.firstName":                1,
-		"user.lastName":                 1,
-		"user.phoneNumber.dialCode":     1,
-		"user.phoneNumber.countryCode":  1,
-		"user.phoneNumber.number":       1,
+		"medicalLabScientist.personalIdentificationDocs.nimc":    1,
+		"medicalLabScientist.personalIdentificationDocs.license": 1,
+		"user.id":                      1,
+		"user.firstName":               1,
+		"user.lastName":                1,
+		"user.phoneNumber.dialCode":    1,
+		"user.phoneNumber.countryCode": 1,
+		"user.phoneNumber.number":      1,
 		"user.notification.deviceType":  1,
 		"user.notification.deviceToken": 1,
 		"user.notification.isEnabled":   1,
-		"user.email":                    1,
-		"createdAt":                     1,
-		"updatedAt":                     1,
+		"user.email":                   1,
+		"createdAt":                    1,
+		"updatedAt":                    1,
 	}
 
 	findOptions := options.FindOne().SetProjection(projection)
@@ -84,14 +84,14 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 	var nimc string
 	var name string
 
-	if provider.Physiotherapist != nil {
-		image = provider.Physiotherapist.Information.Image
-		additionalDetails = provider.Physiotherapist.Information.AdditionalText
-		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Physiotherapist.Information.Address)
-		license = provider.Physiotherapist.PersonalIdentificationDocs.License
-		nimc = provider.Physiotherapist.PersonalIdentificationDocs.Nimc
-		name = provider.Physiotherapist.Information.Name
+	if provider.MedicalLabScientist != nil {
+		image = provider.MedicalLabScientist.Information.Image
+		additionalDetails = provider.MedicalLabScientist.Information.AdditionalText
+		isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.MedicalLabScientist.Information.Address)
+		license = provider.MedicalLabScientist.PersonalIdentificationDocs.License
+		nimc = provider.MedicalLabScientist.PersonalIdentificationDocs.Nimc
+		name = provider.MedicalLabScientist.Information.Name
 	}
 
 	providerRes := providerAuth.ProviderResDto{

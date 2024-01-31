@@ -1,4 +1,4 @@
-package physiotherapist
+package nurse
 
 import (
 	"careville_backend/database"
@@ -14,15 +14,15 @@ import (
 
 // @Summary Fetch personal information By ID
 // @Description Fetch personal information By ID
-// @Tags physiotherapist
+// @Tags nurse
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
-// @Router /provider/services/get-physiotherapist-personal-info [get]
-func FetchPersonalDetailsById(c *fiber.Ctx) error {
+// @Router /provider/services/get-nurse-personal-info [get]
+func FetchNursePersonalDetailsById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity
 
@@ -32,20 +32,20 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	projection := bson.M{
-		"role":                                             1,
-		"facilityOrProfession":                             1,
-		"serviceStatus":                                    1,
-		"physiotherapist.information.image":                1,
-		"physiotherapist.information.name":                 1,
-		"physiotherapist.information.additionalText":       1,
-		"physiotherapist.information.isEmergencyAvailable": 1,
-		"physiotherapist.information.address": bson.M{
+		"role":                                   1,
+		"facilityOrProfession":                   1,
+		"serviceStatus":                          1,
+		"nurse.information.image":                1,
+		"nurse.information.name":                 1,
+		"nurse.information.additionalText":       1,
+		"nurse.information.isEmergencyAvailable": 1,
+		"nurse.information.address": bson.M{
 			"coordinates": 1,
 			"type":        1,
 			"add":         1,
 		},
-		"physiotherapist.personalIdentificationDocs.nimc":    1,
-		"physiotherapist.personalIdentificationDocs.license": 1,
+		"nurse.personalIdentificationDocs.nimc":    1,
+		"nurse.personalIdentificationDocs.license": 1,
 		"user.id":                       1,
 		"user.firstName":                1,
 		"user.lastName":                 1,
@@ -84,14 +84,14 @@ func FetchPersonalDetailsById(c *fiber.Ctx) error {
 	var nimc string
 	var name string
 
-	if provider.Physiotherapist != nil {
-		image = provider.Physiotherapist.Information.Image
-		additionalDetails = provider.Physiotherapist.Information.AdditionalText
-		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Physiotherapist.Information.Address)
-		license = provider.Physiotherapist.PersonalIdentificationDocs.License
-		nimc = provider.Physiotherapist.PersonalIdentificationDocs.Nimc
-		name = provider.Physiotherapist.Information.Name
+	if provider.Nurse != nil {
+		image = provider.Nurse.Information.Image
+		additionalDetails = provider.Nurse.Information.AdditionalText
+		isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
+		address = providerAuth.Address(provider.Nurse.Information.Address)
+		license = provider.Nurse.PersonalIdentificationDocs.License
+		nimc = provider.Nurse.PersonalIdentificationDocs.Nimc
+		name = provider.Nurse.Information.Name
 	}
 
 	providerRes := providerAuth.ProviderResDto{

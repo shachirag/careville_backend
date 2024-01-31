@@ -134,7 +134,7 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 	}
 
 	// Clearing existing schedule
-	update["$set"].(bson.M)["hospClinic.doctor.$.schedule"] = bson.A{}
+	// update["$set"].(bson.M)["hospClinic.doctor.$.schedule"] = bson.A{}
 
 	for _, schedule := range data.Schedule {
 		scheduleUpdate := bson.M{

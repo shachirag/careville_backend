@@ -159,8 +159,15 @@ type ProfessionalDetailsDocs struct {
 }
 
 type DoctorSchedule struct {
-	ConsultationFees string  `json:"consultationFees" bson:"consultationFees"`
-	Slots            []Slots `json:"slots" bson:"slots"`
+	ConsultationFees float64       `json:"consultationFees" bson:"consultationFees"`
+	Slots            []DoctorSlots `json:"slots" bson:"slots"`
+}
+
+type DoctorSlots struct {
+	Id        primitive.ObjectID `json:"id" bson:"id"`
+	StartTime string             `json:"startTime" bson:"startTime"`
+	EndTime   string             `json:"endTime" bson:"endTime"`
+	Days      []string           `json:"days" bson:"days"`
 }
 
 type Slots struct {
@@ -168,6 +175,7 @@ type Slots struct {
 	EndTime   string   `json:"endTime" bson:"endTime"`
 	Days      []string `json:"days" bson:"days"`
 }
+
 
 type MedicalLabScientist struct {
 	Information                Information                `json:"information" bson:"information"`
@@ -179,7 +187,7 @@ type MedicalLabScientist struct {
 
 type ProfessionalDetailsEntity struct {
 	Department    string `json:"department" bson:"department"`
-	Qualification string `json:"qualification" bson:"qualification"`
+	Qualification string `json:"qualifications" bson:"qualifications"`
 }
 
 type Nurse struct {
@@ -197,7 +205,7 @@ type ProfessionalDetails struct {
 type ServiceAndSchedule struct {
 	Id          primitive.ObjectID `json:"id" bson:"id"`
 	Name        string             `json:"name" bson:"name"`
-	ServiceFees string             `json:"serviceFees" bson:"serviceFees"`
+	ServiceFees float64            `json:"serviceFees" bson:"serviceFees"`
 	Slots       []Slots            `json:"slots" bson:"slots"`
 }
 

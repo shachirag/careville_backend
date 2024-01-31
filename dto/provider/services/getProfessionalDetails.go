@@ -11,3 +11,4 @@ type PhysiotherapistDetailsRes struct {
 	ProfessionalLicense     string `json:"professionalLicense"`
 	ProfessionalCertificate string `json:"professionalCertificate"`
 }
+

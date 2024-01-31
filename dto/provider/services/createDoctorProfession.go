@@ -16,7 +16,7 @@ type DoctorProfessionReqDto struct {
 	Speciality       string  `json:"speciality" bson:"speciality"`
 	Qualifications   string  `json:"qualifications" bson:"qualifications"`
 	Slots            []Slots `json:"slots" bson:"slots"`
-	ConsultationFees string  `json:"consultationFees" bson:"consultationFees"`
+	ConsultationFees float64 `json:"consultationFees" bson:"consultationFees"`
 	// Schedule         []DoctorSchedule `json:"schedule" form:"schedule"`
 }
 

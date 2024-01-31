@@ -1,4 +1,4 @@
-package physiotherapist
+package medicalLabScientist
 
 import (
 	"careville_backend/database"
@@ -16,16 +16,16 @@ import (
 
 // @Summary Get service info
 // @Description Get service info
-// @Tags physiotherapist
+// @Tags medicalLabScientist
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param serviceId path string true "serviceId"
 // @Produce json
-// @Success 200 {object} services.GetPhysiotherapistServicesResDto
-// @Router /provider/services/get-physiotherapist-service-info/{serviceId} [get]
-func GetServiceInfo(c *fiber.Ctx) error {
+// @Success 200 {object} services.DoctorResDto
+// @Router /provider/services/get-medicalLabScientist-service-info/{serviceId} [get]
+func GetMedicalLabScientistServiceInfo(c *fiber.Ctx) error {
 	ctx := context.TODO()
 
 	var service entity.ServiceEntity
@@ -37,7 +37,7 @@ func GetServiceInfo(c *fiber.Ctx) error {
 	serviceObjID, err := primitive.ObjectIDFromHex(serviceId)
 
 	if err != nil {
-		return c.Status(400).JSON(services.GetPhysiotherapistServicesResDto{
+		return c.Status(400).JSON(services.GetMedicalLabScientistServicesResDto{
 			Status:  false,
 			Message: "invalid objectId " + err.Error(),
 		})
@@ -47,7 +47,7 @@ func GetServiceInfo(c *fiber.Ctx) error {
 
 	filter := bson.M{
 		"_id": providerData.ProviderId,
-		"physiotherapist.serviceAndSchedule": bson.M{
+		"medicalLabScientist.serviceAndSchedule": bson.M{
 			"$elemMatch": bson.M{
 				"id": serviceObjID,
 			},
@@ -55,10 +55,10 @@ func GetServiceInfo(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"physiotherapist.serviceAndSchedule.id":          1,
-		"physiotherapist.serviceAndSchedule.name":        1,
-		"physiotherapist.serviceAndSchedule.serviceFees": 1,
-		"physiotherapist.serviceAndSchedule.slots": bson.M{
+		"medicalLabScientist.serviceAndSchedule.id":          1,
+		"medicalLabScientist.serviceAndSchedule.name":        1,
+		"medicalLabScientist.serviceAndSchedule.serviceFees": 1,
+		"medicalLabScientist.serviceAndSchedule.slots": bson.M{
 			"startTime": 1,
 			"endTime":   1,
 			"days":      1,
@@ -70,29 +70,29 @@ func GetServiceInfo(c *fiber.Ctx) error {
 	err = serviceColl.FindOne(ctx, filter, findOptions).Decode(&service)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.GetPhysiotherapistServicesResDto{
+			return c.Status(fiber.StatusNotFound).JSON(services.GetMedicalLabScientistServicesResDto{
 				Status:  false,
 				Message: "service not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.GetPhysiotherapistServicesResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.GetMedicalLabScientistServicesResDto{
 			Status:  false,
 			Message: "Failed to fetch service from MongoDB: " + err.Error(),
 		})
 	}
 
-	if service.Physiotherapist == nil {
-		return c.Status(fiber.StatusNotFound).JSON(services.GetPhysiotherapistServicesResDto{
+	if service.MedicalLabScientist == nil {
+		return c.Status(fiber.StatusNotFound).JSON(services.GetMedicalLabScientistServicesResDto{
 			Status:  false,
 			Message: "No service information found for the service",
 		})
 	}
 
-	var servicesRes services.PhysiotherapistServiceRes
+	var servicesRes services.MedicalLabScientistServiceRes
 
-	for _, service := range service.Physiotherapist.ServiceAndSchedule {
+	for _, service := range service.MedicalLabScientist.ServiceAndSchedule {
 		if service.Id == serviceObjID {
-			serviceRes := services.PhysiotherapistServiceRes{
+			serviceRes := services.MedicalLabScientistServiceRes{
 				Id:          service.Id,
 				Name:        service.Name,
 				ServiceFees: service.ServiceFees,
@@ -113,7 +113,7 @@ func GetServiceInfo(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.Status(fiber.StatusOK).JSON(services.GetPhysiotherapistServicesResDto{
+	return c.Status(fiber.StatusOK).JSON(services.GetMedicalLabScientistServicesResDto{
 		Status:  true,
 		Message: "Service retrieved successfully",
 		Data:    servicesRes,

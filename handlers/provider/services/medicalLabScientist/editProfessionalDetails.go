@@ -1,4 +1,4 @@
-package physiotherapist
+package medicalLabScientist
 
 import (
 	"careville_backend/database"
@@ -15,27 +15,27 @@ import (
 
 // @Summary Update provider
 // @Description Update provider
-// @Tags physiotherapist
+// @Tags medicalLabScientist
 // @Accept multipart/form-data
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param provider body services.UpdatePhysiotherapistProfessionalInfoReqDto true "Update data of provider"
+// @Param provider body services.UpdateMedicalLabScientistProfessionalInfoReqDto true "Update data of provider"
 // @Produce json
-// @Success 200 {object} services.UpdatePhysiotherapistProfessionalInfoResDto
-// @Router /provider/services/edit-physiotherapist-professional-info [put]
-func UpdatePhysiotherapistDetails(c *fiber.Ctx) error {
+// @Success 200 {object} services.UpdateMedicalLabScientistProfessionalInfoResDto
+// @Router /provider/services/edit-medicalLabScientist-professional-info [put]
+func UpdateMedicalLabScientistDetails(c *fiber.Ctx) error {
 
 	var (
 		serviceColl = database.GetCollection("service")
-		data        services.UpdatePhysiotherapistProfessionalInfoReqDto
+		data        services.UpdateMedicalLabScientistProfessionalInfoReqDto
 		provider    entity.ServiceEntity
 	)
 
 	// Parsing the request body
 	err := c.BodyParser(&data)
 	if err != nil {
-		return c.Status(500).JSON(services.UpdatePhysiotherapistProfessionalInfoResDto{
+		return c.Status(500).JSON(services.UpdateMedicalLabScientistProfessionalInfoResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -48,12 +48,12 @@ func UpdatePhysiotherapistDetails(c *fiber.Ctx) error {
 	err = serviceColl.FindOne(ctx, filter).Decode(&provider)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.UpdatePhysiotherapistProfessionalInfoResDto{
+			return c.Status(fiber.StatusNotFound).JSON(services.UpdateMedicalLabScientistProfessionalInfoResDto{
 				Status:  false,
 				Message: "provider not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdatePhysiotherapistProfessionalInfoResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateMedicalLabScientistProfessionalInfoResDto{
 			Status:  false,
 			Message: "Failed to fetch provider from MongoDB: " + err.Error(),
 		})
@@ -61,9 +61,10 @@ func UpdatePhysiotherapistDetails(c *fiber.Ctx) error {
 
 	update := bson.M{}
 
-	if provider.Physiotherapist != nil {
+	if provider.MedicalLabScientist != nil {
 		update = bson.M{"$set": bson.M{
-			"physiotherapist.professionalDetails.qualifications": data.Qualifications,
+			"medicalLabScientist.professionalDetails.qualifications": data.Qualifications,
+			"medicalLabScientist.professionalDetails.department":     data.Department,
 			"updatedAt": time.Now().UTC(),
 		},
 		}
@@ -73,20 +74,20 @@ func UpdatePhysiotherapistDetails(c *fiber.Ctx) error {
 	// Execute the update operation
 	updateRes, err := serviceColl.UpdateOne(ctx, filter, update, opts)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdatePhysiotherapistProfessionalInfoResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateMedicalLabScientistProfessionalInfoResDto{
 			Status:  false,
 			Message: "Failed to update provider data in MongoDB: " + err.Error(),
 		})
 	}
 
 	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.UpdatePhysiotherapistProfessionalInfoResDto{
+		return c.Status(fiber.StatusNotFound).JSON(services.UpdateMedicalLabScientistProfessionalInfoResDto{
 			Status:  false,
 			Message: "provider not found",
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(services.UpdatePhysiotherapistProfessionalInfoResDto{
+	return c.Status(fiber.StatusOK).JSON(services.UpdateMedicalLabScientistProfessionalInfoResDto{
 		Status:  true,
 		Message: "provider data updated successfully",
 	})
