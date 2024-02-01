@@ -72,7 +72,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.PhysiotherapistResDto{
 			Status:  false,
-			Message: "No physiotherapistImage uploaded",
+			Message: "Physiotherapist image is required",
 		})
 	}
 

@@ -69,24 +69,16 @@ func GetDoctorProfessionSlots(c *fiber.Ctx) error {
 		})
 	}
 
-	// Adjusting the loop to iterate over DoctorSlots directly
-	var slotData []services.DoctorSlots
-	for _, slot := range service.Doctor.Schedule.Slots {
-		slotData = append(slotData, services.DoctorSlots{
-			Id:        slot.Id,
-			StartTime: slot.StartTime,
-			EndTime:   slot.EndTime,
-			Days:      slot.Days,
-		})
-	}
-
-	// Wrap slotData inside DoctorProfessionSlotsResponseDto
-	var responseDto services.DoctorProfessionSlotsResDto
-	for _, slot := range slotData {
-		responseDto.Data = append(responseDto.Data, services.DoctorProfessionSlotsResponseDto{
-			Slots: []services.DoctorSlots{slot},
-		})
-	}
+  // Constructing the response DTO
+  var responseDto services.DoctorProfessionSlotsResDto
+  for _, slot := range service.Doctor.Schedule.Slots {
+	  responseDto.Data = append(responseDto.Data, services.DoctorSlotsResponseDto{
+		  Id:        slot.Id,
+		  StartTime: slot.StartTime,
+		  EndTime:   slot.EndTime,
+		  Days:      slot.Days,
+	  })
+  }
 
 	if len(responseDto.Data) == 0 {
 		return c.Status(fiber.StatusOK).JSON(services.DoctorProfessionSlotsResDto{

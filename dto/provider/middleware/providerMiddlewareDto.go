@@ -15,11 +15,11 @@ type ProviderMiddlwareDto struct {
 }
 
 func SetProviderMiddlewareData(c *fiber.Ctx) (*ProviderMiddlwareDto, error) {
-	customer := c.Locals("user").(*jwt.Token)
-	claims := customer.Claims.(jwt.MapClaims)
+	provider := c.Locals("user").(*jwt.Token)
+	claims := provider.Claims.(jwt.MapClaims)
 
 	pId := claims["Id"].(string)
-	userId, err := primitive.ObjectIDFromHex(pId)
+	providerId, err := primitive.ObjectIDFromHex(pId)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func SetProviderMiddlewareData(c *fiber.Ctx) (*ProviderMiddlwareDto, error) {
 	facilityOrProfesion := claims["facilityOrProfession"].(string)
 
 	providerMiddlwareDto := ProviderMiddlwareDto{
-		ProviderId:           userId,
+		ProviderId:           providerId,
 		Email:                email,
 		Role:                 role,
 		ServiceRole:          serviceRole,

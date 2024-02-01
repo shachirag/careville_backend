@@ -3,6 +3,7 @@ package adminAuth
 import (
 	"careville_backend/database"
 	"careville_backend/dto/admin/adminAuth"
+	adminMiddleware "careville_backend/dto/admin/middleware"
 	"careville_backend/utils"
 	"fmt"
 	"time"
@@ -20,12 +21,11 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param id path string true "Admin ID"
 // @Param admin formData adminAuth.UpdateAdminReqDto true "Update data of admin"
 // @Param newAdminImage formData file false "admin profile image"
 // @Produce json
 // @Success 200 {object} adminAuth.UpdateAdminResDto
-// @Router /admin/update-admin-info/{adminId} [put]
+// @Router /admin/profile/update-admin-info [put]
 func UpdateAdmin(c *fiber.Ctx) error {
 	var (
 		adminColl = database.GetCollection("admin")
@@ -41,26 +41,10 @@ func UpdateAdmin(c *fiber.Ctx) error {
 		})
 	}
 
-	// Check if the admin ID is provided in the request
-	adminID := c.Params("adminId")
-	if adminID == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(adminAuth.UpdateAdminResDto{
-			Status:  false,
-			Message: "Admin ID is missing in the request",
-		})
-	}
-
-	// Find the admin document in MongoDB based on the provided admin ID
-	objID, err := primitive.ObjectIDFromHex(adminID)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(adminAuth.UpdateAdminResDto{
-			Status:  false,
-			Message: "Invalid Admin ID",
-		})
-	}
+	adminData := adminMiddleware.GetAdminMiddlewareData(c)
 
 	// Find the admin document in MongoDB
-	filter := bson.M{"_id": objID}
+	filter := bson.M{"_id": adminData.AdminId}
 	result := adminColl.FindOne(ctx, filter)
 	if result.Err() != nil {
 		if result.Err() == mongo.ErrNoDocuments {

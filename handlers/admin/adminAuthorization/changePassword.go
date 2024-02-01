@@ -2,6 +2,7 @@ package adminAuth
 
 import (
 	"careville_backend/database"
+	adminMiddleware "careville_backend/dto/admin/middleware"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 
@@ -9,7 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Change adminPassword is the handler for changing provider passwords
@@ -17,16 +17,15 @@ import (
 // @Description Change provider Password
 // @Tags provider authorization
 // @Accept application/json
-// @Param adminId path string true "Admin ID"
 // @Param Authorization header string true "Authentication header"
 // @Param provider body providerAuth.ProviderChangePasswordReqDto true "Change password of provider"
 // @Produce json
 // @Success 200 {object} providerAuth.ProviderChangePasswordResDto
-// @Router /admin/change-password/{adminId} [put]
+// @Router /admin/profile/change-password [put]
 func ChangeAdminPassword(c *fiber.Ctx) error {
 	var (
 		adminColl = database.GetCollection("admin")
-		data        providerAuth.ProviderChangePasswordReqDto
+		data      providerAuth.ProviderChangePasswordReqDto
 	)
 
 	// Parsing the request body
@@ -38,23 +37,9 @@ func ChangeAdminPassword(c *fiber.Ctx) error {
 		})
 	}
 
-	adminId := c.Params("adminId")
-	if adminId == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(providerAuth.ProviderChangePasswordResDto{
-			Status:  false,
-			Message: "Admin ID is missing in the request",
-		})
-	}
-	adminObjID, err := primitive.ObjectIDFromHex(adminId)
+	adminData := adminMiddleware.GetAdminMiddlewareData(c)
 
-	if err != nil {
-		return c.Status(400).JSON(providerAuth.ProviderChangePasswordResDto{
-			Status:  false,
-			Message: "invalid objectId " + err.Error(),
-		})
-	}
-
-	filter := bson.M{"_id": adminObjID}
+	filter := bson.M{"_id": adminData.AdminId}
 
 	result := adminColl.FindOne(ctx, filter)
 	if result.Err() != nil {

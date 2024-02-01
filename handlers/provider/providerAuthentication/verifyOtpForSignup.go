@@ -217,7 +217,7 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	return c.Status(200).JSON(providerAuth.LoginProviderResDto{
 		Status:  true,
-		Message: "OTP verified successfully and provider data inserted",
+		Message: "OTP verified successfully",
 		Provider: providerAuth.ProviderRespDto{
 			Role: role,
 			User: providerAuth.User{

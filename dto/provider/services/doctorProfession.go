@@ -27,16 +27,23 @@ type UpdateDoctorProfessionProfessionalInfoResDto struct {
 	Message string `json:"message" bson:"message"`
 }
 
-type GetDoctorProfessionSlotsResDto struct {
-	Status  bool                             `json:"status" bson:"status"`
-	Message string                           `json:"message" bson:"message"`
-	Data    DoctorProfessionSlotsResponseDto `json:"data" bson:"data"`
-}
-
 type DoctorProfessionSlotsResDto struct {
 	Status  bool                               `json:"status" bson:"status"`
 	Message string                             `json:"message" bson:"message"`
-	Data    []DoctorProfessionSlotsResponseDto `json:"data" bson:"data"`
+	Data    []DoctorSlotsResponseDto `json:"data" bson:"data"`
+}
+
+type GetDoctorProfessionSlotsResDto struct {
+	Status  bool                   `json:"status" bson:"status"`
+	Message string                 `json:"message" bson:"message"`
+	Data    DoctorProfessionSlotsResponseDto `json:"data" bson:"data"`
+}
+
+type DoctorSlotsResponseDto struct {
+	Id        primitive.ObjectID `json:"id" bson:"id"`
+	StartTime string             `json:"startTime" bson:"startTime"`
+	EndTime   string             `json:"endTime" bson:"endTime"`
+	Days      []string           `json:"days" bson:"days"`
 }
 
 type DoctorProfessionSlotsResponseDto struct {

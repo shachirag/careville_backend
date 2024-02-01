@@ -68,7 +68,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.PharmacyResDto{
 			Status:  false,
-			Message: "No pharmacyImage uploaded",
+			Message: "Pharmacy image is required",
 		})
 	}
 
@@ -231,7 +231,7 @@ func AddPharmacy(c *fiber.Ctx) error {
 
 	pharmacyRes := services.PharmacyResDto{
 		Status:  true,
-		Message: "pharmacy added successfully",
+		Message: "Pharmacy added successfully",
 		Role: services.Role{
 			Role:                 "healthFacility",
 			FacilityOrProfession: "pharmacy",

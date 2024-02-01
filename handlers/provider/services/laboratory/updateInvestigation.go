@@ -69,7 +69,7 @@ func UpdateinvestigationInfo(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.UpdateInvestigationResDto{
 				Status:  false,
-				Message: "investigation not found",
+				Message: "Investigation not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateInvestigationResDto{
@@ -100,12 +100,12 @@ func UpdateinvestigationInfo(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(services.UpdateInvestigationResDto{
 			Status:  false,
-			Message: "investigation not found",
+			Message: "Investigation not found",
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.UpdateInvestigationResDto{
 		Status:  true,
-		Message: "investigation data updated successfully",
+		Message: "Investigation data updated successfully",
 	})
 }

@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  adminAuth.AdminPasswordResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   adminAuth.GetAdminRes:
     properties:
       createdAt:
@@ -58,12 +65,274 @@ definitions:
       token:
         type: string
     type: object
+  adminAuth.ResetPasswordAfterOtpReqDto:
+    properties:
+      confirmPassword:
+        type: string
+      email:
+        type: string
+      newPassword:
+        type: string
+    type: object
   adminAuth.UpdateAdminResDto:
     properties:
       message:
         type: string
       status:
         type: boolean
+    type: object
+  adminAuth.VerifyOtpReqDto:
+    properties:
+      email:
+        type: string
+      otp:
+        type: string
+    type: object
+  customerAuth.AddMemberReqDto:
+    properties:
+      age:
+        type: string
+      name:
+        type: string
+      relationShip:
+        type: string
+      sex:
+        type: string
+    type: object
+  customerAuth.AddMemberResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  customerAuth.CustomerChangePasswordReqDto:
+    properties:
+      confirmPassword:
+        type: string
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+    type: object
+  customerAuth.CustomerChangePasswordResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.CustomerForgotPasswordReqDto:
+    properties:
+      email:
+        type: string
+    type: object
+  customerAuth.CustomerPasswordResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.CustomerResDto:
+    properties:
+      address:
+        $ref: '#/definitions/customerAuth.Address'
+      age:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      familyMembers:
+        items:
+          $ref: '#/definitions/customerAuth.FamilyMembers'
+        type: array
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      notification:
+        $ref: '#/definitions/customerAuth.Notification'
+      phoneNumber:
+        $ref: '#/definitions/customerAuth.PhoneNumber'
+      sex:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  customerAuth.CustomerResponseDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.CustomerSignupReqDto:
+    properties:
+      dialCode:
+        type: string
+      email:
+        type: string
+      phoneNumber:
+        type: string
+    type: object
+  customerAuth.CustomerSignupVerifyOtpReqDto:
+    properties:
+      address:
+        type: string
+      age:
+        type: string
+      customerType:
+        type: string
+      deviceToken:
+        type: string
+      deviceType:
+        type: string
+      email:
+        type: string
+      familyMembers:
+        items:
+          $ref: '#/definitions/customerAuth.FamilyMembers'
+        type: array
+      firstName:
+        type: string
+      lastName:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      otp:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/customerAuth.PhoneNumber'
+      sex:
+        type: string
+    type: object
+  customerAuth.FamilyMembers:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationShip:
+        type: string
+      sex:
+        type: string
+    type: object
+  customerAuth.GetCustomerResDto:
+    properties:
+      data:
+        $ref: '#/definitions/customerAuth.CustomerResDto'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.LoginCustomerReqDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  customerAuth.LoginCustomerResDto:
+    properties:
+      data:
+        $ref: '#/definitions/customerAuth.CustomerResDto'
+      message:
+        type: string
+      status:
+        type: boolean
+      token:
+        type: string
+    type: object
+  customerAuth.MembeRes:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationShip:
+        type: string
+      sex:
+        type: string
+    type: object
+  customerAuth.MembeResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/customerAuth.MembeRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.Notification:
+    properties:
+      deviceToken:
+        type: string
+      deviceType:
+        type: string
+      isEnabled:
+        type: boolean
+    type: object
+  customerAuth.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
+  customerAuth.ResetPasswordAfterOtpReqDto:
+    properties:
+      confirmPassword:
+        type: string
+      email:
+        type: string
+      newPassword:
+        type: string
+    type: object
+  customerAuth.UpdateCustomerResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  customerAuth.VerifyOtpReqDto:
+    properties:
+      email:
+        type: string
+      otp:
+        type: string
     type: object
   dashboard.DashboardCount:
     properties:
@@ -280,17 +549,21 @@ definitions:
       serviceStatus:
         type: string
     type: object
-  providerAuth.UpdateImageReqDto:
-    properties:
-      oldImage:
-        type: string
-    type: object
   providerAuth.UpdateProfileData:
     properties:
       role:
         $ref: '#/definitions/providerAuth.Role'
       user:
         $ref: '#/definitions/providerAuth.User'
+    type: object
+  providerAuth.UpdateProviderImageResDto:
+    properties:
+      image:
+        type: string
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   providerAuth.UpdateProviderResDto:
     properties:
@@ -417,7 +690,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/services.DoctorProfessionSlotsResponseDto'
+          $ref: '#/definitions/services.DoctorSlotsResponseDto'
         type: array
       message:
         type: string
@@ -469,6 +742,19 @@ definitions:
         type: string
     type: object
   services.DoctorSlots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      id:
+        type: string
+      startTime:
+        type: string
+    type: object
+  services.DoctorSlotsResponseDto:
     properties:
       days:
         items:
@@ -544,6 +830,15 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/services.DoctorProfessionProfessionDetailsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetDoctorProfessionSlotsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.DoctorProfessionSlotsResponseDto'
       message:
         type: string
       status:
@@ -1499,38 +1794,6 @@ info:
   title: Care Ville
   version: 0.0.1
 paths:
-  /admin/change-password/{adminId}:
-    put:
-      consumes:
-      - application/json
-      description: Change provider Password
-      parameters:
-      - description: Admin ID
-        in: path
-        name: adminId
-        required: true
-        type: string
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Change password of provider
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.ProviderChangePasswordReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/providerAuth.ProviderChangePasswordResDto'
-      summary: Change provider Password
-      tags:
-      - provider authorization
   /admin/change-status/{id}:
     put:
       consumes:
@@ -1556,7 +1819,78 @@ paths:
       summary: change status
       tags:
       - admin authorization
-  /admin/get-admin-info/{adminId}:
+  /admin/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Forgot Password
+      parameters:
+      - description: forgot password for customer
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/adminAuth.LoginAdminReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/adminAuth.AdminPasswordResDto'
+      summary: Forgot Password
+      tags:
+      - admin authorization
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: send 6 digit otp for Login Admin
+      parameters:
+      - description: send 6 digit otp for Login Admin
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/adminAuth.LoginAdminReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/adminAuth.LoginAdminResDto'
+      summary: send 6 digit otp for Login Admin
+      tags:
+      - admin authorization
+  /admin/profile/change-password:
+    put:
+      consumes:
+      - application/json
+      description: Change provider Password
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Change password of provider
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/providerAuth.ProviderChangePasswordReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providerAuth.ProviderChangePasswordResDto'
+      summary: Change provider Password
+      tags:
+      - provider authorization
+  /admin/profile/get-admin-info:
     get:
       consumes:
       - application/json
@@ -1582,26 +1916,61 @@ paths:
       summary: Fetch Admin By ID
       tags:
       - admin authorization
-  /admin/login:
-    post:
+  /admin/profile/update-admin-info:
+    put:
       consumes:
-      - application/json
-      description: send 6 digit otp for Login Admin
+      - multipart/form-data
+      description: Update Admin
       parameters:
-      - description: send 6 digit otp for Login Admin
-        in: body
-        name: admin
+      - description: Authentication header
+        in: header
+        name: Authorization
         required: true
-        schema:
-          $ref: '#/definitions/adminAuth.LoginAdminReqDto'
+        type: string
+      - in: formData
+        name: firstName
+        type: string
+      - in: formData
+        name: lastName
+        type: string
+      - in: formData
+        name: oldImage
+        type: string
+      - description: admin profile image
+        in: formData
+        name: newAdminImage
+        type: file
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/adminAuth.LoginAdminResDto'
-      summary: send 6 digit otp for Login Admin
+            $ref: '#/definitions/adminAuth.UpdateAdminResDto'
+      summary: Update Admin
+      tags:
+      - admin authorization
+  /admin/reset-password:
+    put:
+      consumes:
+      - application/json
+      description: Reset admin password after OTP verification using the new password
+        and confirm password
+      parameters:
+      - description: Reset admin password after OTP verification
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/adminAuth.ResetPasswordAfterOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/adminAuth.AdminPasswordResDto'
+      summary: Reset admin Password after OTP Verification
       tags:
       - admin authorization
   /admin/total-counts:
@@ -1630,43 +1999,26 @@ paths:
       summary: Count All
       tags:
       - dashboard in admin pannel
-  /admin/update-admin-info/{adminId}:
-    put:
+  /admin/verify-otp:
+    post:
       consumes:
-      - multipart/form-data
-      description: Update Admin
+      - application/json
+      description: Verify the entered 6 digit OTP
       parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
+      - description: Verify 6 digit OTP
+        in: body
+        name: admin
         required: true
-        type: string
-      - description: Admin ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - in: formData
-        name: firstName
-        type: string
-      - in: formData
-        name: lastName
-        type: string
-      - in: formData
-        name: oldImage
-        type: string
-      - description: admin profile image
-        in: formData
-        name: newAdminImage
-        type: file
+        schema:
+          $ref: '#/definitions/adminAuth.VerifyOtpReqDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/adminAuth.UpdateAdminResDto'
-      summary: Update Admin
+            $ref: '#/definitions/adminAuth.AdminPasswordResDto'
+      summary: Verify admin OTP
       tags:
       - admin authorization
   /admin/verify-otp-for-login:
@@ -1691,6 +2043,314 @@ paths:
       summary: Verify OTP for login
       tags:
       - admin authorization
+  /customer/change-password:
+    put:
+      consumes:
+      - application/json
+      description: Change customer Password
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Change password of customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.CustomerChangePasswordReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.CustomerChangePasswordResDto'
+      summary: Change customer Password
+      tags:
+      - customer authorization
+  /customer/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Forgot Password
+      parameters:
+      - description: forgot password for customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.CustomerForgotPasswordReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.CustomerPasswordResDto'
+      summary: Forgot Password
+      tags:
+      - customer authorization
+  /customer/get-customer-info/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get customer by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.GetCustomerResDto'
+      summary: Get customer by ID
+      tags:
+      - customer authorization
+  /customer/login:
+    post:
+      consumes:
+      - application/json
+      description: Login customer
+      parameters:
+      - description: login customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.LoginCustomerReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.LoginCustomerResDto'
+      summary: Login customer
+      tags:
+      - customer authorization
+  /customer/profile/add-more-family-member:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add more members
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: add members
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.AddMemberReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.AddMemberResDto'
+      summary: Add more members
+      tags:
+      - customer authorization
+  /customer/profile/change-notification:
+    put:
+      consumes:
+      - application/json
+      description: customer notification
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: isEnable value (true or false)
+        in: query
+        name: isEnable
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResDto'
+      summary: customer notification
+      tags:
+      - customer authorization
+  /customer/profile/get-members:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.MembeResDto'
+      summary: Get all investigations
+      tags:
+      - customer authorization
+  /customer/profile/update-customer-info:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update customer
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: formData
+        name: address
+        type: string
+      - in: formData
+        name: age
+        type: string
+      - in: formData
+        name: countryCode
+        type: string
+      - in: formData
+        name: dialCode
+        type: string
+      - in: formData
+        name: firstName
+        type: string
+      - in: formData
+        name: lastName
+        type: string
+      - in: formData
+        name: latitude
+        type: string
+      - in: formData
+        name: longitude
+        type: string
+      - in: formData
+        name: phoneNumber
+        type: string
+      - in: formData
+        name: sex
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.UpdateCustomerResDto'
+      summary: Update customer
+      tags:
+      - customer authorization
+  /customer/reset-password:
+    put:
+      consumes:
+      - application/json
+      description: Reset customer password after OTP verification using the new password
+        and confirm password
+      parameters:
+      - description: Reset customer password after OTP verification
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.ResetPasswordAfterOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.CustomerPasswordResDto'
+      summary: Reset customer Password after OTP Verification
+      tags:
+      - customer authorization
+  /customer/signup:
+    post:
+      description: Signup provider
+      parameters:
+      - description: send 6 digit otp to email for signup
+        in: body
+        name: signup
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.CustomerSignupReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.CustomerResponseDto'
+      summary: Signup provider
+      tags:
+      - customer authorization
+  /customer/verify-otp:
+    post:
+      consumes:
+      - application/json
+      description: Verify the entered 6 digit OTP
+      parameters:
+      - description: Verify 6 digit OTP
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.VerifyOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.CustomerPasswordResDto'
+      summary: Verify customer OTP
+      tags:
+      - customer authorization
+  /customer/verify-otp-for-signup:
+    post:
+      consumes:
+      - application/json
+      description: Verify the entered 6 digit OTP
+      parameters:
+      - description: Verify 6 digit OTP and insert data into database
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customerAuth.CustomerSignupVerifyOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerAuth.LoginCustomerResDto'
+      summary: Verify OTP for signup
+      tags:
+      - customer authorization
   /provider/forgot-password:
     post:
       consumes:
@@ -1799,12 +2459,6 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Update data of admin
-        in: body
-        name: provider
-        required: true
-        schema:
-          $ref: '#/definitions/providerAuth.UpdateImageReqDto'
       - description: profile image
         in: formData
         name: image
@@ -1815,7 +2469,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/providerAuth.UpdateProviderResDto'
+            $ref: '#/definitions/providerAuth.UpdateProviderImageResDto'
       summary: Update Profile Image
       tags:
       - provider authorization
@@ -2512,31 +3166,6 @@ paths:
       summary: provider notification
       tags:
       - providerCommonApis
-  /provider/services/currently-available:
-    put:
-      consumes:
-      - application/json
-      description: currently available
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: isEmergencyAvailable value (true or false)
-        in: query
-        name: isEmergencyAvailable
-        type: boolean
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/services.NotificationResDto'
-      summary: provider currently available
-      tags:
-      - providerCommonApis
   /provider/services/delete-doctorProfession-slot/{slotId}:
     delete:
       consumes:
@@ -2903,6 +3532,32 @@ paths:
           schema:
             $ref: '#/definitions/services.GetDoctorProfessionProfessionalDetailsResDto'
       summary: Fetch professionalDetails By ID
+      tags:
+      - doctorProfession
+  /provider/services/get-doctorProfession-slot-info/{slotId}:
+    get:
+      consumes:
+      - application/json
+      description: Get slot info
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: slotId
+        in: path
+        name: slotId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetDoctorProfessionSlotsResDto'
+      summary: Get slot info
       tags:
       - doctorProfession
   /provider/services/get-doctorProfession-slots:

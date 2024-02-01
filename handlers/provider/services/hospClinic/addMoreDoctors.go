@@ -50,7 +50,7 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.UpdateDoctorImageResDto{
 				Status:  false,
-				Message: "provider not found",
+				Message: "Provider not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorImageResDto{
@@ -93,7 +93,7 @@ func AddMoreDoctors(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(services.HospitalClinicServiceResDto{
 			Status:  false,
-			Message: "provider not found",
+			Message: "Provider not found",
 		})
 	}
 

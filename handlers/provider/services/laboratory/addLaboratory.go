@@ -68,7 +68,7 @@ func AddLaboratory(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.LaboratoryResDto{
 			Status:  false,
-			Message: "No laboratoryImage uploaded",
+			Message: "Laboratory image is required",
 		})
 	}
 

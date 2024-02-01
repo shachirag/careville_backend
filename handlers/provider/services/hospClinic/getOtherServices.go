@@ -48,7 +48,7 @@ func GetOtherServices(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.OtherServicesResDto{
 				Status:  false,
-				Message: "other service not found",
+				Message: "Other service not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(services.OtherServicesResDto{

@@ -73,7 +73,7 @@ func GetDoctorsInfo(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.GetDoctorResDto{
 				Status:  false,
-				Message: "service not found",
+				Message: "Service not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(services.GetDoctorResDto{

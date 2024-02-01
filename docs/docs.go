@@ -20,54 +20,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/admin/change-password/{adminId}": {
-            "put": {
-                "description": "Change provider Password",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider authorization"
-                ],
-                "summary": "Change provider Password",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Admin ID",
-                        "name": "adminId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Change password of provider",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderChangePasswordReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.ProviderChangePasswordResDto"
-                        }
-                    }
-                }
-            }
-        },
         "/admin/change-status/{id}": {
             "put": {
                 "description": "change status",
@@ -106,7 +58,116 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/get-admin-info/{adminId}": {
+        "/admin/forgot-password": {
+            "post": {
+                "description": "Forgot Password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "Forgot Password",
+                "parameters": [
+                    {
+                        "description": "forgot password for customer",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginAdminReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.AdminPasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "description": "send 6 digit otp for Login Admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "send 6 digit otp for Login Admin",
+                "parameters": [
+                    {
+                        "description": "send 6 digit otp for Login Admin",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginAdminReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.LoginAdminResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/profile/change-password": {
+            "put": {
+                "description": "Change provider Password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider authorization"
+                ],
+                "summary": "Change provider Password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Change password of provider",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderChangePasswordReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providerAuth.ProviderChangePasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/profile/get-admin-info": {
             "get": {
                 "description": "Fetch Admin By ID",
                 "consumes": [
@@ -145,9 +206,62 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/login": {
-            "post": {
-                "description": "send 6 digit otp for Login Admin",
+        "/admin/profile/update-admin-info": {
+            "put": {
+                "description": "Update Admin",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "Update Admin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "firstName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "lastName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "oldImage",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "admin profile image",
+                        "name": "newAdminImage",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.UpdateAdminResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/reset-password": {
+            "put": {
+                "description": "Reset admin password after OTP verification using the new password and confirm password",
                 "consumes": [
                     "application/json"
                 ],
@@ -157,15 +271,15 @@ const docTemplate = `{
                 "tags": [
                     "admin authorization"
                 ],
-                "summary": "send 6 digit otp for Login Admin",
+                "summary": "Reset admin Password after OTP Verification",
                 "parameters": [
                     {
-                        "description": "send 6 digit otp for Login Admin",
+                        "description": "Reset admin password after OTP verification",
                         "name": "admin",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/adminAuth.LoginAdminReqDto"
+                            "$ref": "#/definitions/adminAuth.ResetPasswordAfterOtpReqDto"
                         }
                     }
                 ],
@@ -173,7 +287,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/adminAuth.LoginAdminResDto"
+                            "$ref": "#/definitions/adminAuth.AdminPasswordResDto"
                         }
                     }
                 }
@@ -218,11 +332,11 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/update-admin-info/{adminId}": {
-            "put": {
-                "description": "Update Admin",
+        "/admin/verify-otp": {
+            "post": {
+                "description": "Verify the entered 6 digit OTP",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -230,49 +344,23 @@ const docTemplate = `{
                 "tags": [
                     "admin authorization"
                 ],
-                "summary": "Update Admin",
+                "summary": "Verify admin OTP",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Admin ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "firstName",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "lastName",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "oldImage",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "admin profile image",
-                        "name": "newAdminImage",
-                        "in": "formData"
+                        "description": "Verify 6 digit OTP",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.VerifyOtpReqDto"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/adminAuth.UpdateAdminResDto"
+                            "$ref": "#/definitions/adminAuth.AdminPasswordResDto"
                         }
                     }
                 }
@@ -307,6 +395,480 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/adminAuth.LoginVerifyOtpResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/change-password": {
+            "put": {
+                "description": "Change customer Password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Change customer Password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Change password of customer",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerChangePasswordReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerChangePasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/forgot-password": {
+            "post": {
+                "description": "Forgot Password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Forgot Password",
+                "parameters": [
+                    {
+                        "description": "forgot password for customer",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerForgotPasswordReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerPasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/get-customer-info/{id}": {
+            "get": {
+                "description": "Get customer by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Get customer by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.GetCustomerResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/login": {
+            "post": {
+                "description": "Login customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Login customer",
+                "parameters": [
+                    {
+                        "description": "login customer",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.LoginCustomerReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.LoginCustomerResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/profile/add-more-family-member": {
+            "post": {
+                "description": "Add more members",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Add more members",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "add members",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.AddMemberReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.AddMemberResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/profile/change-notification": {
+            "put": {
+                "description": "customer notification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "customer notification",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isEnable value (true or false)",
+                        "name": "isEnable",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/profile/get-members": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Get all investigations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.MembeResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/profile/update-customer-info": {
+            "put": {
+                "description": "Update customer",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Update customer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "address",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "age",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "countryCode",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "dialCode",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "firstName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "lastName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "latitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "longitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "phoneNumber",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sex",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.UpdateCustomerResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/reset-password": {
+            "put": {
+                "description": "Reset customer password after OTP verification using the new password and confirm password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Reset customer Password after OTP Verification",
+                "parameters": [
+                    {
+                        "description": "Reset customer password after OTP verification",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.ResetPasswordAfterOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerPasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/signup": {
+            "post": {
+                "description": "Signup provider",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Signup provider",
+                "parameters": [
+                    {
+                        "description": "send 6 digit otp to email for signup",
+                        "name": "signup",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerSignupReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/verify-otp": {
+            "post": {
+                "description": "Verify the entered 6 digit OTP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Verify customer OTP",
+                "parameters": [
+                    {
+                        "description": "Verify 6 digit OTP",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.VerifyOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerPasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/verify-otp-for-signup": {
+            "post": {
+                "description": "Verify the entered 6 digit OTP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer authorization"
+                ],
+                "summary": "Verify OTP for signup",
+                "parameters": [
+                    {
+                        "description": "Verify 6 digit OTP and insert data into database",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.CustomerSignupVerifyOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customerAuth.LoginCustomerResDto"
                         }
                     }
                 }
@@ -482,15 +1044,6 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Update data of admin",
-                        "name": "provider",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providerAuth.UpdateImageReqDto"
-                        }
-                    },
-                    {
                         "type": "file",
                         "description": "profile image",
                         "name": "image",
@@ -501,7 +1054,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/providerAuth.UpdateProviderResDto"
+                            "$ref": "#/definitions/providerAuth.UpdateProviderImageResDto"
                         }
                     }
                 }
@@ -1561,44 +2114,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/provider/services/currently-available": {
-            "put": {
-                "description": "currently available",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "providerCommonApis"
-                ],
-                "summary": "provider currently available",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "boolean",
-                        "description": "isEmergencyAvailable value (true or false)",
-                        "name": "isEmergencyAvailable",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/services.NotificationResDto"
-                        }
-                    }
-                }
-            }
-        },
         "/provider/services/delete-doctorProfession-slot/{slotId}": {
             "delete": {
                 "description": "Delete slot",
@@ -2151,6 +2666,45 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.GetDoctorProfessionProfessionalDetailsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/get-doctorProfession-slot-info/{slotId}": {
+            "get": {
+                "description": "Get slot info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "doctorProfession"
+                ],
+                "summary": "Get slot info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "slotId",
+                        "name": "slotId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetDoctorProfessionSlotsResDto"
                         }
                     }
                 }
@@ -3620,6 +4174,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "adminAuth.AdminPasswordResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "adminAuth.GetAdminRes": {
             "type": "object",
             "properties": {
@@ -3710,6 +4275,20 @@ const docTemplate = `{
                 }
             }
         },
+        "adminAuth.ResetPasswordAfterOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "confirmPassword": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "newPassword": {
+                    "type": "string"
+                }
+            }
+        },
         "adminAuth.UpdateAdminResDto": {
             "type": "object",
             "properties": {
@@ -3718,6 +4297,397 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "adminAuth.VerifyOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "otp": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.AddMemberReqDto": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationShip": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.AddMemberResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.CustomerChangePasswordReqDto": {
+            "type": "object",
+            "properties": {
+                "confirmPassword": {
+                    "type": "string"
+                },
+                "currentPassword": {
+                    "type": "string"
+                },
+                "newPassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.CustomerChangePasswordResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.CustomerForgotPasswordReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.CustomerPasswordResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.CustomerResDto": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/customerAuth.Address"
+                },
+                "age": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "familyMembers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/customerAuth.FamilyMembers"
+                    }
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "notification": {
+                    "$ref": "#/definitions/customerAuth.Notification"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/customerAuth.PhoneNumber"
+                },
+                "sex": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.CustomerResponseDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.CustomerSignupReqDto": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.CustomerSignupVerifyOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "string"
+                },
+                "customerType": {
+                    "type": "string"
+                },
+                "deviceToken": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "familyMembers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/customerAuth.FamilyMembers"
+                    }
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "otp": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/customerAuth.PhoneNumber"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.FamilyMembers": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationShip": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.GetCustomerResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/customerAuth.CustomerResDto"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.LoginCustomerReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.LoginCustomerResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/customerAuth.CustomerResDto"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.MembeRes": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationShip": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.MembeResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/customerAuth.MembeRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.Notification": {
+            "type": "object",
+            "properties": {
+                "deviceToken": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "isEnabled": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.ResetPasswordAfterOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "confirmPassword": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "newPassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "customerAuth.UpdateCustomerResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "customerAuth.VerifyOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "otp": {
+                    "type": "string"
                 }
             }
         },
@@ -4055,14 +5025,6 @@ const docTemplate = `{
                 }
             }
         },
-        "providerAuth.UpdateImageReqDto": {
-            "type": "object",
-            "properties": {
-                "oldImage": {
-                    "type": "string"
-                }
-            }
-        },
         "providerAuth.UpdateProfileData": {
             "type": "object",
             "properties": {
@@ -4071,6 +5033,20 @@ const docTemplate = `{
                 },
                 "user": {
                     "$ref": "#/definitions/providerAuth.User"
+                }
+            }
+        },
+        "providerAuth.UpdateProviderImageResDto": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -4267,7 +5243,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/services.DoctorProfessionSlotsResponseDto"
+                        "$ref": "#/definitions/services.DoctorSlotsResponseDto"
                     }
                 },
                 "message": {
@@ -4347,6 +5323,26 @@ const docTemplate = `{
             }
         },
         "services.DoctorSlots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.DoctorSlotsResponseDto": {
             "type": "object",
             "properties": {
                 "days": {
@@ -4462,6 +5458,20 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/services.DoctorProfessionProfessionDetailsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetDoctorProfessionSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.DoctorProfessionSlotsResponseDto"
                 },
                 "message": {
                     "type": "string"

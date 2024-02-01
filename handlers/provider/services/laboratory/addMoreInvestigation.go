@@ -50,7 +50,7 @@ func AddMoreInvestigstions(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.UpdateDoctorImageResDto{
 				Status:  false,
-				Message: "provider not found",
+				Message: "Provider not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorImageResDto{
@@ -86,13 +86,13 @@ func AddMoreInvestigstions(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(services.InvestigationResponseDto{
 			Status:  false,
-			Message: "provider not found",
+			Message: "Provider not found",
 		})
 	}
 
 	hospClinicRes := services.InvestigationResponseDto{
 		Status:  true,
-		Message: "investigation added successfully",
+		Message: "Investigation added successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
 }

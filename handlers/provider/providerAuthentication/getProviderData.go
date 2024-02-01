@@ -124,7 +124,7 @@ func FetchProviderById(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.GetProviderResDto{
 		Status:   true,
-		Message:  "provider data retrieved successfully",
+		Message:  "Provider data retrieved successfully",
 		Provider: providerRes,
 	})
 }

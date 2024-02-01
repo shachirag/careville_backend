@@ -97,12 +97,12 @@ func UpdateOtherServiceInfo(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(services.UpdatePharmacyOtherServiceResDto{
 			Status:  false,
-			Message: "other service not found",
+			Message: "Other service not found",
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.UpdatePharmacyOtherServiceResDto{
 		Status:  true,
-		Message: "other service data updated successfully",
+		Message: "Other service data updated successfully",
 	})
 }

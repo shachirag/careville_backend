@@ -97,7 +97,7 @@ func GetOtherServiceInfo(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(services.PharmacyOtherServiceResDto{
 		Status:  true,
-		Message: "other service retrieved successfully",
+		Message: "Other service retrieved successfully",
 		Data:    servicesRes,
 	})
 }

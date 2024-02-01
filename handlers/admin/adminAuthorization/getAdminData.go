@@ -3,12 +3,11 @@ package adminAuth
 import (
 	"careville_backend/database"
 	adminAuth "careville_backend/dto/admin/adminAuth"
-	"careville_backend/dto/provider/services"
+	adminMiddleware "careville_backend/dto/admin/middleware"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -22,31 +21,15 @@ import (
 // @Param adminId path string true "Admin ID"
 // @Produce json
 // @Success 200 {object} adminAuth.GetAdminResDto
-// @Router /admin/get-admin-info/{adminId} [get]
+// @Router /admin/profile/get-admin-info [get]
 func FetchAdminById(c *fiber.Ctx) error {
 
 	var admin entity.AdminEntity
 
-	// Get provider data from middleware
-	adminId := c.Params("adminId")
-	if adminId == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(services.UpdateDoctorImageResDto{
-			Status:  false,
-			Message: "Admin ID is missing in the request",
-		})
-	}
-	adminObjID, err := primitive.ObjectIDFromHex(adminId)
-
-	if err != nil {
-		return c.Status(400).JSON(services.UpdateDoctorImageResDto{
-			Status:  false,
-			Message: "invalid objectId " + err.Error(),
-		})
-	}
-
+	adminData := adminMiddleware.GetAdminMiddlewareData(c)
 	adminColl := database.GetCollection("admin")
 
-	err = adminColl.FindOne(ctx, bson.M{"_id": adminObjID}).Decode(&admin)
+	err := adminColl.FindOne(ctx, bson.M{"_id": adminData.AdminId}).Decode(&admin)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(adminAuth.GetAdminResDto{

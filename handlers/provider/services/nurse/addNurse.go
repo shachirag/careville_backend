@@ -72,7 +72,7 @@ func AddNurse(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.NurseResDto{
 			Status:  false,
-			Message: "No nurseImage uploaded",
+			Message: "Nurse image is required",
 		})
 	}
 

@@ -51,7 +51,7 @@ func GetInvestigations(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(services.InvestigationResDto{
 				Status:  false,
-				Message: "investigation not found",
+				Message: "Investigation not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(services.InvestigationResDto{
@@ -76,13 +76,13 @@ func GetInvestigations(c *fiber.Ctx) error {
 	if len(investigationData) == 0 {
 		return c.Status(fiber.StatusOK).JSON(services.InvestigationResDto{
 			Status:  false,
-			Message: "No investigation data found.",
+			Message: "No Investigation data found.",
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.InvestigationResDto{
 		Status:  true,
-		Message: "investigations retrieved successfully",
+		Message: "Investigations retrieved successfully",
 		Data:    investigationData,
 	})
 }

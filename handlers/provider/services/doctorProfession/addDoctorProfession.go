@@ -72,7 +72,7 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	if len(doctorImageFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.DoctorProfessionResDto{
 			Status:  false,
-			Message: "No doctorImage uploaded",
+			Message: "Doctor image is required",
 		})
 	}
 

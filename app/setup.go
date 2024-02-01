@@ -52,6 +52,9 @@ func SetupAndRunApp() error {
 	// set up the admin routes
 	router.AdminSetupsRoutes(app)
 
+	// set up the Customer routes
+	router.CustomerSetupsRoutes(app)
+
 	// Setup Swagger
 	config.AddSwaggerRoutes(app)
 

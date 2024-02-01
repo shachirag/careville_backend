@@ -71,6 +71,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	providerServices.Get("/get-doctorProfession-slots", doctorProfession.GetDoctorProfessionSlots)
 	providerServices.Get("/get-doctorProfession-professional-details", doctorProfession.FetchDoctorProfessionProfessionalDetaiById)
 	providerServices.Get("/get-physiotherapist-service-info/:serviceId", physiotherapist.GetServiceInfo)
+	providerServices.Get("/get-doctorProfession-slot-info/:slotId", doctorProfession.GetSlotInfo)
 	providerServices.Get("/get-medicalLabScientist-service-info/:serviceId", medicalLabScientist.GetMedicalLabScientistServiceInfo)
 	providerServices.Get("/get-all-trainers", fitnessCenter.GetAllTrainers)
 	providerServices.Get("/get-pharmacy-other-services", pharmacy.GetOtherServices)

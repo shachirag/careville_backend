@@ -68,7 +68,7 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 	if len(fitnessCenterImageFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.FitnessCenterResDto{
 			Status:  false,
-			Message: "No fitnessCenterImage uploaded",
+			Message: "FitnessCenter image is required",
 		})
 	}
 

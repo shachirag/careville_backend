@@ -72,7 +72,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.MedicalLabScientistResDto{
 			Status:  false,
-			Message: "No medicalLabScientistImage uploaded",
+			Message: "MedicalLabScientist image is required",
 		})
 	}
 

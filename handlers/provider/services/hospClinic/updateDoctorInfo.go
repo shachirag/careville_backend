@@ -158,12 +158,12 @@ func UpdateDoctorInfo(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(services.UpdateDoctorResDto{
 			Status:  false,
-			Message: "doctor not found",
+			Message: "Doctor not found",
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(services.UpdateDoctorResDto{
 		Status:  true,
-		Message: "doctor data updated successfully",
+		Message: "Doctor data updated successfully",
 	})
 }

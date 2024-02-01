@@ -68,7 +68,7 @@ func AddHospClinic(c *fiber.Ctx) error {
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(services.HospitalClinicResDto{
 			Status:  false,
-			Message: "No hospitalImage uploaded",
+			Message: "Hospital image is required",
 		})
 	}
 

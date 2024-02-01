@@ -52,7 +52,7 @@ func UpdateProvider(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(providerAuth.GetProviderResDto{
 				Status:  false,
-				Message: "provider not found",
+				Message: "Provider not found",
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.GetProviderResDto{
@@ -269,13 +269,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 	if updateRes.MatchedCount == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(providerAuth.UpdateProviderResDto{
 			Status:  false,
-			Message: "provider not found",
+			Message: "Provider not found",
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.UpdateProviderResDto{
 		Status:  true,
-		Message: "provider data updated successfully",
+		Message: "Provider data updated successfully",
 		Data: providerAuth.UpdateProfileData{
 			Role: providerAuth.Role{
 				Role:                 provider.Role,
