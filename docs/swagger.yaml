@@ -372,6 +372,644 @@ definitions:
       physiotherapistCount:
         type: integer
     type: object
+  doctorProfession.DoctorProfessionPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      doctorProfessionRes:
+        items:
+          $ref: '#/definitions/doctorProfession.GetDoctorProfessionRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  doctorProfession.DoctorProfessionResponse:
+    properties:
+      aboutMe:
+        type: string
+      consultationFees:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/doctorProfession.DoctorSchedule'
+        type: array
+      speciality:
+        type: string
+    type: object
+  doctorProfession.DoctorSchedule:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      id:
+        type: string
+      startTime:
+        type: string
+    type: object
+  doctorProfession.GetDoctorProfessionPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/doctorProfession.DoctorProfessionPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  doctorProfession.GetDoctorProfessionRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      speciality:
+        type: string
+    type: object
+  doctorProfession.GetDoctorProfessionResDto:
+    properties:
+      data:
+        $ref: '#/definitions/doctorProfession.DoctorProfessionResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  fitnessCenter.AdditionalServices:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  fitnessCenter.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  fitnessCenter.FitnessCenterPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      fitnessCenterRes:
+        items:
+          $ref: '#/definitions/fitnessCenter.GetFitnessCenterRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  fitnessCenter.FitnessCenterResponse:
+    properties:
+      aboutUs:
+        type: string
+      additionalServices:
+        items:
+          $ref: '#/definitions/fitnessCenter.AdditionalServices'
+        type: array
+      address:
+        $ref: '#/definitions/fitnessCenter.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  fitnessCenter.GetFitnessCenterPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/fitnessCenter.FitnessCenterPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  fitnessCenter.GetFitnessCenterRes:
+    properties:
+      address:
+        $ref: '#/definitions/fitnessCenter.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  fitnessCenter.GetFitnessCenterResDto:
+    properties:
+      data:
+        $ref: '#/definitions/fitnessCenter.FitnessCenterResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  hospitals.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  hospitals.GetHospitalsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/hospitals.HospitalsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  hospitals.GetHospitalsRes:
+    properties:
+      address:
+        $ref: '#/definitions/hospitals.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  hospitals.GetHospitalsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/hospitals.HospitalsResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  hospitals.HospitalsPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      hospitalRes:
+        items:
+          $ref: '#/definitions/hospitals.GetHospitalsRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  hospitals.HospitalsResponse:
+    properties:
+      aboutUs:
+        type: string
+      address:
+        $ref: '#/definitions/hospitals.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      otherServices:
+        items:
+          type: string
+        type: array
+    type: object
+  laboratory.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  laboratory.GetLaboratoryPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/laboratory.LaboratoryPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  laboratory.GetLaboratoryRes:
+    properties:
+      address:
+        $ref: '#/definitions/laboratory.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  laboratory.GetLaboratoryResDto:
+    properties:
+      data:
+        $ref: '#/definitions/laboratory.LaboratoryResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  laboratory.Investigations:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  laboratory.LaboratoryPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      laboratoryRes:
+        items:
+          $ref: '#/definitions/laboratory.GetLaboratoryRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  laboratory.LaboratoryResponse:
+    properties:
+      aboutUs:
+        type: string
+      address:
+        $ref: '#/definitions/laboratory.Address'
+      id:
+        type: string
+      image:
+        type: string
+      investigations:
+        items:
+          $ref: '#/definitions/laboratory.Investigations'
+        type: array
+      name:
+        type: string
+    type: object
+  medicalLabScientist.GetMedicalLabScientistPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/medicalLabScientist.MedicalLabScientistPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  medicalLabScientist.GetMedicalLabScientistRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  medicalLabScientist.GetMedicalLabScientistResDto:
+    properties:
+      data:
+        $ref: '#/definitions/medicalLabScientist.MedicalLabScientistResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  medicalLabScientist.MedicalLabScientistPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      medicalLabScientistRes:
+        items:
+          $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  medicalLabScientist.MedicalLabScientistResponse:
+    properties:
+      aboutMe:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceAndSchedule:
+        items:
+          $ref: '#/definitions/medicalLabScientist.ServiceAndSchedule'
+        type: array
+    type: object
+  medicalLabScientist.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/medicalLabScientist.Slots'
+        type: array
+    type: object
+  medicalLabScientist.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  nurse.GetNursePaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/nurse.NursePaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  nurse.GetNurseRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  nurse.GetNurseResDto:
+    properties:
+      data:
+        $ref: '#/definitions/nurse.NurseResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  nurse.NursePaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      nurseRes:
+        items:
+          $ref: '#/definitions/nurse.GetNurseRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  nurse.NurseResponse:
+    properties:
+      aboutMe:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceAndSchedule:
+        items:
+          $ref: '#/definitions/nurse.ServiceAndSchedule'
+        type: array
+    type: object
+  nurse.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/nurse.Slots'
+        type: array
+    type: object
+  nurse.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  pharmacy.AdditionalServices:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  pharmacy.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  pharmacy.GetPharmacyPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/pharmacy.PharmacyPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  pharmacy.GetPharmacyRes:
+    properties:
+      address:
+        $ref: '#/definitions/pharmacy.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  pharmacy.GetPharmacyResDto:
+    properties:
+      data:
+        $ref: '#/definitions/pharmacy.PharmacyResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  pharmacy.PharmacyPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      pharmacyRes:
+        items:
+          $ref: '#/definitions/pharmacy.GetPharmacyRes'
+        type: array
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  pharmacy.PharmacyResponse:
+    properties:
+      aboutUs:
+        type: string
+      additionalServices:
+        items:
+          $ref: '#/definitions/pharmacy.AdditionalServices'
+        type: array
+      address:
+        $ref: '#/definitions/pharmacy.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  physiotherapist.GetPhysiotherapistPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/physiotherapist.PhysiotherapistPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  physiotherapist.GetPhysiotherapistRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  physiotherapist.GetPhysiotherapistResDto:
+    properties:
+      data:
+        $ref: '#/definitions/physiotherapist.PhysiotherapistResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  physiotherapist.PhysiotherapistPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      physiotherapistRes:
+        items:
+          $ref: '#/definitions/physiotherapist.GetPhysiotherapistRes'
+        type: array
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  physiotherapist.PhysiotherapistResponse:
+    properties:
+      aboutMe:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceAndSchedule:
+        items:
+          $ref: '#/definitions/physiotherapist.ServiceAndSchedule'
+        type: array
+    type: object
+  physiotherapist.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/physiotherapist.Slots'
+        type: array
+    type: object
+  physiotherapist.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   providerAuth.AdditionalInformation:
     properties:
       additionalDetails:
@@ -2118,6 +2756,526 @@ paths:
       summary: Get customer by ID
       tags:
       - customer authorization
+  /customer/healthFacility/get-fitnessCenter/{id}:
+    get:
+      description: Get fitnessCenter by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: fitnessCenter ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterResDto'
+      summary: Get fitnessCenter by ID
+      tags:
+      - customer fitnessCenter
+  /customer/healthFacility/get-fitnessCenters:
+    get:
+      consumes:
+      - application/json
+      description: Fetch fitnessCenter With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter fitnessCenters by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterPaginationRes'
+      summary: Fetch fitnessCenter With Filters
+      tags:
+      - customer fitnessCenter
+  /customer/healthFacility/get-hospital/{id}:
+    get:
+      description: Get hospital by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: hospital ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.GetHospitalsResDto'
+      summary: Get hospital by ID
+      tags:
+      - customer hospital
+  /customer/healthFacility/get-hospitals:
+    get:
+      consumes:
+      - application/json
+      description: Fetch hospitals With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter hospitals by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.GetHospitalsPaginationRes'
+      summary: Fetch hospitals With Filters
+      tags:
+      - customer hospitals
+  /customer/healthFacility/get-laboratories:
+    get:
+      consumes:
+      - application/json
+      description: Fetch laboratory With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter laboratory by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryPaginationRes'
+      summary: Fetch laboratory With Filters
+      tags:
+      - customer laboratory
+  /customer/healthFacility/get-laboratory/{id}:
+    get:
+      description: Get laboratory by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: laboratory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryResDto'
+      summary: Get laboratory by ID
+      tags:
+      - customer laboratory
+  /customer/healthFacility/get-pharmacies:
+    get:
+      consumes:
+      - application/json
+      description: Fetch pharmacy With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter pharmacy by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyPaginationRes'
+      summary: Fetch pharmacy With Filters
+      tags:
+      - customer pharmacy
+  /customer/healthFacility/get-pharmacy/{id}:
+    get:
+      description: Get pharmacy by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pharmacy ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyResDto'
+      summary: Get pharmacy by ID
+      tags:
+      - customer pharmacy
+  /customer/healthProfessional/get-doctor/{id}:
+    get:
+      description: Get doctorProfession by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: doctorProfession ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.GetDoctorProfessionResDto'
+      summary: Get doctorProfession by ID
+      tags:
+      - customer doctorProfession
+  /customer/healthProfessional/get-doctors:
+    get:
+      consumes:
+      - application/json
+      description: Fetch doctorProfession With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter doctorProfession by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.GetDoctorProfessionPaginationRes'
+      summary: Fetch doctorProfession With Filters
+      tags:
+      - customer doctorProfession
+  /customer/healthProfessional/get-medicalLabScientist/{id}:
+    get:
+      description: Get medicalLabScientist by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: medicalLabScientist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistResDto'
+      summary: Get medicalLabScientist by ID
+      tags:
+      - customer medicalLabScientist
+  /customer/healthProfessional/get-medicalLabScientists:
+    get:
+      consumes:
+      - application/json
+      description: Fetch medicalLabScientists With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter laboratory by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistPaginationRes'
+      summary: Fetch medicalLabScientists With Filters
+      tags:
+      - customer medicalLabScientist
+  /customer/healthProfessional/get-nurse/{id}:
+    get:
+      description: Get nurse by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: nurse ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.GetNurseResDto'
+      summary: Get nurse by ID
+      tags:
+      - customer nurse
+  /customer/healthProfessional/get-nurses:
+    get:
+      consumes:
+      - application/json
+      description: Fetch nurse With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter nurse by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.GetNursePaginationRes'
+      summary: Fetch nurse With Filters
+      tags:
+      - customer nurse
+  /customer/healthProfessional/get-physiotherapist/{id}:
+    get:
+      description: Get physiotherapist by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: physiotherapist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.GetPhysiotherapistResDto'
+      summary: Get physiotherapist by ID
+      tags:
+      - customer physiotherapist
+  /customer/healthProfessional/get-physiotherapists:
+    get:
+      consumes:
+      - application/json
+      description: Fetch physiotherapist With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      - description: Filter nurse by search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.GetPhysiotherapistPaginationRes'
+      summary: Fetch physiotherapist With Filters
+      tags:
+      - customer physiotherapist
   /customer/login:
     post:
       consumes:
@@ -3696,7 +4854,7 @@ paths:
       summary: Get all investigations
       tags:
       - laboratory
-  /provider/services/get-medicalLabScientist-personal-info:
+  /provider/services/get-medicalLabScientist-personal-details:
     get:
       consumes:
       - application/json
@@ -3806,7 +4964,7 @@ paths:
       summary: Fetch All misc data
       tags:
       - providerCommonApis
-  /provider/services/get-nurse-personal-info:
+  /provider/services/get-nurse-personal-details:
     get:
       consumes:
       - application/json
@@ -3942,7 +5100,7 @@ paths:
       summary: Get other services
       tags:
       - pharmacy
-  /provider/services/get-physiotherapist-personal-info:
+  /provider/services/get-physiotherapist-personal-details:
     get:
       consumes:
       - application/json

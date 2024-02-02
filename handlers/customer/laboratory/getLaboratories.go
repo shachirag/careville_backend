@@ -1,0 +1,168 @@
+package laboratory
+
+import (
+	"careville_backend/database"
+	laboratory "careville_backend/dto/customer/laboratories"
+	"careville_backend/entity"
+	"context"
+	"math"
+	"strconv"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+var ctx = context.Background()
+
+// @Summary Fetch laboratory With Filters
+// @Description Fetch laboratory With Filters
+// @Tags customer laboratory
+// @Accept application/json
+//
+//	@Param Authorization header	string true	"Authentication header"
+//
+// @Param page query int false "Page no. to fetch the products for 1"
+// @Param perPage query int false "Limit of products to fetch is 15"
+// @Param long query float64 false "Longitude for memories sorting (required for distance sorting)"
+// @Param lat query float64 false "Latitude for memories sorting (required for distance sorting)"
+// @Param search query string false "Filter laboratory by search"
+// @Produce json
+// @Success 200 {object} laboratory.GetLaboratoryPaginationRes
+// @Router /customer/healthFacility/get-laboratories [get]
+func FetchLaboratoriesWithPagination(c *fiber.Ctx) error {
+
+	page, _ := strconv.Atoi(c.Query("page", "1"))
+	limit, _ := strconv.Atoi(c.Query("limit", "15"))
+
+	var lat, long float64
+	latParam := c.Query("lat")
+	longParam := c.Query("long")
+	var err error
+
+	if latParam != "" && longParam != "" {
+		lat, err = strconv.ParseFloat(latParam, 64)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(laboratory.GetLaboratoryPaginationRes{
+				Status:  false,
+				Message: "Invalid latitude format",
+			})
+		}
+
+		long, err = strconv.ParseFloat(longParam, 64)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(laboratory.GetLaboratoryPaginationRes{
+				Status:  false,
+				Message: "Invalid longitude format",
+			})
+		}
+	}
+
+	searchTitle := c.Query("search", "")
+
+	serviceColl := database.GetCollection("service")
+
+	filter := bson.M{
+		"role":                 "healthFacility",
+		"facilityOrProfession": "laboratory",
+		"laboratory.information.address": bson.M{
+			"$nearSphere": bson.M{
+				"$geometry": bson.M{
+					"type":        "Point",
+					"coordinates": []float64{long, lat},
+				},
+				"$maxDistance": 20000,
+			},
+		},
+	}
+
+	if searchTitle != "" {
+		filter["laboratory.information.name"] = bson.M{"$regex": searchTitle, "$options": "i"}
+	}
+
+	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
+
+	skip := (page - 1) * limit
+
+	projection := bson.M{
+		"laboratory.information.name":  1,
+		"laboratory.information.image": 1,
+		"laboratory.information.id":    1,
+		"laboratory.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
+	}
+
+	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
+
+	cursor, err := serviceColl.Find(ctx, filter, findOptions, sortOptions)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return c.Status(fiber.StatusNotFound).JSON(laboratory.GetLaboratoryPaginationRes{
+				Status:  false,
+				Message: "laboratories not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.GetLaboratoryPaginationRes{
+			Status:  false,
+			Message: "Failed to fetch laboratories from MongoDB: " + err.Error(),
+		})
+	}
+	defer cursor.Close(ctx)
+
+	response := laboratory.LaboratoryPaginationResponse{
+		Total:         0,
+		PerPage:       limit,
+		CurrentPage:   page,
+		TotalPages:    0,
+		LaboratoryRes: []laboratory.GetLaboratoryRes{},
+	}
+
+	for cursor.Next(ctx) {
+		var service entity.ServiceEntity
+		err := cursor.Decode(&service)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(laboratory.GetLaboratoryPaginationRes{
+				Status:  false,
+				Message: "Failed to decode laboratories data: " + err.Error(),
+			})
+		}
+
+		// Check if hospClinic is not nil before accessing its properties
+		if service.Laboratory != nil {
+			laboratoryRes := laboratory.GetLaboratoryRes{
+				Id:    service.Id,
+				Image: service.Laboratory.Information.Image,
+				Name:  service.Laboratory.Information.Name,
+				Address: laboratory.Address{
+					Coordinates: service.Laboratory.Information.Address.Coordinates,
+					Type:        service.Laboratory.Information.Address.Type,
+					Add:         service.Laboratory.Information.Address.Add,
+				},
+			}
+
+			response.LaboratoryRes = append(response.LaboratoryRes, laboratoryRes)
+		}
+	}
+
+	totalCount, err := serviceColl.CountDocuments(ctx, filter)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.GetLaboratoryPaginationRes{
+			Status:  false,
+			Message: "Failed to count laboratories: " + err.Error(),
+		})
+	}
+
+	response.Total = int(totalCount)
+	response.TotalPages = int(math.Ceil(float64(response.Total) / float64(response.PerPage)))
+
+	finalResponse := laboratory.GetLaboratoryPaginationRes{
+		Status:  true,
+		Message: "Sucessfully fetched data",
+		Data:    response,
+	}
+	return c.Status(fiber.StatusOK).JSON(finalResponse)
+}

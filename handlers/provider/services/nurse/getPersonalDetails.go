@@ -21,7 +21,7 @@ import (
 //
 // @Produce json
 // @Success 200 {object} providerAuth.GetProviderResDto
-// @Router /provider/services/get-nurse-personal-info [get]
+// @Router /provider/services/get-nurse-personal-details [get]
 func FetchNursePersonalDetailsById(c *fiber.Ctx) error {
 
 	var provider entity.ServiceEntity

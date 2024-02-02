@@ -82,7 +82,7 @@ func UpdateProvider(c *fiber.Ctx) error {
 	var name string
 	var isEmergencyAvailable bool
 
-	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
+	if providerData.Role == "healthFacility" && providerData.FacilityOrProfession == "hospClinic" {
 		image = provider.HospClinic.Information.Image
 		name = provider.HospClinic.Information.Name
 		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
@@ -100,10 +100,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
+	} else if providerData.Role == "healthFacility" && providerData.FacilityOrProfession == "laboratory" {
 		image = provider.Laboratory.Information.Image
 		name = provider.Laboratory.Information.Name
 		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
@@ -121,10 +120,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+	} else if providerData.Role == "healthFacility" && providerData.FacilityOrProfession == "fitnessCenter" {
 		image = provider.FitnessCenter.Information.Image
 		name = provider.FitnessCenter.Information.Name
 		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
@@ -143,10 +141,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+	} else if providerData.Role == "healthFacility" && providerData.FacilityOrProfession == "pharmacy" {
 		image = provider.Pharmacy.Information.Image
 		name = provider.Pharmacy.Information.Name
 		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
@@ -164,10 +161,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
+	} else if providerData.Role == "healthProfessional" && providerData.FacilityOrProfession == "medicalLabScientist" {
 		image = provider.MedicalLabScientist.Information.Image
 		name = provider.MedicalLabScientist.Information.Name
 		isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
@@ -186,10 +182,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "nurse" {
+	} else if providerData.Role == "healthProfessional" && providerData.FacilityOrProfession == "nurse" {
 		image = provider.Nurse.Information.Image
 		name = provider.Nurse.Information.Name
 		isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
@@ -208,10 +203,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "doctor" {
+	} else if providerData.Role == "healthProfessional" && providerData.FacilityOrProfession == "doctor" {
 		image = provider.Doctor.Information.Image
 		name = provider.Doctor.Information.Name
 		isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
@@ -230,10 +224,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 				Type:        "Point",
 				Add:         data.Address,
 			},
-			"updatedAt": time.Now().UTC(),
 		},
 		}
-	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "physiotherapist" {
+	} else if providerData.Role == "healthProfessional" && providerData.FacilityOrProfession == "physiotherapist" {
 		image = provider.Physiotherapist.Information.Image
 		name = provider.Physiotherapist.Information.Name
 		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
@@ -246,7 +239,6 @@ func UpdateProvider(c *fiber.Ctx) error {
 				"countryCode": data.CountryCode,
 			},
 			"physiotherapist.information.additionalText": data.AdditionalText,
-
 			"physiotherapist.information.address": providerAuth.Address{
 				Coordinates: []float64{longitude, latitude},
 				Type:        "Point",
@@ -256,8 +248,9 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	}
 
+	// Default update operation to set the 'updatedAt' field to the current time
+	update["$set"] = bson.M{"updatedAt": time.Now().UTC()}
 	opts := options.Update().SetUpsert(true)
-	// Execute the update operation
 	updateRes, err := serviceColl.UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{

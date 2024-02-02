@@ -508,6 +508,790 @@
                 }
             }
         },
+        "/customer/healthFacility/get-fitnessCenter/{id}": {
+            "get": {
+                "description": "Get fitnessCenter by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer fitnessCenter"
+                ],
+                "summary": "Get fitnessCenter by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "fitnessCenter ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-fitnessCenters": {
+            "get": {
+                "description": "Fetch fitnessCenter With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer fitnessCenter"
+                ],
+                "summary": "Fetch fitnessCenter With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter fitnessCenters by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-hospital/{id}": {
+            "get": {
+                "description": "Get hospital by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer hospital"
+                ],
+                "summary": "Get hospital by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "hospital ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.GetHospitalsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-hospitals": {
+            "get": {
+                "description": "Fetch hospitals With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer hospitals"
+                ],
+                "summary": "Fetch hospitals With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter hospitals by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.GetHospitalsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-laboratories": {
+            "get": {
+                "description": "Fetch laboratory With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer laboratory"
+                ],
+                "summary": "Fetch laboratory With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter laboratory by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.GetLaboratoryPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-laboratory/{id}": {
+            "get": {
+                "description": "Get laboratory by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer laboratory"
+                ],
+                "summary": "Get laboratory by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "laboratory ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.GetLaboratoryResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-pharmacies": {
+            "get": {
+                "description": "Fetch pharmacy With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer pharmacy"
+                ],
+                "summary": "Fetch pharmacy With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter pharmacy by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.GetPharmacyPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-pharmacy/{id}": {
+            "get": {
+                "description": "Get pharmacy by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer pharmacy"
+                ],
+                "summary": "Get pharmacy by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "pharmacy ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.GetPharmacyResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-doctor/{id}": {
+            "get": {
+                "description": "Get doctorProfession by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer doctorProfession"
+                ],
+                "summary": "Get doctorProfession by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "doctorProfession ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.GetDoctorProfessionResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-doctors": {
+            "get": {
+                "description": "Fetch doctorProfession With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer doctorProfession"
+                ],
+                "summary": "Fetch doctorProfession With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter doctorProfession by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.GetDoctorProfessionPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-medicalLabScientist/{id}": {
+            "get": {
+                "description": "Get medicalLabScientist by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer medicalLabScientist"
+                ],
+                "summary": "Get medicalLabScientist by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "medicalLabScientist ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-medicalLabScientists": {
+            "get": {
+                "description": "Fetch medicalLabScientists With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer medicalLabScientist"
+                ],
+                "summary": "Fetch medicalLabScientists With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter laboratory by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-nurse/{id}": {
+            "get": {
+                "description": "Get nurse by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer nurse"
+                ],
+                "summary": "Get nurse by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "nurse ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.GetNurseResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-nurses": {
+            "get": {
+                "description": "Fetch nurse With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer nurse"
+                ],
+                "summary": "Fetch nurse With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter nurse by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.GetNursePaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-physiotherapist/{id}": {
+            "get": {
+                "description": "Get physiotherapist by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer physiotherapist"
+                ],
+                "summary": "Get physiotherapist by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "physiotherapist ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-physiotherapists": {
+            "get": {
+                "description": "Fetch physiotherapist With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer physiotherapist"
+                ],
+                "summary": "Fetch physiotherapist With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter nurse by search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/login": {
             "post": {
                 "description": "Login customer",
@@ -2910,7 +3694,7 @@
                 }
             }
         },
-        "/provider/services/get-medicalLabScientist-personal-info": {
+        "/provider/services/get-medicalLabScientist-personal-details": {
             "get": {
                 "description": "Fetch personal information By ID",
                 "consumes": [
@@ -3077,7 +3861,7 @@
                 }
             }
         },
-        "/provider/services/get-nurse-personal-info": {
+        "/provider/services/get-nurse-personal-details": {
             "get": {
                 "description": "Fetch personal information By ID",
                 "consumes": [
@@ -3283,7 +4067,7 @@
                 }
             }
         },
-        "/provider/services/get-physiotherapist-personal-info": {
+        "/provider/services/get-physiotherapist-personal-details": {
             "get": {
                 "description": "Fetch personal information By ID",
                 "consumes": [
@@ -4741,6 +5525,990 @@
                 },
                 "physiotherapistCount": {
                     "type": "integer"
+                }
+            }
+        },
+        "doctorProfession.DoctorProfessionPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "doctorProfessionRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.GetDoctorProfessionRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "doctorProfession.DoctorProfessionResponse": {
+            "type": "object",
+            "properties": {
+                "aboutMe": {
+                    "type": "string"
+                },
+                "consultationFees": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.DoctorSchedule"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.DoctorSchedule": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorProfessionPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/doctorProfession.DoctorProfessionPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorProfessionRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorProfessionResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/doctorProfession.DoctorProfessionResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "fitnessCenter.AdditionalServices": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "fitnessCenter.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "fitnessCenter.FitnessCenterPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "fitnessCenterRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/fitnessCenter.GetFitnessCenterRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "fitnessCenter.FitnessCenterResponse": {
+            "type": "object",
+            "properties": {
+                "aboutUs": {
+                    "type": "string"
+                },
+                "additionalServices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/fitnessCenter.AdditionalServices"
+                    }
+                },
+                "address": {
+                    "$ref": "#/definitions/fitnessCenter.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/fitnessCenter.FitnessCenterPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/fitnessCenter.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/fitnessCenter.FitnessCenterResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "hospitals.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.GetHospitalsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/hospitals.HospitalsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "hospitals.GetHospitalsRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/hospitals.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.GetHospitalsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/hospitals.HospitalsResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "hospitals.HospitalsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "hospitalRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.GetHospitalsRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "hospitals.HospitalsResponse": {
+            "type": "object",
+            "properties": {
+                "aboutUs": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/hospitals.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "otherServices": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "laboratory.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory.GetLaboratoryPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/laboratory.LaboratoryPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "laboratory.GetLaboratoryRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/laboratory.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory.GetLaboratoryResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/laboratory.LaboratoryResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "laboratory.Investigations": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory.LaboratoryPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "laboratoryRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/laboratory.GetLaboratoryRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "laboratory.LaboratoryResponse": {
+            "type": "object",
+            "properties": {
+                "aboutUs": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/laboratory.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "investigations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/laboratory.Investigations"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "medicalLabScientist.GetMedicalLabScientistPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.GetMedicalLabScientistRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "medicalLabScientist.GetMedicalLabScientistResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.MedicalLabScientistPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "medicalLabScientistRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "medicalLabScientist.MedicalLabScientistResponse": {
+            "type": "object",
+            "properties": {
+                "aboutMe": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceAndSchedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.ServiceAndSchedule"
+                    }
+                }
+            }
+        },
+        "medicalLabScientist.ServiceAndSchedule": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.Slots"
+                    }
+                }
+            }
+        },
+        "medicalLabScientist.Slots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "nurse.GetNursePaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/nurse.NursePaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "nurse.GetNurseRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "nurse.GetNurseResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/nurse.NurseResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "nurse.NursePaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "nurseRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.GetNurseRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "nurse.NurseResponse": {
+            "type": "object",
+            "properties": {
+                "aboutMe": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceAndSchedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.ServiceAndSchedule"
+                    }
+                }
+            }
+        },
+        "nurse.ServiceAndSchedule": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.Slots"
+                    }
+                }
+            }
+        },
+        "nurse.Slots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacy.AdditionalServices": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacy.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacy.GetPharmacyPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/pharmacy.PharmacyPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pharmacy.GetPharmacyRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/pharmacy.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacy.GetPharmacyResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/pharmacy.PharmacyResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pharmacy.PharmacyPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "pharmacyRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pharmacy.GetPharmacyRes"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pharmacy.PharmacyResponse": {
+            "type": "object",
+            "properties": {
+                "aboutUs": {
+                    "type": "string"
+                },
+                "additionalServices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pharmacy.AdditionalServices"
+                    }
+                },
+                "address": {
+                    "$ref": "#/definitions/pharmacy.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/physiotherapist.PhysiotherapistPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/physiotherapist.PhysiotherapistResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "physiotherapistRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.GetPhysiotherapistRes"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistResponse": {
+            "type": "object",
+            "properties": {
+                "aboutMe": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceAndSchedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.ServiceAndSchedule"
+                    }
+                }
+            }
+        },
+        "physiotherapist.ServiceAndSchedule": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.Slots"
+                    }
+                }
+            }
+        },
+        "physiotherapist.Slots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
                 }
             }
         },

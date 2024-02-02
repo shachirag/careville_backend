@@ -176,7 +176,6 @@ type Slots struct {
 	Days      []string `json:"days" bson:"days"`
 }
 
-
 type MedicalLabScientist struct {
 	Information                Information                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetailsEntity  `json:"professionalDetails" bson:"professionalDetails"`
