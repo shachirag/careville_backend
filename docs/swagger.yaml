@@ -391,6 +391,8 @@ definitions:
     properties:
       aboutMe:
         type: string
+      avgRating:
+        type: number
       consultationFees:
         type: number
       id:
@@ -405,6 +407,8 @@ definitions:
         type: array
       speciality:
         type: string
+      totalReviews:
+        type: integer
     type: object
   doctorProfession.DoctorSchedule:
     properties:
@@ -493,12 +497,16 @@ definitions:
         type: array
       address:
         $ref: '#/definitions/fitnessCenter.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
         type: string
       name:
         type: string
+      totalReviews:
+        type: integer
     type: object
   fitnessCenter.GetFitnessCenterPaginationRes:
     properties:
@@ -590,6 +598,8 @@ definitions:
         type: string
       address:
         $ref: '#/definitions/hospitals.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -600,6 +610,8 @@ definitions:
         items:
           type: string
         type: array
+      totalReviews:
+        type: integer
     type: object
   laboratory.Address:
     properties:
@@ -675,6 +687,8 @@ definitions:
         type: string
       address:
         $ref: '#/definitions/laboratory.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -685,6 +699,8 @@ definitions:
         type: array
       name:
         type: string
+      totalReviews:
+        type: integer
     type: object
   medicalLabScientist.GetMedicalLabScientistPaginationRes:
     properties:
@@ -732,6 +748,8 @@ definitions:
     properties:
       aboutMe:
         type: string
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -742,6 +760,8 @@ definitions:
         items:
           $ref: '#/definitions/medicalLabScientist.ServiceAndSchedule'
         type: array
+      totalReviews:
+        type: integer
     type: object
   medicalLabScientist.ServiceAndSchedule:
     properties:
@@ -813,6 +833,8 @@ definitions:
     properties:
       aboutMe:
         type: string
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -823,6 +845,8 @@ definitions:
         items:
           $ref: '#/definitions/nurse.ServiceAndSchedule'
         type: array
+      totalReviews:
+        type: integer
     type: object
   nurse.ServiceAndSchedule:
     properties:
@@ -922,12 +946,16 @@ definitions:
         type: array
       address:
         $ref: '#/definitions/pharmacy.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
         type: string
       name:
         type: string
+      totalReviews:
+        type: integer
     type: object
   physiotherapist.GetPhysiotherapistPaginationRes:
     properties:
@@ -975,6 +1003,8 @@ definitions:
     properties:
       aboutMe:
         type: string
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -985,6 +1015,8 @@ definitions:
         items:
           $ref: '#/definitions/physiotherapist.ServiceAndSchedule'
         type: array
+      totalReviews:
+        type: integer
     type: object
   physiotherapist.ServiceAndSchedule:
     properties:
@@ -2539,11 +2571,6 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Admin ID
-        in: path
-        name: adminId
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -2620,11 +2647,6 @@ paths:
       - description: Authentication header
         in: header
         name: Authorization
-        required: true
-        type: string
-      - description: Search by adminId
-        in: query
-        name: adminId
         required: true
         type: string
       produces:
@@ -2844,7 +2866,7 @@ paths:
             $ref: '#/definitions/hospitals.GetHospitalsResDto'
       summary: Get hospital by ID
       tags:
-      - customer hospital
+      - customer hospitals
   /customer/healthFacility/get-hospitals:
     get:
       consumes:

@@ -181,13 +181,6 @@
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Admin ID",
-                        "name": "adminId",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -306,13 +299,6 @@
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search by adminId",
-                        "name": "adminId",
-                        "in": "query",
                         "required": true
                     }
                 ],
@@ -613,7 +599,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "customer hospital"
+                    "customer hospitals"
                 ],
                 "summary": "Get hospital by ID",
                 "parameters": [
@@ -5557,6 +5543,9 @@
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "consultationFees": {
                     "type": "number"
                 },
@@ -5577,6 +5566,9 @@
                 },
                 "speciality": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -5714,6 +5706,9 @@
                 "address": {
                     "$ref": "#/definitions/fitnessCenter.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -5722,6 +5717,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -5864,6 +5862,9 @@
                 "address": {
                     "$ref": "#/definitions/hospitals.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -5878,6 +5879,9 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -5995,6 +5999,9 @@
                 "address": {
                     "$ref": "#/definitions/laboratory.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6009,6 +6016,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6083,6 +6093,9 @@
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6097,6 +6110,9 @@
                     "items": {
                         "$ref": "#/definitions/medicalLabScientist.ServiceAndSchedule"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6208,6 +6224,9 @@
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6222,6 +6241,9 @@
                     "items": {
                         "$ref": "#/definitions/nurse.ServiceAndSchedule"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6376,6 +6398,9 @@
                 "address": {
                     "$ref": "#/definitions/pharmacy.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6384,6 +6409,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6458,6 +6486,9 @@
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6472,6 +6503,9 @@
                     "items": {
                         "$ref": "#/definitions/physiotherapist.ServiceAndSchedule"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },

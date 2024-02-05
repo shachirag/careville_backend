@@ -17,7 +17,6 @@ var ctx = context.Background()
 // @Accept application/json
 //
 // @Param Authorization header	string true	"Authentication header"
-// @Param adminId query string true "Search by adminId"
 // @Produce json
 // @Success 200 {object} dashboard.GetAllCounts
 // @Router /admin/total-counts [get]

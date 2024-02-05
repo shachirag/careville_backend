@@ -15,6 +15,8 @@ type DoctorProfessionResponse struct {
 	Speciality       string             `json:"speciality" bson:"speciality"`
 	AboutMe          string             `json:"aboutMe" bson:"aboutMe"`
 	ConsultationFees float64            `json:"consultationFees" bson:"consultationFees"`
+	TotalReviews     int32              `json:"totalReviews" bson:"totalReviews"`
+	AvgRating        float64            `json:"avgRating" bson:"avgRating"`
 	DoctorSchedule   []DoctorSchedule   `json:"schedule" bson:"schedule"`
 }
 

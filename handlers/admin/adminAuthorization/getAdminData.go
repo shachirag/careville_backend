@@ -18,7 +18,6 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param adminId path string true "Admin ID"
 // @Produce json
 // @Success 200 {object} adminAuth.GetAdminResDto
 // @Router /admin/profile/get-admin-info [get]

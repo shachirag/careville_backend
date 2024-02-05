@@ -42,6 +42,8 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 		"laboratory.information.image":          1,
 		"laboratory.information.id":             1,
 		"laboratory.information.additionalText": 1,
+		"totalReviews":                          1,
+		"avgRating":                             1,
 		"laboratory.investigations.id":          1,
 		"laboratory.investigations.name":        1,
 		"laboratory.investigations.type":        1,
@@ -95,6 +97,8 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 			AboutUs:        laboratoryData.Laboratory.Information.AdditionalText,
 			Address:        laboratory.Address(laboratoryData.Laboratory.Information.Address),
 			Investigations: investigationData,
+			TotalReviews:   laboratoryData.TotalReviews,
+			AvgRating:      laboratoryData.AvgRating,
 		},
 	}
 

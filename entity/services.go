@@ -20,6 +20,8 @@ type ServiceEntity struct {
 	Physiotherapist      *Physiotherapist     `json:"physiotherapist" bson:"physiotherapist,omitempty"`
 	Nurse                *Nurse               `json:"nurse" bson:"nurse,omitempty"`
 	ServiceStatus        string               `json:"serviceStatus" bson:"serviceStatus"`
+	TotalReviews         int32                `json:"totalReviews" bson:"totalReviews"`
+	AvgRating            float64              `json:"avgRating" bson:"avgRating"`
 	CreatedAt            time.Time            `json:"createdAt" bson:"createdAt"`
 	UpdatedAt            time.Time            `json:"updatedAt" bson:"updatedAt"`
 }

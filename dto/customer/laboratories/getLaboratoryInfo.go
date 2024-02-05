@@ -15,6 +15,8 @@ type LaboratoryResponse struct {
 	Address        Address            `json:"address" bson:"address"`
 	AboutUs        string             `json:"aboutUs" bson:"aboutUs"`
 	Investigations []Investigations   `json:"investigations" bson:"investigations"`
+	TotalReviews   int32              `json:"totalReviews" bson:"totalReviews"`
+	AvgRating      float64            `json:"avgRating" bson:"avgRating"`
 }
 
 type Investigations struct {

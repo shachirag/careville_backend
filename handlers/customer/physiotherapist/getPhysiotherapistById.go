@@ -42,9 +42,11 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 		"physiotherapist.information.image":          1,
 		"physiotherapist.information.id":             1,
 		"physiotherapist.information.additionalText": 1,
-		"physiotherapist.serviceAndSchedule.id":                1,
-		"physiotherapist.serviceAndSchedule.name":              1,
-		"physiotherapist.serviceAndSchedule.serviceFees":       1,
+		"totalReviews":                                   1,
+		"avgRating":                                      1,
+		"physiotherapist.serviceAndSchedule.id":          1,
+		"physiotherapist.serviceAndSchedule.name":        1,
+		"physiotherapist.serviceAndSchedule.serviceFees": 1,
 		"physiotherapist.serviceAndSchedule.slots": bson.M{
 			"startTime": 1,
 			"endTime":   1,
@@ -100,6 +102,8 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 			Name:               physiotherapistData.Nurse.Information.Name,
 			AboutMe:            physiotherapistData.Nurse.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
+			TotalReviews:       physiotherapistData.TotalReviews,
+			AvgRating:          physiotherapistData.AvgRating,
 		},
 	}
 

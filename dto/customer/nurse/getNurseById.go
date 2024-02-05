@@ -14,6 +14,8 @@ type NurseResponse struct {
 	Name               string               `json:"name" bson:"name"`
 	AboutMe            string               `json:"aboutMe" bson:"aboutMe"`
 	ServiceAndSchedule []ServiceAndSchedule `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
+	TotalReviews       int32                `json:"totalReviews" bson:"totalReviews"`
+	AvgRating          float64              `json:"avgRating" bson:"avgRating"`
 }
 
 type ServiceAndSchedule struct {

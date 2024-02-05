@@ -42,8 +42,10 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 		"doctor.information.image":             1,
 		"doctor.information.id":                1,
 		"doctor.information.additionalText":    1,
+		"totalReviews":                         1,
+		"avgRating":                            1,
 		"doctor.additionalServices.speciality": 1,
-		"doctor.schedule.consultationFees":       1,
+		"doctor.schedule.consultationFees":     1,
 		"doctor.schedule.slots": bson.M{
 			"id":        1,
 			"startTime": 1,
@@ -93,6 +95,8 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 			AboutMe:          doctorProfessionData.Doctor.Information.AdditionalText,
 			ConsultationFees: doctorProfessionData.Doctor.Schedule.ConsultationFees,
 			DoctorSchedule:   scheduleData,
+			TotalReviews:     doctorProfessionData.TotalReviews,
+			AvgRating:        doctorProfessionData.AvgRating,
 		},
 	}
 

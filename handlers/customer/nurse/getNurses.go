@@ -66,7 +66,10 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthProfessional",
 		"facilityOrProfession": "nurse",
-		"nurse.information.address": bson.M{
+	}
+
+	if latParam != "" && longParam != "" {
+		filter["nurse.information.address"] = bson.M{
 			"$nearSphere": bson.M{
 				"$geometry": bson.M{
 					"type":        "Point",
@@ -74,7 +77,7 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 				},
 				"$maxDistance": 20000,
 			},
-		},
+		}
 	}
 
 	if searchTitle != "" {
@@ -138,7 +141,11 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 		}
 	}
 
-	totalCount, err := serviceColl.CountDocuments(ctx, filter)
+	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
+		"role":                           "healthProfessional",
+		"facilityOrProfession":           "nurse",
+		"nurse.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
+	})
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNursePaginationRes{
 			Status:  false,

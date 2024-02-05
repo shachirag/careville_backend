@@ -66,7 +66,10 @@ func FetchPharmacyWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "pharmacy",
-		"pharmacy.information.address": bson.M{
+	}
+
+	if latParam != "" && longParam != "" {
+		filter["pharmacy.information.address"] = bson.M{
 			"$nearSphere": bson.M{
 				"$geometry": bson.M{
 					"type":        "Point",
@@ -74,7 +77,7 @@ func FetchPharmacyWithPagination(c *fiber.Ctx) error {
 				},
 				"$maxDistance": 20000,
 			},
-		},
+		}
 	}
 
 	if searchTitle != "" {
@@ -148,7 +151,11 @@ func FetchPharmacyWithPagination(c *fiber.Ctx) error {
 		}
 	}
 
-	totalCount, err := serviceColl.CountDocuments(ctx, filter)
+	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
+		"role":                           "healthFacility",
+		"facilityOrProfession":           "pharmacy",
+		"pharmacy.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
+	})
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.GetPharmacyPaginationRes{
 			Status:  false,

@@ -3,8 +3,8 @@ package pharmacy
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type GetPharmacyResDto struct {
-	Status  bool              `json:"status"`
-	Message string            `json:"message"`
+	Status  bool             `json:"status"`
+	Message string           `json:"message"`
 	Data    PharmacyResponse `json:"data"`
 }
 
@@ -15,6 +15,8 @@ type PharmacyResponse struct {
 	Address            Address              `json:"address" bson:"address"`
 	AboutUs            string               `json:"aboutUs" bson:"aboutUs"`
 	AdditionalServices []AdditionalServices `json:"additionalServices" bson:"additionalServices"`
+	TotalReviews       int32                `json:"totalReviews" bson:"totalReviews"`
+	AvgRating          float64              `json:"avgRating" bson:"avgRating"`
 }
 
 type AdditionalServices struct {

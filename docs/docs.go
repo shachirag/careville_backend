@@ -187,13 +187,6 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Admin ID",
-                        "name": "adminId",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -312,13 +305,6 @@ const docTemplate = `{
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search by adminId",
-                        "name": "adminId",
-                        "in": "query",
                         "required": true
                     }
                 ],
@@ -619,7 +605,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "customer hospital"
+                    "customer hospitals"
                 ],
                 "summary": "Get hospital by ID",
                 "parameters": [
@@ -5563,6 +5549,9 @@ const docTemplate = `{
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "consultationFees": {
                     "type": "number"
                 },
@@ -5583,6 +5572,9 @@ const docTemplate = `{
                 },
                 "speciality": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -5720,6 +5712,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/fitnessCenter.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -5728,6 +5723,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -5870,6 +5868,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/hospitals.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -5884,6 +5885,9 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6001,6 +6005,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/laboratory.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6015,6 +6022,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6089,6 +6099,9 @@ const docTemplate = `{
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6103,6 +6116,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/medicalLabScientist.ServiceAndSchedule"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6214,6 +6230,9 @@ const docTemplate = `{
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6228,6 +6247,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/nurse.ServiceAndSchedule"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6382,6 +6404,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/pharmacy.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6390,6 +6415,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },
@@ -6464,6 +6492,9 @@ const docTemplate = `{
                 "aboutMe": {
                     "type": "string"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6478,6 +6509,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/physiotherapist.ServiceAndSchedule"
                     }
+                },
+                "totalReviews": {
+                    "type": "integer"
                 }
             }
         },

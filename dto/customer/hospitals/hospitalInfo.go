@@ -15,4 +15,6 @@ type HospitalsResponse struct {
 	Address       Address            `json:"address" bson:"address"`
 	AboutUs       string             `json:"aboutUs" bson:"aboutUs"`
 	OtherServices []string           `json:"otherServices" bson:"otherServices"`
+	TotalReviews  int32              `json:"totalReviews" bson:"totalReviews"`
+	AvgRating     float64            `json:"avgRating" bson:"avgRating"`
 }

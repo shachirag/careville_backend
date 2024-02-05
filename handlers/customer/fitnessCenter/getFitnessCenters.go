@@ -66,7 +66,10 @@ func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "fitnessCenter",
-		"fitnessCenter.information.address": bson.M{
+	}
+
+	if latParam != "" && longParam != "" {
+		filter["fitnessCenter.information.address"] = bson.M{
 			"$nearSphere": bson.M{
 				"$geometry": bson.M{
 					"type":        "Point",
@@ -74,7 +77,7 @@ func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
 				},
 				"$maxDistance": 20000,
 			},
-		},
+		}
 	}
 
 	if searchTitle != "" {
@@ -148,7 +151,11 @@ func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
 		}
 	}
 
-	totalCount, err := serviceColl.CountDocuments(ctx, filter)
+	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
+		"role":                           "healthFacility",
+		"facilityOrProfession":           "fitnessCenter",
+		"fitnessCenter.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
+	})
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
 			Status:  false,

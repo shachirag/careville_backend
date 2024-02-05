@@ -42,6 +42,8 @@ func GetPharmacyByID(c *fiber.Ctx) error {
 		"pharmacy.information.image":              1,
 		"pharmacy.information.id":                 1,
 		"pharmacy.information.additionalText":     1,
+		"totalReviews":                            1,
+		"avgRating":                               1,
 		"pharmacy.additionalServices.id":          1,
 		"pharmacy.additionalServices.name":        1,
 		"pharmacy.additionalServices.information": 1,
@@ -91,6 +93,8 @@ func GetPharmacyByID(c *fiber.Ctx) error {
 			AboutUs:            pharmacyData.Pharmacy.Information.AdditionalText,
 			Address:            pharmacy.Address(pharmacyData.Pharmacy.Information.Address),
 			AdditionalServices: servicesData,
+			TotalReviews:       pharmacyData.TotalReviews,
+			AvgRating:          pharmacyData.AvgRating,
 		},
 	}
 

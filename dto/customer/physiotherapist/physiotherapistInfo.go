@@ -3,8 +3,8 @@ package physiotherapist
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type GetPhysiotherapistResDto struct {
-	Status  bool          `json:"status"`
-	Message string        `json:"message"`
+	Status  bool                    `json:"status"`
+	Message string                  `json:"message"`
 	Data    PhysiotherapistResponse `json:"data"`
 }
 
@@ -14,6 +14,8 @@ type PhysiotherapistResponse struct {
 	Name               string               `json:"name" bson:"name"`
 	AboutMe            string               `json:"aboutMe" bson:"aboutMe"`
 	ServiceAndSchedule []ServiceAndSchedule `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
+	TotalReviews       int32                `json:"totalReviews" bson:"totalReviews"`
+	AvgRating          float64              `json:"avgRating" bson:"avgRating"`
 }
 
 type ServiceAndSchedule struct {
