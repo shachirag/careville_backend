@@ -10,7 +10,6 @@ type CustomerMiddlwareDto struct {
 	CustomerId primitive.ObjectID
 	Email      string
 	Role       string
-	Type       string
 }
 
 func SetCustomerMiddlewareData(c *fiber.Ctx) (*CustomerMiddlwareDto, error) {
@@ -25,13 +24,11 @@ func SetCustomerMiddlewareData(c *fiber.Ctx) (*CustomerMiddlwareDto, error) {
 
 	role := claims["role"].(string)
 	email := claims["email"].(string)
-	customerType := claims["type"].(string)
 
 	customerMiddlwareDto := CustomerMiddlwareDto{
 		CustomerId: userId,
 		Email:      email,
 		Role:       role,
-		Type:       customerType,
 	}
 	c.Locals("CustomerMiddlwareDto", customerMiddlwareDto)
 	return &customerMiddlwareDto, nil

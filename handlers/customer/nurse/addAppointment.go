@@ -1,11 +1,11 @@
-package hospitals
+package nurse
 
 import (
 	"time"
 
 	"careville_backend/database"
-	hospitals "careville_backend/dto/customer/hospitals"
 	customerMiddleware "careville_backend/dto/customer/middleware"
+	"careville_backend/dto/customer/nurse"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,31 +15,29 @@ import (
 )
 
 // @Summary Add appointment
-// @Tags customer hospitals
+// @Tags customer nurse
 // @Description Add appointment
 // @Accept multipart/form-data
 //
-//	@Param Authorization header	string true	"Authentication header"
+// @Param Authorization header string true "Authentication header"
 //
 // @Param serviceId query string true "service ID"
-// @Param  customer body hospitals.HospitalClinicAppointmentReqDto true "add HospitalClinic"
+// @Param  customer body  nurse.NurseAppointmentReqDto true "add nurse"
 // @Produce json
-// @Success 200 {object} hospitals.HospitalClinicAppointmentResDto
-// @Router /customer/healthFacility/add-hospClinic-appointment [post]
-func AddHospClinicAppointment(c *fiber.Ctx) error {
+// @Success 200 {object}  nurse.NurseAppointmentResDto
+// @Router /customer/healthProfessional/add-nurse-appointment [post]
+func AddNurseAppointment(c *fiber.Ctx) error {
 
 	var (
 		appointmentColl = database.GetCollection("appointment")
-		serviceColl     = database.GetCollection("service")
 		customerColl    = database.GetCollection("customer")
-		data            hospitals.HospitalClinicAppointmentReqDto
+		data            nurse.NurseAppointmentReqDto
 		appointment     entity.AppointmentEntity
-		service         entity.ServiceEntity
 	)
 
 	err := c.BodyParser(&data)
 	if err != nil {
-		return c.Status(500).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(500).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -47,7 +45,7 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 
 	familyObjectID, err := primitive.ObjectIDFromHex(data.FamillyMemberId)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: "Invalid ID format",
 		})
@@ -56,7 +54,7 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 	serviceId := c.Query("serviceId")
 
 	if serviceId == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: "service Id is mandatory",
 		})
@@ -64,61 +62,10 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 
 	serviceObjectID, err := primitive.ObjectIDFromHex(serviceId)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: "Invalid ID format",
 		})
-	}
-
-	doctorObjID, err := primitive.ObjectIDFromHex(data.DoctorId)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
-			Status:  false,
-			Message: "Invalid ID format",
-		})
-	}
-
-	doctorFilter := bson.M{
-		"_id": serviceObjectID,
-		"hospClinic.doctor": bson.M{
-			"$elemMatch": bson.M{
-				"id": doctorObjID,
-			},
-		},
-	}
-
-	doctorProjection := bson.M{
-		"hospClinic.doctor.id":         1,
-		"hospClinic.doctor.name":       1,
-		"hospClinic.doctor.speciality": 1,
-		"hospClinic.doctor.image":      1,
-	}
-
-	doctorOpts := options.FindOne().SetProjection(doctorProjection)
-
-	err = serviceColl.FindOne(ctx, doctorFilter, doctorOpts).Decode(&service)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
-			Status:  false,
-			Message: "Failed to fetch doctor data: " + err.Error(),
-		})
-	}
-
-	if service.HospClinic == nil {
-		return c.Status(fiber.StatusNotFound).JSON(hospitals.HospitalClinicAppointmentResDto{
-			Status:  false,
-			Message: "Hospital clinic data not found",
-		})
-	}
-
-	var doctorData entity.Doctor
-	if service.HospClinic != nil && len(service.HospClinic.Doctor) > 0 {
-		for _, doctor := range service.HospClinic.Doctor {
-			if doctor.Id == doctorObjID {
-				doctorData = doctor
-				break
-			}
-		}
 	}
 
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
@@ -132,6 +79,7 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 	}
 
 	var family entity.CustomerEntity
+
 	familyProjection := bson.M{
 		"familyMembers.id":           1,
 		"familyMembers.name":         1,
@@ -141,9 +89,10 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 	}
 
 	familyOpts := options.FindOne().SetProjection(familyProjection)
+
 	err = customerColl.FindOne(ctx, familyFilter, familyOpts).Decode(&family)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: "Failed to fetch family data: " + err.Error(),
 		})
@@ -181,7 +130,7 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 
 	err = customerColl.FindOne(ctx, customerFilter, customerOpts).Decode(&customer)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: "Failed to fetch customer data: " + err.Error(),
 		})
@@ -191,29 +140,23 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 	if data.AppointmentDate != "" {
 		appointmentDate, err = time.Parse(time.RFC3339, data.AppointmentDate)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
 				Status:  false,
 				Message: "Failed to parse appointment date: " + err.Error(),
 			})
 		}
 	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
 			Message: "Appointment date is mandatory",
 		})
 	}
 
-	appointmentData := entity.HospitalAppointmentEntity{
-		Doctor: entity.DoctorAppointmentEntity{
-			ID:         doctorObjID,
-			Name:       doctorData.Name,
-			Image:      doctorData.Image,
-			Speciality: doctorData.Speciality,
-		},
+	appointmentData := entity.NurseAppointmentEntity{
 		AppointmentDetails: entity.AppointmentDetailsAppointmentEntity{
 			Date:           appointmentDate,
-			RemindMeBefore: data.RemindMeBefore,
 			AvailableTime:  data.AvailableTime,
+			RemindMeBefore: data.RemindMeBefore,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,
@@ -228,8 +171,8 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 
 	appointment = entity.AppointmentEntity{
 		Id:                   primitive.NewObjectID(),
-		Role:                 "healthFacility",
-		FacilityOrProfession: "hospClinic",
+		Role:                 "healthProfessional",
+		FacilityOrProfession: "nurse",
 		ServiceID:            serviceObjectID,
 		Customer: entity.CustomerAppointmentEntity{
 			ID:          customerMiddlewareData.CustomerId,
@@ -239,7 +182,7 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 			Email:       customer.Email,
 			PhoneNumber: customer.PhoneNumber,
 		},
-		HospitalClinic:    &appointmentData,
+		Nurse:             &appointmentData,
 		PaymentStatus:     "initiated",
 		AppointmentStatus: "pending",
 		CreatedAt:         time.Now().UTC(),
@@ -248,13 +191,13 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 
 	_, err = appointmentColl.InsertOne(ctx, appointment)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
 			Status:  false,
-			Message: "Failed to insert hospital appointment data into MongoDB: " + err.Error(),
+			Message: "Failed to insert nurse appointment data into MongoDB: " + err.Error(),
 		})
 	}
 
-	hospClinicRes := hospitals.HospitalClinicAppointmentResDto{
+	hospClinicRes := nurse.NurseAppointmentResDto{
 		Status:  true,
 		Message: "Appointment added successfully",
 	}

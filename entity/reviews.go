@@ -10,7 +10,7 @@ type ReviewEntity struct {
 	Id          primitive.ObjectID `json:"id" bson:"_id"`
 	Customer    Customer           `json:"customer" bson:"customer"`
 	ServiceId   primitive.ObjectID `json:"serviceId" bson:"serviceId"`
-	Description Customer           `json:"description" bson:"description"`
+	Description string           `json:"description" bson:"description"`
 	Rating      float64            `json:"rating" bson:"rating"`
 	CreatedAt   time.Time          `json:"createdAt" bson:"createdAt"`
 	UpdatedAt   time.Time          `json:"updatedAt" bson:"updatedAt"`

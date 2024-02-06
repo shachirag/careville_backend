@@ -35,7 +35,6 @@ type CustomerResDto struct {
 	FamilyMembers []FamilyMembers    `json:"familyMembers" bson:"familyMembers"`
 	Sex           string             `json:"sex" bson:"sex"`
 	Age           string             `json:"age" bson:"age"`
-	Type          string             `json:"type" bson:"type"`
 	Address       Address            `json:"address" bson:"address"`
 	CreatedAt     time.Time          `json:"createdAt" bson:"createdAt"`
 	UpdatedAt     time.Time          `json:"updatedAt" bson:"updatedAt"`

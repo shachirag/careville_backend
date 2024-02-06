@@ -104,7 +104,6 @@ func LoginCustomer(c *fiber.Ctx) error {
 		"Id":    customer.Id,
 		"email": customer.Email,
 		"role":  "customer",
-		"type":  customer.Type,
 		"exp":   time.Now().Add(month * 6).Unix(),
 	}
 

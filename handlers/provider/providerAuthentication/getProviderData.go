@@ -53,40 +53,54 @@ func FetchProviderById(c *fiber.Ctx) error {
 	var name string
 
 	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
-		image = provider.HospClinic.Information.Image
-		additionalDetails = provider.HospClinic.Information.AdditionalText
-		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.HospClinic.Information.Address)
-		license = provider.HospClinic.Documents.License
-		certificate = provider.HospClinic.Documents.Certificate
-		name = provider.HospClinic.Information.Name
+
+		if provider.HospClinic != nil {
+			image = provider.HospClinic.Information.Image
+			additionalDetails = provider.HospClinic.Information.AdditionalText
+			isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
+			address = providerAuth.Address(provider.HospClinic.Information.Address)
+			license = provider.HospClinic.Documents.License
+			certificate = provider.HospClinic.Documents.Certificate
+			name = provider.HospClinic.Information.Name
+		}
 
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
-		image = provider.Laboratory.Information.Image
-		additionalDetails = provider.Laboratory.Information.AdditionalText
-		isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Laboratory.Information.Address)
-		license = provider.Laboratory.Documents.License
-		certificate = provider.Laboratory.Documents.Certificate
-		name = provider.Laboratory.Information.Name
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
-		image = provider.FitnessCenter.Information.Image
-		additionalDetails = provider.FitnessCenter.Information.AdditionalText
-		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.FitnessCenter.Information.Address)
-		license = provider.FitnessCenter.Documents.License
-		certificate = provider.FitnessCenter.Documents.Certificate
-		name = provider.FitnessCenter.Information.Name
-	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
-		image = provider.Pharmacy.Information.Image
-		additionalDetails = provider.Pharmacy.Information.AdditionalText
-		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
-		address = providerAuth.Address(provider.Pharmacy.Information.Address)
-		license = provider.Pharmacy.Documents.License
-		certificate = provider.Pharmacy.Documents.Certificate
-		name = provider.Pharmacy.Information.Name
-	}
 
+		if provider.Laboratory != nil {
+			image = provider.Laboratory.Information.Image
+			additionalDetails = provider.Laboratory.Information.AdditionalText
+			isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
+			address = providerAuth.Address(provider.Laboratory.Information.Address)
+			license = provider.Laboratory.Documents.License
+			certificate = provider.Laboratory.Documents.Certificate
+			name = provider.Laboratory.Information.Name
+		}
+
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
+
+		if provider.FitnessCenter != nil {
+			image = provider.FitnessCenter.Information.Image
+			additionalDetails = provider.FitnessCenter.Information.AdditionalText
+			isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
+			address = providerAuth.Address(provider.FitnessCenter.Information.Address)
+			license = provider.FitnessCenter.Documents.License
+			certificate = provider.FitnessCenter.Documents.Certificate
+			name = provider.FitnessCenter.Information.Name
+		}
+
+	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
+
+		if provider.Pharmacy != nil {
+			image = provider.Pharmacy.Information.Image
+			additionalDetails = provider.Pharmacy.Information.AdditionalText
+			isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
+			address = providerAuth.Address(provider.Pharmacy.Information.Address)
+			license = provider.Pharmacy.Documents.License
+			certificate = provider.Pharmacy.Documents.Certificate
+			name = provider.Pharmacy.Information.Name
+		}
+
+	}
 	providerRes := providerAuth.ProviderResDto{
 		User: providerAuth.UserData{
 			Role: providerAuth.Role{

@@ -5,7 +5,6 @@ import (
 	providerMiddleware "careville_backend/dto/provider/middleware"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
-	"fmt"
 	"strconv"
 	"time"
 
@@ -84,10 +83,13 @@ func UpdateProvider(c *fiber.Ctx) error {
 	var isEmergencyAvailable bool
 
 	if provider.Role == "healthFacility" && provider.FacilityOrProfession == "hospClinic" {
-		fmt.Print("123")
-		image = provider.HospClinic.Information.Image
-		name = provider.HospClinic.Information.Name
-		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
+
+		if provider.HospClinic != nil {
+			image = provider.HospClinic.Information.Image
+			name = provider.HospClinic.Information.Name
+			isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -104,12 +106,15 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "laboratory" {
-		image = provider.Laboratory.Information.Image
-		name = provider.Laboratory.Information.Name
-		isEmergencyAvailable = provider.HospClinic.Information.IsEmergencyAvailable
+
+		if provider.Laboratory != nil {
+			image = provider.Laboratory.Information.Image
+			name = provider.Laboratory.Information.Name
+			isEmergencyAvailable = provider.Laboratory.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -126,12 +131,15 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "fitnessCenter" {
-		image = provider.FitnessCenter.Information.Image
-		name = provider.FitnessCenter.Information.Name
-		isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
+
+		if provider.FitnessCenter != nil {
+			image = provider.FitnessCenter.Information.Image
+			name = provider.FitnessCenter.Information.Name
+			isEmergencyAvailable = provider.FitnessCenter.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -149,12 +157,15 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	} else if provider.Role == "healthFacility" && provider.FacilityOrProfession == "pharmacy" {
-		image = provider.Pharmacy.Information.Image
-		name = provider.Pharmacy.Information.Name
-		isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
+
+		if provider.Pharmacy != nil {
+			image = provider.Pharmacy.Information.Image
+			name = provider.Pharmacy.Information.Name
+			isEmergencyAvailable = provider.Pharmacy.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -171,12 +182,15 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "medicalLabScientist" {
-		image = provider.MedicalLabScientist.Information.Image
-		name = provider.MedicalLabScientist.Information.Name
-		isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
+
+		if provider.MedicalLabScientist != nil {
+			image = provider.MedicalLabScientist.Information.Image
+			name = provider.MedicalLabScientist.Information.Name
+			isEmergencyAvailable = provider.MedicalLabScientist.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -194,12 +208,15 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "nurse" {
-		image = provider.Nurse.Information.Image
-		name = provider.Nurse.Information.Name
-		isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
+
+		if provider.Nurse != nil {
+			image = provider.Nurse.Information.Image
+			name = provider.Nurse.Information.Name
+			isEmergencyAvailable = provider.Nurse.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -216,12 +233,15 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "doctor" {
-		image = provider.Doctor.Information.Image
-		name = provider.Doctor.Information.Name
-		isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
+
+		if provider.Doctor != nil {
+			image = provider.Doctor.Information.Image
+			name = provider.Doctor.Information.Name
+			isEmergencyAvailable = provider.Doctor.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -239,13 +259,16 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-	
 		}
-		
+
 	} else if provider.Role == "healthProfessional" && provider.FacilityOrProfession == "physiotherapist" {
-		image = provider.Physiotherapist.Information.Image
-		name = provider.Physiotherapist.Information.Name
-		isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
+
+		if provider.Physiotherapist != nil {
+			image = provider.Physiotherapist.Information.Image
+			name = provider.Physiotherapist.Information.Name
+			isEmergencyAvailable = provider.Physiotherapist.Information.IsEmergencyAvailable
+		}
+
 		update = bson.M{"$set": bson.M{
 			"user.firstName": data.FirstName,
 			"user.lastName":  data.LastName,
@@ -262,7 +285,6 @@ func UpdateProvider(c *fiber.Ctx) error {
 			},
 			"updatedAt": time.Now().UTC(),
 		},
-		
 		}
 	}
 

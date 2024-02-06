@@ -122,20 +122,6 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		})
 	}
 
-	var familyMembers []entity.FamilyMembers
-	if customer.FamilyMembers != nil {
-		for _, inv := range data.FamilyMembers {
-			convertedInv := entity.FamilyMembers{
-				Id:           primitive.NewObjectID(),
-				RelationShip: inv.RelationShip,
-				Name:         inv.Name,
-				Age:          inv.Age,
-				Sex:          inv.Sex,
-			}
-			familyMembers = append(familyMembers, convertedInv)
-		}
-	}
-
 	id := primitive.NewObjectID()
 
 	customer = entity.CustomerEntity{
@@ -159,13 +145,11 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 			Add:         data.Address,
 			Type:        "Point",
 		},
-		FamilyMembers: familyMembers,
-		Sex:           data.Sex,
-		Age:           data.Age,
-		Type:          data.CustomerType,
-		Password:      string(hashedPassword),
-		CreatedAt:     time.Now().UTC(),
-		UpdatedAt:     time.Now().UTC(),
+		Sex:       data.Sex,
+		Age:       data.Age,
+		Password:  string(hashedPassword),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}
 
 	_, err = customerColl.InsertOne(ctx, customer)
@@ -182,7 +166,6 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		"Id":    customer.Id,
 		"email": customer.Email,
 		"role":  "customer",
-		"type":  customer.Type,
 		"exp":   time.Now().Add(month * 6).Unix(),
 	}
 	token := jtoken.NewWithClaims(jtoken.SigningMethodHS256, claims)
@@ -212,13 +195,11 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 				DeviceType:  customer.Notification.DeviceType,
 				IsEnabled:   customer.Notification.IsEnabled,
 			},
-			Address:       customerAuth.Address(customer.Address),
-			Sex:           customer.Sex,
-			Age:           customer.Age,
-			Type:          customer.Type,
-			FamilyMembers: data.FamilyMembers,
-			CreatedAt:     customer.CreatedAt,
-			UpdatedAt:     customer.UpdatedAt,
+			Address:   customerAuth.Address(customer.Address),
+			Sex:       customer.Sex,
+			Age:       customer.Age,
+			CreatedAt: customer.CreatedAt,
+			UpdatedAt: customer.UpdatedAt,
 		},
 		Token: _token,
 	})

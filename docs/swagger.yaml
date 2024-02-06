@@ -173,8 +173,6 @@ definitions:
         $ref: '#/definitions/customerAuth.PhoneNumber'
       sex:
         type: string
-      type:
-        type: string
       updatedAt:
         type: string
     type: object
@@ -200,18 +198,12 @@ definitions:
         type: string
       age:
         type: string
-      customerType:
-        type: string
       deviceToken:
         type: string
       deviceType:
         type: string
       email:
         type: string
-      familyMembers:
-        items:
-          $ref: '#/definitions/customerAuth.FamilyMembers'
-        type: array
       firstName:
         type: string
       lastName:
@@ -372,6 +364,34 @@ definitions:
       physiotherapistCount:
         type: integer
     type: object
+  doctorProfession.DoctorProfessionAppointmentReqDto:
+    properties:
+      address:
+        type: string
+      appointmentDate:
+        type: string
+      availableTime:
+        type: string
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      pricePaid:
+        type: number
+      remindMeBefore:
+        type: string
+    type: object
+  doctorProfession.DoctorProfessionAppointmentResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   doctorProfession.DoctorProfessionPaginationResponse:
     properties:
       currentPage:
@@ -471,6 +491,26 @@ definitions:
         type: array
       type:
         type: string
+    type: object
+  fitnessCenter.FitnessCenterAppointmentReqDto:
+    properties:
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      package:
+        type: string
+      pricePaid:
+        type: number
+      trainerId:
+        type: string
+    type: object
+  fitnessCenter.FitnessCenterAppointmentResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   fitnessCenter.FitnessCenterPaginationResponse:
     properties:
@@ -577,6 +617,30 @@ definitions:
       status:
         type: boolean
     type: object
+  hospitals.HospitalClinicAppointmentReqDto:
+    properties:
+      appointmentDate:
+        type: string
+      availableTime:
+        type: string
+      doctorId:
+        type: string
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      pricePaid:
+        type: number
+      remindMeBefore:
+        type: string
+    type: object
+  hospitals.HospitalClinicAppointmentResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   hospitals.HospitalsPaginationResponse:
     properties:
       currentPage:
@@ -666,6 +730,26 @@ definitions:
       type:
         type: string
     type: object
+  laboratory.LaboratoryAppointmentReqDto:
+    properties:
+      appointmentDate:
+        type: string
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      investigationId:
+        type: string
+      pricePaid:
+        type: number
+    type: object
+  laboratory.LaboratoryAppointmentResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   laboratory.LaboratoryPaginationResponse:
     properties:
       currentPage:
@@ -724,6 +808,28 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/medicalLabScientist.MedicalLabScientistResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  medicalLabScientist.MedicalLabScientistAppointmentReqDto:
+    properties:
+      appointmentDate:
+        type: string
+      availableTime:
+        type: string
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      pricePaid:
+        type: number
+      remindMeBefore:
+        type: string
+    type: object
+  medicalLabScientist.MedicalLabScientistAppointmentResDto:
+    properties:
       message:
         type: string
       status:
@@ -809,6 +915,28 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/nurse.NurseResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  nurse.NurseAppointmentReqDto:
+    properties:
+      appointmentDate:
+        type: string
+      availableTime:
+        type: string
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      pricePaid:
+        type: number
+      remindMeBefore:
+        type: string
+    type: object
+  nurse.NurseAppointmentResDto:
+    properties:
       message:
         type: string
       status:
@@ -921,6 +1049,13 @@ definitions:
       status:
         type: boolean
     type: object
+  pharmacy.PharmacyDrugsResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   pharmacy.PharmacyPaginationResponse:
     properties:
       currentPage:
@@ -979,6 +1114,28 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/physiotherapist.PhysiotherapistResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  physiotherapist.PhysiotherapistAppointmentReqDto:
+    properties:
+      appointmentDate:
+        type: string
+      availableTime:
+        type: string
+      familyMemberId:
+        type: string
+      familyType:
+        type: string
+      pricePaid:
+        type: number
+      remindMeBefore:
+        type: string
+    type: object
+  physiotherapist.PhysiotherapistAppointmentResDto:
+    properties:
       message:
         type: string
       status:
@@ -1276,6 +1433,24 @@ definitions:
         type: string
       otp:
         type: string
+    type: object
+  reviews.ReviewsReqDto:
+    properties:
+      customerId:
+        type: string
+      description:
+        type: string
+      rating:
+        type: number
+      serviceId:
+        type: string
+    type: object
+  reviews.ReviewsResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   services.AddPharmacyOtherServiceReqDto:
     properties:
@@ -2703,6 +2878,33 @@ paths:
       summary: Verify OTP for login
       tags:
       - admin authorization
+  /customer/add-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/change-password:
     put:
       consumes:
@@ -2778,6 +2980,142 @@ paths:
       summary: Get customer by ID
       tags:
       - customer authorization
+  /customer/healthFacility/add-fitnessCenter-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add HospitalClinic
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/fitnessCenter.FitnessCenterAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.FitnessCenterAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer fitnessCenter
+  /customer/healthFacility/add-hospClinic-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add HospitalClinic
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/hospitals.HospitalClinicAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.HospitalClinicAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer hospitals
+  /customer/healthFacility/add-laboratory-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add laboratory appointment
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/laboratory.LaboratoryAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.LaboratoryAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer laboratory
+  /customer/healthFacility/add-pharmacy-drug:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add drugs
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - in: formData
+        name: modeOfDelivery
+        type: string
+      - in: formData
+        name: nameAndQuantity
+        type: string
+      - in: formData
+        name: pricePaid
+        type: number
+      - description: prescription images
+        in: formData
+        name: prescriptionImages
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.PharmacyDrugsResDto'
+      summary: Add drugs
+      tags:
+      - customer pharmacy
   /customer/healthFacility/get-fitnessCenter/{id}:
     get:
       description: Get fitnessCenter by ID
@@ -3038,6 +3376,134 @@ paths:
       summary: Get pharmacy by ID
       tags:
       - customer pharmacy
+  /customer/healthProfessional/add-doctor-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add doctorProfession
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/doctorProfession.DoctorProfessionAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.DoctorProfessionAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer doctorProfession
+  /customer/healthProfessional/add-medicalLabScientist-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add medicalLabScientist
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/medicalLabScientist.MedicalLabScientistAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.MedicalLabScientistAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer medicalLabScientist
+  /customer/healthProfessional/add-nurse-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add nurse
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/nurse.NurseAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.NurseAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer nurse
+  /customer/healthProfessional/add-physiotherapist-appointment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add appointment
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      - description: add physiotherapist
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/physiotherapist.PhysiotherapistAppointmentReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.PhysiotherapistAppointmentResDto'
+      summary: Add appointment
+      tags:
+      - customer physiotherapist
   /customer/healthProfessional/get-doctor/{id}:
     get:
       description: Get doctorProfession by ID
