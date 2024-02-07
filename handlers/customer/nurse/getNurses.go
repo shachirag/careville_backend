@@ -92,6 +92,7 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 		"nurse.information.name":  1,
 		"nurse.information.image": 1,
 		"nurse.information.id":    1,
+		"avgRating":               1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -132,9 +133,10 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 		// Check if hospClinic is not nil before accessing its properties
 		if service.Nurse != nil {
 			nurseRes := nurse.GetNurseRes{
-				Id:    service.Id,
-				Image: service.Nurse.Information.Image,
-				Name:  service.Nurse.Information.Name,
+				Id:        service.Id,
+				Image:     service.Nurse.Information.Image,
+				Name:      service.Nurse.Information.Name,
+				AvgRating: service.AvgRating,
 			}
 
 			response.NurseRes = append(response.NurseRes, nurseRes)
@@ -142,8 +144,8 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 	}
 
 	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
-		"role":                           "healthProfessional",
-		"facilityOrProfession":           "nurse",
+		"role":                   "healthProfessional",
+		"facilityOrProfession":   "nurse",
 		"nurse.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
 	})
 	if err != nil {

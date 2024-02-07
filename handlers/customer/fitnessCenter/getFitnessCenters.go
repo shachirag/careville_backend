@@ -97,6 +97,7 @@ func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
+		"avgRating": 1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -145,6 +146,7 @@ func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
 					Type:        service.FitnessCenter.Information.Address.Type,
 					Add:         service.FitnessCenter.Information.Address.Add,
 				},
+				AvgRating: service.AvgRating,
 			}
 
 			response.FitnessCenterRes = append(response.FitnessCenterRes, fitnessCenterRes)

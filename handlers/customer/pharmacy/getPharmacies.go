@@ -97,6 +97,7 @@ func FetchPharmacyWithPagination(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
+		"avgRating": 1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -145,6 +146,7 @@ func FetchPharmacyWithPagination(c *fiber.Ctx) error {
 					Type:        service.Pharmacy.Information.Address.Type,
 					Add:         service.Pharmacy.Information.Address.Add,
 				},
+				AvgRating: service.AvgRating,
 			}
 
 			response.PharmacyRes = append(response.PharmacyRes, pharmacyRes)
@@ -152,8 +154,8 @@ func FetchPharmacyWithPagination(c *fiber.Ctx) error {
 	}
 
 	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
-		"role":                           "healthFacility",
-		"facilityOrProfession":           "pharmacy",
+		"role":                      "healthFacility",
+		"facilityOrProfession":      "pharmacy",
 		"pharmacy.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
 	})
 	if err != nil {

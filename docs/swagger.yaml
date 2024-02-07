@@ -454,6 +454,8 @@ definitions:
     type: object
   doctorProfession.GetDoctorProfessionRes:
     properties:
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -498,10 +500,10 @@ definitions:
         type: string
       familyType:
         type: string
+      membershipSubscription:
+        type: number
       package:
         type: string
-      pricePaid:
-        type: number
       trainerId:
         type: string
     type: object
@@ -561,6 +563,8 @@ definitions:
     properties:
       address:
         $ref: '#/definitions/fitnessCenter.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -588,10 +592,12 @@ definitions:
       type:
         type: string
     type: object
-  hospitals.GetHospitalsPaginationRes:
+  hospitals.GetHospitalResDto:
     properties:
       data:
-        $ref: '#/definitions/hospitals.HospitalsPaginationResponse'
+        items:
+          $ref: '#/definitions/hospitals.GetHospitalsRes'
+        type: array
       message:
         type: string
       status:
@@ -601,6 +607,8 @@ definitions:
     properties:
       address:
         $ref: '#/definitions/hospitals.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -641,21 +649,6 @@ definitions:
       status:
         type: boolean
     type: object
-  hospitals.HospitalsPaginationResponse:
-    properties:
-      currentPage:
-        type: integer
-      hospitalRes:
-        items:
-          $ref: '#/definitions/hospitals.GetHospitalsRes'
-        type: array
-      perPage:
-        type: integer
-      total:
-        type: integer
-      totalPages:
-        type: integer
-    type: object
   hospitals.HospitalsResponse:
     properties:
       aboutUs:
@@ -688,19 +681,12 @@ definitions:
       type:
         type: string
     type: object
-  laboratory.GetLaboratoryPaginationRes:
-    properties:
-      data:
-        $ref: '#/definitions/laboratory.LaboratoryPaginationResponse'
-      message:
-        type: string
-      status:
-        type: boolean
-    type: object
   laboratory.GetLaboratoryRes:
     properties:
       address:
         $ref: '#/definitions/laboratory.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -712,6 +698,17 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/laboratory.LaboratoryResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  laboratory.GetLaboratoryResponseDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/laboratory.GetLaboratoryRes'
+        type: array
       message:
         type: string
       status:
@@ -750,21 +747,6 @@ definitions:
       status:
         type: boolean
     type: object
-  laboratory.LaboratoryPaginationResponse:
-    properties:
-      currentPage:
-        type: integer
-      laboratoryRes:
-        items:
-          $ref: '#/definitions/laboratory.GetLaboratoryRes'
-        type: array
-      perPage:
-        type: integer
-      total:
-        type: integer
-      totalPages:
-        type: integer
-    type: object
   laboratory.LaboratoryResponse:
     properties:
       aboutUs:
@@ -797,6 +779,8 @@ definitions:
     type: object
   medicalLabScientist.GetMedicalLabScientistRes:
     properties:
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -904,6 +888,8 @@ definitions:
     type: object
   nurse.GetNurseRes:
     properties:
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -1033,6 +1019,8 @@ definitions:
     properties:
       address:
         $ref: '#/definitions/pharmacy.Address'
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -1103,6 +1091,8 @@ definitions:
     type: object
   physiotherapist.GetPhysiotherapistRes:
     properties:
+      avgRating:
+        type: number
       id:
         type: string
       image:
@@ -2954,7 +2944,7 @@ paths:
       summary: Forgot Password
       tags:
       - customer authorization
-  /customer/get-customer-info/{id}:
+  /customer/get-customer-info:
     get:
       consumes:
       - application/json
@@ -2963,11 +2953,6 @@ paths:
       - description: Authentication header
         in: header
         name: Authorization
-        required: true
-        type: string
-      - description: customer ID
-        in: path
-        name: id
         required: true
         type: string
       produces:
@@ -3207,64 +3192,17 @@ paths:
       - customer hospitals
   /customer/healthFacility/get-hospitals:
     get:
-      consumes:
-      - application/json
-      description: Fetch hospitals With Filters
+      description: Get Hospitals
       parameters:
       - description: Authentication header
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Page no. to fetch the products for 1
-        in: query
-        name: page
-        type: integer
-      - description: Limit of products to fetch is 15
-        in: query
-        name: perPage
-        type: integer
-      - description: Longitude for memories sorting (required for distance sorting)
-        in: query
-        name: long
-        type: number
-      - description: Latitude for memories sorting (required for distance sorting)
-        in: query
-        name: lat
-        type: number
       - description: Filter hospitals by search
         in: query
         name: search
         type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/hospitals.GetHospitalsPaginationRes'
-      summary: Fetch hospitals With Filters
-      tags:
-      - customer hospitals
-  /customer/healthFacility/get-laboratories:
-    get:
-      consumes:
-      - application/json
-      description: Fetch laboratory With Filters
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Page no. to fetch the products for 1
-        in: query
-        name: page
-        type: integer
-      - description: Limit of products to fetch is 15
-        in: query
-        name: perPage
-        type: integer
       - description: Longitude for memories sorting (required for distance sorting)
         in: query
         name: long
@@ -3273,18 +3211,45 @@ paths:
         in: query
         name: lat
         type: number
-      - description: Filter laboratory by search
-        in: query
-        name: search
-        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/laboratory.GetLaboratoryPaginationRes'
-      summary: Fetch laboratory With Filters
+            $ref: '#/definitions/hospitals.GetHospitalResDto'
+      summary: Get Hospitals
+      tags:
+      - customer hospitals
+  /customer/healthFacility/get-laboratory:
+    get:
+      description: Get laboratory
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter laboratory by search
+        in: query
+        name: search
+        type: string
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryResponseDto'
+      summary: Get laboratory
       tags:
       - customer laboratory
   /customer/healthFacility/get-laboratory/{id}:

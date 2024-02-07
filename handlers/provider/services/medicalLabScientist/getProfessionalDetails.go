@@ -32,7 +32,7 @@ func FetchMedicalLabScientistProfessionalDetaiById(c *fiber.Ctx) error {
 	serviceColl := database.GetCollection("service")
 
 	projection := bson.M{
-		"medicalLabScientist.professionalDetails.qualifications":  1,
+		"medicalLabScientist.professionalDetails.qualification":  1,
 		"medicalLabScientist.professionalDetails.department":      1,
 		"medicalLabScientist.professionalDetailsDocs.certificate": 1,
 		"medicalLabScientist.professionalDetailsDocs.license":     1,

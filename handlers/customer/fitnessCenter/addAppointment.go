@@ -207,7 +207,11 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 			Relationship: familyData.RelationShip,
 		},
 		FamilyType: data.FamilyType,
-		PricePaid:  data.PricePaid,
+		Invoice: entity.Invoice{
+			TrainerFees:            trainerData.Price,
+			MembershipSubscription: data.MembershipSubscription,
+			TotalAmountPaid:        trainerData.Price + data.MembershipSubscription,
+		},
 	}
 
 	appointment = entity.AppointmentEntity{

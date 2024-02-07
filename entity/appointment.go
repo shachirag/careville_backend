@@ -86,7 +86,13 @@ type FitnessCenterAppointmentEntity struct {
 	Trainer      TrainerAppointmentEntity      `json:"trainer" bson:"trainer"`
 	FamilyType   string                        `json:"familyType" bson:"familyType"`
 	FamilyMember FamilyMemberAppointmentEntity `json:"familyMember" bson:"familyMember"`
-	PricePaid    float64                       `json:"pricePaid" bson:"pricePaid"`
+	Invoice      Invoice                       `json:"invoice" bson:"invoice"`
+}
+
+type Invoice struct {
+	MembershipSubscription float64 `json:"membershipSubscription" bson:"membershipSubscription"`
+	TrainerFees            float64 `json:"trainerFees" bson:"trainerFees"`
+	TotalAmountPaid        float64 `json:"totalAmountPaid" bson:"totalAmountPaid"`
 }
 
 type TrainerAppointmentEntity struct {

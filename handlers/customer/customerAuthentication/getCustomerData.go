@@ -18,10 +18,9 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
-// @Param id path string true "customer ID"
 // @Produce json
 // @Success 200 {object} customerAuth.GetCustomerResDto
-// @Router /customer/get-customer-info/{id} [get]
+// @Router /customer/get-customer-info [get]
 func GetCustomer(c *fiber.Ctx) error {
 
 	customerColl := database.GetCollection("customer")

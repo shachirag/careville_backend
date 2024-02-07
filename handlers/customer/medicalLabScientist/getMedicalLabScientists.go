@@ -92,6 +92,7 @@ func FetchMedicalLabScientistsWithPagination(c *fiber.Ctx) error {
 		"medicalLabScientist.information.name":  1,
 		"medicalLabScientist.information.image": 1,
 		"medicalLabScientist.information.id":    1,
+		"avgRating":                             1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -132,9 +133,10 @@ func FetchMedicalLabScientistsWithPagination(c *fiber.Ctx) error {
 		// Check if hospClinic is not nil before accessing its properties
 		if service.MedicalLabScientist != nil {
 			medicalLabScientistRes := medicalLabScientist.GetMedicalLabScientistRes{
-				Id:    service.Id,
-				Image: service.MedicalLabScientist.Information.Image,
-				Name:  service.MedicalLabScientist.Information.Name,
+				Id:        service.Id,
+				Image:     service.MedicalLabScientist.Information.Image,
+				Name:      service.MedicalLabScientist.Information.Name,
+				AvgRating: service.AvgRating,
 			}
 
 			response.MedicalLabScientistRes = append(response.MedicalLabScientistRes, medicalLabScientistRes)
@@ -142,8 +144,8 @@ func FetchMedicalLabScientistsWithPagination(c *fiber.Ctx) error {
 	}
 
 	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
-		"role":                           "healthProfessional",
-		"facilityOrProfession":           "medicalLabScientist",
+		"role":                                 "healthProfessional",
+		"facilityOrProfession":                 "medicalLabScientist",
 		"medicalLabScientist.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
 	})
 	if err != nil {

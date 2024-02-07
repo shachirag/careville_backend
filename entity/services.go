@@ -188,7 +188,7 @@ type MedicalLabScientist struct {
 
 type ProfessionalDetailsEntity struct {
 	Department    string `json:"department" bson:"department"`
-	Qualification string `json:"qualifications" bson:"qualifications"`
+	Qualification string `json:"qualification" bson:"qualification"`
 }
 
 type Nurse struct {

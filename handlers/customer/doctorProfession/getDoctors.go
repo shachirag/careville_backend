@@ -93,6 +93,7 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 		"doctor.information.image":             1,
 		"doctor.information.id":                1,
 		"doctor.additionalServices.speciality": 1,
+		"avgRating":                            1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -137,6 +138,7 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 				Image:      service.Doctor.Information.Image,
 				Name:       service.Doctor.Information.Name,
 				Speciality: service.Doctor.AdditionalServices.Speciality,
+				AvgRating:  service.AvgRating,
 			}
 
 			response.DoctorProfessionRes = append(response.DoctorProfessionRes, medicalLabScientistRes)
@@ -144,8 +146,8 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 	}
 
 	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
-		"role":                        "healthProfessional",
-		"facilityOrProfession":        "doctor",
+		"role":                    "healthProfessional",
+		"facilityOrProfession":    "doctor",
 		"doctor.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
 	})
 	if err != nil {

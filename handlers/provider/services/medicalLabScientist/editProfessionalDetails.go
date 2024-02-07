@@ -63,8 +63,8 @@ func UpdateMedicalLabScientistDetails(c *fiber.Ctx) error {
 
 	if provider.MedicalLabScientist != nil {
 		update = bson.M{"$set": bson.M{
-			"medicalLabScientist.professionalDetails.qualifications": data.Qualifications,
-			"medicalLabScientist.professionalDetails.department":     data.Department,
+			"medicalLabScientist.professionalDetails.qualification": data.Qualifications,
+			"medicalLabScientist.professionalDetails.department":    data.Department,
 			"updatedAt": time.Now().UTC(),
 		},
 		}

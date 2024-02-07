@@ -281,7 +281,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 			},
 			IsEmergencyAvailable: false,
 		},
-		ProfessionalDetails: subEntity.PersonalDetailsUpdateServiceSubEntity{
+		ProfessionalDetails: subEntity.ProfessionalDetailUpdateServiceSubEntity{
 			Department:    data.MedicalLabScientistReqDto.Department,
 			Qualification: data.MedicalLabScientistReqDto.Document,
 		},

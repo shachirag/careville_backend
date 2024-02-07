@@ -502,7 +502,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/get-customer-info/{id}": {
+        "/customer/get-customer-info": {
             "get": {
                 "description": "Get customer by ID",
                 "consumes": [
@@ -521,13 +521,6 @@ const docTemplate = `{
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "customer ID",
-                        "name": "id",
-                        "in": "path",
                         "required": true
                     }
                 ],
@@ -882,17 +875,14 @@ const docTemplate = `{
         },
         "/customer/healthFacility/get-hospitals": {
             "get": {
-                "description": "Fetch hospitals With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get Hospitals",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer hospitals"
                 ],
-                "summary": "Fetch hospitals With Filters",
+                "summary": "Get Hospitals",
                 "parameters": [
                     {
                         "type": "string",
@@ -900,61 +890,46 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "description": "Longitude for memories sorting (required for distance sorting)",
-                        "name": "long",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "description": "Latitude for memories sorting (required for distance sorting)",
-                        "name": "lat",
-                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Filter hospitals by search",
                         "name": "search",
                         "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hospitals.GetHospitalsPaginationRes"
+                            "$ref": "#/definitions/hospitals.GetHospitalResDto"
                         }
                     }
                 }
             }
         },
-        "/customer/healthFacility/get-laboratories": {
+        "/customer/healthFacility/get-laboratory": {
             "get": {
-                "description": "Fetch laboratory With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get laboratory",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer laboratory"
                 ],
-                "summary": "Fetch laboratory With Filters",
+                "summary": "Get laboratory",
                 "parameters": [
                     {
                         "type": "string",
@@ -964,15 +939,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter laboratory by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -986,19 +955,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter laboratory by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/laboratory.GetLaboratoryPaginationRes"
+                            "$ref": "#/definitions/laboratory.GetLaboratoryResponseDto"
                         }
                     }
                 }
@@ -6084,6 +6047,9 @@ const docTemplate = `{
         "doctorProfession.GetDoctorProfessionRes": {
             "type": "object",
             "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6152,11 +6118,11 @@ const docTemplate = `{
                 "familyType": {
                     "type": "string"
                 },
+                "membershipSubscription": {
+                    "type": "number"
+                },
                 "package": {
                     "type": "string"
-                },
-                "pricePaid": {
-                    "type": "number"
                 },
                 "trainerId": {
                     "type": "string"
@@ -6249,6 +6215,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/fitnessCenter.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6291,11 +6260,14 @@ const docTemplate = `{
                 }
             }
         },
-        "hospitals.GetHospitalsPaginationRes": {
+        "hospitals.GetHospitalResDto": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/hospitals.HospitalsPaginationResponse"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.GetHospitalsRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -6310,6 +6282,9 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "$ref": "#/definitions/hospitals.Address"
+                },
+                "avgRating": {
+                    "type": "number"
                 },
                 "id": {
                     "type": "string"
@@ -6373,29 +6348,6 @@ const docTemplate = `{
                 }
             }
         },
-        "hospitals.HospitalsPaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "hospitalRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/hospitals.GetHospitalsRes"
-                    }
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
         "hospitals.HospitalsResponse": {
             "type": "object",
             "properties": {
@@ -6445,25 +6397,14 @@ const docTemplate = `{
                 }
             }
         },
-        "laboratory.GetLaboratoryPaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/laboratory.LaboratoryPaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "laboratory.GetLaboratoryRes": {
             "type": "object",
             "properties": {
                 "address": {
                     "$ref": "#/definitions/laboratory.Address"
+                },
+                "avgRating": {
+                    "type": "number"
                 },
                 "id": {
                     "type": "string"
@@ -6481,6 +6422,23 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/laboratory.LaboratoryResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "laboratory.GetLaboratoryResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/laboratory.GetLaboratoryRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -6541,29 +6499,6 @@ const docTemplate = `{
                 }
             }
         },
-        "laboratory.LaboratoryPaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "laboratoryRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/laboratory.GetLaboratoryRes"
-                    }
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
         "laboratory.LaboratoryResponse": {
             "type": "object",
             "properties": {
@@ -6613,6 +6548,9 @@ const docTemplate = `{
         "medicalLabScientist.GetMedicalLabScientistRes": {
             "type": "object",
             "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6778,6 +6716,9 @@ const docTemplate = `{
         "nurse.GetNurseRes": {
             "type": "object",
             "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -6977,6 +6918,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/pharmacy.Address"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -7085,6 +7029,9 @@ const docTemplate = `{
         "physiotherapist.GetPhysiotherapistRes": {
             "type": "object",
             "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
                 "id": {
                     "type": "string"
                 },

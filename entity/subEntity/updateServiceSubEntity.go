@@ -175,13 +175,13 @@ type DoctorSlotsUpdateServiceSubEntity struct {
 
 type MedicalLabScientistUpdateServiceSubEntity struct {
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
-	ProfessionalDetails        PersonalDetailsUpdateServiceSubEntity            `json:"professionalDetails" bson:"professionalDetails"`
+	ProfessionalDetails        ProfessionalDetailUpdateServiceSubEntity            `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocsUpdateServiceSubEntity    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndScheduleUpdateServiceSubEntity       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
 }
 
-type PersonalDetailsUpdateServiceSubEntity struct {
+type ProfessionalDetailUpdateServiceSubEntity struct {
 	Department    string `json:"department" bson:"department"`
 	Qualification string `json:"qualification" bson:"qualification"`
 }
