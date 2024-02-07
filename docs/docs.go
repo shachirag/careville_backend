@@ -777,17 +777,14 @@ const docTemplate = `{
         },
         "/customer/healthFacility/get-fitnessCenters": {
             "get": {
-                "description": "Fetch fitnessCenter With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get fitnessCenter",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer fitnessCenter"
                 ],
-                "summary": "Fetch fitnessCenter With Filters",
+                "summary": "Get fitnessCenter",
                 "parameters": [
                     {
                         "type": "string",
@@ -797,15 +794,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter fitnessCenter by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -819,19 +810,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter fitnessCenters by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterPaginationRes"
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterResponseDto"
                         }
                     }
                 }
@@ -920,7 +905,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/healthFacility/get-laboratory": {
+        "/customer/healthFacility/get-laboratories": {
             "get": {
                 "description": "Get laboratory",
                 "produces": [
@@ -1005,17 +990,14 @@ const docTemplate = `{
         },
         "/customer/healthFacility/get-pharmacies": {
             "get": {
-                "description": "Fetch pharmacy With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get pharmacy",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer pharmacy"
                 ],
-                "summary": "Fetch pharmacy With Filters",
+                "summary": "Get pharmacy",
                 "parameters": [
                     {
                         "type": "string",
@@ -1025,15 +1007,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter pharmacy by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -1047,19 +1023,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter pharmacy by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pharmacy.GetPharmacyPaginationRes"
+                            "$ref": "#/definitions/pharmacy.GetPharmacyResponseDto"
                         }
                     }
                 }
@@ -1331,17 +1301,14 @@ const docTemplate = `{
         },
         "/customer/healthProfessional/get-doctors": {
             "get": {
-                "description": "Fetch doctorProfession With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get doctorProfession",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer doctorProfession"
                 ],
-                "summary": "Fetch doctorProfession With Filters",
+                "summary": "Get doctorProfession",
                 "parameters": [
                     {
                         "type": "string",
@@ -1351,15 +1318,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter doctorProfession by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -1373,19 +1334,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter doctorProfession by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/doctorProfession.GetDoctorProfessionPaginationRes"
+                            "$ref": "#/definitions/doctorProfession.GetDoctorProfessionResponseDto"
                         }
                     }
                 }
@@ -1429,17 +1384,14 @@ const docTemplate = `{
         },
         "/customer/healthProfessional/get-medicalLabScientists": {
             "get": {
-                "description": "Fetch medicalLabScientists With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get medicalLabScientist",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer medicalLabScientist"
                 ],
-                "summary": "Fetch medicalLabScientists With Filters",
+                "summary": "Get medicalLabScientist",
                 "parameters": [
                     {
                         "type": "string",
@@ -1449,15 +1401,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter medicalLabScientist by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -1471,19 +1417,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter laboratory by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistPaginationRes"
+                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistResponseDto"
                         }
                     }
                 }
@@ -1527,17 +1467,14 @@ const docTemplate = `{
         },
         "/customer/healthProfessional/get-nurses": {
             "get": {
-                "description": "Fetch nurse With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get nurse",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "customer nurse"
                 ],
-                "summary": "Fetch nurse With Filters",
+                "summary": "Get nurse",
                 "parameters": [
                     {
                         "type": "string",
@@ -1547,15 +1484,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter nurse by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -1569,19 +1500,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter nurse by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/nurse.GetNursePaginationRes"
+                            "$ref": "#/definitions/nurse.GetNurseResponseDto"
                         }
                     }
                 }
@@ -1625,17 +1550,14 @@ const docTemplate = `{
         },
         "/customer/healthProfessional/get-physiotherapists": {
             "get": {
-                "description": "Fetch physiotherapist With Filters",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get physiotherapist",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "customer physiotherapist"
+                    "customer medicalLabScientist"
                 ],
-                "summary": "Fetch physiotherapist With Filters",
+                "summary": "Get physiotherapist",
                 "parameters": [
                     {
                         "type": "string",
@@ -1645,15 +1567,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
+                        "type": "string",
+                        "description": "Filter physiotherapist by search",
+                        "name": "search",
                         "in": "query"
                     },
                     {
@@ -1667,19 +1583,13 @@ const docTemplate = `{
                         "description": "Latitude for memories sorting (required for distance sorting)",
                         "name": "lat",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter nurse by search",
-                        "name": "search",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistPaginationRes"
+                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistResponseDto"
                         }
                     }
                 }
@@ -5952,29 +5862,6 @@ const docTemplate = `{
                 }
             }
         },
-        "doctorProfession.DoctorProfessionPaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "doctorProfessionRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/doctorProfession.GetDoctorProfessionRes"
-                    }
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
         "doctorProfession.DoctorProfessionResponse": {
             "type": "object",
             "properties": {
@@ -6030,20 +5917,6 @@ const docTemplate = `{
                 }
             }
         },
-        "doctorProfession.GetDoctorProfessionPaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/doctorProfession.DoctorProfessionPaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "doctorProfession.GetDoctorProfessionRes": {
             "type": "object",
             "properties": {
@@ -6069,6 +5942,23 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/doctorProfession.DoctorProfessionResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorProfessionResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.GetDoctorProfessionRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -6140,29 +6030,6 @@ const docTemplate = `{
                 }
             }
         },
-        "fitnessCenter.FitnessCenterPaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "fitnessCenterRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/fitnessCenter.GetFitnessCenterRes"
-                    }
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
         "fitnessCenter.FitnessCenterResponse": {
             "type": "object",
             "properties": {
@@ -6195,20 +6062,6 @@ const docTemplate = `{
                 }
             }
         },
-        "fitnessCenter.GetFitnessCenterPaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/fitnessCenter.FitnessCenterPaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "fitnessCenter.GetFitnessCenterRes": {
             "type": "object",
             "properties": {
@@ -6234,6 +6087,23 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/fitnessCenter.FitnessCenterResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/fitnessCenter.GetFitnessCenterRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -6531,20 +6401,6 @@ const docTemplate = `{
                 }
             }
         },
-        "medicalLabScientist.GetMedicalLabScientistPaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistPaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "medicalLabScientist.GetMedicalLabScientistRes": {
             "type": "object",
             "properties": {
@@ -6567,6 +6423,23 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.GetMedicalLabScientistResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -6607,29 +6480,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
-                }
-            }
-        },
-        "medicalLabScientist.MedicalLabScientistPaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "medicalLabScientistRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistRes"
-                    }
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
                 }
             }
         },
@@ -6699,20 +6549,6 @@ const docTemplate = `{
                 }
             }
         },
-        "nurse.GetNursePaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/nurse.NursePaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "nurse.GetNurseRes": {
             "type": "object",
             "properties": {
@@ -6735,6 +6571,23 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/nurse.NurseResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "nurse.GetNurseResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.GetNurseRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -6775,29 +6628,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
-                }
-            }
-        },
-        "nurse.NursePaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "nurseRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/nurse.GetNurseRes"
-                    }
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
                 }
             }
         },
@@ -6898,20 +6728,6 @@ const docTemplate = `{
                 }
             }
         },
-        "pharmacy.GetPharmacyPaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/pharmacy.PharmacyPaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "pharmacy.GetPharmacyRes": {
             "type": "object",
             "properties": {
@@ -6946,9 +6762,15 @@ const docTemplate = `{
                 }
             }
         },
-        "pharmacy.PharmacyDrugsResDto": {
+        "pharmacy.GetPharmacyResponseDto": {
             "type": "object",
             "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pharmacy.GetPharmacyRes"
+                    }
+                },
                 "message": {
                     "type": "string"
                 },
@@ -6957,26 +6779,14 @@ const docTemplate = `{
                 }
             }
         },
-        "pharmacy.PharmacyPaginationResponse": {
+        "pharmacy.PharmacyDrugsResDto": {
             "type": "object",
             "properties": {
-                "currentPage": {
-                    "type": "integer"
+                "message": {
+                    "type": "string"
                 },
-                "perPage": {
-                    "type": "integer"
-                },
-                "pharmacyRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/pharmacy.GetPharmacyRes"
-                    }
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -7012,20 +6822,6 @@ const docTemplate = `{
                 }
             }
         },
-        "physiotherapist.GetPhysiotherapistPaginationRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/physiotherapist.PhysiotherapistPaginationResponse"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "physiotherapist.GetPhysiotherapistRes": {
             "type": "object",
             "properties": {
@@ -7048,6 +6844,23 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/physiotherapist.PhysiotherapistResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.GetPhysiotherapistRes"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -7088,29 +6901,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
-                }
-            }
-        },
-        "physiotherapist.PhysiotherapistPaginationResponse": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "perPage": {
-                    "type": "integer"
-                },
-                "physiotherapistRes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/physiotherapist.GetPhysiotherapistRes"
-                    }
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
                 }
             }
         },

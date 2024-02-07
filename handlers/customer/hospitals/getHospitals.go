@@ -85,7 +85,7 @@ func GetHospitals(c *fiber.Ctx) error {
 	projection := bson.M{
 		"hospClinic.information.name":  1,
 		"hospClinic.information.image": 1,
-		"hospClinic.information.id":    1,
+		"_id":                          1,
 		"avgRating":                    1,
 		"hospClinic.information.address": bson.M{
 			"coordinates": 1,
@@ -114,17 +114,19 @@ func GetHospitals(c *fiber.Ctx) error {
 				Message: "Failed to decode hospitals data: " + err.Error(),
 			})
 		}
-		hospitalData = append(hospitalData, hospitals.GetHospitalsRes{
-			Id:    hospital.Id,
-			Image: hospital.HospClinic.Information.Image,
-			Name:  hospital.HospClinic.Information.Name,
-			Address: hospitals.Address{
-				Coordinates: hospital.HospClinic.Information.Address.Coordinates,
-				Type:        hospital.HospClinic.Information.Address.Type,
-				Add:         hospital.HospClinic.Information.Address.Add,
-			},
-			AvgRating: hospital.AvgRating,
-		})
+		if hospital.HospClinic != nil {
+			hospitalData = append(hospitalData, hospitals.GetHospitalsRes{
+				Id:    hospital.Id,
+				Image: hospital.HospClinic.Information.Image,
+				Name:  hospital.HospClinic.Information.Name,
+				Address: hospitals.Address{
+					Coordinates: hospital.HospClinic.Information.Address.Coordinates,
+					Type:        hospital.HospClinic.Information.Address.Type,
+					Add:         hospital.HospClinic.Information.Address.Add,
+				},
+				AvgRating: hospital.AvgRating,
+			})
+		}
 	}
 
 	if len(hospitalData) == 0 {

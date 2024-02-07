@@ -25,7 +25,7 @@ var ctx = context.Background()
 // @Param lat query float64 false "Latitude for memories sorting (required for distance sorting)"
 // @Produce json
 // @Success 200 {object} laboratory.GetLaboratoryResponseDto
-// @Router /customer/healthFacility/get-laboratory [get]
+// @Router /customer/healthFacility/get-laboratories [get]
 func Getlaboratory(c *fiber.Ctx) error {
 
 	var (
@@ -85,7 +85,7 @@ func Getlaboratory(c *fiber.Ctx) error {
 	projection := bson.M{
 		"laboratory.information.name":  1,
 		"laboratory.information.image": 1,
-		"laboratory.information.id":    1,
+		"_id":                          1,
 		"laboratory.information.address": bson.M{
 			"coordinates": 1,
 			"type":        1,

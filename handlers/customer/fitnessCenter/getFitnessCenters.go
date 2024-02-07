@@ -1,177 +1,177 @@
 package fitnessCenter
 
-import (
-	"careville_backend/database"
-	fitnessCenter "careville_backend/dto/customer/fitnessCenter"
-	"careville_backend/entity"
-	"context"
-	"math"
-	"strconv"
+// import (
+// 	"careville_backend/database"
+// 	fitnessCenter "careville_backend/dto/customer/fitnessCenter"
+// 	"careville_backend/entity"
+// 	"context"
+// 	"math"
+// 	"strconv"
 
-	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-)
+// 	"github.com/gofiber/fiber/v2"
+// 	"go.mongodb.org/mongo-driver/bson"
+// 	"go.mongodb.org/mongo-driver/mongo"
+// 	"go.mongodb.org/mongo-driver/mongo/options"
+// )
 
-var ctx = context.Background()
+// var ctx = context.Background()
 
-// @Summary Fetch fitnessCenter With Filters
-// @Description Fetch fitnessCenter With Filters
-// @Tags customer fitnessCenter
-// @Accept application/json
-//
-//	@Param Authorization header	string true	"Authentication header"
-//
-// @Param page query int false "Page no. to fetch the products for 1"
-// @Param perPage query int false "Limit of products to fetch is 15"
-// @Param long query float64 false "Longitude for memories sorting (required for distance sorting)"
-// @Param lat query float64 false "Latitude for memories sorting (required for distance sorting)"
-// @Param search query string false "Filter fitnessCenters by search"
-// @Produce json
-// @Success 200 {object} fitnessCenter.GetFitnessCenterPaginationRes
-// @Router /customer/healthFacility/get-fitnessCenters [get]
-func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
+// // @Summary Fetch fitnessCenter With Filters
+// // @Description Fetch fitnessCenter With Filters
+// // @Tags customer fitnessCenter
+// // @Accept application/json
+// //
+// //	@Param Authorization header	string true	"Authentication header"
+// //
+// // @Param page query int false "Page no. to fetch the products for 1"
+// // @Param perPage query int false "Limit of products to fetch is 15"
+// // @Param long query float64 false "Longitude for memories sorting (required for distance sorting)"
+// // @Param lat query float64 false "Latitude for memories sorting (required for distance sorting)"
+// // @Param search query string false "Filter fitnessCenters by search"
+// // @Produce json
+// // @Success 200 {object} fitnessCenter.GetFitnessCenterPaginationRes
+// // @Router /customer/healthFacility/get-fitnessCenters [get]
+// func FetchFitnessCenterWithPagination(c *fiber.Ctx) error {
 
-	page, _ := strconv.Atoi(c.Query("page", "1"))
-	limit, _ := strconv.Atoi(c.Query("limit", "15"))
+// 	page, _ := strconv.Atoi(c.Query("page", "1"))
+// 	limit, _ := strconv.Atoi(c.Query("limit", "15"))
 
-	var lat, long float64
-	latParam := c.Query("lat")
-	longParam := c.Query("long")
-	var err error
+// 	var lat, long float64
+// 	latParam := c.Query("lat")
+// 	longParam := c.Query("long")
+// 	var err error
 
-	if latParam != "" && longParam != "" {
-		lat, err = strconv.ParseFloat(latParam, 64)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
-				Status:  false,
-				Message: "Invalid latitude format",
-			})
-		}
+// 	if latParam != "" && longParam != "" {
+// 		lat, err = strconv.ParseFloat(latParam, 64)
+// 		if err != nil {
+// 			return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
+// 				Status:  false,
+// 				Message: "Invalid latitude format",
+// 			})
+// 		}
 
-		long, err = strconv.ParseFloat(longParam, 64)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
-				Status:  false,
-				Message: "Invalid longitude format",
-			})
-		}
-	}
+// 		long, err = strconv.ParseFloat(longParam, 64)
+// 		if err != nil {
+// 			return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
+// 				Status:  false,
+// 				Message: "Invalid longitude format",
+// 			})
+// 		}
+// 	}
 
-	searchTitle := c.Query("search", "")
+// 	searchTitle := c.Query("search", "")
 
-	serviceColl := database.GetCollection("service")
+// 	serviceColl := database.GetCollection("service")
 
-	filter := bson.M{
-		"role":                 "healthFacility",
-		"facilityOrProfession": "fitnessCenter",
-	}
+// 	filter := bson.M{
+// 		"role":                 "healthFacility",
+// 		"facilityOrProfession": "fitnessCenter",
+// 	}
 
-	if latParam != "" && longParam != "" {
-		filter["fitnessCenter.information.address"] = bson.M{
-			"$nearSphere": bson.M{
-				"$geometry": bson.M{
-					"type":        "Point",
-					"coordinates": []float64{long, lat},
-				},
-				"$maxDistance": 20000,
-			},
-		}
-	}
+// 	if latParam != "" && longParam != "" {
+// 		filter["fitnessCenter.information.address"] = bson.M{
+// 			"$nearSphere": bson.M{
+// 				"$geometry": bson.M{
+// 					"type":        "Point",
+// 					"coordinates": []float64{long, lat},
+// 				},
+// 				"$maxDistance": 20000,
+// 			},
+// 		}
+// 	}
 
-	if searchTitle != "" {
-		filter["fitnessCenter.information.name"] = bson.M{"$regex": searchTitle, "$options": "i"}
-	}
+// 	if searchTitle != "" {
+// 		filter["fitnessCenter.information.name"] = bson.M{"$regex": searchTitle, "$options": "i"}
+// 	}
 
-	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
+// 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
 
-	skip := (page - 1) * limit
+// 	skip := (page - 1) * limit
 
-	projection := bson.M{
-		"fitnessCenter.information.name":  1,
-		"fitnessCenter.information.image": 1,
-		"fitnessCenter.information.id":    1,
-		"fitnessCenter.information.address": bson.M{
-			"coordinates": 1,
-			"type":        1,
-			"add":         1,
-		},
-		"avgRating": 1,
-	}
+// 	projection := bson.M{
+// 		"fitnessCenter.information.name":  1,
+// 		"fitnessCenter.information.image": 1,
+// 		"fitnessCenter.information.id":    1,
+// 		"fitnessCenter.information.address": bson.M{
+// 			"coordinates": 1,
+// 			"type":        1,
+// 			"add":         1,
+// 		},
+// 		"avgRating": 1,
+// 	}
 
-	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
+// 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
 
-	cursor, err := serviceColl.Find(ctx, filter, findOptions, sortOptions)
-	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
-				Status:  false,
-				Message: "fitnessCenter not found",
-			})
-		}
-		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
-			Status:  false,
-			Message: "Failed to fetch fitnessCenter from MongoDB: " + err.Error(),
-		})
-	}
-	defer cursor.Close(ctx)
+// 	cursor, err := serviceColl.Find(ctx, filter, findOptions, sortOptions)
+// 	if err != nil {
+// 		if err == mongo.ErrNoDocuments {
+// 			return c.Status(fiber.StatusNotFound).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
+// 				Status:  false,
+// 				Message: "fitnessCenter not found",
+// 			})
+// 		}
+// 		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
+// 			Status:  false,
+// 			Message: "Failed to fetch fitnessCenter from MongoDB: " + err.Error(),
+// 		})
+// 	}
+// 	defer cursor.Close(ctx)
 
-	response := fitnessCenter.FitnessCenterPaginationResponse{
-		Total:            0,
-		PerPage:          limit,
-		CurrentPage:      page,
-		TotalPages:       0,
-		FitnessCenterRes: []fitnessCenter.GetFitnessCenterRes{},
-	}
+// 	response := fitnessCenter.FitnessCenterPaginationResponse{
+// 		Total:            0,
+// 		PerPage:          limit,
+// 		CurrentPage:      page,
+// 		TotalPages:       0,
+// 		FitnessCenterRes: []fitnessCenter.GetFitnessCenterRes{},
+// 	}
 
-	for cursor.Next(ctx) {
-		var service entity.ServiceEntity
-		err := cursor.Decode(&service)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
-				Status:  false,
-				Message: "Failed to decode fitnessCenter data: " + err.Error(),
-			})
-		}
+// 	for cursor.Next(ctx) {
+// 		var service entity.ServiceEntity
+// 		err := cursor.Decode(&service)
+// 		if err != nil {
+// 			return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
+// 				Status:  false,
+// 				Message: "Failed to decode fitnessCenter data: " + err.Error(),
+// 			})
+// 		}
 
-		// Check if hospClinic is not nil before accessing its properties
-		if service.FitnessCenter != nil {
-			fitnessCenterRes := fitnessCenter.GetFitnessCenterRes{
-				Id:    service.Id,
-				Image: service.FitnessCenter.Information.Image,
-				Name:  service.FitnessCenter.Information.Name,
-				Address: fitnessCenter.Address{
-					Coordinates: service.FitnessCenter.Information.Address.Coordinates,
-					Type:        service.FitnessCenter.Information.Address.Type,
-					Add:         service.FitnessCenter.Information.Address.Add,
-				},
-				AvgRating: service.AvgRating,
-			}
+// 		// Check if hospClinic is not nil before accessing its properties
+// 		if service.FitnessCenter != nil {
+// 			fitnessCenterRes := fitnessCenter.GetFitnessCenterRes{
+// 				Id:    service.Id,
+// 				Image: service.FitnessCenter.Information.Image,
+// 				Name:  service.FitnessCenter.Information.Name,
+// 				Address: fitnessCenter.Address{
+// 					Coordinates: service.FitnessCenter.Information.Address.Coordinates,
+// 					Type:        service.FitnessCenter.Information.Address.Type,
+// 					Add:         service.FitnessCenter.Information.Address.Add,
+// 				},
+// 				AvgRating: service.AvgRating,
+// 			}
 
-			response.FitnessCenterRes = append(response.FitnessCenterRes, fitnessCenterRes)
-		}
-	}
+// 			response.FitnessCenterRes = append(response.FitnessCenterRes, fitnessCenterRes)
+// 		}
+// 	}
 
-	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
-		"role":                           "healthFacility",
-		"facilityOrProfession":           "fitnessCenter",
-		"fitnessCenter.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
-	})
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
-			Status:  false,
-			Message: "Failed to count fitnessCenter: " + err.Error(),
-		})
-	}
+// 	totalCount, err := serviceColl.CountDocuments(ctx, bson.M{
+// 		"role":                           "healthFacility",
+// 		"facilityOrProfession":           "fitnessCenter",
+// 		"fitnessCenter.information.name": bson.M{"$regex": searchTitle, "$options": "i"},
+// 	})
+// 	if err != nil {
+// 		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterPaginationRes{
+// 			Status:  false,
+// 			Message: "Failed to count fitnessCenter: " + err.Error(),
+// 		})
+// 	}
 
-	response.Total = int(totalCount)
-	response.TotalPages = int(math.Ceil(float64(response.Total) / float64(response.PerPage)))
+// 	response.Total = int(totalCount)
+// 	response.TotalPages = int(math.Ceil(float64(response.Total) / float64(response.PerPage)))
 
-	finalResponse := fitnessCenter.GetFitnessCenterPaginationRes{
-		Status:  true,
-		Message: "Sucessfully fetched data",
-		Data:    response,
-	}
-	return c.Status(fiber.StatusOK).JSON(finalResponse)
-}
+// 	finalResponse := fitnessCenter.GetFitnessCenterPaginationRes{
+// 		Status:  true,
+// 		Message: "Sucessfully fetched data",
+// 		Data:    response,
+// 	}
+// 	return c.Status(fiber.StatusOK).JSON(finalResponse)
+// }

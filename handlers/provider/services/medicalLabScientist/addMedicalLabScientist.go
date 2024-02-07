@@ -321,7 +321,7 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 
 	fitnessRes := services.MedicalLabScientistResDto{
 		Status:  true,
-		Message: "MedicalLabScientist added successfully",
+		Message: "Medical Lab Scientist added successfully",
 		Role: services.Role{
 			Role:                 "healthProfessional",
 			FacilityOrProfession: "medicalLabScientist",
