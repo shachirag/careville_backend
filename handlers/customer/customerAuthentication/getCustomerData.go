@@ -44,6 +44,11 @@ func GetCustomer(c *fiber.Ctx) error {
 		"notification.deviceType":  1,
 		"notification.deviceToken": 1,
 		"notification.isEnabled":   1,
+		"address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 		"email":                    1,
 		"createdAt":                1,
 		"updatedAt":                1,
@@ -71,6 +76,11 @@ func GetCustomer(c *fiber.Ctx) error {
 				DialCode:    customer.PhoneNumber.DialCode,
 				CountryCode: customer.PhoneNumber.CountryCode,
 				Number:      customer.PhoneNumber.Number,
+			},
+			Address: customerAuth.Address{
+				Coordinates: customer.Address.Coordinates,
+				Type:        customer.Address.Type,
+				Add:         customer.Address.Add,
 			},
 			Notification: customerAuth.Notification{
 				DeviceToken: customer.Notification.DeviceToken,
