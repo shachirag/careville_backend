@@ -40,10 +40,10 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 	projection := bson.M{
 		"doctor.information.name":              1,
 		"doctor.information.image":             1,
-		"doctor.information.id":                1,
+		"_id":                                  1,
 		"doctor.information.additionalText":    1,
-		"totalReviews":                         1,
-		"avgRating":                            1,
+		"doctor.review.totalReviews":           1,
+		"doctor.review.avgRating":              1,
 		"doctor.additionalServices.speciality": 1,
 		"doctor.schedule.consultationFees":     1,
 		"doctor.schedule.slots": bson.M{
@@ -95,8 +95,8 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 			AboutMe:          doctorProfessionData.Doctor.Information.AdditionalText,
 			ConsultationFees: doctorProfessionData.Doctor.Schedule.ConsultationFees,
 			DoctorSchedule:   scheduleData,
-			TotalReviews:     doctorProfessionData.TotalReviews,
-			AvgRating:        doctorProfessionData.AvgRating,
+			TotalReviews:     doctorProfessionData.Doctor.Review.TotalReviews,
+			AvgRating:        doctorProfessionData.Doctor.Review.AvgRating,
 		},
 	}
 

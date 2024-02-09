@@ -40,10 +40,10 @@ func GetFitnessCenterByID(c *fiber.Ctx) error {
 	projection := bson.M{
 		"fitnessCenter.information.name":               1,
 		"fitnessCenter.information.image":              1,
-		"fitnessCenter.information.id":                 1,
+		"_id":                                          1,
 		"fitnessCenter.information.additionalText":     1,
-		"totalReviews":                                 1,
-		"avgRating":                                    1,
+		"fitnessCenter.review.totalReviews":            1,
+		"fitnessCenter.review.avgRating":               1,
 		"fitnessCenter.additionalServices.id":          1,
 		"fitnessCenter.additionalServices.name":        1,
 		"fitnessCenter.additionalServices.information": 1,
@@ -93,8 +93,8 @@ func GetFitnessCenterByID(c *fiber.Ctx) error {
 			AboutUs:            fitnessCenterData.FitnessCenter.Information.AdditionalText,
 			Address:            fitnessCenter.Address(fitnessCenterData.FitnessCenter.Information.Address),
 			AdditionalServices: servicesData,
-			TotalReviews:       fitnessCenterData.TotalReviews,
-			AvgRating:          fitnessCenterData.AvgRating,
+			TotalReviews:       fitnessCenterData.FitnessCenter.Review.TotalReviews,
+			AvgRating:          fitnessCenterData.FitnessCenter.Review.AvgRating,
 		},
 	}
 

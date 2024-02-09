@@ -39,12 +39,12 @@ func GetMedicalLabScientistByID(c *fiber.Ctx) error {
 	filter := bson.M{"_id": medicalLabScientistID}
 
 	projection := bson.M{
-		"medicalLabScientist.information.name":           1,
-		"medicalLabScientist.information.image":          1,
-		"medicalLabScientist.information.id":             1,
-		"medicalLabScientist.information.additionalText": 1,
-		"totalReviews": 1,
-		"avgRating":    1,
+		"medicalLabScientist.information.name":               1,
+		"medicalLabScientist.information.image":              1,
+		"_id":                                                1,
+		"medicalLabScientist.information.additionalText":     1,
+		"medicalLabScientist.review.totalReviews":            1,
+		"medicalLabScientist.review.avgRating":               1,
 		"medicalLabScientist.serviceAndSchedule.id":          1,
 		"medicalLabScientist.serviceAndSchedule.name":        1,
 		"medicalLabScientist.serviceAndSchedule.serviceFees": 1,
@@ -103,8 +103,8 @@ func GetMedicalLabScientistByID(c *fiber.Ctx) error {
 			Name:               medicalLabScientistData.MedicalLabScientist.Information.Name,
 			AboutMe:            medicalLabScientistData.MedicalLabScientist.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
-			TotalReviews:       medicalLabScientistData.TotalReviews,
-			AvgRating:          medicalLabScientistData.AvgRating,
+			TotalReviews:       medicalLabScientistData.MedicalLabScientist.Review.TotalReviews,
+			AvgRating:          medicalLabScientistData.MedicalLabScientist.Review.AvgRating,
 		},
 	}
 

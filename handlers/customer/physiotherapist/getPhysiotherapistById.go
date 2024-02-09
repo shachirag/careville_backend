@@ -38,12 +38,12 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 	filter := bson.M{"_id": physiotherapistID}
 
 	projection := bson.M{
-		"physiotherapist.information.name":           1,
-		"physiotherapist.information.image":          1,
-		"physiotherapist.information.id":             1,
-		"physiotherapist.information.additionalText": 1,
-		"totalReviews":                                   1,
-		"avgRating":                                      1,
+		"physiotherapist.information.name":               1,
+		"physiotherapist.information.image":              1,
+		"_id":                                            1,
+		"physiotherapist.information.additionalText":     1,
+		"physiotherapist.review.totalReviews":            1,
+		"physiotherapist.review.avgRating":               1,
 		"physiotherapist.serviceAndSchedule.id":          1,
 		"physiotherapist.serviceAndSchedule.name":        1,
 		"physiotherapist.serviceAndSchedule.serviceFees": 1,
@@ -98,12 +98,12 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 		Message: "Physiotherapist data fetched successfully",
 		Data: physiotherapist.PhysiotherapistResponse{
 			Id:                 physiotherapistData.Id,
-			Image:              physiotherapistData.Nurse.Information.Image,
-			Name:               physiotherapistData.Nurse.Information.Name,
-			AboutMe:            physiotherapistData.Nurse.Information.AdditionalText,
+			Image:              physiotherapistData.Physiotherapist.Information.Image,
+			Name:               physiotherapistData.Physiotherapist.Information.Name,
+			AboutMe:            physiotherapistData.Physiotherapist.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
-			TotalReviews:       physiotherapistData.TotalReviews,
-			AvgRating:          physiotherapistData.AvgRating,
+			TotalReviews:       physiotherapistData.Physiotherapist.Review.TotalReviews,
+			AvgRating:          physiotherapistData.Physiotherapist.Review.AvgRating,
 		},
 	}
 

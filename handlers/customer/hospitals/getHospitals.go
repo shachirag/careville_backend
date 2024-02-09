@@ -86,7 +86,7 @@ func GetHospitals(c *fiber.Ctx) error {
 		"hospClinic.information.name":  1,
 		"hospClinic.information.image": 1,
 		"_id":                          1,
-		"avgRating":                    1,
+		"hospClinic.review.avgRating":  1,
 		"hospClinic.information.address": bson.M{
 			"coordinates": 1,
 			"type":        1,
@@ -124,7 +124,7 @@ func GetHospitals(c *fiber.Ctx) error {
 					Type:        hospital.HospClinic.Information.Address.Type,
 					Add:         hospital.HospClinic.Information.Address.Add,
 				},
-				AvgRating: hospital.AvgRating,
+				AvgRating: hospital.HospClinic.Review.AvgRating,
 			})
 		}
 	}

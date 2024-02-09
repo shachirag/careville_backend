@@ -386,47 +386,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/add-review": {
-            "post": {
-                "description": "Add Review for service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer reviews"
-                ],
-                "summary": "Add Review for service",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Review data",
-                        "name": "review",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/reviews.ReviewsReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/reviews.ReviewsResDto"
-                        }
-                    }
-                }
-            }
-        },
         "/customer/change-password": {
             "put": {
                 "description": "Change customer Password",
@@ -817,6 +776,53 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/fitnessCenter.GetFitnessCenterResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-health-facilities": {
+            "get": {
+                "description": "Get nearest health facilties",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer commonApis"
+                ],
+                "summary": "Get nearest health facilties",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter hospitals by search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.GetHealthFacilityResDto"
                         }
                     }
                 }
@@ -1341,6 +1347,53 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/doctorProfession.GetDoctorProfessionResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-health-professionals": {
+            "get": {
+                "description": "Get nearest health professionals",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer commonApis"
+                ],
+                "summary": "Get nearest health professionals",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter health professionals by search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.GetHealthProfessionalResDto"
                         }
                     }
                 }
@@ -5392,6 +5445,146 @@ const docTemplate = `{
                 }
             }
         },
+        "common.GetDoctorHealthProfessionalRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.GetHealthFacilityRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.GetHealthFacilityResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/common.HealthFacilityResDto"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "common.GetHealthProfessionalRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.GetHealthProfessionalResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/common.HealthProfessionalResDto"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "common.HealthFacilityResDto": {
+            "type": "object",
+            "properties": {
+                "fitnessCenters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthFacilityRes"
+                    }
+                },
+                "hospitals": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthFacilityRes"
+                    }
+                },
+                "laboratories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthFacilityRes"
+                    }
+                },
+                "pharmacies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthFacilityRes"
+                    }
+                }
+            }
+        },
+        "common.HealthProfessionalResDto": {
+            "type": "object",
+            "properties": {
+                "doctors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetDoctorHealthProfessionalRes"
+                    }
+                },
+                "medicalLabScientists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthProfessionalRes"
+                    }
+                },
+                "nurses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthProfessionalRes"
+                    }
+                },
+                "physiotherapists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetHealthProfessionalRes"
+                    }
+                }
+            }
+        },
         "customerAuth.AddMemberReqDto": {
             "type": "object",
             "properties": {
@@ -7332,34 +7525,6 @@ const docTemplate = `{
                 },
                 "otp": {
                     "type": "string"
-                }
-            }
-        },
-        "reviews.ReviewsReqDto": {
-            "type": "object",
-            "properties": {
-                "customerId": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "rating": {
-                    "type": "number"
-                },
-                "serviceId": {
-                    "type": "string"
-                }
-            }
-        },
-        "reviews.ReviewsResDto": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
                 }
             }
         },

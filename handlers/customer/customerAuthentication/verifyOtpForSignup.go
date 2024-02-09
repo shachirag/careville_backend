@@ -177,6 +177,20 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 		})
 	}
 
+	familyData := make([]customerAuth.FamilyMembers, 0)
+	if customer.FamilyMembers != nil {
+
+		for _, family := range customer.FamilyMembers {
+			familyData = append(familyData, customerAuth.FamilyMembers{
+				Id:           family.Id,
+				Name:         family.Name,
+				RelationShip: family.RelationShip,
+				Age:          family.Age,
+				Sex:          family.Sex,
+			})
+		}
+	}
+
 	return c.Status(200).JSON(customerAuth.LoginCustomerResDto{
 		Status:  true,
 		Message: "OTP verified successfully",
@@ -195,11 +209,12 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 				DeviceType:  customer.Notification.DeviceType,
 				IsEnabled:   customer.Notification.IsEnabled,
 			},
-			Address:   customerAuth.Address(customer.Address),
-			Sex:       customer.Sex,
-			Age:       customer.Age,
-			CreatedAt: customer.CreatedAt,
-			UpdatedAt: customer.UpdatedAt,
+			FamilyMembers: familyData,
+			Address:       customerAuth.Address(customer.Address),
+			Sex:           customer.Sex,
+			Age:           customer.Age,
+			CreatedAt:     customer.CreatedAt,
+			UpdatedAt:     customer.UpdatedAt,
 		},
 		Token: _token,
 	})

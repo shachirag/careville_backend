@@ -20,10 +20,13 @@ type ServiceEntity struct {
 	Physiotherapist      *Physiotherapist     `json:"physiotherapist" bson:"physiotherapist,omitempty"`
 	Nurse                *Nurse               `json:"nurse" bson:"nurse,omitempty"`
 	ServiceStatus        string               `json:"serviceStatus" bson:"serviceStatus"`
-	TotalReviews         int32                `json:"totalReviews" bson:"totalReviews"`
-	AvgRating            float64              `json:"avgRating" bson:"avgRating"`
 	CreatedAt            time.Time            `json:"createdAt" bson:"createdAt"`
 	UpdatedAt            time.Time            `json:"updatedAt" bson:"updatedAt"`
+}
+
+type Review struct {
+	TotalReviews int32   `json:"totalReviews" bson:"totalReviews"`
+	AvgRating    float64 `json:"avgRating" bson:"avgRating"`
 }
 
 type ProviderUser struct {
@@ -36,6 +39,7 @@ type ProviderUser struct {
 }
 
 type HospClinic struct {
+	Review        Review      `json:"review" bson:"review"`
 	Information   Information `json:"information" bson:"information"`
 	Doctor        []Doctor    `json:"doctor" bson:"doctor"`
 	OtherServices []string    `json:"otherServices" bson:"otherServices"`
@@ -89,6 +93,7 @@ type Documents struct {
 }
 
 type FitnessCenter struct {
+	Review             Review               `json:"review" bson:"review"`
 	Information        Information          `json:"information" bson:"information"`
 	Trainers           []Trainers           `json:"trainers" bson:"trainers"`
 	AdditionalServices []AdditionalServices `json:"additionalServices" bson:"additionalServices"`
@@ -118,6 +123,7 @@ type AdditionalServices struct {
 }
 
 type Laboratory struct {
+	Review         Review           `json:"review" bson:"review"`
 	Information    Information      `json:"information" bson:"information"`
 	Investigations []Investigations `json:"investigations" bson:"investigations"`
 	Documents      Documents        `json:"documents" bson:"documents"`
@@ -132,12 +138,14 @@ type Investigations struct {
 }
 
 type Pharmacy struct {
+	Review             Review               `json:"review" bson:"review"`
 	Information        Information          `json:"information" bson:"information"`
 	AdditionalServices []AdditionalServices `json:"additionalServices" bson:"additionalServices"`
 	Documents          Documents            `json:"documents" bson:"documents"`
 }
 
 type DoctorEntityDto struct {
+	Review                     Review                     `json:"review" bson:"review"`
 	Information                Information                `json:"information" bson:"information"`
 	AdditionalServices         AdditionalService          `json:"additionalServices" bson:"additionalServices"`
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
@@ -179,6 +187,7 @@ type Slots struct {
 }
 
 type MedicalLabScientist struct {
+	Review                     Review                     `json:"review" bson:"review"`
 	Information                Information                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetailsEntity  `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
@@ -192,6 +201,7 @@ type ProfessionalDetailsEntity struct {
 }
 
 type Nurse struct {
+	Review                     Review                     `json:"review" bson:"review"`
 	Information                Information                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetails        `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
@@ -211,6 +221,7 @@ type ServiceAndSchedule struct {
 }
 
 type Physiotherapist struct {
+	Review                     Review                     `json:"review" bson:"review"`
 	Information                Information                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetails        `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`

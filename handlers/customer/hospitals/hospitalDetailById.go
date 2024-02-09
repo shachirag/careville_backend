@@ -40,9 +40,9 @@ func GetHospitalByID(c *fiber.Ctx) error {
 	projection := bson.M{
 		"hospClinic.information.name":           1,
 		"hospClinic.information.image":          1,
-		"hospClinic.information.id":             1,
-		"totalReviews":                          1,
-		"avgRating":                             1,
+		"_id":                                   1,
+		"hospClinic.review.totalReviews":        1,
+		"hospClinic.review.avgRating":           1,
 		"hospClinic.information.additionalText": 1,
 		"hospClinic.otherServices":              1,
 		"hospClinic.information.address": bson.M{
@@ -80,8 +80,8 @@ func GetHospitalByID(c *fiber.Ctx) error {
 			AboutUs:       hospitalData.HospClinic.Information.AdditionalText,
 			Address:       hospitals.Address(hospitalData.HospClinic.Information.Address),
 			OtherServices: hospitalData.HospClinic.OtherServices,
-			TotalReviews:  hospitalData.TotalReviews,
-			AvgRating:     hospitalData.AvgRating,
+			TotalReviews:  hospitalData.HospClinic.Review.TotalReviews,
+			AvgRating:     hospitalData.HospClinic.Review.AvgRating,
 		},
 	}
 

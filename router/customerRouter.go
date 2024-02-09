@@ -2,6 +2,7 @@ package router
 
 import (
 	"careville_backend/handlers"
+	common "careville_backend/handlers/customer/commonApis"
 	customerAuth "careville_backend/handlers/customer/customerAuthentication"
 	"careville_backend/handlers/customer/doctorProfession"
 	"careville_backend/handlers/customer/fitnessCenter"
@@ -11,7 +12,7 @@ import (
 	"careville_backend/handlers/customer/nurse"
 	"careville_backend/handlers/customer/pharmacy"
 	"careville_backend/handlers/customer/physiotherapist"
-	"careville_backend/handlers/customer/reviews"
+	// "careville_backend/handlers/customer/reviews"
 	"careville_backend/middlewares"
 	"os"
 
@@ -35,7 +36,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	customer.Put("/reset-password", customerAuth.ResetPasswordAfterOtp)
 	customer.Post("/signup", customerAuth.SignupCustomer)
 	customer.Post("/verify-otp-for-signup", customerAuth.VerifyOtpForSignup)
-	customer.Post("/add-review", jwt, reviews.AddReview)
+	// customer.Post("/add-review", jwt, reviews.AddReview)
 
 	customerProfile := customer.Group("/profile")
 	customerProfile.Use(jwt, middlewares.CustomerData)
@@ -49,6 +50,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 
 	healthFacility := customer.Group("/healthFacility")
 	healthFacility.Use(jwt, middlewares.CustomerData)
+	healthFacility.Get("/get-health-facilities", common.GetHealthFacilties)
 	healthFacility.Post("/add-hospClinic-appointment", hospitals.AddHospClinicAppointment)
 	healthFacility.Get("/get-hospitals", hospitals.GetHospitals)
 	healthFacility.Get("/get-hospital/:id", hospitals.GetHospitalByID)
@@ -66,6 +68,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 
 	healthProfessional := customer.Group("/healthProfessional")
 	healthProfessional.Use(jwt, middlewares.CustomerData)
+	healthProfessional.Get("/get-health-professionals", common.GetHealthProfessionals)
 	healthProfessional.Post("/add-physiotherapist-appointment", physiotherapist.AddPhysiotherapistAppointment)
 	healthProfessional.Get("/get-physiotherapists", physiotherapist.GetPhysiotherapists)
 	healthProfessional.Get("/get-physiotherapist/:id", physiotherapist.GetPhysiotherapistByID)

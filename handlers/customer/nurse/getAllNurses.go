@@ -86,7 +86,7 @@ func GetNurses(c *fiber.Ctx) error {
 		"nurse.information.name":  1,
 		"nurse.information.image": 1,
 		"nurse.information.id":    1,
-		"avgRating":               1,
+		"nurse.review.avgRating":  1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -114,7 +114,7 @@ func GetNurses(c *fiber.Ctx) error {
 				Id:        nurse1.Id,
 				Image:     nurse1.Nurse.Information.Image,
 				Name:      nurse1.Nurse.Information.Name,
-				AvgRating: nurse1.AvgRating,
+				AvgRating: nurse1.Nurse.Review.AvgRating,
 			})
 		}
 	}

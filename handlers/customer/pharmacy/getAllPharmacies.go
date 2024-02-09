@@ -91,7 +91,7 @@ func GetPharmacy(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
-		"avgRating": 1,
+		"pharmacy.review.avgRating": 1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -124,7 +124,7 @@ func GetPharmacy(c *fiber.Ctx) error {
 					Type:        pharmacy1.Pharmacy.Information.Address.Type,
 					Add:         pharmacy1.Pharmacy.Information.Address.Add,
 				},
-				AvgRating: pharmacy1.AvgRating,
+				AvgRating: pharmacy1.Pharmacy.Review.AvgRating,
 			})
 		}
 	}

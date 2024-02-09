@@ -40,10 +40,10 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 	projection := bson.M{
 		"laboratory.information.name":           1,
 		"laboratory.information.image":          1,
-		"laboratory.information.id":             1,
+		"_id":                                   1,
 		"laboratory.information.additionalText": 1,
-		"totalReviews":                          1,
-		"avgRating":                             1,
+		"laboratory.review.totalReviews":        1,
+		"laboratory.review.avgRating":           1,
 		"laboratory.investigations.id":          1,
 		"laboratory.investigations.name":        1,
 		"laboratory.investigations.type":        1,
@@ -97,8 +97,8 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 			AboutUs:        laboratoryData.Laboratory.Information.AdditionalText,
 			Address:        laboratory.Address(laboratoryData.Laboratory.Information.Address),
 			Investigations: investigationData,
-			TotalReviews:   laboratoryData.TotalReviews,
-			AvgRating:      laboratoryData.AvgRating,
+			TotalReviews:   laboratoryData.Laboratory.Review.TotalReviews,
+			AvgRating:      laboratoryData.Laboratory.Review.AvgRating,
 		},
 	}
 

@@ -88,6 +88,97 @@ definitions:
       otp:
         type: string
     type: object
+  common.GetDoctorHealthProfessionalRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      speciality:
+        type: string
+    type: object
+  common.GetHealthFacilityRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  common.GetHealthFacilityResDto:
+    properties:
+      data:
+        $ref: '#/definitions/common.HealthFacilityResDto'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  common.GetHealthProfessionalRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  common.GetHealthProfessionalResDto:
+    properties:
+      data:
+        $ref: '#/definitions/common.HealthProfessionalResDto'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  common.HealthFacilityResDto:
+    properties:
+      fitnessCenters:
+        items:
+          $ref: '#/definitions/common.GetHealthFacilityRes'
+        type: array
+      hospitals:
+        items:
+          $ref: '#/definitions/common.GetHealthFacilityRes'
+        type: array
+      laboratories:
+        items:
+          $ref: '#/definitions/common.GetHealthFacilityRes'
+        type: array
+      pharmacies:
+        items:
+          $ref: '#/definitions/common.GetHealthFacilityRes'
+        type: array
+    type: object
+  common.HealthProfessionalResDto:
+    properties:
+      doctors:
+        items:
+          $ref: '#/definitions/common.GetDoctorHealthProfessionalRes'
+        type: array
+      medicalLabScientists:
+        items:
+          $ref: '#/definitions/common.GetHealthProfessionalRes'
+        type: array
+      nurses:
+        items:
+          $ref: '#/definitions/common.GetHealthProfessionalRes'
+        type: array
+      physiotherapists:
+        items:
+          $ref: '#/definitions/common.GetHealthProfessionalRes'
+        type: array
+    type: object
   customerAuth.AddMemberReqDto:
     properties:
       age:
@@ -1345,24 +1436,6 @@ definitions:
         type: string
       otp:
         type: string
-    type: object
-  reviews.ReviewsReqDto:
-    properties:
-      customerId:
-        type: string
-      description:
-        type: string
-      rating:
-        type: number
-      serviceId:
-        type: string
-    type: object
-  reviews.ReviewsResDto:
-    properties:
-      message:
-        type: string
-      status:
-        type: boolean
     type: object
   services.AddPharmacyOtherServiceReqDto:
     properties:
@@ -2790,33 +2863,6 @@ paths:
       summary: Verify OTP for login
       tags:
       - admin authorization
-  /customer/add-review:
-    post:
-      consumes:
-      - application/json
-      description: Add Review for service
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Review data
-        in: body
-        name: review
-        required: true
-        schema:
-          $ref: '#/definitions/reviews.ReviewsReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/reviews.ReviewsResDto'
-      summary: Add Review for service
-      tags:
-      - customer reviews
   /customer/change-password:
     put:
       consumes:
@@ -3078,6 +3124,37 @@ paths:
       summary: Get fitnessCenter
       tags:
       - customer fitnessCenter
+  /customer/healthFacility/get-health-facilities:
+    get:
+      description: Get nearest health facilties
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter hospitals by search
+        in: query
+        name: search
+        type: string
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.GetHealthFacilityResDto'
+      summary: Get nearest health facilties
+      tags:
+      - customer commonApis
   /customer/healthFacility/get-hospital/{id}:
     get:
       description: Get hospital by ID
@@ -3426,6 +3503,37 @@ paths:
       summary: Get doctorProfession
       tags:
       - customer doctorProfession
+  /customer/healthProfessional/get-health-professionals:
+    get:
+      description: Get nearest health professionals
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter health professionals by search
+        in: query
+        name: search
+        type: string
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.GetHealthProfessionalResDto'
+      summary: Get nearest health professionals
+      tags:
+      - customer commonApis
   /customer/healthProfessional/get-medicalLabScientist/{id}:
     get:
       description: Get medicalLabScientist by ID

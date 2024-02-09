@@ -40,11 +40,11 @@ func GetNurseByID(c *fiber.Ctx) error {
 	projection := bson.M{
 		"nurse.information.name":           1,
 		"nurse.information.image":          1,
-		"nurse.information.id":             1,
+		"_id":                              1,
 		"nurse.information.additionalText": 1,
 		"nurse.schedule.id":                1,
-		"totalReviews":                     1,
-		"avgRating":                        1,
+		"nurse.review.totalReviews":        1,
+		"nurse.review.avgRating":           1,
 		"nurse.schedule.serviceFees":       1,
 		"nurse.schedule.slots": bson.M{
 			"startTime": 1,
@@ -101,8 +101,8 @@ func GetNurseByID(c *fiber.Ctx) error {
 			Name:               nurseData.Nurse.Information.Name,
 			AboutMe:            nurseData.Nurse.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
-			TotalReviews:       nurseData.TotalReviews,
-			AvgRating:          nurseData.AvgRating,
+			TotalReviews:       nurseData.Nurse.Review.TotalReviews,
+			AvgRating:          nurseData.Nurse.Review.AvgRating,
 		},
 	}
 

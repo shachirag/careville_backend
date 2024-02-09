@@ -87,7 +87,7 @@ func GetDoctors(c *fiber.Ctx) error {
 		"doctor.information.image":             1,
 		"_id":                                  1,
 		"doctor.additionalServices.speciality": 1,
-		"avgRating":                            1,
+		"doctor.review.avgRating":              1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -116,7 +116,7 @@ func GetDoctors(c *fiber.Ctx) error {
 				Image:      doctor.Doctor.Information.Image,
 				Name:       doctor.Doctor.Information.Name,
 				Speciality: doctor.Doctor.AdditionalServices.Speciality,
-				AvgRating:  doctor.AvgRating,
+				AvgRating:  doctor.Doctor.Review.AvgRating,
 			})
 		}
 	}

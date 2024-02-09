@@ -91,7 +91,7 @@ func GetFitnessCenter(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
-		"avgRating": 1,
+		"fitnessCenter.review.avgRating": 1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -124,7 +124,7 @@ func GetFitnessCenter(c *fiber.Ctx) error {
 					Type:        fitnessCenter1.FitnessCenter.Information.Address.Type,
 					Add:         fitnessCenter1.FitnessCenter.Information.Address.Add,
 				},
-				AvgRating: fitnessCenter1.AvgRating,
+				AvgRating: fitnessCenter1.FitnessCenter.Review.AvgRating,
 			})
 		}
 	}

@@ -86,7 +86,7 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 		"medicalLabScientist.information.name":  1,
 		"medicalLabScientist.information.image": 1,
 		"_id":                                   1,
-		"avgRating":                             1,
+		"medicalLabScientist.review.avgRating":  1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -114,7 +114,7 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 				Id:        medicalLabScientist1.Id,
 				Image:     medicalLabScientist1.MedicalLabScientist.Information.Image,
 				Name:      medicalLabScientist1.MedicalLabScientist.Information.Name,
-				AvgRating: medicalLabScientist1.AvgRating,
+				AvgRating: medicalLabScientist1.MedicalLabScientist.Review.AvgRating,
 			})
 		}
 	}

@@ -91,7 +91,7 @@ func Getlaboratory(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
-		"avgRating": 1,
+		"laboratory.review.avgRating": 1,
 	}
 	findOptions := options.Find().SetProjection(projection)
 
@@ -123,7 +123,7 @@ func Getlaboratory(c *fiber.Ctx) error {
 					Type:        laboratory1.Laboratory.Information.Address.Type,
 					Add:         laboratory1.Laboratory.Information.Address.Add,
 				},
-				AvgRating: laboratory1.AvgRating,
+				AvgRating: laboratory1.Laboratory.Review.AvgRating,
 			})
 		}
 	}
