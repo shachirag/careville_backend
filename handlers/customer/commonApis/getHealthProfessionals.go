@@ -73,7 +73,7 @@ func GetHealthProfessionals(c *fiber.Ctx) error {
 		maxDistance = 60000
 		filter["facilityOrProfession"] = "medicalLabScientist"
 	default:
-
+		maxDistance = 50000
 	}
 
 	if latParam != "" && longParam != "" {

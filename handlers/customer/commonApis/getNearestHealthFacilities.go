@@ -76,7 +76,7 @@ func GetHealthFacilties(c *fiber.Ctx) error {
 		maxDistance = 60000
 		filter["facilityOrProfession"] = "fitnessCenter"
 	default:
-
+		maxDistance = 50000
 	}
 
 	if latParam != "" && longParam != "" {
