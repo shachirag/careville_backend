@@ -88,6 +88,121 @@ definitions:
       otp:
         type: string
     type: object
+  careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/fitnessCenter.PhoneNumber'
+      profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_laboratories.GetLaboratoryRes:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/laboratory.PhoneNumber'
+      profileId:
+        type: string
+    type: object
+  careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      speciality:
+        type: string
+    type: object
+  careville_backend_dto_customer_fitnessCenter.GetFitnessCenterRes:
+    properties:
+      address:
+        $ref: '#/definitions/fitnessCenter.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_laboratories.GetLaboratoryRes:
+    properties:
+      address:
+        $ref: '#/definitions/laboratory.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_nurse.GetNurseRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_pharmacy.GetPharmacyRes:
+    properties:
+      address:
+        $ref: '#/definitions/pharmacy.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes:
+    properties:
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   common.GetDoctorHealthProfessionalRes:
     properties:
       avgRating:
@@ -519,19 +634,6 @@ definitions:
       startTime:
         type: string
     type: object
-  doctorProfession.GetDoctorProfessionRes:
-    properties:
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-      speciality:
-        type: string
-    type: object
   doctorProfession.GetDoctorProfessionResDto:
     properties:
       data:
@@ -545,7 +647,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/doctorProfession.GetDoctorProfessionRes'
+          $ref: '#/definitions/careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes'
         type: array
       message:
         type: string
@@ -592,6 +694,21 @@ definitions:
       status:
         type: boolean
     type: object
+  fitnessCenter.FitnessCenterPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      fitnessCenterRes:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
   fitnessCenter.FitnessCenterResponse:
     properties:
       aboutUs:
@@ -613,18 +730,14 @@ definitions:
       totalReviews:
         type: integer
     type: object
-  fitnessCenter.GetFitnessCenterRes:
+  fitnessCenter.GetFitnessCenterPaginationRes:
     properties:
-      address:
-        $ref: '#/definitions/fitnessCenter.Address'
-      avgRating:
-        type: number
-      id:
+      data:
+        $ref: '#/definitions/fitnessCenter.FitnessCenterPaginationResponse'
+      message:
         type: string
-      image:
-        type: string
-      name:
-        type: string
+      status:
+        type: boolean
     type: object
   fitnessCenter.GetFitnessCenterResDto:
     properties:
@@ -639,12 +752,19 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/fitnessCenter.GetFitnessCenterRes'
+          $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.GetFitnessCenterRes'
         type: array
       message:
         type: string
       status:
         type: boolean
+    type: object
+  fitnessCenter.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
+        type: string
     type: object
   hospitals.Address:
     properties:
@@ -746,18 +866,14 @@ definitions:
       type:
         type: string
     type: object
-  laboratory.GetLaboratoryRes:
+  laboratory.GetLaboratoryPaginationRes:
     properties:
-      address:
-        $ref: '#/definitions/laboratory.Address'
-      avgRating:
-        type: number
-      id:
+      data:
+        $ref: '#/definitions/laboratory.LaboratoryPaginationResponse'
+      message:
         type: string
-      image:
-        type: string
-      name:
-        type: string
+      status:
+        type: boolean
     type: object
   laboratory.GetLaboratoryResDto:
     properties:
@@ -772,7 +888,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/laboratory.GetLaboratoryRes'
+          $ref: '#/definitions/careville_backend_dto_customer_laboratories.GetLaboratoryRes'
         type: array
       message:
         type: string
@@ -812,6 +928,21 @@ definitions:
       status:
         type: boolean
     type: object
+  laboratory.LaboratoryPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      laboratoryRes:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.GetLaboratoryRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
   laboratory.LaboratoryResponse:
     properties:
       aboutUs:
@@ -833,15 +964,11 @@ definitions:
       totalReviews:
         type: integer
     type: object
-  medicalLabScientist.GetMedicalLabScientistRes:
+  laboratory.PhoneNumber:
     properties:
-      avgRating:
-        type: number
-      id:
+      dialCode:
         type: string
-      image:
-        type: string
-      name:
+      number:
         type: string
     type: object
   medicalLabScientist.GetMedicalLabScientistResDto:
@@ -857,7 +984,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistRes'
+          $ref: '#/definitions/careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes'
         type: array
       message:
         type: string
@@ -929,17 +1056,6 @@ definitions:
       startTime:
         type: string
     type: object
-  nurse.GetNurseRes:
-    properties:
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-    type: object
   nurse.GetNurseResDto:
     properties:
       data:
@@ -953,7 +1069,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/nurse.GetNurseRes'
+          $ref: '#/definitions/careville_backend_dto_customer_nurse.GetNurseRes'
         type: array
       message:
         type: string
@@ -1045,19 +1161,6 @@ definitions:
       type:
         type: string
     type: object
-  pharmacy.GetPharmacyRes:
-    properties:
-      address:
-        $ref: '#/definitions/pharmacy.Address'
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-    type: object
   pharmacy.GetPharmacyResDto:
     properties:
       data:
@@ -1071,7 +1174,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/pharmacy.GetPharmacyRes'
+          $ref: '#/definitions/careville_backend_dto_customer_pharmacy.GetPharmacyRes'
         type: array
       message:
         type: string
@@ -1106,17 +1209,6 @@ definitions:
       totalReviews:
         type: integer
     type: object
-  physiotherapist.GetPhysiotherapistRes:
-    properties:
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-    type: object
   physiotherapist.GetPhysiotherapistResDto:
     properties:
       data:
@@ -1130,7 +1222,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/physiotherapist.GetPhysiotherapistRes'
+          $ref: '#/definitions/careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes'
         type: array
       message:
         type: string
@@ -1685,6 +1777,30 @@ definitions:
       status:
         type: boolean
     type: object
+  services.GetHospitalsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/services.HospitalsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetHospitalsRes:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/services.PhoneNumber'
+      profileId:
+        type: string
+    type: object
   services.GetMedicalLabScientistProfessionalDetailsResponseDto:
     properties:
       data:
@@ -1794,6 +1910,21 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.HospitalsPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      hospitalRes:
+        items:
+          $ref: '#/definitions/services.GetHospitalsRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
     type: object
   services.InvestigationReqDto:
     properties:
@@ -2184,6 +2315,13 @@ definitions:
         $ref: '#/definitions/services.Role'
       status:
         type: boolean
+    type: object
+  services.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
+        type: string
     type: object
   services.PhysiotherapistDetailsRes:
     properties:
@@ -2671,6 +2809,93 @@ paths:
       summary: Forgot Password
       tags:
       - admin authorization
+  /admin/healthFacility/get-fitnessCenters:
+    get:
+      consumes:
+      - application/json
+      description: Fetch fitnessCenter With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterPaginationRes'
+      summary: Fetch fitnessCenter With Filters
+      tags:
+      - admin fitnessCenter
+  /admin/healthFacility/get-hospitals:
+    get:
+      consumes:
+      - application/json
+      description: Fetch hospitals With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetHospitalsPaginationRes'
+      summary: Fetch hospitals With Filters
+      tags:
+      - admin hospitals
+  /admin/healthFacility/get-laboratories:
+    get:
+      consumes:
+      - application/json
+      description: Fetch laboratory With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryPaginationRes'
+      summary: Fetch laboratory With Filters
+      tags:
+      - admin laboratory
   /admin/login:
     post:
       consumes:

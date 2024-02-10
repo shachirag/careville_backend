@@ -2,20 +2,6 @@ package hospitals
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-type GetHospitalsPaginationRes struct {
-	Status  bool                        `json:"status"`
-	Message string                      `json:"message"`
-	Data    HospitalsPaginationResponse `json:"data"`
-}
-
-type HospitalsPaginationResponse struct {
-	Total       int               `json:"total"`
-	PerPage     int               `json:"perPage"`
-	CurrentPage int               `json:"currentPage"`
-	TotalPages  int               `json:"totalPages"`
-	HospitalRes []GetHospitalsRes `json:"hospitalRes"`
-}
-
 type GetHospitalsRes struct {
 	Id        primitive.ObjectID `json:"id" bson:"_id"`
 	Image     string             `json:"image" bson:"image"`

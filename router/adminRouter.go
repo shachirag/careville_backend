@@ -4,6 +4,9 @@ import (
 	"careville_backend/handlers"
 	adminAuth "careville_backend/handlers/admin/adminAuthorization"
 	dashboard "careville_backend/handlers/admin/dashboard"
+	fitnessCenter "careville_backend/handlers/admin/services/fitnessCenter"
+	laboratory "careville_backend/handlers/admin/services/laboratory"
+	hospitals "careville_backend/handlers/admin/services/hospitals"
 	"careville_backend/middlewares"
 	"os"
 
@@ -39,4 +42,10 @@ func AdminSetupsRoutes(app *fiber.App) {
 	// dashboard
 	adminProfile.Get("/total-counts", jwt, dashboard.CountAll)
 
+	// services
+	healthFacility := admin.Group("/healthFacility")
+	healthFacility.Use(jwt, middlewares.AdminData)
+	healthFacility.Get("/get-hospitals", jwt, hospitals.FetchHospitalsWithPagination)
+	healthFacility.Get("/get-fitnessCenters", jwt, fitnessCenter.FetchFitnessCenterWithPagination)
+	healthFacility.Get("/get-laboratories", jwt, laboratory.FetchLaboratoriesWithPagination)
 }

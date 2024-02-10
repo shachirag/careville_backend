@@ -92,6 +92,138 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/healthFacility/get-fitnessCenters": {
+            "get": {
+                "description": "Fetch fitnessCenter With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin fitnessCenter"
+                ],
+                "summary": "Fetch fitnessCenter With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/healthFacility/get-hospitals": {
+            "get": {
+                "description": "Fetch hospitals With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin hospitals"
+                ],
+                "summary": "Fetch hospitals With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetHospitalsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/healthFacility/get-laboratories": {
+            "get": {
+                "description": "Fetch laboratory With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin laboratory"
+                ],
+                "summary": "Fetch laboratory With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.GetLaboratoryPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/login": {
             "post": {
                 "description": "send 6 digit otp for Login Admin",
@@ -5445,6 +5577,183 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/fitnessCenter.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_admin_services_laboratories.GetLaboratoryRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/laboratory.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_fitnessCenter.GetFitnessCenterRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/fitnessCenter.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_laboratories.GetLaboratoryRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/laboratory.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_nurse.GetNurseRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_pharmacy.GetPharmacyRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/pharmacy.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes": {
+            "type": "object",
+            "properties": {
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "common.GetDoctorHealthProfessionalRes": {
             "type": "object",
             "properties": {
@@ -6110,26 +6419,6 @@ const docTemplate = `{
                 }
             }
         },
-        "doctorProfession.GetDoctorProfessionRes": {
-            "type": "object",
-            "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "speciality": {
-                    "type": "string"
-                }
-            }
-        },
         "doctorProfession.GetDoctorProfessionResDto": {
             "type": "object",
             "properties": {
@@ -6150,7 +6439,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/doctorProfession.GetDoctorProfessionRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes"
                     }
                 },
                 "message": {
@@ -6223,6 +6512,29 @@ const docTemplate = `{
                 }
             }
         },
+        "fitnessCenter.FitnessCenterPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "fitnessCenterRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "fitnessCenter.FitnessCenterResponse": {
             "type": "object",
             "properties": {
@@ -6255,23 +6567,17 @@ const docTemplate = `{
                 }
             }
         },
-        "fitnessCenter.GetFitnessCenterRes": {
+        "fitnessCenter.GetFitnessCenterPaginationRes": {
             "type": "object",
             "properties": {
-                "address": {
-                    "$ref": "#/definitions/fitnessCenter.Address"
+                "data": {
+                    "$ref": "#/definitions/fitnessCenter.FitnessCenterPaginationResponse"
                 },
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
+                "message": {
                     "type": "string"
                 },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -6295,7 +6601,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/fitnessCenter.GetFitnessCenterRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_fitnessCenter.GetFitnessCenterRes"
                     }
                 },
                 "message": {
@@ -6303,6 +6609,17 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "fitnessCenter.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
                 }
             }
         },
@@ -6460,23 +6777,17 @@ const docTemplate = `{
                 }
             }
         },
-        "laboratory.GetLaboratoryRes": {
+        "laboratory.GetLaboratoryPaginationRes": {
             "type": "object",
             "properties": {
-                "address": {
-                    "$ref": "#/definitions/laboratory.Address"
+                "data": {
+                    "$ref": "#/definitions/laboratory.LaboratoryPaginationResponse"
                 },
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
+                "message": {
                     "type": "string"
                 },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -6500,7 +6811,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/laboratory.GetLaboratoryRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_laboratories.GetLaboratoryRes"
                     }
                 },
                 "message": {
@@ -6562,6 +6873,29 @@ const docTemplate = `{
                 }
             }
         },
+        "laboratory.LaboratoryPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "laboratoryRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_laboratories.GetLaboratoryRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "laboratory.LaboratoryResponse": {
             "type": "object",
             "properties": {
@@ -6594,19 +6928,13 @@ const docTemplate = `{
                 }
             }
         },
-        "medicalLabScientist.GetMedicalLabScientistRes": {
+        "laboratory.PhoneNumber": {
             "type": "object",
             "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
+                "dialCode": {
                     "type": "string"
                 },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
+                "number": {
                     "type": "string"
                 }
             }
@@ -6631,7 +6959,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes"
                     }
                 },
                 "message": {
@@ -6742,23 +7070,6 @@ const docTemplate = `{
                 }
             }
         },
-        "nurse.GetNurseRes": {
-            "type": "object",
-            "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "nurse.GetNurseResDto": {
             "type": "object",
             "properties": {
@@ -6779,7 +7090,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/nurse.GetNurseRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_nurse.GetNurseRes"
                     }
                 },
                 "message": {
@@ -6921,26 +7232,6 @@ const docTemplate = `{
                 }
             }
         },
-        "pharmacy.GetPharmacyRes": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "$ref": "#/definitions/pharmacy.Address"
-                },
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "pharmacy.GetPharmacyResDto": {
             "type": "object",
             "properties": {
@@ -6961,7 +7252,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/pharmacy.GetPharmacyRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_pharmacy.GetPharmacyRes"
                     }
                 },
                 "message": {
@@ -7015,23 +7306,6 @@ const docTemplate = `{
                 }
             }
         },
-        "physiotherapist.GetPhysiotherapistRes": {
-            "type": "object",
-            "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "physiotherapist.GetPhysiotherapistResDto": {
             "type": "object",
             "properties": {
@@ -7052,7 +7326,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/physiotherapist.GetPhysiotherapistRes"
+                        "$ref": "#/definitions/careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes"
                     }
                 },
                 "message": {
@@ -7911,6 +8185,43 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetHospitalsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.HospitalsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetHospitalsRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/services.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
         "services.GetMedicalLabScientistProfessionalDetailsResponseDto": {
             "type": "object",
             "properties": {
@@ -8078,6 +8389,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.HospitalsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "hospitalRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.GetHospitalsRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },
@@ -8681,6 +9015,17 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
                 }
             }
         },
