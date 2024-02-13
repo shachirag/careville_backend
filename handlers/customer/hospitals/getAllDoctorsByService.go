@@ -2,37 +2,25 @@ package hospitals
 
 import (
 	"careville_backend/database"
-	"careville_backend/dto/provider/services"
+	hospitals "careville_backend/dto/customer/hospitals"
 	"careville_backend/entity"
 	"context"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// @Summary GetAllDoctors
-// @Description GetAllDoctors
-// @Tags hospClinic
-// @Accept application/json
-//
-//	@Param Authorization header	string true	"Authentication header"
-//
-// @Param serviceId query string true "service ID"
-// @Produce json
-// @Success 200 {object} services.DoctorResDto
-// @Router /provider/services/get-all-doctors [get]
+// GetAllDoctors retrieves information about doctors for a given service.
+// It returns a JSON response containing doctor details.
 func GetAllDoctors(c *fiber.Ctx) error {
 	ctx := context.Background()
 
-	var service entity.ServiceEntity
-
 	serviceId := c.Query("serviceId")
-
 	if serviceId == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(services.TrainerResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
 			Status:  false,
 			Message: "service Id is mandatory",
 		})
@@ -40,7 +28,7 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 	serviceObjectID, err := primitive.ObjectIDFromHex(serviceId)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(services.TrainerResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
 			Status:  false,
 			Message: "Invalid ID format",
 		})
@@ -48,81 +36,82 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 	serviceColl := database.GetCollection("service")
 
-	filter := bson.M{
-		"_id": serviceObjectID,
-	}
+	filter := bson.M{"_id": serviceObjectID}
 
-	projection := bson.M{
-		"hospClinic.doctor.id":         1,
-		"hospClinic.doctor.name":       1,
-		"hospClinic.doctor.speciality": 1,
-		"hospClinic.doctor.image":      1,
-		"hospClinic.doctor.schedule": bson.M{
-			"startTime": 1,
-			"endTime":   1,
-			"days":      1,
-		},
-	}
-
-	findOptions := options.FindOne().SetProjection(projection)
-
-	err = serviceColl.FindOne(ctx, filter, findOptions).Decode(&service)
+	var service entity.ServiceEntity
+	err = serviceColl.FindOne(ctx, filter).Decode(&service)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(services.DoctorResDto{
+			return c.Status(fiber.StatusNotFound).JSON(hospitals.DoctorResDto{
 				Status:  false,
 				Message: "Service not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.DoctorResDto{
 			Status:  false,
 			Message: "Failed to fetch service from MongoDB: " + err.Error(),
 		})
 	}
 
 	if service.HospClinic == nil {
-		return c.Status(fiber.StatusNotFound).JSON(services.DoctorResDto{
+		return c.Status(fiber.StatusNotFound).JSON(hospitals.DoctorResDto{
 			Status:  false,
 			Message: "No HospClinic information found for the service",
 		})
 	}
 
-	doctorsBySpeciality := make(map[string][]services.DoctorRes)
+	doctorsBySpeciality := make(map[string][]hospitals.DoctorRes)
 
-	if service.HospClinic != nil && len(service.HospClinic.Doctor) > 0 {
+	for _, doctor := range service.HospClinic.Doctor {
+		var nextAvailable string
 
-		for _, doctor := range service.HospClinic.Doctor {
-			doctorRes := services.DoctorRes{
-				Id:         doctor.Id,
-				Name:       doctor.Name,
-				Image:      doctor.Image,
-				Speciality: doctor.Speciality,
-			}
-
-			if len(doctor.Schedule) > 0 {
-				for _, schedule := range doctor.Schedule {
-					doctorRes.Schedule = append(doctorRes.Schedule, services.DoctorScheduleRes{
-						StartTime: schedule.StartTime,
-						EndTime:   schedule.EndTime,
-						Days:      schedule.Days,
+		for _, schedule := range doctor.Schedule {
+			for _, breakingSlot := range schedule.BreakingSlots {
+				startTime, err := time.Parse("15:04", breakingSlot.StartTime)
+				if err != nil {
+					return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
+						Status:  false,
+						Message: "Invalid start time format",
 					})
+				}
+
+				// Check if the current time is before the start time of the breaking slot
+				if time.Now().Before(startTime) {
+					nextAvailable = startTime.Format("15:04")
+					break
 				}
 			}
 
-			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
+			if nextAvailable != "" {
+				break
+			}
 		}
+
+		if nextAvailable == "" {
+			nextAvailable = "No slots available"
+		}
+
+		doctorRes := hospitals.DoctorRes{
+			Id:            doctor.Id,
+			Name:          doctor.Name,
+			Image:         doctor.Image,
+			Speciality:    doctor.Speciality,
+			NextAvailable: nextAvailable,
+		}
+
+		doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 	}
 
-	var response []services.SpecialityDoctorsRes
+	var response []hospitals.SpecialityDoctorsRes
 
 	for speciality, doctors := range doctorsBySpeciality {
-		response = append(response, services.SpecialityDoctorsRes{
+		response = append(response, hospitals.SpecialityDoctorsRes{
 			Speciality: speciality,
 			Doctors:    doctors,
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(services.DoctorResDto{
+	return c.Status(fiber.StatusOK).JSON(hospitals.DoctorResDto{
 		Status:  true,
 		Message: "Doctors retrieved successfully",
 		Data:    response,

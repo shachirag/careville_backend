@@ -183,10 +183,12 @@ func AddHospClinic(c *fiber.Ctx) error {
 	for i, doc := range data.HospitalClinicReqDto.Doctor {
 		schedule := make([]subEntity.ScheduleUpdateServiceSubEntity, len(doc.Schedule))
 		for j, sch := range doc.Schedule {
+			breakingSlots := generateBreakingSlots(sch.StartTime, sch.EndTime)
 			schedule[j] = subEntity.ScheduleUpdateServiceSubEntity{
 				StartTime: sch.StartTime,
 				EndTime:   sch.EndTime,
 				Days:      sch.Days,
+				BreakingSlots: breakingSlots,
 			}
 		}
 
@@ -254,4 +256,30 @@ func AddHospClinic(c *fiber.Ctx) error {
 		},
 	}
 	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
+}
+
+func generateBreakingSlots(startTime, endTime string) []subEntity.BreakingSlots {
+	layout := "15:04"
+	start, _ := time.Parse(layout, startTime)
+	end, _ := time.Parse(layout, endTime)
+
+	if start.After(end) {
+		return nil 
+	}
+
+	var breakingSlots []subEntity.BreakingSlots
+
+	for start.Before(end) {
+		next := start.Add(30 * time.Minute)
+		if next.After(end) {
+			next = end
+		}
+		breakingSlots = append(breakingSlots, subEntity.BreakingSlots{
+			StartTime: start.Format(layout),
+			EndTime:   next.Format(layout),
+		})
+		start = next
+	}
+
+	return breakingSlots
 }

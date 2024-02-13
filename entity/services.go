@@ -74,17 +74,30 @@ type Address struct {
 }
 
 type Doctor struct {
-	Id         primitive.ObjectID `json:"id" bson:"id"`
-	Image      string             `json:"image" bson:"image"`
-	Name       string             `json:"name" bson:"name"`
-	Speciality string             `json:"speciality" bson:"speciality"`
-	Schedule   []Schedule         `json:"schedule" bson:"schedule"`
+	Id              primitive.ObjectID `json:"id" bson:"id"`
+	Image           string             `json:"image" bson:"image"`
+	Name            string             `json:"name" bson:"name"`
+	Speciality      string             `json:"speciality" bson:"speciality"`
+	Schedule        []Schedule         `json:"schedule" bson:"schedule"`
+	UpcommingEvents []UpcommingEvents  `json:"upcommingEvents" bson:"upcommingEvents"`
+}
+
+type UpcommingEvents struct {
+	Id        primitive.ObjectID `json:"id" bson:"id"`
+	StartTime time.Time          `json:"startTime" bson:"startTime"`
+	EndTime   time.Time          `json:"endTime" bson:"endTime"`
 }
 
 type Schedule struct {
-	StartTime string   `json:"startTime" bson:"startTime"`
-	EndTime   string   `json:"endTime" bson:"endTime"`
-	Days      []string `json:"days" bson:"days"`
+	StartTime     string          `json:"startTime" bson:"startTime"`
+	EndTime       string          `json:"endTime" bson:"endTime"`
+	Days          []string        `json:"days" bson:"days"`
+	BreakingSlots []BreakingSlots `json:"breakingSlots" bson:"breakingSlots"`
+}
+
+type BreakingSlots struct {
+	StartTime string `json:"startTime" bson:"startTime"`
+	EndTime   string `json:"endTime" bson:"endTime"`
 }
 
 type Documents struct {

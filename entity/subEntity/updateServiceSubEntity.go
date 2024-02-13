@@ -73,9 +73,15 @@ type DoctorUpdateServiceSubEntity struct {
 }
 
 type ScheduleUpdateServiceSubEntity struct {
-	StartTime string   `json:"startTime" bson:"startTime"`
-	EndTime   string   `json:"endTime" bson:"endTime"`
-	Days      []string `json:"days" bson:"days"`
+	StartTime     string          `json:"startTime" bson:"startTime"`
+	EndTime       string          `json:"endTime" bson:"endTime"`
+	Days          []string        `json:"days" bson:"days"`
+	BreakingSlots []BreakingSlots `json:"breakingSlots" bson:"breakingSlots"`
+}
+
+type BreakingSlots struct {
+	StartTime string `json:"startTime" bson:"startTime"`
+	EndTime   string `json:"endTime" bson:"endTime"`
 }
 
 type DocumentsUpdateServiceSubEntity struct {
@@ -175,7 +181,7 @@ type DoctorSlotsUpdateServiceSubEntity struct {
 
 type MedicalLabScientistUpdateServiceSubEntity struct {
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
-	ProfessionalDetails        ProfessionalDetailUpdateServiceSubEntity            `json:"professionalDetails" bson:"professionalDetails"`
+	ProfessionalDetails        ProfessionalDetailUpdateServiceSubEntity         `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocsUpdateServiceSubEntity    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndScheduleUpdateServiceSubEntity       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`

@@ -187,19 +187,51 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	var appointmentDate time.Time
-	if data.AppointmentDate != "" {
-		appointmentDate, err = time.Parse(time.RFC3339, data.AppointmentDate)
+	var fromDate time.Time
+	if data.FromDate != "" {
+		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
 				Status:  false,
-				Message: "Failed to parse appointment date: " + err.Error(),
+				Message: "Failed to parse fromDate date: " + err.Error(),
 			})
 		}
 	} else {
 		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
 			Status:  false,
-			Message: "Appointment date is mandatory",
+			Message: "fromDate is mandatory",
+		})
+	}
+
+	var toDate time.Time
+	if data.ToDate != "" {
+		toDate, err = time.Parse(time.RFC3339, data.ToDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse toDate date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
+			Status:  false,
+			Message: "toDate date is mandatory",
+		})
+	}
+
+	var remindMeBefore time.Time
+	if data.RemindMeBefore != "" {
+		remindMeBefore, err = time.Parse(time.RFC3339, data.RemindMeBefore)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse remindMeBefore date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(hospitals.HospitalClinicAppointmentResDto{
+			Status:  false,
+			Message: "remindMeBefore date is mandatory",
 		})
 	}
 
@@ -211,9 +243,9 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 			Speciality: doctorData.Speciality,
 		},
 		AppointmentDetails: entity.AppointmentDetailsAppointmentEntity{
-			Date:           appointmentDate,
-			RemindMeBefore: data.RemindMeBefore,
-			AvailableTime:  data.AvailableTime,
+			RemindMeBefore: remindMeBefore,
+			From:           fromDate,
+			To:             toDate,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

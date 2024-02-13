@@ -3,7 +3,8 @@ package hospitals
 type HospitalClinicAppointmentReqDto struct {
 	DoctorId        string  `json:"doctorId" form:"doctorId"`
 	FamillyMemberId string  `json:"familyMemberId" form:"familyMemberId"`
-	AppointmentDate string  `json:"appointmentDate" form:"appointmentDate"`
+	FromDate        string  `json:"fromDate" form:"fromDate"`
+	ToDate          string  `json:"toDate" form:"toDate"`
 	RemindMeBefore  string  `json:"remindMeBefore" form:"remindMeBefore"`
 	AvailableTime   string  `json:"availableTime" form:"availableTime"`
 	FamilyType      string  `json:"familyType" form:"familyType"`

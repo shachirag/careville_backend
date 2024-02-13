@@ -155,9 +155,9 @@ type DoctorProfessionAppointmentEntity struct {
 }
 
 type AppointmentDetailsAppointmentEntity struct {
-	Date           time.Time `json:"date" bson:"date"`
-	RemindMeBefore string    `json:"remindMeBefore" bson:"remindMeBefore"`
-	AvailableTime  string    `json:"availableTime" bson:"availableTime"`
+	RemindMeBefore time.Time `json:"remindMeBefore" bson:"remindMeBefore"`
+	From           time.Time `json:"from" bson:"from"`
+	To             time.Time `json:"to" bson:"to"`
 }
 
 // type AppointmentStatusAppointmentEntity struct {

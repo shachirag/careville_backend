@@ -64,13 +64,13 @@ func GetHealthProfessionals(c *fiber.Ctx) error {
 		maxDistance = 50000
 		filter["facilityOrProfession"] = "doctor"
 	case "physiotherapist":
-		maxDistance = 30000
+		maxDistance = 50000
 		filter["facilityOrProfession"] = "physiotherapist"
 	case "nurse":
-		maxDistance = 40000
+		maxDistance = 50000
 		filter["facilityOrProfession"] = "nurse"
 	case "medicalLabScientist":
-		maxDistance = 60000
+		maxDistance = 50000
 		filter["facilityOrProfession"] = "medicalLabScientist"
 	default:
 		maxDistance = 50000

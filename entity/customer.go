@@ -19,9 +19,14 @@ type CustomerEntity struct {
 	Password      string             `json:"password" bson:"password"`
 	Sex           string             `json:"sex" bson:"sex"`
 	Age           string             `json:"age" bson:"age"`
+	Wallet        Wallet             `json:"wallet" bson:"wallet"`
 	IsDeleted     bool               `json:"isDeleted" bson:"isDeleted"`
 	CreatedAt     time.Time          `json:"createdAt" bson:"createdAt"`
 	UpdatedAt     time.Time          `json:"updatedAt" bson:"updatedAt"`
+}
+
+type Wallet struct {
+	Amount string `json:"amount" bson:"amount"`
 }
 
 type FamilyMembers struct {
