@@ -12,6 +12,7 @@ import (
 	"careville_backend/handlers/customer/nurse"
 	"careville_backend/handlers/customer/pharmacy"
 	"careville_backend/handlers/customer/physiotherapist"
+
 	// "careville_backend/handlers/customer/reviews"
 	"careville_backend/middlewares"
 	"os"
@@ -58,6 +59,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	healthFacility.Get("/get-all-available-times", hospitals.GetAllAvailableTimes)
 	healthFacility.Post("/add-laboratory-appointment", laboratory.AddLaboratoryAppointment)
 	healthFacility.Get("/get-laboratories", laboratory.Getlaboratory)
+	healthFacility.Get("/get-investigations", laboratory.GetInvestigations)
 	healthFacility.Get("/get-laboratory/:id", laboratory.GetLaboratoryByID)
 	healthFacility.Post("/add-fitnessCenter-appointment", fitnessCenter.AddFitnessCenterAppointment)
 	healthFacility.Get("/get-fitnessCenters", fitnessCenter.GetFitnessCenter)

@@ -4,7 +4,6 @@ import (
 	"careville_backend/database"
 	hospitals "careville_backend/dto/customer/hospitals"
 	"careville_backend/entity"
-	"context"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,10 +12,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// GetAllDoctors retrieves information about doctors for a given service.
-// It returns a JSON response containing doctor details.
+// @Summary Get all doctors
+// @Description Retrieves information about doctors for a given service
+// @Tags customer hospitals
+// @Accept json
+// @Produce json
+// @Param serviceId query string true "ID of the service"
+// @Success 200 {object} DoctorResDto "Success response"
+// @Failure 400 {object} DoctorResDto "Bad request"
+// @Failure 404 {object} DoctorResDto "Not found"
+// @Failure 500 {object} DoctorResDto "Internal server error"
+// @Router /customer/hospitals/get-all-doctors [get]
 func GetAllDoctors(c *fiber.Ctx) error {
-	ctx := context.Background()
 
 	serviceId := c.Query("serviceId")
 	if serviceId == "" {
@@ -62,44 +69,44 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 	doctorsBySpeciality := make(map[string][]hospitals.DoctorRes)
 
-	for _, doctor := range service.HospClinic.Doctor {
-		var nextAvailable string
+	if service.HospClinic != nil && len(service.HospClinic.Doctor) > 1 {
+		for _, doctor := range service.HospClinic.Doctor {
+			nextAvailable := hospitals.NextAvailable{}
 
-		for _, schedule := range doctor.Schedule {
-			for _, breakingSlot := range schedule.BreakingSlots {
-				startTime, err := time.Parse("15:04", breakingSlot.StartTime)
-				if err != nil {
-					return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
-						Status:  false,
-						Message: "Invalid start time format",
-					})
+			for _, schedule := range doctor.Schedule {
+				for _, breakingSlot := range schedule.BreakingSlots {
+					startTime, err := time.Parse("15:04", breakingSlot.StartTime)
+					if err != nil {
+						return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
+							Status:  false,
+							Message: "Invalid start time format",
+						})
+					}
+
+					startTimeUTC := startTime.UTC()
+
+					if startTimeUTC.After(time.Now()) {
+						nextAvailable.StartTime = startTimeUTC.Format("15:04")
+						nextAvailable.LastTime = breakingSlot.EndTime
+						break
+					}
+
 				}
 
-				// Check if the current time is before the start time of the breaking slot
-				if time.Now().Before(startTime) {
-					nextAvailable = startTime.Format("15:04")
-					break
-				}
+				// if !nextAvailable.IsEmpty() {
+				// 	break
+				// }
+			}
+			doctorRes := hospitals.DoctorRes{
+				Id:            doctor.Id,
+				Name:          doctor.Name,
+				Image:         doctor.Image,
+				Speciality:    doctor.Speciality,
+				NextAvailable: nextAvailable,
 			}
 
-			if nextAvailable != "" {
-				break
-			}
+			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 		}
-
-		if nextAvailable == "" {
-			nextAvailable = "No slots available"
-		}
-
-		doctorRes := hospitals.DoctorRes{
-			Id:            doctor.Id,
-			Name:          doctor.Name,
-			Image:         doctor.Image,
-			Speciality:    doctor.Speciality,
-			NextAvailable: nextAvailable,
-		}
-
-		doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 	}
 
 	var response []hospitals.SpecialityDoctorsRes

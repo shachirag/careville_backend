@@ -18,5 +18,10 @@ type DoctorRes struct {
 	Name          string             `json:"name"`
 	Speciality    string             `json:"speciality"`
 	Image         string             `json:"image"`
-	NextAvailable string             `json:"nextAvailable"`
+	NextAvailable NextAvailable      `json:"nextAvailable"`
+}
+
+type NextAvailable struct {
+	StartTime string `json:"startTime" bson:"startTime"`
+	LastTime  string `json:"lastTime" bson:"lastTime"`
 }

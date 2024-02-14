@@ -830,6 +830,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/get-all-available-times": {
+            "get": {
+                "description": "Get all available times",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer hospitals"
+                ],
+                "summary": "Get all available times",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "hospital ID",
+                        "name": "hospitalId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "doctor ID",
+                        "name": "doctorId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.AvailableSlotsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/get-fitnessCenter/{id}": {
             "get": {
                 "description": "Get fitnessCenter by ID",
@@ -1043,6 +1089,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/get-investigations": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer laboratory"
+                ],
+                "summary": "Get all investigations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "laboratory ID",
+                        "name": "laboratoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.InvestigationResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/get-laboratories": {
             "get": {
                 "description": "Get laboratory",
@@ -1204,198 +1289,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/pharmacy.GetPharmacyResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/healthProfessional/add-doctor-appointment": {
-            "post": {
-                "description": "Add appointment",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer doctorProfession"
-                ],
-                "summary": "Add appointment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "serviceId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "add doctorProfession",
-                        "name": "customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/doctorProfession.DoctorProfessionAppointmentReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/doctorProfession.DoctorProfessionAppointmentResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/healthProfessional/add-medicalLabScientist-appointment": {
-            "post": {
-                "description": "Add appointment",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer medicalLabScientist"
-                ],
-                "summary": "Add appointment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "serviceId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "add medicalLabScientist",
-                        "name": "customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistAppointmentReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistAppointmentResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/healthProfessional/add-nurse-appointment": {
-            "post": {
-                "description": "Add appointment",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer nurse"
-                ],
-                "summary": "Add appointment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "serviceId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "add nurse",
-                        "name": "customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/nurse.NurseAppointmentReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/nurse.NurseAppointmentResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/healthProfessional/add-physiotherapist-appointment": {
-            "post": {
-                "description": "Add appointment",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer physiotherapist"
-                ],
-                "summary": "Add appointment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "serviceId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "add physiotherapist",
-                        "name": "customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/physiotherapist.PhysiotherapistAppointmentReqDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/physiotherapist.PhysiotherapistAppointmentResDto"
                         }
                     }
                 }
@@ -1775,6 +1668,56 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/physiotherapist.GetPhysiotherapistResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/hospitals/get-all-doctors": {
+            "get": {
+                "description": "Retrieves information about doctors for a given service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer hospitals"
+                ],
+                "summary": "Get all doctors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the service",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
                         }
                     }
                 }
@@ -6321,49 +6264,6 @@ const docTemplate = `{
                 }
             }
         },
-        "doctorProfession.DoctorProfessionAppointmentReqDto": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "appointmentDate": {
-                    "type": "string"
-                },
-                "availableTime": {
-                    "type": "string"
-                },
-                "familyMemberId": {
-                    "type": "string"
-                },
-                "familyType": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "pricePaid": {
-                    "type": "number"
-                },
-                "remindMeBefore": {
-                    "type": "string"
-                }
-            }
-        },
-        "doctorProfession.DoctorProfessionAppointmentResDto": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "doctorProfession.DoctorProfessionResponse": {
             "type": "object",
             "properties": {
@@ -6640,6 +6540,60 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.AvailableSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.Slots"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "hospitals.DoctorRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nextAvailable": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.DoctorResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.SpecialityDoctorsRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "hospitals.GetHospitalResDto": {
             "type": "object",
             "properties": {
@@ -6694,12 +6648,6 @@ const docTemplate = `{
         "hospitals.HospitalClinicAppointmentReqDto": {
             "type": "object",
             "properties": {
-                "appointmentDate": {
-                    "type": "string"
-                },
-                "availableTime": {
-                    "type": "string"
-                },
                 "doctorId": {
                     "type": "string"
                 },
@@ -6709,10 +6657,13 @@ const docTemplate = `{
                 "familyType": {
                     "type": "string"
                 },
-                "pricePaid": {
-                    "type": "number"
+                "fromDate": {
+                    "type": "string"
                 },
                 "remindMeBefore": {
+                    "type": "string"
+                },
+                "toDate": {
                     "type": "string"
                 }
             }
@@ -6757,6 +6708,31 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "hospitals.Slots": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.SpecialityDoctorsRes": {
+            "type": "object",
+            "properties": {
+                "doctors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.DoctorRes"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
                 }
             }
         },
@@ -6812,6 +6788,34 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/careville_backend_dto_customer_laboratories.GetLaboratoryRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "laboratory.InvestigationRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory.InvestigationResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/laboratory.InvestigationRes"
                     }
                 },
                 "message": {
@@ -6970,40 +6974,6 @@ const docTemplate = `{
                 }
             }
         },
-        "medicalLabScientist.MedicalLabScientistAppointmentReqDto": {
-            "type": "object",
-            "properties": {
-                "appointmentDate": {
-                    "type": "string"
-                },
-                "availableTime": {
-                    "type": "string"
-                },
-                "familyMemberId": {
-                    "type": "string"
-                },
-                "familyType": {
-                    "type": "string"
-                },
-                "pricePaid": {
-                    "type": "number"
-                },
-                "remindMeBefore": {
-                    "type": "string"
-                }
-            }
-        },
-        "medicalLabScientist.MedicalLabScientistAppointmentResDto": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "medicalLabScientist.MedicalLabScientistResponse": {
             "type": "object",
             "properties": {
@@ -7093,40 +7063,6 @@ const docTemplate = `{
                         "$ref": "#/definitions/careville_backend_dto_customer_nurse.GetNurseRes"
                     }
                 },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "nurse.NurseAppointmentReqDto": {
-            "type": "object",
-            "properties": {
-                "appointmentDate": {
-                    "type": "string"
-                },
-                "availableTime": {
-                    "type": "string"
-                },
-                "familyMemberId": {
-                    "type": "string"
-                },
-                "familyType": {
-                    "type": "string"
-                },
-                "pricePaid": {
-                    "type": "number"
-                },
-                "remindMeBefore": {
-                    "type": "string"
-                }
-            }
-        },
-        "nurse.NurseAppointmentResDto": {
-            "type": "object",
-            "properties": {
                 "message": {
                     "type": "string"
                 },
@@ -7329,40 +7265,6 @@ const docTemplate = `{
                         "$ref": "#/definitions/careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes"
                     }
                 },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "physiotherapist.PhysiotherapistAppointmentReqDto": {
-            "type": "object",
-            "properties": {
-                "appointmentDate": {
-                    "type": "string"
-                },
-                "availableTime": {
-                    "type": "string"
-                },
-                "familyMemberId": {
-                    "type": "string"
-                },
-                "familyType": {
-                    "type": "string"
-                },
-                "pricePaid": {
-                    "type": "number"
-                },
-                "remindMeBefore": {
-                    "type": "string"
-                }
-            }
-        },
-        "physiotherapist.PhysiotherapistAppointmentResDto": {
-            "type": "object",
-            "properties": {
                 "message": {
                     "type": "string"
                 },

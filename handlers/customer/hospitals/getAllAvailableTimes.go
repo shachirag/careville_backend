@@ -28,7 +28,7 @@ import (
 func GetAllAvailableTimes(c *fiber.Ctx) error {
 
 	var service entity.ServiceEntity
-	var response []hospitals.Slots // Define response slice
+	var response []hospitals.Slots
 
 	serviceColl := database.GetCollection("service")
 
@@ -82,6 +82,18 @@ func GetAllAvailableTimes(c *fiber.Ctx) error {
 	}
 
 	currentDay := time.Now().Weekday()
+
+	var filteredEvents []entity.UpcommingEvents
+	for _, doc := range service.HospClinic.Doctor {
+		for _, event := range doc.UpcommingEvents {
+			if event.StartTime.Weekday() == currentDay && event.StartTime.After(time.Now()) {
+				filteredEvents = append(filteredEvents, event)
+			}
+		}
+	}
+
+	currentTime := time.Now()
+
 	for _, doc := range service.HospClinic.Doctor {
 		for _, sch := range doc.Schedule {
 			var days []time.Weekday
@@ -95,33 +107,31 @@ func GetAllAvailableTimes(c *fiber.Ctx) error {
 				}
 				days = append(days, weekday)
 			}
-	
+
 			if contains(days, currentDay) {
-				startTime, err := time.Parse("15:04", sch.StartTime)
-				if err != nil {
-					return c.Status(400).JSON(hospitals.AvailableSlotsResDto{
-						Status:  false,
-						Message: "error parsing start time" + err.Error(),
-					})
-				}
-	
-				var filteredEvents []entity.UpcommingEvents
-				for _, event := range doc.UpcommingEvents {
-					if event.StartTime.Weekday() == currentDay && event.StartTime.After(time.Now().UTC()) {
-						filteredEvents = append(filteredEvents, event)
+				if len(filteredEvents) == 0 {
+					for _, slot := range sch.BreakingSlots {
+						slotStartTime, _ := time.Parse("15:04", slot.StartTime)
+						// Only include breaking slots after the current time
+						if slotStartTime.After(currentTime) {
+							response = append(response, hospitals.Slots{
+								StartTime: slot.StartTime,
+								EndTime:   slot.EndTime,
+							})
+						}
 					}
-				}
-	
-				for i := 0; i < len(filteredEvents); i++ {
-					if i == 0 {
-						response = append(response, entityToHospitalsSlots(generateBreakingSlots(startTime.Format("15:04"), filteredEvents[i].StartTime.Format("15:04"), filteredEvents))...)
-					} else {
-						response = append(response, entityToHospitalsSlots(generateBreakingSlots(filteredEvents[i-1].EndTime.Format("15:04"), filteredEvents[i].StartTime.Format("15:04"), filteredEvents))...)
+				} else {
+					for i := 0; i < len(filteredEvents); i++ {
+						if i == 0 {
+							response = append(response, entityToHospitalsSlots(generateBreakingSlots(sch.StartTime, filteredEvents[i].StartTime.Format("15:04"), filteredEvents, currentTime))...)
+						} else {
+							response = append(response, entityToHospitalsSlots(generateBreakingSlots(filteredEvents[i-1].EndTime.Format("15:04"), filteredEvents[i].StartTime.Format("15:04"), filteredEvents, currentTime))...)
+						}
 					}
 				}
 			}
 		}
-	}	
+	}
 
 	if len(response) == 0 {
 		return c.Status(fiber.StatusOK).JSON(hospitals.AvailableSlotsResDto{
@@ -146,7 +156,7 @@ func contains(days []time.Weekday, target time.Weekday) bool {
 	return false
 }
 
-func generateBreakingSlots(startTime, endTime string, upcomingEvents []entity.UpcommingEvents) []entity.Slots {
+func generateBreakingSlots(startTime, endTime string, upcomingEvents []entity.UpcommingEvents, currentDate time.Time) []entity.Slots {
 	var breakingSlots []entity.Slots
 	layout := "15:04"
 
@@ -154,14 +164,14 @@ func generateBreakingSlots(startTime, endTime string, upcomingEvents []entity.Up
 	end, _ := time.Parse(layout, endTime)
 
 	for start.Before(end) {
-		next := start.Add(30 * time.Minute)
+		next := start.Add(20 * time.Minute)
 		if next.After(end) {
 			next = end
 		}
 
 		overlap := false
 		for _, event := range upcomingEvents {
-			if !(start.After(event.EndTime) || next.Before(event.StartTime)) {
+			if event.StartTime.Before(next) && event.EndTime.After(start) {
 				overlap = true
 				break
 			}
@@ -177,17 +187,17 @@ func generateBreakingSlots(startTime, endTime string, upcomingEvents []entity.Up
 		start = next
 	}
 
-	lastSlotEndTime, _ := time.Parse(layout, breakingSlots[len(breakingSlots)-1].EndTime)
-	if lastSlotEndTime.Before(end) {
-		breakingSlots = append(breakingSlots, entity.Slots{
-			StartTime: lastSlotEndTime.Format(layout),
-			EndTime:   end.Format(layout),
-		})
+	if len(breakingSlots) > 0 {
+		lastSlotEndTime, _ := time.Parse(layout, breakingSlots[len(breakingSlots)-1].EndTime)
+		if lastSlotEndTime.Before(end) {
+			breakingSlots = append(breakingSlots, entity.Slots{
+				StartTime: lastSlotEndTime.Format(layout),
+				EndTime:   end.Format(layout),
+			})
+		}
 	}
-
 	return breakingSlots
 }
-
 
 
 func entityToHospitalsSlots(slots []entity.Slots) []hospitals.Slots {

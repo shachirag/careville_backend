@@ -135,7 +135,6 @@ func AddHospClinic(c *fiber.Ctx) error {
 
 	}
 
-	// Upload each image to S3 and get the S3 URLs
 	for _, formFile := range licenseFiles {
 		file, err := formFile.Open()
 		if err != nil {
@@ -145,11 +144,9 @@ func AddHospClinic(c *fiber.Ctx) error {
 			})
 		}
 
-		// Generate a unique filename for each image
 		id := primitive.NewObjectID()
 		fileName := fmt.Sprintf("license/%v-doc-%s", id.Hex(), formFile.Filename)
 
-		// Upload the image to S3 and get the S3 URL
 		licenseURL, err := utils.UploadToS3(fileName, file)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(services.HospitalClinicResDto{
@@ -270,9 +267,9 @@ func generateBreakingSlots(startTime, endTime string) []subEntity.BreakingSlots 
 	var breakingSlots []subEntity.BreakingSlots
 
 	for start.Before(end) {
-		next := start.Add(30 * time.Minute)
+		next := start.Add(20 * time.Minute)
 		if next.After(end) {
-			next = end
+			break
 		}
 		breakingSlots = append(breakingSlots, subEntity.BreakingSlots{
 			StartTime: start.Format(layout),

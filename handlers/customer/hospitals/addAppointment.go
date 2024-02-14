@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -255,7 +256,7 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 			Relationship: familyData.RelationShip,
 		},
 		FamilyType: data.FamilyType,
-		PricePaid:  data.PricePaid,
+		PricePaid:  0,
 	}
 
 	appointment = entity.AppointmentEntity{
@@ -278,11 +279,53 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 		UpdatedAt:         time.Now().UTC(),
 	}
 
-	_, err = appointmentColl.InsertOne(ctx, appointment)
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
 			Status:  false,
-			Message: "Failed to insert hospital appointment data into MongoDB: " + err.Error(),
+			Message: "Failed to start session",
+		})
+	}
+	defer session.EndSession(ctx)
+
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		_, err := appointmentColl.InsertOne(sessCtx, appointment)
+		if err != nil {
+			return nil, err
+		}
+
+		filter := bson.M{
+			"_id": serviceObjectID,
+			"hospClinic.doctor": bson.M{
+				"$elemMatch": bson.M{
+					"id": doctorObjID,
+				},
+			},
+		}
+
+		update := bson.M{
+			"$push": bson.M{
+				"hospClinic.doctor.$.upcommingEvents": bson.M{
+					"id":        appointment.Id,
+					"startTime": appointment.HospitalClinic.AppointmentDetails.From,
+					"endTime":   appointment.HospitalClinic.AppointmentDetails.To,
+				},
+			},
+		}
+
+		_, err = serviceColl.UpdateOne(sessCtx, filter, update)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+			Status:  false,
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

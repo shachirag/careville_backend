@@ -570,34 +570,6 @@ definitions:
       physiotherapistCount:
         type: integer
     type: object
-  doctorProfession.DoctorProfessionAppointmentReqDto:
-    properties:
-      address:
-        type: string
-      appointmentDate:
-        type: string
-      availableTime:
-        type: string
-      familyMemberId:
-        type: string
-      familyType:
-        type: string
-      latitude:
-        type: string
-      longitude:
-        type: string
-      pricePaid:
-        type: number
-      remindMeBefore:
-        type: string
-    type: object
-  doctorProfession.DoctorProfessionAppointmentResDto:
-    properties:
-      message:
-        type: string
-      status:
-        type: boolean
-    type: object
   doctorProfession.DoctorProfessionResponse:
     properties:
       aboutMe:
@@ -777,6 +749,41 @@ definitions:
       type:
         type: string
     type: object
+  hospitals.AvailableSlotsResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/hospitals.Slots'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  hospitals.DoctorRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      nextAvailable:
+        type: string
+      speciality:
+        type: string
+    type: object
+  hospitals.DoctorResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/hospitals.SpecialityDoctorsRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   hospitals.GetHospitalResDto:
     properties:
       data:
@@ -812,19 +819,17 @@ definitions:
     type: object
   hospitals.HospitalClinicAppointmentReqDto:
     properties:
-      appointmentDate:
-        type: string
-      availableTime:
-        type: string
       doctorId:
         type: string
       familyMemberId:
         type: string
       familyType:
         type: string
-      pricePaid:
-        type: number
+      fromDate:
+        type: string
       remindMeBefore:
+        type: string
+      toDate:
         type: string
     type: object
   hospitals.HospitalClinicAppointmentResDto:
@@ -854,6 +859,22 @@ definitions:
         type: array
       totalReviews:
         type: integer
+    type: object
+  hospitals.Slots:
+    properties:
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  hospitals.SpecialityDoctorsRes:
+    properties:
+      doctors:
+        items:
+          $ref: '#/definitions/hospitals.DoctorRes'
+        type: array
+      speciality:
+        type: string
     type: object
   laboratory.Address:
     properties:
@@ -889,6 +910,24 @@ definitions:
       data:
         items:
           $ref: '#/definitions/careville_backend_dto_customer_laboratories.GetLaboratoryRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  laboratory.InvestigationRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  laboratory.InvestigationResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/laboratory.InvestigationRes'
         type: array
       message:
         type: string
@@ -991,28 +1030,6 @@ definitions:
       status:
         type: boolean
     type: object
-  medicalLabScientist.MedicalLabScientistAppointmentReqDto:
-    properties:
-      appointmentDate:
-        type: string
-      availableTime:
-        type: string
-      familyMemberId:
-        type: string
-      familyType:
-        type: string
-      pricePaid:
-        type: number
-      remindMeBefore:
-        type: string
-    type: object
-  medicalLabScientist.MedicalLabScientistAppointmentResDto:
-    properties:
-      message:
-        type: string
-      status:
-        type: boolean
-    type: object
   medicalLabScientist.MedicalLabScientistResponse:
     properties:
       aboutMe:
@@ -1071,28 +1088,6 @@ definitions:
         items:
           $ref: '#/definitions/careville_backend_dto_customer_nurse.GetNurseRes'
         type: array
-      message:
-        type: string
-      status:
-        type: boolean
-    type: object
-  nurse.NurseAppointmentReqDto:
-    properties:
-      appointmentDate:
-        type: string
-      availableTime:
-        type: string
-      familyMemberId:
-        type: string
-      familyType:
-        type: string
-      pricePaid:
-        type: number
-      remindMeBefore:
-        type: string
-    type: object
-  nurse.NurseAppointmentResDto:
-    properties:
       message:
         type: string
       status:
@@ -1224,28 +1219,6 @@ definitions:
         items:
           $ref: '#/definitions/careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes'
         type: array
-      message:
-        type: string
-      status:
-        type: boolean
-    type: object
-  physiotherapist.PhysiotherapistAppointmentReqDto:
-    properties:
-      appointmentDate:
-        type: string
-      availableTime:
-        type: string
-      familyMemberId:
-        type: string
-      familyType:
-        type: string
-      pricePaid:
-        type: number
-      remindMeBefore:
-        type: string
-    type: object
-  physiotherapist.PhysiotherapistAppointmentResDto:
-    properties:
       message:
         type: string
       status:
@@ -3294,6 +3267,37 @@ paths:
       summary: Add drugs
       tags:
       - customer pharmacy
+  /customer/healthFacility/get-all-available-times:
+    get:
+      consumes:
+      - application/json
+      description: Get all available times
+      parameters:
+      - description: hospital ID
+        in: query
+        name: hospitalId
+        required: true
+        type: string
+      - description: doctor ID
+        in: query
+        name: doctorId
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.AvailableSlotsResDto'
+      summary: Get all available times
+      tags:
+      - customer hospitals
   /customer/healthFacility/get-fitnessCenter/{id}:
     get:
       description: Get fitnessCenter by ID
@@ -3435,6 +3439,32 @@ paths:
       summary: Get Hospitals
       tags:
       - customer hospitals
+  /customer/healthFacility/get-investigations:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: laboratory ID
+        in: path
+        name: laboratoryId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.InvestigationResDto'
+      summary: Get all investigations
+      tags:
+      - customer laboratory
   /customer/healthFacility/get-laboratories:
     get:
       description: Get laboratory
@@ -3545,134 +3575,6 @@ paths:
       summary: Get pharmacy by ID
       tags:
       - customer pharmacy
-  /customer/healthProfessional/add-doctor-appointment:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add appointment
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: query
-        name: serviceId
-        required: true
-        type: string
-      - description: add doctorProfession
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/doctorProfession.DoctorProfessionAppointmentReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/doctorProfession.DoctorProfessionAppointmentResDto'
-      summary: Add appointment
-      tags:
-      - customer doctorProfession
-  /customer/healthProfessional/add-medicalLabScientist-appointment:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add appointment
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: query
-        name: serviceId
-        required: true
-        type: string
-      - description: add medicalLabScientist
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/medicalLabScientist.MedicalLabScientistAppointmentReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/medicalLabScientist.MedicalLabScientistAppointmentResDto'
-      summary: Add appointment
-      tags:
-      - customer medicalLabScientist
-  /customer/healthProfessional/add-nurse-appointment:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add appointment
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: query
-        name: serviceId
-        required: true
-        type: string
-      - description: add nurse
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/nurse.NurseAppointmentReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/nurse.NurseAppointmentResDto'
-      summary: Add appointment
-      tags:
-      - customer nurse
-  /customer/healthProfessional/add-physiotherapist-appointment:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add appointment
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: query
-        name: serviceId
-        required: true
-        type: string
-      - description: add physiotherapist
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/physiotherapist.PhysiotherapistAppointmentReqDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/physiotherapist.PhysiotherapistAppointmentResDto'
-      summary: Add appointment
-      tags:
-      - customer physiotherapist
   /customer/healthProfessional/get-doctor/{id}:
     get:
       description: Get doctorProfession by ID
@@ -3924,6 +3826,39 @@ paths:
       summary: Get physiotherapist
       tags:
       - customer medicalLabScientist
+  /customer/hospitals/get-all-doctors:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves information about doctors for a given service
+      parameters:
+      - description: ID of the service
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/hospitals.DoctorResDto'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/hospitals.DoctorResDto'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/hospitals.DoctorResDto'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/hospitals.DoctorResDto'
+      summary: Get all doctors
+      tags:
+      - customer hospitals
   /customer/login:
     post:
       consumes:
