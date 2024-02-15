@@ -4,6 +4,7 @@ import (
 	"careville_backend/handlers"
 	providerAuthenticate "careville_backend/handlers/provider/providerAuthentication"
 	common "careville_backend/handlers/provider/services/commonApis"
+	commonApi "careville_backend/handlers/provider/appointments/commonApis"
 	"careville_backend/handlers/provider/services/doctorProfession"
 	"careville_backend/handlers/provider/services/fitnessCenter"
 	"careville_backend/handlers/provider/services/hospClinic"
@@ -37,6 +38,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	provider.Post("/forgot-password", providerAuthenticate.ForgotPassword)
 	provider.Post("/verify-otp", providerAuthenticate.VerifyOtp)
 	provider.Put("/reset-password", providerAuthenticate.ResetPasswordAfterOtp)
+
 	providerProfile := provider.Group("/profile")
 	providerProfile.Use(jwt, middlewares.ProviderData)
 	providerProfile.Put("/change-password", providerAuthenticate.ChangeProviderPassword)
@@ -125,4 +127,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	providerServices.Get("/get-investigation-info/:investigationId", laboratory.GetInvesitagtionInfo)
 	providerServices.Put("/update-investigation-info/:investigationId", laboratory.UpdateinvestigationInfo)
 
+	appointment := provider.Group("/appointment")
+	appointment.Use(jwt, middlewares.ProviderData)
+	appointment.Put("/change-appointment-status", commonApi.ChangeAppointmentStatus)
 }

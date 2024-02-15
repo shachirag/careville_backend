@@ -7,6 +7,11 @@ import (
 	fitnessCenter "careville_backend/handlers/admin/services/fitnessCenter"
 	laboratory "careville_backend/handlers/admin/services/laboratory"
 	hospitals "careville_backend/handlers/admin/services/hospitals"
+	pharmacy "careville_backend/handlers/admin/services/pharmacy"
+	doctorProfession "careville_backend/handlers/admin/services/doctorProfession"
+	nurse "careville_backend/handlers/admin/services/nurse"
+	physiotherapist "careville_backend/handlers/admin/services/physiotherapist"
+	medicalLabScientist "careville_backend/handlers/admin/services/medicalLabScientist"
 	"careville_backend/middlewares"
 	"os"
 
@@ -45,7 +50,15 @@ func AdminSetupsRoutes(app *fiber.App) {
 	// services
 	healthFacility := admin.Group("/healthFacility")
 	healthFacility.Use(jwt, middlewares.AdminData)
-	healthFacility.Get("/get-hospitals", jwt, hospitals.FetchHospitalsWithPagination)
-	healthFacility.Get("/get-fitnessCenters", jwt, fitnessCenter.FetchFitnessCenterWithPagination)
-	healthFacility.Get("/get-laboratories", jwt, laboratory.FetchLaboratoriesWithPagination)
+	healthFacility.Get("/get-hospitals", hospitals.FetchHospitalsWithPagination)
+	healthFacility.Get("/get-fitnessCenters", fitnessCenter.FetchFitnessCenterWithPagination)
+	healthFacility.Get("/get-laboratories", laboratory.FetchLaboratoriesWithPagination)
+	healthFacility.Get("/get-pharmacies", pharmacy.FetchPharmacyWithPagination)
+
+	healthProfessional := admin.Group("/healthProfessional")
+	healthProfessional.Use(jwt, middlewares.AdminData)
+	healthProfessional.Get("/get-doctors", doctorProfession.FetchDoctorsWithPagination)
+	healthProfessional.Get("/get-medicalLabScientists", medicalLabScientist.FetchMedicalLabScientistsWithPagination)
+	healthProfessional.Get("/get-nurses", nurse.FetchNurseWithPagination)
+	healthProfessional.Get("/get-physiotherapists", physiotherapist.FetchPhysiotherapistWithPagination)
 }

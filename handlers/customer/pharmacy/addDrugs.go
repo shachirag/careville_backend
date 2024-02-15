@@ -217,13 +217,13 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.PharmacyDrugsResDto{
 			Status:  false,
-			Message: "Failed to insert fitnessCenter appointment data into MongoDB: " + err.Error(),
+			Message: "Failed to insert pharmacy appointment data into MongoDB: " + err.Error(),
 		})
 	}
 
-	hospClinicRes := pharmacy.PharmacyDrugsResDto{
+	pharmacyRes := pharmacy.PharmacyDrugsResDto{
 		Status:  true,
 		Message: "Appointment added successfully",
 	}
-	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
+	return c.Status(fiber.StatusOK).JSON(pharmacyRes)
 }

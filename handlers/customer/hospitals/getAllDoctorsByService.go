@@ -4,6 +4,7 @@ import (
 	"careville_backend/database"
 	hospitals "careville_backend/dto/customer/hospitals"
 	"careville_backend/entity"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,12 +18,15 @@ import (
 // @Tags customer hospitals
 // @Accept json
 // @Produce json
+//
+//	@Param Authorization header	string true	"Authentication header"
+//
 // @Param serviceId query string true "ID of the service"
 // @Success 200 {object} DoctorResDto "Success response"
 // @Failure 400 {object} DoctorResDto "Bad request"
 // @Failure 404 {object} DoctorResDto "Not found"
 // @Failure 500 {object} DoctorResDto "Internal server error"
-// @Router /customer/hospitals/get-all-doctors [get]
+// @Router /customer/healthFacility/get-all-doctors [get]
 func GetAllDoctors(c *fiber.Ctx) error {
 
 	serviceId := c.Query("serviceId")
@@ -93,9 +97,6 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 				}
 
-				// if !nextAvailable.IsEmpty() {
-				// 	break
-				// }
 			}
 			doctorRes := hospitals.DoctorRes{
 				Id:            doctor.Id,
@@ -123,4 +124,25 @@ func GetAllDoctors(c *fiber.Ctx) error {
 		Message: "Doctors retrieved successfully",
 		Data:    response,
 	})
+}
+
+func stringToWeekday(day string) (time.Weekday, error) {
+	switch day {
+	case "Sunday":
+		return time.Sunday, nil
+	case "Monday":
+		return time.Monday, nil
+	case "Tuesday":
+		return time.Tuesday, nil
+	case "Wednesday":
+		return time.Wednesday, nil
+	case "Thursday":
+		return time.Thursday, nil
+	case "Friday":
+		return time.Friday, nil
+	case "Saturday":
+		return time.Saturday, nil
+	default:
+		return time.Sunday, fmt.Errorf("invalid day: %s", day)
+	}
 }

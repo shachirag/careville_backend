@@ -254,9 +254,9 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	hospClinicRes := laboratory.LaboratoryAppointmentResDto{
+	laboratoryRes := laboratory.LaboratoryAppointmentResDto{
 		Status:  true,
 		Message: "Appointment added successfully",
 	}
-	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
+	return c.Status(fiber.StatusOK).JSON(laboratoryRes)
 }

@@ -86,7 +86,6 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 		"physiotherapist.information.name":  1,
 		"physiotherapist.information.image": 1,
 		"_id":                               1,
-		"physiotherapist.review.avgRating":  1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -111,10 +110,9 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 		}
 		if physiotherapist1.Physiotherapist != nil {
 			physiotherapistData = append(physiotherapistData, physiotherapist.GetPhysiotherapistRes{
-				Id:        physiotherapist1.Id,
-				Image:     physiotherapist1.Physiotherapist.Information.Image,
-				Name:      physiotherapist1.Physiotherapist.Information.Name,
-				AvgRating: physiotherapist1.Physiotherapist.Review.AvgRating,
+				Id:    physiotherapist1.Id,
+				Image: physiotherapist1.Physiotherapist.Information.Image,
+				Name:  physiotherapist1.Physiotherapist.Information.Name,
 			})
 		}
 	}

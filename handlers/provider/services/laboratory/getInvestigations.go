@@ -5,7 +5,6 @@ import (
 	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
-	"context"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -24,7 +23,6 @@ import (
 // @Success 200 {object} services.InvestigationResDto
 // @Router /provider/services/get-investigations [get]
 func GetInvestigations(c *fiber.Ctx) error {
-	ctx := context.TODO()
 
 	var service entity.ServiceEntity
 

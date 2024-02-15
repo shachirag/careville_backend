@@ -242,9 +242,9 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	hospClinicRes := fitnessCenter.FitnessCenterAppointmentResDto{
+	fitnessCenterRes := fitnessCenter.FitnessCenterAppointmentResDto{
 		Status:  true,
 		Message: "Appointment added successfully",
 	}
-	return c.Status(fiber.StatusOK).JSON(hospClinicRes)
+	return c.Status(fiber.StatusOK).JSON(fitnessCenterRes)
 }

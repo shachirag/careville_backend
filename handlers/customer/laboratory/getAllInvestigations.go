@@ -43,8 +43,9 @@ func GetInvestigations(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"laboratory.investigations.id":   1,
-		"laboratory.investigations.name": 1,
+		"laboratory.investigations.id":    1,
+		"laboratory.investigations.name":  1,
+		"laboratory.investigations.price": 1,
 	}
 
 	findOptions := options.FindOne().SetProjection(projection)
@@ -67,8 +68,9 @@ func GetInvestigations(c *fiber.Ctx) error {
 	if service.Laboratory != nil && len(service.Laboratory.Investigations) > 0 {
 		for _, investigation := range service.Laboratory.Investigations {
 			investigationData = append(investigationData, laboratory.InvestigationRes{
-				Id:   investigation.Id,
-				Name: investigation.Name,
+				Id:    investigation.Id,
+				Name:  investigation.Name,
+				Price: investigation.Price,
 			})
 		}
 	}

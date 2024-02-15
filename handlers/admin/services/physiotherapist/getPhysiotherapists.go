@@ -1,8 +1,8 @@
-package doctorProfession
+package physiotherapist
 
 import (
 	"careville_backend/database"
-	doctorProfession "careville_backend/dto/admin/services/doctorProfession"
+	physiotherapist "careville_backend/dto/admin/services/physiotherapist"
 	"careville_backend/entity"
 	"context"
 	"math"
@@ -16,9 +16,9 @@ import (
 
 var ctx = context.Background()
 
-// @Summary Fetch doctorProfession With Filters
-// @Description Fetch doctorProfession With Filters
-// @Tags admin doctorProfession
+// @Summary Fetch physiotherapist With Filters
+// @Description Fetch physiotherapist With Filters
+// @Tags admin physiotherapist
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
@@ -26,9 +26,9 @@ var ctx = context.Background()
 // @Param page query int false "Page no. to fetch the products for 1"
 // @Param perPage query int false "Limit of products to fetch is 15"
 // @Produce json
-// @Success 200 {object} doctorProfession.GetDoctorProfessionPaginationRes
-// @Router /admin/healthProfessional/get-doctors [get]
-func FetchDoctorsWithPagination(c *fiber.Ctx) error {
+// @Success 200 {object} physiotherapist.GetPhysiotherapistPaginationRes
+// @Router /admin/healthProfessional/get-physiotherapists [get]
+func FetchPhysiotherapistWithPagination(c *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
 	limit, _ := strconv.Atoi(c.Query("limit", "15"))
@@ -37,7 +37,7 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 
 	filter := bson.M{
 		"role":                 "healthProfessional",
-		"facilityOrProfession": "doctor",
+		"facilityOrProfession": "physiotherapist",
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -53,7 +53,6 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 			"dialCode": 1,
 			"number":   1,
 		},
-		"doctor.additionalServices.speciality": 1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -61,69 +60,63 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 	cursor, err := serviceColl.Find(ctx, filter, findOptions, sortOptions)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(doctorProfession.GetDoctorProfessionPaginationRes{
+			return c.Status(fiber.StatusNotFound).JSON(physiotherapist.GetPhysiotherapistPaginationRes{
 				Status:  false,
-				Message: "doctor not found",
+				Message: "physiotherapist not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.GetDoctorProfessionPaginationRes{
+		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.GetPhysiotherapistPaginationRes{
 			Status:  false,
-			Message: "Failed to fetch doctor from MongoDB: " + err.Error(),
+			Message: "Failed to fetch physiotherapist from MongoDB: " + err.Error(),
 		})
 	}
 	defer cursor.Close(ctx)
 
-	response := doctorProfession.DoctorProfessionPaginationResponse{
-		Total:               0,
-		PerPage:             limit,
-		CurrentPage:         page,
-		TotalPages:          0,
-		DoctorProfessionRes: []doctorProfession.GetDoctorProfessionRes{},
+	response := physiotherapist.PhysiotherapistPaginationResponse{
+		Total:              0,
+		PerPage:            limit,
+		CurrentPage:        page,
+		TotalPages:         0,
+		PhysiotherapistRes: []physiotherapist.GetPhysiotherapistRes{},
 	}
 
 	for cursor.Next(ctx) {
 		var service entity.ServiceEntity
 		err := cursor.Decode(&service)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.GetDoctorProfessionPaginationRes{
+			return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.GetPhysiotherapistPaginationRes{
 				Status:  false,
-				Message: "Failed to decode doctor data: " + err.Error(),
+				Message: "Failed to decode physiotherapist data: " + err.Error(),
 			})
 		}
 
-		var speciality string
-		if service.Doctor != nil && len(service.Doctor.AdditionalServices.Speciality) > 0 {
-			speciality = service.Doctor.AdditionalServices.Speciality
-		}
-
-		medicalLabScientistRes := doctorProfession.GetDoctorProfessionRes{
+		nurseRes := physiotherapist.GetPhysiotherapistRes{
 			Id:        service.Id,
 			Email:     service.User.Email,
 			FirstName: service.User.FirstName,
 			LastName:  service.User.LastName,
-			PhoneNumber: doctorProfession.PhoneNumber{
+			PhoneNumber: physiotherapist.PhoneNumber{
 				DialCode: service.User.PhoneNumber.DialCode,
 				Number:   service.User.PhoneNumber.Number,
 			},
-			Speciality: speciality,
 			// ProfileId: service.ProfileId,
 		}
 
-		response.DoctorProfessionRes = append(response.DoctorProfessionRes, medicalLabScientistRes)
+		response.PhysiotherapistRes = append(response.PhysiotherapistRes, nurseRes)
 	}
 
 	totalCount, err := serviceColl.CountDocuments(ctx, filter)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.GetDoctorProfessionPaginationRes{
+		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.GetPhysiotherapistPaginationRes{
 			Status:  false,
-			Message: "Failed to count doctor: " + err.Error(),
+			Message: "Failed to count physiotherapist: " + err.Error(),
 		})
 	}
 
 	response.Total = int(totalCount)
 	response.TotalPages = int(math.Ceil(float64(response.Total) / float64(response.PerPage)))
 
-	finalResponse := doctorProfession.GetDoctorProfessionPaginationRes{
+	finalResponse := physiotherapist.GetPhysiotherapistPaginationRes{
 		Status:  true,
 		Message: "Sucessfully fetched data",
 		Data:    response,

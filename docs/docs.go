@@ -224,6 +224,226 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/healthFacility/get-pharmacies": {
+            "get": {
+                "description": "Fetch pharmacy With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin pharmacy"
+                ],
+                "summary": "Fetch pharmacy With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.GetPharmacyPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/healthProfessional/get-doctors": {
+            "get": {
+                "description": "Fetch doctorProfession With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin doctorProfession"
+                ],
+                "summary": "Fetch doctorProfession With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.GetDoctorProfessionPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/healthProfessional/get-medicalLabScientists": {
+            "get": {
+                "description": "Fetch medicalLabScientists With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin medicalLabScientist"
+                ],
+                "summary": "Fetch medicalLabScientists With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/healthProfessional/get-nurses": {
+            "get": {
+                "description": "Fetch nurse With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin nurse"
+                ],
+                "summary": "Fetch nurse With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.GetNursePaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/healthProfessional/get-physiotherapists": {
+            "get": {
+                "description": "Fetch physiotherapist With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin physiotherapist"
+                ],
+                "summary": "Fetch physiotherapist With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/login": {
             "post": {
                 "description": "send 6 digit otp for Login Admin",
@@ -830,9 +1050,53 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/healthFacility/get-all-available-times": {
+        "/customer/healthFacility/appointment/hospital-appointments": {
             "get": {
-                "description": "Get all available times",
+                "description": "Fetch hospitals With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch hospitals With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.GetHospitalAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-all-doctors": {
+            "get": {
+                "description": "Retrieves information about doctors for a given service",
                 "consumes": [
                     "application/json"
                 ],
@@ -842,11 +1106,75 @@ const docTemplate = `{
                 "tags": [
                     "customer hospitals"
                 ],
-                "summary": "Get all available times",
+                "summary": "Get all doctors",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "hospital ID",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID of the service",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.DoctorResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-available-slots/{doctorId}": {
+            "get": {
+                "description": "Get Doctor info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hospClinic"
+                ],
+                "summary": "Get Doctor info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
                         "name": "hospitalId",
                         "in": "query",
                         "required": true
@@ -856,13 +1184,6 @@ const docTemplate = `{
                         "description": "doctor ID",
                         "name": "doctorId",
                         "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
                         "required": true
                     }
                 ],
@@ -1294,6 +1615,198 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/add-doctor-appointment": {
+            "post": {
+                "description": "Add appointment",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer doctorProfession"
+                ],
+                "summary": "Add appointment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "add doctorProfession",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.DoctorProfessionAppointmentReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.DoctorProfessionAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/add-medicalLabScientist-appointment": {
+            "post": {
+                "description": "Add appointment",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer medicalLabScientist"
+                ],
+                "summary": "Add appointment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "add medicalLabScientist",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistAppointmentReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/add-nurse-appointment": {
+            "post": {
+                "description": "Add appointment",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer nurse"
+                ],
+                "summary": "Add appointment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "add nurse",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/nurse.NurseAppointmentReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.NurseAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/add-physiotherapist-appointment": {
+            "post": {
+                "description": "Add appointment",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer physiotherapist"
+                ],
+                "summary": "Add appointment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "add physiotherapist",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.PhysiotherapistAppointmentReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.PhysiotherapistAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-doctor/{id}": {
             "get": {
                 "description": "Get doctorProfession by ID",
@@ -1673,56 +2186,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/hospitals/get-all-doctors": {
-            "get": {
-                "description": "Retrieves information about doctors for a given service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer hospitals"
-                ],
-                "summary": "Get all doctors",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID of the service",
-                        "name": "serviceId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "schema": {
-                            "$ref": "#/definitions/hospitals.DoctorResDto"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/hospitals.DoctorResDto"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "schema": {
-                            "$ref": "#/definitions/hospitals.DoctorResDto"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/hospitals.DoctorResDto"
-                        }
-                    }
-                }
-            }
-        },
         "/customer/login": {
             "post": {
                 "description": "Login customer",
@@ -2078,6 +2541,51 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/customerAuth.LoginCustomerResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/appointment/change-appointment-status": {
+            "put": {
+                "description": "change appointment status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "change appointment status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment Id",
+                        "name": "appointmentId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "change status",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResDto"
                         }
                     }
                 }
@@ -5520,6 +6028,32 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_admin_services_doctorProfession.GetDoctorProfessionRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/doctorProfession.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes": {
             "type": "object",
             "properties": {
@@ -5566,12 +6100,104 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_admin_services_medicalLabScientist.GetMedicalLabScientistRes": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/medicalLabScientist.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_admin_services_nurse.GetNurseRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/nurse.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_admin_services_pharmacy.GetPharmacyRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/pharmacy.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_admin_services_physiotherapist.GetPhysiotherapistRes": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/physiotherapist.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes": {
             "type": "object",
             "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
                 "id": {
                     "type": "string"
                 },
@@ -5580,6 +6206,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "nextAvailable": {
+                    "$ref": "#/definitions/doctorProfession.NextAvailable"
                 },
                 "speciality": {
                     "type": "string"
@@ -5629,9 +6258,6 @@ const docTemplate = `{
         "careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes": {
             "type": "object",
             "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
                 "id": {
                     "type": "string"
                 },
@@ -5640,15 +6266,15 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "nextAvailable": {
+                    "$ref": "#/definitions/medicalLabScientist.NextAvailable"
                 }
             }
         },
         "careville_backend_dto_customer_nurse.GetNurseRes": {
             "type": "object",
             "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
                 "id": {
                     "type": "string"
                 },
@@ -5657,6 +6283,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "nextAvailable": {
+                    "$ref": "#/definitions/nurse.NextAvailable"
                 }
             }
         },
@@ -5683,9 +6312,6 @@ const docTemplate = `{
         "careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes": {
             "type": "object",
             "properties": {
-                "avgRating": {
-                    "type": "number"
-                },
                 "id": {
                     "type": "string"
                 },
@@ -5694,6 +6320,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "nextAvailable": {
+                    "$ref": "#/definitions/physiotherapist.NextAvailable"
                 }
             }
         },
@@ -6264,6 +6893,72 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.DoctorProfessionAppointmentReqDto": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "familyMemberId": {
+                    "type": "string"
+                },
+                "familyType": {
+                    "type": "string"
+                },
+                "fromDate": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                },
+                "remindMeBefore": {
+                    "type": "string"
+                },
+                "toDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.DoctorProfessionAppointmentResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.DoctorProfessionPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "doctorProfessionRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_doctorProfession.GetDoctorProfessionRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "doctorProfession.DoctorProfessionResponse": {
             "type": "object",
             "properties": {
@@ -6319,6 +7014,20 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.GetDoctorProfessionPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/doctorProfession.DoctorProfessionPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "doctorProfession.GetDoctorProfessionResDto": {
             "type": "object",
             "properties": {
@@ -6347,6 +7056,28 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.NextAvailable": {
+            "type": "object",
+            "properties": {
+                "lastTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
                 }
             }
         },
@@ -6540,20 +7271,45 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.AvailableSlotsRes": {
+            "type": "object",
+            "properties": {
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.Schedule"
+                    }
+                },
+                "upcommingEvents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.UpcommingEvents"
+                    }
+                }
+            }
+        },
         "hospitals.AvailableSlotsResDto": {
             "type": "object",
             "properties": {
                 "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/hospitals.Slots"
-                    }
+                    "$ref": "#/definitions/hospitals.AvailableSlotsRes"
                 },
                 "message": {
                     "type": "string"
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "hospitals.BreakinSlots": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
                 }
             }
         },
@@ -6570,7 +7326,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nextAvailable": {
-                    "type": "string"
+                    "$ref": "#/definitions/hospitals.NextAvailable"
                 },
                 "speciality": {
                     "type": "string"
@@ -6591,6 +7347,37 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "hospitals.GetHospitalAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/hospitals.HospitalAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "hospitals.GetHospitalAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
                 }
             }
         },
@@ -6642,6 +7429,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "hospitals.HospitalAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.GetHospitalAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },
@@ -6711,9 +7521,32 @@ const docTemplate = `{
                 }
             }
         },
-        "hospitals.Slots": {
+        "hospitals.NextAvailable": {
             "type": "object",
             "properties": {
+                "lastTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.Schedule": {
+            "type": "object",
+            "properties": {
+                "breakinSlots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.BreakinSlots"
+                    }
+                },
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "endTime": {
                     "type": "string"
                 },
@@ -6732,6 +7565,20 @@ const docTemplate = `{
                     }
                 },
                 "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.UpcommingEvents": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startTime": {
                     "type": "string"
                 }
             }
@@ -6806,6 +7653,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },
@@ -6943,6 +7793,20 @@ const docTemplate = `{
                 }
             }
         },
+        "medicalLabScientist.GetMedicalLabScientistPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "medicalLabScientist.GetMedicalLabScientistResDto": {
             "type": "object",
             "properties": {
@@ -6974,6 +7838,63 @@ const docTemplate = `{
                 }
             }
         },
+        "medicalLabScientist.MedicalLabScientistAppointmentReqDto": {
+            "type": "object",
+            "properties": {
+                "familyMemberId": {
+                    "type": "string"
+                },
+                "familyType": {
+                    "type": "string"
+                },
+                "fromDate": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                },
+                "remindMeBefore": {
+                    "type": "string"
+                },
+                "toDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "medicalLabScientist.MedicalLabScientistAppointmentResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.MedicalLabScientistPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "medicalLabScientistRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_medicalLabScientist.GetMedicalLabScientistRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "medicalLabScientist.MedicalLabScientistResponse": {
             "type": "object",
             "properties": {
@@ -7000,6 +7921,28 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "medicalLabScientist.NextAvailable": {
+            "type": "object",
+            "properties": {
+                "lastTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "medicalLabScientist.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
                 }
             }
         },
@@ -7040,6 +7983,20 @@ const docTemplate = `{
                 }
             }
         },
+        "nurse.GetNursePaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/nurse.NursePaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "nurse.GetNurseResDto": {
             "type": "object",
             "properties": {
@@ -7071,6 +8028,74 @@ const docTemplate = `{
                 }
             }
         },
+        "nurse.NextAvailable": {
+            "type": "object",
+            "properties": {
+                "lastTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "nurse.NurseAppointmentReqDto": {
+            "type": "object",
+            "properties": {
+                "familyMemberId": {
+                    "type": "string"
+                },
+                "familyType": {
+                    "type": "string"
+                },
+                "fromDate": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                },
+                "remindMeBefore": {
+                    "type": "string"
+                },
+                "toDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "nurse.NurseAppointmentResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "nurse.NursePaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "nurseRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_nurse.GetNurseRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "nurse.NurseResponse": {
             "type": "object",
             "properties": {
@@ -7097,6 +8122,17 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "nurse.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
                 }
             }
         },
@@ -7168,6 +8204,20 @@ const docTemplate = `{
                 }
             }
         },
+        "pharmacy.GetPharmacyPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/pharmacy.PharmacyPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "pharmacy.GetPharmacyResDto": {
             "type": "object",
             "properties": {
@@ -7210,6 +8260,29 @@ const docTemplate = `{
                 }
             }
         },
+        "pharmacy.PharmacyPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "pharmacyRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_pharmacy.GetPharmacyRes"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "pharmacy.PharmacyResponse": {
             "type": "object",
             "properties": {
@@ -7242,6 +8315,31 @@ const docTemplate = `{
                 }
             }
         },
+        "pharmacy.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/physiotherapist.PhysiotherapistPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "physiotherapist.GetPhysiotherapistResDto": {
             "type": "object",
             "properties": {
@@ -7270,6 +8368,85 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.NextAvailable": {
+            "type": "object",
+            "properties": {
+                "lastTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistAppointmentReqDto": {
+            "type": "object",
+            "properties": {
+                "familyMemberId": {
+                    "type": "string"
+                },
+                "familyType": {
+                    "type": "string"
+                },
+                "fromDate": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                },
+                "remindMeBefore": {
+                    "type": "string"
+                },
+                "toDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistAppointmentResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "physiotherapistRes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_physiotherapist.GetPhysiotherapistRes"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },

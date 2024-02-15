@@ -6,7 +6,12 @@ type GetNurseRes struct {
 	Id        primitive.ObjectID `json:"id" bson:"_id"`
 	Image     string             `json:"image" bson:"image"`
 	Name      string             `json:"name" bson:"name"`
-	AvgRating float64            `json:"avgRating" bson:"avgRating"`
+	NextAvailable NextAvailable      `json:"nextAvailable" bson:"nextAvailable"`
+}
+
+type NextAvailable struct {
+	StartTime string `json:"startTime" bson:"startTime"`
+	LastTime  string `json:"lastTime" bson:"lastTime"`
 }
 
 type GetNurseResponseDto struct {

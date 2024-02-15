@@ -2,8 +2,8 @@ package medicalLabScientist
 
 type MedicalLabScientistAppointmentReqDto struct {
 	FamillyMemberId string  `json:"familyMemberId" form:"familyMemberId"`
-	AppointmentDate string  `json:"appointmentDate" form:"appointmentDate"`
-	AvailableTime   string  `json:"availableTime" form:"availableTime"`
+	FromDate        string  `json:"fromDate" form:"fromDate"`
+	ToDate          string  `json:"toDate" form:"toDate"`
 	RemindMeBefore  string  `json:"remindMeBefore" form:"remindMeBefore"`
 	FamilyType      string  `json:"familyType" form:"familyType"`
 	PricePaid       float64 `json:"pricePaid" form:"pricePaid"`

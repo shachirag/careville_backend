@@ -116,7 +116,6 @@ func GetDoctors(c *fiber.Ctx) error {
 				Image:      doctor.Doctor.Information.Image,
 				Name:       doctor.Doctor.Information.Name,
 				Speciality: doctor.Doctor.AdditionalServices.Speciality,
-				AvgRating:  doctor.Doctor.Review.AvgRating,
 			})
 		}
 	}

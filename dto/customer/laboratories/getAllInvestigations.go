@@ -9,6 +9,7 @@ type InvestigationResDto struct {
 }
 
 type InvestigationRes struct {
-	Id   primitive.ObjectID `json:"id" bson:"id"`
-	Name string             `json:"name" bson:"name"`
+	Id    primitive.ObjectID `json:"id" bson:"id"`
+	Name  string             `json:"name" bson:"name"`
+	Price float64            `json:"price" bson:"price"`
 }
