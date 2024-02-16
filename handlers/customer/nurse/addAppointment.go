@@ -31,6 +31,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	var (
 		appointmentColl = database.GetCollection("appointment")
 		customerColl    = database.GetCollection("customer")
+		serviceColl     = database.GetCollection("service")
 		data            nurse.NurseAppointmentReqDto
 		appointment     entity.AppointmentEntity
 	)
@@ -136,6 +137,35 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	serviceFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "nurse",
+		"role":                 "healthProfessional",
+	}
+
+	serviceProjection := bson.M{
+		"nurse.information.name":  1,
+		"nurse.information.image": 1,
+	}
+
+	serviceOpts := options.FindOne().SetProjection(serviceProjection)
+
+	var service entity.ServiceEntity
+	err = serviceColl.FindOne(ctx, serviceFilter, serviceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch nurse data: " + err.Error(),
+		})
+	}
+
+	if service.Nurse == nil {
+		return c.Status(fiber.StatusNotFound).JSON(nurse.NurseAppointmentResDto{
+			Status:  false,
+			Message: "nurse data not found",
+		})
+	}
+
 	var fromDate time.Time
 	if data.FromDate != "" {
 		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
@@ -184,11 +214,23 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var name string
+	var image string
+
+	if service.Nurse != nil {
+		name = service.Nurse.Information.Name
+		image = service.Nurse.Information.Image
+	}
+
 	appointmentData := entity.NurseAppointmentEntity{
 		AppointmentDetails: entity.AppointmentDetailsAppointmentEntity{
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Information: entity.NurseInformation{
+			Name:  name,
+			Image: image,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

@@ -31,6 +31,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 	var (
 		appointmentColl = database.GetCollection("appointment")
 		customerColl    = database.GetCollection("customer")
+		serviceColl     = database.GetCollection("service")
 		data            medicalLabScientist.MedicalLabScientistAppointmentReqDto
 		appointment     entity.AppointmentEntity
 	)
@@ -134,6 +135,36 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	serviceFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "medicalLabScientist",
+		"role":                 "healthProfessional",
+	}
+
+	serviceProjection := bson.M{
+		"medicalLabScientist.information.name":               1,
+		"medicalLabScientist.information.image":              1,
+		"medicalLabScientist.professionalDetails.department": 1,
+	}
+
+	serviceOpts := options.FindOne().SetProjection(serviceProjection)
+
+	var service entity.ServiceEntity
+	err = serviceColl.FindOne(ctx, serviceFilter, serviceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch MedicalLabScientist data: " + err.Error(),
+		})
+	}
+
+	if service.MedicalLabScientist == nil {
+		return c.Status(fiber.StatusNotFound).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "MedicalLabScientist data not found",
+		})
+	}
+
 	var fromDate time.Time
 	if data.FromDate != "" {
 		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
@@ -182,11 +213,26 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var name string
+	var image string
+	var department string
+
+	if service.MedicalLabScientist != nil {
+		name = service.MedicalLabScientist.Information.Name
+		image = service.MedicalLabScientist.Information.Image
+		department = service.MedicalLabScientist.ProfessionalDetails.Department
+	}
+
 	appointmentData := entity.MedicalLabScientistAppointmentEntity{
 		AppointmentDetails: entity.AppointmentDetailsAppointmentEntity{
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Information: entity.MedicalLabScientistInformation{
+			Name:       name,
+			Image:      image,
+			Department: department,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

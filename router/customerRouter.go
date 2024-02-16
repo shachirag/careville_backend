@@ -5,6 +5,7 @@ import (
 	common "careville_backend/handlers/customer/commonApis"
 	customerAuth "careville_backend/handlers/customer/customerAuthentication"
 	"careville_backend/handlers/customer/doctorProfession"
+	emergency "careville_backend/handlers/customer/emergency"
 	"careville_backend/handlers/customer/fitnessCenter"
 	hospitals "careville_backend/handlers/customer/hospitals"
 	laboratory "careville_backend/handlers/customer/laboratory"
@@ -86,7 +87,29 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	healthProfessional.Get("/get-doctor/:id", doctorProfession.GetDoctorProfessionByID)
 
 	appointments := healthFacility.Group("/appointment")
-	// appointments.Use(jwt, middlewares.CustomerData)
+	appointments.Use(jwt, middlewares.CustomerData)
 	appointments.Get("/hospital-appointments", hospitals.FetchHospitalAppointmentsWithPagination)
+	appointments.Get("/hospital-approved-appointments", hospitals.FetchApprovedHospitalAppointmentsWithPagination)
+	appointments.Get("/pharmacy-drugs", pharmacy.FetchPharmacyDrugsWithPagination)
+	appointments.Get("/pharmacy-approved-drugs", pharmacy.FetchApprovedPharmacyDrugsWithPagination)
+	appointments.Get("/fitnessCenter-appointments", fitnessCenter.FetchFitnessCenterAppointmentsWithPagination)
+	appointments.Get("/fitnessCenter-approved-appointments", fitnessCenter.FetchApprovedFitnessCenterAppointmentsWithPagination)
+	appointments.Get("/laboratory-appointments", laboratory.FetchLaboratoryAppointmentsWithPagination)
+	appointments.Get("/laboratory-approved-appointments", laboratory.FetchApprovedLaboratoryAppointmentsWithPagination)
 
+	appointment := healthProfessional.Group("/appointment")
+	appointments.Use(jwt, middlewares.CustomerData)
+	appointment.Get("/doctor-appointments", doctorProfession.FetchDoctorAppointmentsWithPagination)
+	appointment.Get("/doctor-approved-appointments", doctorProfession.FetchApprovedDoctorAppointmentsWithPagination)
+	appointment.Get("/nurse-appointments", nurse.FetchNurseAppointmentsWithPagination)
+	appointment.Get("/nurse-approved-appointments", nurse.FetchApprovedNurseAppointmentsWithPagination)
+	appointment.Get("/physiotherapist-appointments", physiotherapist.FetchPhysiotherapistAppointmentsWithPagination)
+	appointment.Get("/physiotherapist-approved-appointments", physiotherapist.FetchApprovedPhysiotherapistAppointmentsWithPagination)
+	appointment.Get("/medicalLabScientist-appointments", medicalLabScientist.FetchMedicalLabScientistAppointmentsWithPagination)
+	appointment.Get("/medicalLabScientist-approved-appointments", medicalLabScientist.FetchApprovedMedicalLabScientistAppointmentsWithPagination)
+
+	emergencyApis := customer.Group("/emergency")
+	emergencyApis.Use(jwt, middlewares.CustomerData)
+	emergencyApis.Get("/get-emergency-doctors", emergency.GetEmergencyDoctors)
+	emergencyApis.Get("/get-emergency-hospitals", emergency.GetEmergencyHospitals)
 }

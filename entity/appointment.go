@@ -54,6 +54,7 @@ type PharmacyInformationAppointmentEntity struct {
 }
 
 type LaboratoryAppointmentEntity struct {
+	Information        NurseInformation                              `json:"information" bson:"information"`
 	Investigation      InvestigationAppointmentEntity                `json:"investigation" bson:"investigation"`
 	FamilyMember       FamilyMemberAppointmentEntity                 `json:"familyMember" bson:"familyMember"`
 	AppointmentDetails LaboratoryAppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
@@ -82,6 +83,7 @@ type LaboratoryAppointmentDetailsAppointmentEntity struct {
 }
 
 type FitnessCenterAppointmentEntity struct {
+	Information  NurseInformation              `json:"information" bson:"information"`
 	Package      string                        `json:"package" bson:"package"`
 	Trainer      TrainerAppointmentEntity      `json:"trainer" bson:"trainer"`
 	FamilyType   string                        `json:"familyType" bson:"familyType"`
@@ -119,24 +121,43 @@ type DoctorAppointmentEntity struct {
 }
 
 type NurseAppointmentEntity struct {
+	Information        NurseInformation                    `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
 	FamilyType         string                              `json:"familyType" bson:"familyType"`
 	PricePaid          float64                             `json:"pricePaid" bson:"pricePaid"`
+}
+
+type NurseInformation struct {
+	Name  string `json:"name" bson:"name"`
+	Image string `json:"image" bson:"image"`
 }
 
 type PhysiotherapistAppointmentEntity struct {
+	Information        PhysiotherapistInformation          `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
 	FamilyType         string                              `json:"familyType" bson:"familyType"`
 	PricePaid          float64                             `json:"pricePaid" bson:"pricePaid"`
 }
 
+type PhysiotherapistInformation struct {
+	Name  string `json:"name" bson:"name"`
+	Image string `json:"image" bson:"image"`
+}
+
 type MedicalLabScientistAppointmentEntity struct {
+	Information        MedicalLabScientistInformation      `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
 	FamilyType         string                              `json:"familyType" bson:"familyType"`
 	PricePaid          float64                             `json:"pricePaid" bson:"pricePaid"`
+}
+
+type MedicalLabScientistInformation struct {
+	Name       string `json:"name" bson:"name"`
+	Image      string `json:"image" bson:"image"`
+	Department string `json:"department" bson:"department"`
 }
 
 type DoctorAppointment struct {
@@ -147,11 +168,18 @@ type DoctorAppointment struct {
 }
 
 type DoctorProfessionAppointmentEntity struct {
+	Information        DoctorProfessionInformation         `json:"information" bson:"information"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyType         string                              `json:"familyType" bson:"familyType"`
 	PricePaid          float64                             `json:"pricePaid" bson:"pricePaid"`
 	Destination        Address                             `json:"destination" bson:"destination"`
+}
+
+type DoctorProfessionInformation struct {
+	Name       string `json:"name" bson:"name"`
+	Image      string `json:"image" bson:"image"`
+	Speciality string `json:"speciality" bson:"speciality"`
 }
 
 type AppointmentDetailsAppointmentEntity struct {

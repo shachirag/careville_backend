@@ -190,6 +190,44 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var fitnessService entity.ServiceEntity
+
+	fitnessCenterProjection := bson.M{
+		"fitnessCenter.information.name":  1,
+		"fitnessCenter.information.image": 1,
+	}
+
+	fitnessCenterFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "fitnessCenter",
+		"role":                 "healthFacility",
+	}
+
+	fitnessCenterOpts := options.FindOne().SetProjection(fitnessCenterProjection)
+
+	err = serviceColl.FindOne(ctx, fitnessCenterFilter, fitnessCenterOpts).Decode(&fitnessService)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch fitnessCenter data: " + err.Error(),
+		})
+	}
+
+	if fitnessService.FitnessCenter == nil {
+		return c.Status(fiber.StatusNotFound).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+			Status:  false,
+			Message: "fitnessCenter data not found",
+		})
+	}
+
+	var name string
+	var image string
+
+	if fitnessService.FitnessCenter != nil {
+		name = fitnessService.FitnessCenter.Information.Name
+		image = fitnessService.FitnessCenter.Information.Image
+	}
+
 	appointmentData := entity.FitnessCenterAppointmentEntity{
 		Package: data.Package,
 		Trainer: entity.TrainerAppointmentEntity{
@@ -198,6 +236,10 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 			Name:        trainerData.Name,
 			Information: trainerData.Information,
 			Price:       trainerData.Price,
+		},
+		Information: entity.NurseInformation{
+			Name:  name,
+			Image: image,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

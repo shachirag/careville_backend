@@ -31,6 +31,7 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 	var (
 		appointmentColl = database.GetCollection("appointment")
 		customerColl    = database.GetCollection("customer")
+		serviceColl     = database.GetCollection("service")
 		data            physiotherapist.PhysiotherapistAppointmentReqDto
 		appointment     entity.AppointmentEntity
 	)
@@ -134,6 +135,35 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	serviceFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "physiotherapist",
+		"role":                 "healthProfessional",
+	}
+
+	serviceProjection := bson.M{
+		"physiotherapist.information.name":  1,
+		"physiotherapist.information.image": 1,
+	}
+
+	serviceOpts := options.FindOne().SetProjection(serviceProjection)
+
+	var service entity.ServiceEntity
+	err = serviceColl.FindOne(ctx, serviceFilter, serviceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.PhysiotherapistAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch physiotherapist data: " + err.Error(),
+		})
+	}
+
+	if service.Physiotherapist == nil {
+		return c.Status(fiber.StatusNotFound).JSON(physiotherapist.PhysiotherapistAppointmentResDto{
+			Status:  false,
+			Message: "physiotherapist data not found",
+		})
+	}
+
 	var fromDate time.Time
 	if data.FromDate != "" {
 		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
@@ -182,11 +212,23 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var name string
+	var image string
+
+	if service.Physiotherapist != nil {
+		name = service.Physiotherapist.Information.Name
+		image = service.Physiotherapist.Information.Image
+	}
+
 	appointmentData := entity.PhysiotherapistAppointmentEntity{
 		AppointmentDetails: entity.AppointmentDetailsAppointmentEntity{
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Information: entity.PhysiotherapistInformation{
+			Name:  name,
+			Image: image,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

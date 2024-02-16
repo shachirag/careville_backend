@@ -21,3 +21,18 @@ type GetHospitalResDto struct {
 	Message string            `json:"message"`
 	Data    []GetHospitalsRes `json:"data"`
 }
+
+type GetEmergencyHospitalResDto struct {
+	Status  bool                       `json:"status"`
+	Message string                     `json:"message"`
+	Data    []GetEmergencyHospitalsRes `json:"data"`
+}
+
+type GetEmergencyHospitalsRes struct {
+	Id                   primitive.ObjectID `json:"id" bson:"_id"`
+	Image                string             `json:"image" bson:"image"`
+	Name                 string             `json:"name" bson:"name"`
+	Address              Address            `json:"address" bson:"address"`
+	IsEmergencyAvailable bool               `json:"isEmergencyAvailable" bson:"isEmergencyAvailable"`
+	Fees                 float64            `json:"fees" bson:"fees"`
+}

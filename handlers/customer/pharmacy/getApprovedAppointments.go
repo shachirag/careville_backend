@@ -1,8 +1,8 @@
-package hospitals
+package pharmacy
 
 import (
 	"careville_backend/database"
-	hospitals "careville_backend/dto/customer/hospitals"
+	pharmacy "careville_backend/dto/customer/pharmacy"
 	"careville_backend/entity"
 	"math"
 	"strconv"
@@ -15,7 +15,7 @@ import (
 )
 
 // @Summary Fetch appointments
-// @Description Fetch appointments
+// @Description Fetch drugs
 // @Tags customer appointments
 // @Accept application/json
 //
@@ -25,9 +25,9 @@ import (
 // @Param page query int false "Page no. to fetch the products for 1"
 // @Param perPage query int false "Limit of products to fetch is 15"
 // @Produce json
-// @Success 200 {object} hospitals.GetHospitalAppointmentsPaginationRes
-// @Router /customer/healthFacility/appointment/hospital-appointments [get]
-func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
+// @Success 200 {object} pharmacy.GetPharmacyAppointmentsPaginationRes
+// @Router /customer/healthFacility/appointment/pharmacy-approved-drugs [get]
+func FetchApprovedPharmacyDrugsWithPagination(c *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
 	limit, _ := strconv.Atoi(c.Query("limit", "15"))
@@ -37,7 +37,7 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 	customerId := c.Query("customerId")
 	customerObjID, err := primitive.ObjectIDFromHex(customerId)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
+		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.GetPharmacyAppointmentsPaginationRes{
 			Status:  false,
 			Message: "Invalid customer ID",
 		})
@@ -45,18 +45,21 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 
 	filter := bson.M{
 		"role":                 "healthFacility",
-		"facilityOrProfession": "hospClinic",
-		"appointmentStatus":    "pending",
+		"facilityOrProfession": "pharmacy",
+		"appointmentStatus":    "approved",
 		"customer.id":          customerObjID,
 	}
 
 	projection := bson.M{
 		"_id":                        1,
 		"serviceId":                  1,
-		"hospital.doctor.id":         1,
-		"hospital.doctor.name":       1,
-		"hospital.doctor.image":      1,
-		"hospital.doctor.speciality": 1,
+		"pharmacy.information.name":  1,
+		"pharmacy.information.image": 1,
+		"pharmacy.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -67,52 +70,55 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 	cursor, err := appointmentColl.Find(ctx, filter, findOptions, sortOptions)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return c.Status(fiber.StatusNotFound).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
+			return c.Status(fiber.StatusNotFound).JSON(pharmacy.GetPharmacyAppointmentsPaginationRes{
 				Status:  false,
 				Message: "appointment not found",
 			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
+		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.GetPharmacyAppointmentsPaginationRes{
 			Status:  false,
 			Message: "Failed to fetch appointment from MongoDB: " + err.Error(),
 		})
 	}
 	defer cursor.Close(ctx)
 
-	response := hospitals.HospitalAppointmentsPaginationResponse{
-		Total:          0,
-		PerPage:        limit,
-		CurrentPage:    page,
-		TotalPages:     0,
-		AppointmentRes: []hospitals.GetHospitalAppointmentsRes{},
+	response := pharmacy.PharmacyAppointmentsPaginationResponse{
+		Total:       0,
+		PerPage:     limit,
+		CurrentPage: page,
+		TotalPages:  0,
+		Drugs:       []pharmacy.GetPharmacyAppointmentsRes{},
 	}
 
 	for cursor.Next(ctx) {
 		var appointment entity.AppointmentEntity
 		err := cursor.Decode(&appointment)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
+			return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.GetPharmacyAppointmentsPaginationRes{
 				Status:  false,
 				Message: "Failed to decode appointment data: " + err.Error(),
 			})
 		}
 
-		if appointment.HospitalClinic != nil {
-			appointmentRes := hospitals.GetHospitalAppointmentsRes{
-				Id:         appointment.Id,
-				ServiceId:  appointment.ServiceID,
-				DoctorId:   appointment.HospitalClinic.Doctor.ID,
-				Image:      appointment.HospitalClinic.Doctor.Image,
-				Name:       appointment.HospitalClinic.Doctor.Name,
-				Speciality: appointment.HospitalClinic.Doctor.Speciality,
+		if appointment.Pharmacy != nil {
+			appointmentRes := pharmacy.GetPharmacyAppointmentsRes{
+				Id:        appointment.Id,
+				ServiceId: appointment.ServiceID,
+				Image:     appointment.Pharmacy.Information.Image,
+				Name:      appointment.Pharmacy.Information.Name,
+				Address: pharmacy.Address{
+					Type:        appointment.Pharmacy.Information.Address.Type,
+					Coordinates: appointment.Pharmacy.Information.Address.Coordinates,
+					Add:         appointment.Pharmacy.Information.Address.Add,
+				},
 			}
 
-			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)
+			response.Drugs = append(response.Drugs, appointmentRes)
 		}
 	}
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
+		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.GetPharmacyAppointmentsPaginationRes{
 			Status:  false,
 			Message: "Failed to count appointments: " + err.Error(),
 		})
@@ -120,7 +126,7 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 
 	totalCount, err := appointmentColl.CountDocuments(ctx, filter)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
+		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.GetPharmacyAppointmentsPaginationRes{
 			Status:  false,
 			Message: "Failed to count appointments: " + err.Error(),
 		})
@@ -129,7 +135,7 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 	response.Total = int(totalCount)
 	response.TotalPages = int(math.Ceil(float64(response.Total) / float64(response.PerPage)))
 
-	finalResponse := hospitals.GetHospitalAppointmentsPaginationRes{
+	finalResponse := pharmacy.GetPharmacyAppointmentsPaginationRes{
 		Status:  true,
 		Message: "Sucessfully fetched data",
 		Data:    response,

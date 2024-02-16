@@ -779,6 +779,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/emergency/get-emergency-hospitals": {
+            "get": {
+                "description": "Get emergency Hospitals",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "emergency"
+                ],
+                "summary": "Get emergency Hospitals",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter hospitals by search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.GetEmergencyHospitalResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/forgot-password": {
             "post": {
                 "description": "Forgot Password",
@@ -1050,9 +1097,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/healthFacility/appointment/hospital-appointments": {
+        "/customer/healthFacility/appointment/fitnessCenter-appointments": {
             "get": {
-                "description": "Fetch hospitals With Filters",
+                "description": "Fetch appointments",
                 "consumes": [
                     "application/json"
                 ],
@@ -1062,13 +1109,122 @@ const docTemplate = `{
                 "tags": [
                     "customer appointments"
                 ],
-                "summary": "Fetch hospitals With Filters",
+                "summary": "Fetch appointments",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "Authentication header",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/fitnessCenter-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/hospital-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
                         "required": true
                     },
                     {
@@ -1089,6 +1245,307 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/hospitals.GetHospitalAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/hospital-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.GetHospitalAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/laboratory-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.GetLaboratoryAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/laboratory-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.GetLaboratoryAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/pharmacy-approved-drugs": {
+            "get": {
+                "description": "Fetch drugs",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/pharmacy-drugs": {
+            "get": {
+                "description": "Fetch drugs",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-all-available-slots": {
+            "get": {
+                "description": "Get available times",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer hospitals"
+                ],
+                "summary": "Get available times",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "hospitalId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "doctor ID",
+                        "name": "doctorId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.AvailableSlotsResDto"
                         }
                     }
                 }
@@ -1146,52 +1603,6 @@ const docTemplate = `{
                         "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/hospitals.DoctorResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/healthFacility/get-available-slots/{doctorId}": {
-            "get": {
-                "description": "Get Doctor info",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "hospClinic"
-                ],
-                "summary": "Get Doctor info",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "service ID",
-                        "name": "hospitalId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "doctor ID",
-                        "name": "doctorId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/hospitals.AvailableSlotsResDto"
                         }
                     }
                 }
@@ -1807,6 +2218,414 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/appointment/doctor-appointments": {
+            "get": {
+                "description": "Fetch doctor appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch doctor appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.GetDoctorAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/doctor-approved-appointments": {
+            "get": {
+                "description": "Fetch doctor appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch doctor appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.GetDoctorAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/medicalLabScientist-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/medicalLabScientist-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/nurse-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.GetNurseAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/nurse-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.GetNurseAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/physiotherapist-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/appointment/physiotherapist-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.GetPhysiotherapistAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-doctor/{id}": {
             "get": {
                 "description": "Get doctorProfession by ID",
@@ -1885,6 +2704,53 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/doctorProfession.GetDoctorProfessionResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-emergency-doctors": {
+            "get": {
+                "description": "Get emergency doctors",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "emergency"
+                ],
+                "summary": "Get emergency doctors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter doctorProfession by search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for memories sorting (required for distance sorting)",
+                        "name": "long",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Latitude for memories sorting (required for distance sorting)",
+                        "name": "lat",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.EmergencyDoctorResDto"
                         }
                     }
                 }
@@ -6893,6 +7759,29 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.DoctorAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.GetDoctorAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "doctorProfession.DoctorProfessionAppointmentReqDto": {
             "type": "object",
             "properties": {
@@ -7014,6 +7903,57 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.EmergencyDoctorResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.GetEmergencyDoctorProfessionRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/doctorProfession.DoctorAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "seviceId": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
         "doctorProfession.GetDoctorProfessionPaginationRes": {
             "type": "object",
             "properties": {
@@ -7056,6 +7996,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.GetEmergencyDoctorProfessionRes": {
+            "type": "object",
+            "properties": {
+                "consultationFees": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
                 }
             }
         },
@@ -7143,6 +8106,29 @@ const docTemplate = `{
                 }
             }
         },
+        "fitnessCenter.FitnessCenterAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "fitnessCenter.FitnessCenterPaginationResponse": {
             "type": "object",
             "properties": {
@@ -7195,6 +8181,43 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/fitnessCenter.FitnessCenterAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceId": {
+                    "type": "string"
+                },
+                "trainerId": {
+                    "type": "string"
                 }
             }
         },
@@ -7350,6 +8373,46 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.GetEmergencyHospitalResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hospitals.GetEmergencyHospitalsRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "hospitals.GetEmergencyHospitalsRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/hospitals.Address"
+                },
+                "fees": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isEmergencyAvailable": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "hospitals.GetHospitalAppointmentsPaginationRes": {
             "type": "object",
             "properties": {
@@ -7367,6 +8430,9 @@ const docTemplate = `{
         "hospitals.GetHospitalAppointmentsRes": {
             "type": "object",
             "properties": {
+                "doctorId": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -7374,6 +8440,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "serviceId": {
                     "type": "string"
                 },
                 "speciality": {
@@ -7600,6 +8669,43 @@ const docTemplate = `{
                 }
             }
         },
+        "laboratory.GetLaboratoryAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/laboratory.LaboratoryAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "laboratory.GetLaboratoryAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "investigationId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceId": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "laboratory.GetLaboratoryPaginationRes": {
             "type": "object",
             "properties": {
@@ -7727,6 +8833,29 @@ const docTemplate = `{
                 }
             }
         },
+        "laboratory.LaboratoryAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/laboratory.GetLaboratoryAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
         "laboratory.LaboratoryPaginationResponse": {
             "type": "object",
             "properties": {
@@ -7789,6 +8918,40 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.GetMedicalLabScientistAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceId": {
                     "type": "string"
                 }
             }
@@ -7869,6 +9032,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.MedicalLabScientistAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },
@@ -7983,6 +9169,37 @@ const docTemplate = `{
                 }
             }
         },
+        "nurse.GetNurseAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/nurse.NurseAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "nurse.GetNurseAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceId": {
+                    "type": "string"
+                }
+            }
+        },
         "nurse.GetNursePaginationRes": {
             "type": "object",
             "properties": {
@@ -8070,6 +9287,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "nurse.NurseAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.GetNurseAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },
@@ -8204,6 +9444,40 @@ const docTemplate = `{
                 }
             }
         },
+        "pharmacy.GetPharmacyAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/pharmacy.PharmacyAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pharmacy.GetPharmacyAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/pharmacy.Address"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceId": {
+                    "type": "string"
+                }
+            }
+        },
         "pharmacy.GetPharmacyPaginationRes": {
             "type": "object",
             "properties": {
@@ -8246,6 +9520,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "pharmacy.PharmacyAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "drugs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pharmacy.GetPharmacyAppointmentsRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },
@@ -8322,6 +9619,37 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/physiotherapist.PhysiotherapistAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.GetPhysiotherapistAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceId": {
                     "type": "string"
                 }
             }
@@ -8424,6 +9752,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "appointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.GetPhysiotherapistAppointmentsRes"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
                 }
             }
         },
@@ -10781,7 +12132,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "0.0.1",
-	Host:             "mmpn2atpcm.eu-west-1.awsapprunner.com",
+	Host:             "zn2j5663-5065.inc1.devtunnels.ms",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Care Ville",

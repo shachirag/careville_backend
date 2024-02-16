@@ -649,6 +649,21 @@ definitions:
       physiotherapistCount:
         type: integer
     type: object
+  doctorProfession.DoctorAppointmentsPaginationResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/doctorProfession.GetDoctorAppointmentsRes'
+        type: array
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
   doctorProfession.DoctorProfessionAppointmentReqDto:
     properties:
       address:
@@ -728,6 +743,39 @@ definitions:
       startTime:
         type: string
     type: object
+  doctorProfession.EmergencyDoctorResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/doctorProfession.GetEmergencyDoctorProfessionRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  doctorProfession.GetDoctorAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/doctorProfession.DoctorAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  doctorProfession.GetDoctorAppointmentsRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      seviceId:
+        type: string
+      speciality:
+        type: string
+    type: object
   doctorProfession.GetDoctorProfessionPaginationRes:
     properties:
       data:
@@ -756,6 +804,21 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  doctorProfession.GetEmergencyDoctorProfessionRes:
+    properties:
+      consultationFees:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      isEmergencyAvailable:
+        type: boolean
+      name:
+        type: string
+      speciality:
+        type: string
     type: object
   doctorProfession.NextAvailable:
     properties:
@@ -811,6 +874,21 @@ definitions:
       status:
         type: boolean
     type: object
+  fitnessCenter.FitnessCenterAppointmentsPaginationResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsRes'
+        type: array
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
   fitnessCenter.FitnessCenterPaginationResponse:
     properties:
       currentPage:
@@ -846,6 +924,30 @@ definitions:
         type: string
       totalReviews:
         type: integer
+    type: object
+  fitnessCenter.GetFitnessCenterAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/fitnessCenter.FitnessCenterAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  fitnessCenter.GetFitnessCenterAppointmentsRes:
+    properties:
+      category:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceId:
+        type: string
+      trainerId:
+        type: string
     type: object
   fitnessCenter.GetFitnessCenterPaginationRes:
     properties:
@@ -945,6 +1047,32 @@ definitions:
       status:
         type: boolean
     type: object
+  hospitals.GetEmergencyHospitalResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/hospitals.GetEmergencyHospitalsRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  hospitals.GetEmergencyHospitalsRes:
+    properties:
+      address:
+        $ref: '#/definitions/hospitals.Address'
+      fees:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      isEmergencyAvailable:
+        type: boolean
+      name:
+        type: string
+    type: object
   hospitals.GetHospitalAppointmentsPaginationRes:
     properties:
       data:
@@ -956,11 +1084,15 @@ definitions:
     type: object
   hospitals.GetHospitalAppointmentsRes:
     properties:
+      doctorId:
+        type: string
       id:
         type: string
       image:
         type: string
       name:
+        type: string
+      serviceId:
         type: string
       speciality:
         type: string
@@ -1107,6 +1239,30 @@ definitions:
       type:
         type: string
     type: object
+  laboratory.GetLaboratoryAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/laboratory.LaboratoryAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  laboratory.GetLaboratoryAppointmentsRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      investigationId:
+        type: string
+      name:
+        type: string
+      serviceId:
+        type: string
+      type:
+        type: string
+    type: object
   laboratory.GetLaboratoryPaginationRes:
     properties:
       data:
@@ -1189,6 +1345,21 @@ definitions:
       status:
         type: boolean
     type: object
+  laboratory.LaboratoryAppointmentsPaginationResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/laboratory.GetLaboratoryAppointmentsRes'
+        type: array
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
   laboratory.LaboratoryPaginationResponse:
     properties:
       currentPage:
@@ -1230,6 +1401,28 @@ definitions:
       dialCode:
         type: string
       number:
+        type: string
+    type: object
+  medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/medicalLabScientist.MedicalLabScientistAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  medicalLabScientist.GetMedicalLabScientistAppointmentsRes:
+    properties:
+      department:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceId:
         type: string
     type: object
   medicalLabScientist.GetMedicalLabScientistPaginationRes:
@@ -1282,6 +1475,21 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  medicalLabScientist.MedicalLabScientistAppointmentsPaginationResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentsRes'
+        type: array
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
     type: object
   medicalLabScientist.MedicalLabScientistPaginationResponse:
     properties:
@@ -1355,6 +1563,26 @@ definitions:
       startTime:
         type: string
     type: object
+  nurse.GetNurseAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/nurse.NurseAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  nurse.GetNurseAppointmentsRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceId:
+        type: string
+    type: object
   nurse.GetNursePaginationRes:
     properties:
       data:
@@ -1412,6 +1640,21 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  nurse.NurseAppointmentsPaginationResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/nurse.GetNurseAppointmentsRes'
+        type: array
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
     type: object
   nurse.NursePaginationResponse:
     properties:
@@ -1498,6 +1741,28 @@ definitions:
       type:
         type: string
     type: object
+  pharmacy.GetPharmacyAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/pharmacy.PharmacyAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  pharmacy.GetPharmacyAppointmentsRes:
+    properties:
+      address:
+        $ref: '#/definitions/pharmacy.Address'
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceId:
+        type: string
+    type: object
   pharmacy.GetPharmacyPaginationRes:
     properties:
       data:
@@ -1526,6 +1791,21 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  pharmacy.PharmacyAppointmentsPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      drugs:
+        items:
+          $ref: '#/definitions/pharmacy.GetPharmacyAppointmentsRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
     type: object
   pharmacy.PharmacyDrugsResDto:
     properties:
@@ -1575,6 +1855,26 @@ definitions:
       dialCode:
         type: string
       number:
+        type: string
+    type: object
+  physiotherapist.GetPhysiotherapistAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/physiotherapist.PhysiotherapistAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  physiotherapist.GetPhysiotherapistAppointmentsRes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      serviceId:
         type: string
     type: object
   physiotherapist.GetPhysiotherapistPaginationRes:
@@ -1641,6 +1941,21 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  physiotherapist.PhysiotherapistAppointmentsPaginationResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/physiotherapist.GetPhysiotherapistAppointmentsRes'
+        type: array
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
     type: object
   physiotherapist.PhysiotherapistPaginationResponse:
     properties:
@@ -3158,7 +3473,7 @@ definitions:
       status:
         type: boolean
     type: object
-host: mmpn2atpcm.eu-west-1.awsapprunner.com
+host: zn2j5663-5065.inc1.devtunnels.ms
 info:
   contact:
     name: Chirag Sharma
@@ -3666,6 +3981,37 @@ paths:
       summary: Change customer Password
       tags:
       - customer authorization
+  /customer/emergency/get-emergency-hospitals:
+    get:
+      description: Get emergency Hospitals
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter hospitals by search
+        in: query
+        name: search
+        type: string
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.GetEmergencyHospitalResDto'
+      summary: Get emergency Hospitals
+      tags:
+      - emergency
   /customer/forgot-password:
     post:
       consumes:
@@ -3845,15 +4191,88 @@ paths:
       summary: Add drugs
       tags:
       - customer pharmacy
-  /customer/healthFacility/appointment/hospital-appointments:
+  /customer/healthFacility/appointment/fitnessCenter-appointments:
     get:
       consumes:
       - application/json
-      description: Fetch hospitals With Filters
+      description: Fetch appointments
       parameters:
       - description: Authentication header
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/fitnessCenter-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/hospital-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
         required: true
         type: string
       - description: Page no. to fetch the products for 1
@@ -3871,9 +4290,210 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/hospitals.GetHospitalAppointmentsPaginationRes'
-      summary: Fetch hospitals With Filters
+      summary: Fetch appointments
       tags:
       - customer appointments
+  /customer/healthFacility/appointment/hospital-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.GetHospitalAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/laboratory-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/laboratory-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/pharmacy-approved-drugs:
+    get:
+      consumes:
+      - application/json
+      description: Fetch drugs
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/pharmacy-drugs:
+    get:
+      consumes:
+      - application/json
+      description: Fetch drugs
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/get-all-available-slots:
+    get:
+      consumes:
+      - application/json
+      description: Get available times
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: hospitalId
+        required: true
+        type: string
+      - description: doctor ID
+        in: query
+        name: doctorId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.AvailableSlotsResDto'
+      summary: Get available times
+      tags:
+      - customer hospitals
   /customer/healthFacility/get-all-doctors:
     get:
       consumes:
@@ -3912,37 +4532,6 @@ paths:
       summary: Get all doctors
       tags:
       - customer hospitals
-  /customer/healthFacility/get-available-slots/{doctorId}:
-    get:
-      consumes:
-      - application/json
-      description: Get Doctor info
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: service ID
-        in: query
-        name: hospitalId
-        required: true
-        type: string
-      - description: doctor ID
-        in: query
-        name: doctorId
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/hospitals.AvailableSlotsResDto'
-      summary: Get Doctor info
-      tags:
-      - hospClinic
   /customer/healthFacility/get-fitnessCenter/{id}:
     get:
       description: Get fitnessCenter by ID
@@ -4348,6 +4937,278 @@ paths:
       summary: Add appointment
       tags:
       - customer physiotherapist
+  /customer/healthProfessional/appointment/doctor-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch doctor appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.GetDoctorAppointmentsPaginationRes'
+      summary: Fetch doctor appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/doctor-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch doctor appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.GetDoctorAppointmentsPaginationRes'
+      summary: Fetch doctor appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/medicalLabScientist-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/medicalLabScientist-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/nurse-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.GetNurseAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/nurse-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.GetNurseAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/physiotherapist-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.GetPhysiotherapistAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/physiotherapist-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.GetPhysiotherapistAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - customer appointments
   /customer/healthProfessional/get-doctor/{id}:
     get:
       description: Get doctorProfession by ID
@@ -4403,6 +5264,37 @@ paths:
       summary: Get doctorProfession
       tags:
       - customer doctorProfession
+  /customer/healthProfessional/get-emergency-doctors:
+    get:
+      description: Get emergency doctors
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Filter doctorProfession by search
+        in: query
+        name: search
+        type: string
+      - description: Longitude for memories sorting (required for distance sorting)
+        in: query
+        name: long
+        type: number
+      - description: Latitude for memories sorting (required for distance sorting)
+        in: query
+        name: lat
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.EmergencyDoctorResDto'
+      summary: Get emergency doctors
+      tags:
+      - emergency
   /customer/healthProfessional/get-health-professionals:
     get:
       description: Get nearest health professionals

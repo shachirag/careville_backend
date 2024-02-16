@@ -26,8 +26,8 @@ import (
 // @Param perPage query int false "Limit of products to fetch is 15"
 // @Produce json
 // @Success 200 {object} hospitals.GetHospitalAppointmentsPaginationRes
-// @Router /customer/healthFacility/appointment/hospital-appointments [get]
-func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
+// @Router /customer/healthFacility/appointment/hospital-approved-appointments [get]
+func FetchApprovedHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
 	limit, _ := strconv.Atoi(c.Query("limit", "15"))
@@ -46,7 +46,7 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "hospClinic",
-		"appointmentStatus":    "pending",
+		"appointmentStatus":    "approved",
 		"customer.id":          customerObjID,
 	}
 

@@ -11,9 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// @Summary Get Doctor info
-// @Description Get Doctor info
-// @Tags hospClinic
+// @Summary Get available times
+// @Description Get available times
+// @Tags customer hospitals
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
@@ -22,7 +22,7 @@ import (
 // @Param doctorId query string true "doctor ID"
 // @Produce json
 // @Success 200 {object} hospitals.AvailableSlotsResDto
-// @Router /customer/healthFacility/get-available-slots/{doctorId} [get]
+// @Router /customer/healthFacility/get-all-available-slots [get]
 func GetAvailableSlots(c *fiber.Ctx) error {
 	var service entity.ServiceEntity
 

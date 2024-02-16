@@ -105,13 +105,6 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	if service.Laboratory == nil {
-		return c.Status(fiber.StatusNotFound).JSON(laboratory.LaboratoryAppointmentResDto{
-			Status:  false,
-			Message: "Laboratory data not found",
-		})
-	}
-
 	var investigationData entity.Investigations
 	if service.Laboratory != nil && len(service.Laboratory.Investigations) > 0 {
 		for _, investiagtion := range service.Laboratory.Investigations {
@@ -120,6 +113,34 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 				break
 			}
 		}
+	}
+
+	serviceFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "laboratory",
+		"role":                 "healthFacility",
+	}
+
+	serviceProjection := bson.M{
+		"laboratory.information.name":  1,
+		"laboratory.information.image": 1,
+	}
+
+	serviceOpts := options.FindOne().SetProjection(serviceProjection)
+
+	err = serviceColl.FindOne(ctx, serviceFilter, serviceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch laboratory data: " + err.Error(),
+		})
+	}
+
+	if service.Laboratory == nil {
+		return c.Status(fiber.StatusNotFound).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "Laboratory data not found",
+		})
 	}
 
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
@@ -188,6 +209,36 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var laboratoryService entity.ServiceEntity
+
+	laboratoryProjection := bson.M{
+		"laboratory.information.name":  1,
+		"laboratory.information.image": 1,
+	}
+
+	laboratoryFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "laboratory",
+		"role":                 "healthFacility",
+	}
+
+	laboratoryOpts := options.FindOne().SetProjection(laboratoryProjection)
+
+	err = serviceColl.FindOne(ctx, laboratoryFilter, laboratoryOpts).Decode(&laboratoryService)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch laboratory data: " + err.Error(),
+		})
+	}
+
+	if laboratoryService.Laboratory == nil {
+		return c.Status(fiber.StatusNotFound).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "laboratory data not found",
+		})
+	}
+
 	var appointmentDate time.Time
 	if data.AppointmentDate != "" {
 		appointmentDate, err = time.Parse(time.RFC3339, data.AppointmentDate)
@@ -204,6 +255,14 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var name string
+	var image string
+
+	if laboratoryService.Laboratory != nil {
+		name = laboratoryService.Laboratory.Information.Name
+		image = laboratoryService.Laboratory.Information.Image
+	}
+
 	appointmentData := entity.LaboratoryAppointmentEntity{
 		Investigation: entity.InvestigationAppointmentEntity{
 			ID:          investigationObjID,
@@ -211,6 +270,10 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 			Information: investigationData.Information,
 			Type:        investigationData.Type,
 			Price:       investigationData.Price,
+		},
+		Information: entity.NurseInformation{
+			Name:  name,
+			Image: image,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

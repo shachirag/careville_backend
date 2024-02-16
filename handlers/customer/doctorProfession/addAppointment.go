@@ -32,6 +32,7 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 	var (
 		appointmentColl = database.GetCollection("appointment")
 		customerColl    = database.GetCollection("customer")
+		serviceColl    = database.GetCollection("service")
 		data            doctorProfession.DoctorProfessionAppointmentReqDto
 		appointment     entity.AppointmentEntity
 	)
@@ -135,6 +136,36 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	serviceFilter := bson.M{
+		"_id":                  serviceObjectID,
+		"facilityOrProfession": "doctor",
+		"role":                 "healthProfessional",
+	}
+
+	serviceProjection := bson.M{
+		"doctor.information.name":            1,
+		"doctor.information.image":           1,
+		"doctor.addionalServices.speciality": 1,
+	}
+
+	serviceOpts := options.FindOne().SetProjection(serviceProjection)
+
+	var service entity.ServiceEntity
+	err = serviceColl.FindOne(ctx, serviceFilter, serviceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch Doctor data: " + err.Error(),
+		})
+	}
+
+	if service.Doctor == nil {
+		return c.Status(fiber.StatusNotFound).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "Doctor data not found",
+		})
+	}
+
 	longitude, err := strconv.ParseFloat(data.Longitude, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
@@ -199,11 +230,26 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var name string
+	var image string
+	var speciality string
+
+	if service.Doctor != nil {
+		name = service.Doctor.Information.Name
+		image = service.Doctor.Information.Image
+		speciality = service.Doctor.AdditionalServices.Speciality
+	}
+
 	appointmentData := entity.DoctorProfessionAppointmentEntity{
 		AppointmentDetails: entity.AppointmentDetailsAppointmentEntity{
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Information: entity.DoctorProfessionInformation{
+			Name:       name,
+			Image:      image,
+			Speciality: speciality,
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,

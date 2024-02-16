@@ -9,15 +9,17 @@ type GetHospitalAppointmentsPaginationRes struct {
 }
 
 type HospitalAppointmentsPaginationResponse struct {
-	Total       int                          `json:"total"`
-	PerPage     int                          `json:"perPage"`
-	CurrentPage int                          `json:"currentPage"`
-	TotalPages  int                          `json:"totalPages"`
+	Total          int                          `json:"total"`
+	PerPage        int                          `json:"perPage"`
+	CurrentPage    int                          `json:"currentPage"`
+	TotalPages     int                          `json:"totalPages"`
 	AppointmentRes []GetHospitalAppointmentsRes `json:"appointments"`
 }
 
 type GetHospitalAppointmentsRes struct {
 	Id         primitive.ObjectID `json:"id" bson:"id"`
+	ServiceId  primitive.ObjectID `json:"serviceId" bson:"serviceId"`
+	DoctorId   primitive.ObjectID `json:"doctorId" bson:"doctorId"`
 	Name       string             `json:"name" bson:"name"`
 	Image      string             `json:"image" bson:"image"`
 	Speciality string             `json:"speciality" bson:"speciality"`
