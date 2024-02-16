@@ -175,7 +175,7 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 
 	var fromDate time.Time
 	if data.FromDate != "" {
-		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
+		fromDate, err = time.Parse(time.DateOnly, data.FromDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.PhysiotherapistAppointmentResDto{
 				Status:  false,
