@@ -47,7 +47,7 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 
 	var familyObjectID primitive.ObjectID
 
-	if data.FamillyMemberId != nil {
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 
 		familyObjectID, err = primitive.ObjectIDFromHex(*data.FamillyMemberId)
 		if err != nil {
@@ -78,7 +78,7 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
 	var familyData entity.FamilyMembers
 
-	if data.FamillyMemberId != nil {
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 
 		familyFilter := bson.M{
 			"_id": customerMiddlewareData.CustomerId,
@@ -193,7 +193,7 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 
 	var fromDate time.Time
 	if data.FromDate != "" {
-		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
+		fromDate, err = time.Parse(time.DateTime, data.FromDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
 				Status:  false,
@@ -209,7 +209,7 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 
 	var toDate time.Time
 	if data.ToDate != "" {
-		toDate, err = time.Parse(time.RFC3339, data.ToDate)
+		toDate, err = time.Parse(time.DateTime, data.ToDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
 				Status:  false,
@@ -225,7 +225,7 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 
 	var remindMeBefore time.Time
 	if data.RemindMeBefore != "" {
-		remindMeBefore, err = time.Parse(time.RFC3339, data.RemindMeBefore)
+		remindMeBefore, err = time.Parse(time.DateTime, data.RemindMeBefore)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
 				Status:  false,

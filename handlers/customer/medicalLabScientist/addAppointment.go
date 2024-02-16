@@ -46,7 +46,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 
 	var familyObjectID primitive.ObjectID
 
-	if data.FamillyMemberId != nil {
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 		familyObjectID, err = primitive.ObjectIDFromHex(*data.FamillyMemberId)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
@@ -74,7 +74,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
 	var familyData entity.FamilyMembers
-	if data.FamillyMemberId != nil {
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 
 		familyFilter := bson.M{
 			"_id": customerMiddlewareData.CustomerId,

@@ -46,7 +46,7 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 	}
 
 	var familyObjectID primitive.ObjectID
-	if data.FamillyMemberId != nil {
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 
 		familyObjectID, err = primitive.ObjectIDFromHex(*data.FamillyMemberId)
 		if err != nil {
@@ -128,7 +128,7 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 	var familyData entity.FamilyMembers
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
 
-	if data.FamillyMemberId != nil {
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 		familyFilter := bson.M{
 			"_id": customerMiddlewareData.CustomerId,
 			"familyMembers": bson.M{
@@ -167,7 +167,7 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 			}
 		}
 	}
-	
+
 	var customer entity.CustomerEntity
 	customerFilter := bson.M{
 		"_id": customerMiddlewareData.CustomerId,
