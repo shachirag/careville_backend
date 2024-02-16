@@ -1,7 +1,7 @@
 package nurse
 
 type NurseAppointmentReqDto struct {
-	FamillyMemberId string  `json:"familyMemberId" form:"familyMemberId"`
+	FamillyMemberId *string  `json:"familyMemberId" form:"familyMemberId"`
 	FromDate        string  `json:"fromDate" form:"fromDate"`
 	ToDate          string  `json:"toDate" form:"toDate"`
 	RemindMeBefore  string  `json:"remindMeBefore" form:"remindMeBefore"`

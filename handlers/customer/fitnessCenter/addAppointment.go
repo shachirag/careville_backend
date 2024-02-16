@@ -45,14 +45,17 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	familyObjectID, err := primitive.ObjectIDFromHex(data.FamillyMemberId)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
-			Status:  false,
-			Message: "Invalid ID format",
-		})
-	}
+	var familyObjectID primitive.ObjectID
+	if data.FamillyMemberId != nil {
 
+		familyObjectID, err = primitive.ObjectIDFromHex(*data.FamillyMemberId)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+				Status:  false,
+				Message: "Invalid ID format",
+			})
+		}
+	}
 	serviceId := c.Query("serviceId")
 
 	if serviceId == "" {
@@ -122,46 +125,49 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		}
 	}
 
-	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
-	familyFilter := bson.M{
-		"_id": customerMiddlewareData.CustomerId,
-		"familyMembers": bson.M{
-			"$elemMatch": bson.M{
-				"id": familyObjectID,
-			},
-		},
-	}
-
-	var family entity.CustomerEntity
-
-	familyProjection := bson.M{
-		"familyMembers.id":           1,
-		"familyMembers.name":         1,
-		"familyMembers.age":          1,
-		"familyMembers.sex":          1,
-		"familyMembers.relationShip": 1,
-	}
-
-	familyOpts := options.FindOne().SetProjection(familyProjection)
-
-	err = customerColl.FindOne(ctx, familyFilter, familyOpts).Decode(&family)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
-			Status:  false,
-			Message: "Failed to fetch family data: " + err.Error(),
-		})
-	}
-
 	var familyData entity.FamilyMembers
-	if family.FamilyMembers != nil {
-		for _, family := range family.FamilyMembers {
-			if family.Id == familyObjectID {
-				familyData = family
-				break
+	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
+
+	if data.FamillyMemberId != nil {
+		familyFilter := bson.M{
+			"_id": customerMiddlewareData.CustomerId,
+			"familyMembers": bson.M{
+				"$elemMatch": bson.M{
+					"id": familyObjectID,
+				},
+			},
+		}
+
+		var family entity.CustomerEntity
+
+		familyProjection := bson.M{
+			"familyMembers.id":           1,
+			"familyMembers.name":         1,
+			"familyMembers.age":          1,
+			"familyMembers.sex":          1,
+			"familyMembers.relationShip": 1,
+		}
+
+		familyOpts := options.FindOne().SetProjection(familyProjection)
+
+		err = customerColl.FindOne(ctx, familyFilter, familyOpts).Decode(&family)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+				Status:  false,
+				Message: "Failed to fetch family data: " + err.Error(),
+			})
+		}
+
+		if family.FamilyMembers != nil {
+			for _, family := range family.FamilyMembers {
+				if family.Id == familyObjectID {
+					familyData = family
+					break
+				}
 			}
 		}
 	}
-
+	
 	var customer entity.CustomerEntity
 	customerFilter := bson.M{
 		"_id": customerMiddlewareData.CustomerId,
