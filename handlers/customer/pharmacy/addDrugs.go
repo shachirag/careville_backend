@@ -2,6 +2,7 @@ package pharmacy
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"careville_backend/database"
@@ -135,7 +136,6 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 		})
 	}
 
-	// Get the file header for the "images" field from the form
 	formFiles := form.File["prescriptionImages"]
 	if len(formFiles) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
@@ -153,18 +153,38 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 		informationAddress = service.Pharmacy.Information.Address
 	}
 
+	longitude, err := strconv.ParseFloat(data.Longitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+			Status:  false,
+			Message: "Invalid longitude format",
+		})
+	}
+
+	latitude, err := strconv.ParseFloat(data.Latitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+			Status:  false,
+			Message: "Invalid latitude format",
+		})
+	}
+
 	drugData := entity.PharmacyAppointmentEntity{
 		RequestedDrugs: entity.RequestedDrugsAppointmentEntity{
 			ModeOfDelivery:  data.ModeOfDelivery,
 			NameAndQuantity: data.NameAndQuantity,
-			Prescription:    make([]string, 0),
+			Address: entity.Address{
+				Coordinates: []float64{longitude, latitude},
+				Add:         data.Address,
+				Type:        "Point",
+			},
+			Prescription: make([]string, 0),
 		},
 		Information: entity.PharmacyInformationAppointmentEntity{
 			Name:    informationName,
 			Image:   informationImage,
 			Address: informationAddress,
 		},
-		PricePaid: data.PricePaid,
 	}
 
 	appointment = entity.AppointmentEntity{

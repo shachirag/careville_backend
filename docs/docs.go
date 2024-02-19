@@ -1066,17 +1066,27 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "name": "address",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "latitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "longitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
                         "name": "modeOfDelivery",
                         "in": "formData"
                     },
                     {
                         "type": "string",
                         "name": "nameAndQuantity",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "number",
-                        "name": "pricePaid",
                         "in": "formData"
                     },
                     {

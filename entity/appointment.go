@@ -37,13 +37,13 @@ type CustomerAppointmentEntity struct {
 
 type PharmacyAppointmentEntity struct {
 	RequestedDrugs RequestedDrugsAppointmentEntity      `json:"requestedDrugs" bson:"requestedDrugs"`
-	PricePaid      float64                              `json:"pricePaid" bson:"pricePaid"`
 	Information    PharmacyInformationAppointmentEntity `json:"information" bson:"information"`
 }
 
 type RequestedDrugsAppointmentEntity struct {
 	ModeOfDelivery  string   `json:"modeOfDelivery" bson:"modeOfDelivery"`
 	NameAndQuantity string   `json:"nameAndQuantity" bson:"nameAndQuantity"`
+	Address         Address  `json:"address" bson:"address"`
 	Prescription    []string `json:"prescription" bson:"prescription"`
 }
 

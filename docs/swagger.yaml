@@ -4168,14 +4168,20 @@ paths:
         required: true
         type: string
       - in: formData
+        name: address
+        type: string
+      - in: formData
+        name: latitude
+        type: string
+      - in: formData
+        name: longitude
+        type: string
+      - in: formData
         name: modeOfDelivery
         type: string
       - in: formData
         name: nameAndQuantity
         type: string
-      - in: formData
-        name: pricePaid
-        type: number
       - description: prescription images
         in: formData
         name: prescriptionImages
