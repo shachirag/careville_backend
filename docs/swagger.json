@@ -11,7 +11,7 @@
         },
         "version": "0.0.1"
     },
-    "host": "zn2j5663-5065.inc1.devtunnels.ms",
+    "host": "mmpn2atpcm.eu-west-1.awsapprunner.com",
     "basePath": "/",
     "paths": {
         "/admin/change-status/{id}": {
