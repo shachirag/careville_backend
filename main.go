@@ -8,7 +8,6 @@ import "careville_backend/app"
 // @contact.name Chirag Sharma
 // @license.name MIT
 // @host mmpn2atpcm.eu-west-1.awsapprunner.com
-// @BasePath /
 func main() {
 	err := app.SetupAndRunApp()
 	if err != nil {
