@@ -137,12 +137,12 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 	}
 
 	formFiles := form.File["prescriptionImages"]
-	if len(formFiles) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
-			Status:  false,
-			Message: "No prescription uploaded",
-		})
-	}
+	// if len(formFiles) == 0 {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+	// 		Status:  false,
+	// 		Message: "No prescription uploaded",
+	// 	})
+	// }
 
 	var informationName string
 	var informationImage string
