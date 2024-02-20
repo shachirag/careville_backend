@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.19 AS build
+FROM golang:1.20 AS build
 WORKDIR /app
 COPY . .
 RUN CGO_ENABLED=0 go build -o main main.go
