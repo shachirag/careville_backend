@@ -62,7 +62,7 @@ func GetHealthFacilties(c *fiber.Ctx) error {
 	}
 
 	// if latParam != "" && longParam != "" {
-	// 	filter["$or"] = []bson.M{
+	// 	filter["$and"] = []bson.M{
 	// 		{"hospClinic.information.address": bson.M{"$nearSphere": bson.M{"$geometry": bson.M{"type": "Point", "coordinates": []float64{long, lat}}, "$maxDistance": 50000}}},
 	// 		{"laboratory.information.address": bson.M{"$nearSphere": bson.M{"$geometry": bson.M{"type": "Point", "coordinates": []float64{long, lat}}, "$maxDistance": 50000}}},
 	// 		{"pharmacy.information.address": bson.M{"$nearSphere": bson.M{"$geometry": bson.M{"type": "Point", "coordinates": []float64{long, lat}}, "$maxDistance": 50000}}},
@@ -89,16 +89,20 @@ func GetHealthFacilties(c *fiber.Ctx) error {
 	}
 
 	if latParam != "" && longParam != "" {
-		fieldName := "hospClinic.information.address"
-		if filter["facilityOrProfession"] != "hospClinic" {
+		fieldName := ""
+		switch c.Query("facilityOrProfession") {
+		case "hospClinic":
 			fieldName = "hospClinic.information.address"
-		} else if filter["facilityOrProfession"] != "laboratory" {
+		case "laboratory":
 			fieldName = "laboratory.information.address"
-		} else if filter["facilityOrProfession"] != "fitnessCenter" {
-			fieldName = "fitnessCenter.information.address"
-		} else if filter["facilityOrProfession"] != "pharmacy" {
+		case "pharmacy":
 			fieldName = "pharmacy.information.address"
+		case "fitnessCenter":
+			fieldName = "fitnessCenter.information.address"
+		default:
+			fieldName = "hospClinic.information.address" 
 		}
+	
 		filter[fieldName] = bson.M{
 			"$nearSphere": bson.M{
 				"$geometry": bson.M{
@@ -109,6 +113,7 @@ func GetHealthFacilties(c *fiber.Ctx) error {
 			},
 		}
 	}
+	
 
 	if searchTitle != "" {
 		filter["$or"] = []bson.M{

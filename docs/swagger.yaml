@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   adminAuth.AdminPasswordResDto:
     properties:
@@ -864,6 +863,8 @@ definitions:
         type: number
       package:
         type: string
+      totalAmountPaid:
+        type: number
       trainerId:
         type: string
     type: object
@@ -4168,15 +4169,6 @@ paths:
         required: true
         type: string
       - in: formData
-        name: address
-        type: string
-      - in: formData
-        name: latitude
-        type: string
-      - in: formData
-        name: longitude
-        type: string
-      - in: formData
         name: modeOfDelivery
         type: string
       - in: formData
@@ -4538,6 +4530,32 @@ paths:
       summary: Get all doctors
       tags:
       - customer hospitals
+  /customer/healthFacility/get-all-trainers:
+    get:
+      consumes:
+      - application/json
+      description: Get all trainers
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: service ID
+        in: query
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.TrainerResDto'
+      summary: Get all trainers
+      tags:
+      - customer fitnessCenter
   /customer/healthFacility/get-fitnessCenter/{id}:
     get:
       description: Get fitnessCenter by ID
@@ -4815,6 +4833,32 @@ paths:
       summary: Get pharmacy by ID
       tags:
       - customer pharmacy
+  /customer/healthFacility/get-subscriptions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all subscriptions
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: fitnessCenter ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.SubscriptionResDto'
+      summary: Get all subscriptions
+      tags:
+      - customer fitnessCenter
   /customer/healthProfessional/add-doctor-appointment:
     post:
       consumes:

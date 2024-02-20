@@ -2,7 +2,6 @@ package pharmacy
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	"careville_backend/database"
@@ -153,30 +152,30 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 		informationAddress = service.Pharmacy.Information.Address
 	}
 
-	longitude, err := strconv.ParseFloat(data.Longitude, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
-			Status:  false,
-			Message: "Invalid longitude format",
-		})
-	}
+	// longitude, err := strconv.ParseFloat(data.Longitude, 64)
+	// if err != nil {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+	// 		Status:  false,
+	// 		Message: "Invalid longitude format",
+	// 	})
+	// }
 
-	latitude, err := strconv.ParseFloat(data.Latitude, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
-			Status:  false,
-			Message: "Invalid latitude format",
-		})
-	}
+	// latitude, err := strconv.ParseFloat(data.Latitude, 64)
+	// if err != nil {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+	// 		Status:  false,
+	// 		Message: "Invalid latitude format",
+	// 	})
+	// }
 
 	drugData := entity.PharmacyAppointmentEntity{
 		RequestedDrugs: entity.RequestedDrugsAppointmentEntity{
 			ModeOfDelivery:  data.ModeOfDelivery,
 			NameAndQuantity: data.NameAndQuantity,
 			Address: entity.Address{
-				Coordinates: []float64{longitude, latitude},
-				Add:         data.Address,
-				Type:        "Point",
+				Coordinates: customer.Address.Coordinates,
+				Type:        customer.Address.Type,
+				Add:         customer.Address.Add,
 			},
 			Prescription: make([]string, 0),
 		},

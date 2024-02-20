@@ -22,7 +22,7 @@ import (
 // @Param serviceId query string true "service ID"
 // @Produce json
 // @Success 200 {object} services.TrainerResDto
-// @Router /provider/services/get-all-trainers [get]
+// @Router /customer/healthFacility/get-all-trainers [get]
 func GetAllTrainers(c *fiber.Ctx) error {
 
 	var service entity.ServiceEntity

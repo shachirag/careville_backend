@@ -64,6 +64,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	healthFacility.Get("/get-laboratory/:id", laboratory.GetLaboratoryByID)
 	healthFacility.Post("/add-fitnessCenter-appointment", fitnessCenter.AddFitnessCenterAppointment)
 	healthFacility.Get("/get-fitnessCenters", fitnessCenter.GetFitnessCenter)
+	healthFacility.Get("/get-subscriptions/:id", fitnessCenter.GetAllSubscriptions)
 	healthFacility.Get("/get-fitnessCenter/:id", fitnessCenter.GetFitnessCenterByID)
 	healthFacility.Get("/get-all-trainers", fitnessCenter.GetAllTrainers)
 	healthFacility.Post("/add-pharmacy-drug", pharmacy.AddPharmacyDrugs)

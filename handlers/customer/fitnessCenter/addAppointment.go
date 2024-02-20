@@ -258,7 +258,7 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		Invoice: entity.Invoice{
 			TrainerFees:            trainerData.Price,
 			MembershipSubscription: data.MembershipSubscription,
-			TotalAmountPaid:        trainerData.Price + data.MembershipSubscription,
+			TotalAmountPaid:        data.TotalAmountPaid,
 		},
 	}
 

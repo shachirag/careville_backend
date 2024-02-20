@@ -1066,21 +1066,6 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "name": "address",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "latitude",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "longitude",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
                         "name": "modeOfDelivery",
                         "in": "formData"
                     },
@@ -1618,6 +1603,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/get-all-trainers": {
+            "get": {
+                "description": "Get all trainers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer fitnessCenter"
+                ],
+                "summary": "Get all trainers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "serviceId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.TrainerResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/get-fitnessCenter/{id}": {
             "get": {
                 "description": "Get fitnessCenter by ID",
@@ -2031,6 +2055,45 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/pharmacy.GetPharmacyResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/get-subscriptions/{id}": {
+            "get": {
+                "description": "Get all subscriptions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer fitnessCenter"
+                ],
+                "summary": "Get all subscriptions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "fitnessCenter ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.SubscriptionResDto"
                         }
                     }
                 }
@@ -8100,6 +8163,9 @@ const docTemplate = `{
                 "package": {
                     "type": "string"
                 },
+                "totalAmountPaid": {
+                    "type": "number"
+                },
                 "trainerId": {
                     "type": "string"
                 }
@@ -12143,7 +12209,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "0.0.1",
 	Host:             "mmpn2atpcm.eu-west-1.awsapprunner.com",
-	BasePath:         "/",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Care Ville",
 	Description:      "Care Ville Backend (in GoLang)",
