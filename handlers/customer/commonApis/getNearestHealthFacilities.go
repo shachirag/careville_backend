@@ -62,7 +62,7 @@ func GetHealthFacilties(c *fiber.Ctx) error {
 	}
 
 	// if latParam != "" && longParam != "" {
-	// 	filter["$and"] = []bson.M{
+	// 	filter["$or"] = []bson.M{
 	// 		{"hospClinic.information.address": bson.M{"$nearSphere": bson.M{"$geometry": bson.M{"type": "Point", "coordinates": []float64{long, lat}}, "$maxDistance": 50000}}},
 	// 		{"laboratory.information.address": bson.M{"$nearSphere": bson.M{"$geometry": bson.M{"type": "Point", "coordinates": []float64{long, lat}}, "$maxDistance": 50000}}},
 	// 		{"pharmacy.information.address": bson.M{"$nearSphere": bson.M{"$geometry": bson.M{"type": "Point", "coordinates": []float64{long, lat}}, "$maxDistance": 50000}}},

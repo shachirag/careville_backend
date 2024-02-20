@@ -111,6 +111,11 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 	}
 
 	customerOpts := options.FindOne().SetProjection(customerProjection)

@@ -22,7 +22,7 @@ import (
 // @Param lat query float64 false "Latitude for memories sorting (required for distance sorting)"
 // @Produce json
 // @Success 200 {object} doctorProfession.EmergencyDoctorResDto
-// @Router /customer/healthProfessional/get-emergency-doctors [get]
+// @Router /customer/emergency/get-emergency-doctors [get]
 func GetEmergencyDoctors(c *fiber.Ctx) error {
 
 	var (
