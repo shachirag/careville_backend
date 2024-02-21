@@ -297,7 +297,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 
 	physiotherapist = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
-		FacilityOrProfession: "physiotherpist",
+		FacilityOrProfession: "physiotherapist",
 		ServiceStatus:        "pending",
 		Physiotherapist:      &physiotherapistData,
 		UpdatedAt:            time.Now().UTC(),
@@ -305,7 +305,6 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 
 	physiotherapistUpdate := bson.M{"$set": physiotherapist}
 
-	// Get provider data from middleware
 	providerData := providerMiddleware.GetProviderMiddlewareData(c)
 
 	filter := bson.M{"_id": providerData.ProviderId}
@@ -323,7 +322,7 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		Message: "Physiotherapist added successfully",
 		Role: services.Role{
 			Role:                 "healthProfessional",
-			FacilityOrProfession: "physiotherpist",
+			FacilityOrProfession: "physiotherapist",
 			ServiceStatus:        "pending",
 			Image:                physiotherapistImageUrl,
 			Name:                 data.PhysiotherapistReqDto.InformationName,

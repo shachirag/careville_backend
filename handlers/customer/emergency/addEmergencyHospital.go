@@ -1,6 +1,7 @@
 package emergency
 
 import (
+	"strconv"
 	"time"
 
 	"careville_backend/database"
@@ -24,14 +25,14 @@ import (
 // @Param  customer body doctorProfession.DoctorProfessionAppointmentReqDto true "add doctorProfession"
 // @Produce json
 // @Success 200 {object} doctorProfession.AddEmergencyDoctorResDto
-// @Router /customer/emergency/add-emergency-doctor [post]
-func AddEmergencyDoctor(c *fiber.Ctx) error {
+// @Router /customer/emergency/add-emergency-hospital [post]
+func AddEmergencyHospital(c *fiber.Ctx) error {
 
 	var (
 		customerColl  = database.GetCollection("customer")
 		emergencyColl = database.GetCollection("emergency")
 		serviceColl   = database.GetCollection("service")
-		data          doctorProfession.AddEmergencyDoctorReqDto
+		data          doctorProfession.AddEmergencyHospitalReqDto
 		emergency     entity.EmergencyEntity
 	)
 
@@ -43,14 +44,14 @@ func AddEmergencyDoctor(c *fiber.Ctx) error {
 		})
 	}
 
-	if data.DoctorId == "" {
+	if data.HospitalId == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.AddEmergencyDoctorResDto{
 			Status:  false,
-			Message: "doctor Id is mandatory",
+			Message: "hospital Id is mandatory",
 		})
 	}
 
-	doctorObjectID, err := primitive.ObjectIDFromHex(data.DoctorId)
+	hospitalObjectID, err := primitive.ObjectIDFromHex(data.HospitalId)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.AddEmergencyDoctorResDto{
 			Status:  false,
@@ -93,15 +94,19 @@ func AddEmergencyDoctor(c *fiber.Ctx) error {
 	}
 
 	serviceFilter := bson.M{
-		"_id":                  doctorObjectID,
-		"facilityOrProfession": "doctor",
-		"role":                 "healthProfessional",
+		"_id":                  hospitalObjectID,
+		"facilityOrProfession": "hospClinic",
+		"role":                 "healthFacility",
 	}
 
 	serviceProjection := bson.M{
-		"doctor.information.name":            1,
-		"doctor.information.image":           1,
-		"doctor.addionalServices.speciality": 1,
+		"hospClinic.information.name":  1,
+		"hospClinic.information.image": 1,
+		"hospClinic.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 	}
 
 	serviceOpts := options.FindOne().SetProjection(serviceProjection)
@@ -111,39 +116,62 @@ func AddEmergencyDoctor(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.AddEmergencyDoctorResDto{
 			Status:  false,
-			Message: "Failed to fetch Doctor data: " + err.Error(),
+			Message: "Failed to fetch Hospital data: " + err.Error(),
 		})
 	}
 
-	if service.Doctor == nil {
+	if service.HospClinic == nil {
 		return c.Status(fiber.StatusNotFound).JSON(doctorProfession.AddEmergencyDoctorResDto{
 			Status:  false,
-			Message: "Doctor data not found",
+			Message: "Hospital data not found",
+		})
+	}
+
+	longitude, err := strconv.ParseFloat(data.Longitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.AddEmergencyDoctorResDto{
+			Status:  false,
+			Message: "Invalid longitude format",
+		})
+	}
+
+	latitude, err := strconv.ParseFloat(data.Latitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.AddEmergencyDoctorResDto{
+			Status:  false,
+			Message: "Invalid latitude format",
 		})
 	}
 
 	var name string
 	var image string
-	var speciality string
+	var address entity.Address
 
-	if service.Doctor != nil {
-		name = service.Doctor.Information.Name
-		image = service.Doctor.Information.Image
-		speciality = service.Doctor.AdditionalServices.Speciality
+	if service.HospClinic != nil {
+		name = service.HospClinic.Information.Name
+		image = service.HospClinic.Information.Image
+		address = service.HospClinic.Information.Address
 	}
 
-	doctorData := entity.DoctorEmergencyEntity{
-		ID:         doctorObjectID,
-		Name:       name,
-		Image:      image,
-		Speciality: speciality,
+	hospitalData := entity.HospitalEmergencyEntity{
+		Information: entity.HospitalInformation{
+			ID:      hospitalObjectID,
+			Name:    name,
+			Image:   image,
+			Address: address,
+		},
+		AddedAddress: entity.Address{
+			Coordinates: []float64{longitude, latitude},
+			Add:         data.Address,
+			Type:        "Point",
+		},
 	}
 
 	emergency = entity.EmergencyEntity{
 		ID:                   primitive.NewObjectID(),
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "doctor",
-		ServiceID:            doctorObjectID,
+		ServiceID:            hospitalObjectID,
 		Customer: entity.CustomerEmergencyEntity{
 			ID:          customerMiddlewareData.CustomerId,
 			FirstName:   customer.FirstName,
@@ -157,11 +185,12 @@ func AddEmergencyDoctor(c *fiber.Ctx) error {
 				Add:         customer.Address.Add,
 			},
 		},
-		Doctor: &doctorData,
+
+		Hospital: &hospitalData,
 		Price: entity.PriceEmergencyEntity{
-			PricePaid: data.PricePaid,
+			PricePaid: 0,
 		},
-		Type:      "EmergencyDoctor",
+		Type:      "EmergencyHospital",
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}

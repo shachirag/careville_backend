@@ -85,7 +85,7 @@ func GetNurses(c *fiber.Ctx) error {
 	projection := bson.M{
 		"nurse.information.name":  1,
 		"nurse.information.image": 1,
-		"nurse.information.id":    1,
+		"_id":    1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)

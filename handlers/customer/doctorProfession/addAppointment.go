@@ -1,7 +1,6 @@
 package doctorProfession
 
 import (
-	"strconv"
 	"time"
 
 	"careville_backend/database"
@@ -175,22 +174,6 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	longitude, err := strconv.ParseFloat(data.Longitude, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-			Status:  false,
-			Message: "Invalid longitude format",
-		})
-	}
-
-	latitude, err := strconv.ParseFloat(data.Latitude, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-			Status:  false,
-			Message: "Invalid latitude format",
-		})
-	}
-
 	var fromDate time.Time
 	if data.FromDate != "" {
 		fromDate, err = time.Parse(time.DateTime, data.FromDate)
@@ -266,11 +249,6 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 			Age:          familyData.Age,
 			Sex:          familyData.Sex,
 			Relationship: familyData.RelationShip,
-		},
-		Destination: entity.Address{
-			Coordinates: []float64{longitude, latitude},
-			Add:         data.Address,
-			Type:        "Point",
 		},
 		FamilyType: data.FamilyType,
 		PricePaid:  data.PricePaid,

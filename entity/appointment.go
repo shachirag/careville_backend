@@ -121,6 +121,7 @@ type DoctorAppointmentEntity struct {
 }
 
 type NurseAppointmentEntity struct {
+	Destination        Address                             `json:"destination" bson:"destination"`
 	Information        NurseInformation                    `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
@@ -134,6 +135,7 @@ type NurseInformation struct {
 }
 
 type PhysiotherapistAppointmentEntity struct {
+	Destination        Address                             `json:"destination" bson:"destination"`
 	Information        PhysiotherapistInformation          `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
@@ -173,7 +175,6 @@ type DoctorProfessionAppointmentEntity struct {
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyType         string                              `json:"familyType" bson:"familyType"`
 	PricePaid          float64                             `json:"pricePaid" bson:"pricePaid"`
-	Destination        Address                             `json:"destination" bson:"destination"`
 }
 
 type DoctorProfessionInformation struct {

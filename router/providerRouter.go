@@ -2,9 +2,9 @@ package router
 
 import (
 	"careville_backend/handlers"
+	commonApi "careville_backend/handlers/provider/appointments/commonApis"
 	providerAuthenticate "careville_backend/handlers/provider/providerAuthentication"
 	common "careville_backend/handlers/provider/services/commonApis"
-	commonApi "careville_backend/handlers/provider/appointments/commonApis"
 	"careville_backend/handlers/provider/services/doctorProfession"
 	"careville_backend/handlers/provider/services/fitnessCenter"
 	"careville_backend/handlers/provider/services/hospClinic"
@@ -129,5 +129,24 @@ func ProviderSetupsRoutes(app *fiber.App) {
 
 	appointment := provider.Group("/appointment")
 	appointment.Use(jwt, middlewares.ProviderData)
-	appointment.Put("/change-appointment-status", commonApi.ChangeAppointmentStatus)
+
+	appointmentServices := providerServices.Group("/appointment")
+	appointmentServices.Use(jwt, middlewares.ProviderData)
+	appointmentServices.Get("/doctor-appointments", doctorProfession.FetchDoctorAppointmentsWithPagination)
+	appointmentServices.Get("/doctor-approved-appointments", doctorProfession.FetchDoctorApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/fitnessCenter-appointments", fitnessCenter.FetchFitnessCenterAppointmentsWithPagination)
+	appointmentServices.Get("/fitnessCenter-approved-appointments", fitnessCenter.FetchFitnessCenterApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/hospital-appointments", hospClinic.FetchHospitalAppointmentsWithPagination)
+	appointmentServices.Get("/hospital-approved-appointments", hospClinic.FetchHospitalApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/laboratory-appointments", laboratory.FetchLaboratoryAppointmentsWithPagination)
+	appointmentServices.Get("/laboratory-approved-appointments", laboratory.FetchLaboratoryApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/medicalLabScientist-appointments", medicalLabScientist.FetchMedicalLabScientistAppointmentsWithPagination)
+	appointmentServices.Get("/medicalLabScientist-approved-appointments", medicalLabScientist.FetchMedicalLabScientistApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/nurse-appointments", nurse.FetchNurseAppointmentsWithPagination)
+	appointmentServices.Get("/nurse-approved-appointments", nurse.FetchNurseApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/pharmacy-drugs", pharmacy.FetchPharmacyDrugsWithPagination)
+	appointmentServices.Get("/pharmacy-approved-drugs", pharmacy.FetchPharmacyApprovedDrugsWithPagination)
+	appointmentServices.Get("/physiotherapist-appointments", physiotherapist.FetchPhysiotherapistAppointmentsWithPagination)
+	appointmentServices.Get("/physiotherapist-approved-appointments", physiotherapist.FetchPhysiotherapistApprovedAppointmentsWithPagination)
+	appointmentServices.Get("/change-appointment-status", commonApi.ChangeAppointmentStatus)
 }

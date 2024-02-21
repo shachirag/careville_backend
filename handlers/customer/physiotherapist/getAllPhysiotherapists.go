@@ -15,7 +15,7 @@ import (
 var ctx = context.Background()
 
 // @Summary Get physiotherapist
-// @Tags customer medicalLabScientist
+// @Tags customer physiotherapist
 // @Description Get physiotherapist
 //
 //	@Param Authorization header	string true	"Authentication header"

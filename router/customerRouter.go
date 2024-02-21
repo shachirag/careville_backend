@@ -113,4 +113,6 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	emergencyApis.Use(jwt, middlewares.CustomerData)
 	emergencyApis.Get("/get-emergency-doctors", emergency.GetEmergencyDoctors)
 	emergencyApis.Get("/get-emergency-hospitals", emergency.GetEmergencyHospitals)
+	emergencyApis.Post("/add-emergency-doctor", emergency.AddEmergencyDoctor)
+	emergencyApis.Post("/add-emergency-hospital", emergency.AddEmergencyHospital)
 }

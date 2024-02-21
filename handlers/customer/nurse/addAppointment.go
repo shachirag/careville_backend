@@ -1,6 +1,7 @@
 package nurse
 
 import (
+	"strconv"
 	"time"
 
 	"careville_backend/database"
@@ -174,6 +175,22 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	longitude, err := strconv.ParseFloat(data.Longitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+			Status:  false,
+			Message: "Invalid longitude format",
+		})
+	}
+
+	latitude, err := strconv.ParseFloat(data.Latitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+			Status:  false,
+			Message: "Invalid latitude format",
+		})
+	}
+
 	var fromDate time.Time
 	if data.FromDate != "" {
 		fromDate, err = time.Parse(time.DateTime, data.FromDate)
@@ -239,6 +256,11 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 		Information: entity.NurseInformation{
 			Name:  name,
 			Image: image,
+		},
+		Destination: entity.Address{
+			Coordinates: []float64{longitude, latitude},
+			Add:         data.Address,
+			Type:        "Point",
 		},
 		FamilyMember: entity.FamilyMemberAppointmentEntity{
 			ID:           familyObjectID,
