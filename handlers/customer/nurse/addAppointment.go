@@ -25,7 +25,7 @@ import (
 // @Param serviceId query string true "service ID"
 // @Param  customer body  nurse.NurseAppointmentReqDto true "add nurse"
 // @Produce json
-// @Success 200 {object}  nurse.NurseAppointmentResDto
+// @Success 200 {object}  nurse.AppoiynmentResDto
 // @Router /customer/healthProfessional/add-nurse-appointment [post]
 func AddNurseAppointment(c *fiber.Ctx) error {
 
@@ -39,7 +39,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 	err := c.BodyParser(&data)
 	if err != nil {
-		return c.Status(500).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(500).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: err.Error(),
 		})
@@ -51,7 +51,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 		familyObjectID, err = primitive.ObjectIDFromHex(*data.FamillyMemberId)
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+			return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 				Status:  false,
 				Message: "Invalid ID format",
 			})
@@ -61,7 +61,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	serviceId := c.Query("serviceId")
 
 	if serviceId == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "service Id is mandatory",
 		})
@@ -69,7 +69,15 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 	serviceObjectID, err := primitive.ObjectIDFromHex(serviceId)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
+			Status:  false,
+			Message: "Invalid ID format",
+		})
+	}
+
+	nurseServiceDataServiceObjID, err := primitive.ObjectIDFromHex(data.NurseServiceId)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "Invalid ID format",
 		})
@@ -102,7 +110,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 		err = customerColl.FindOne(ctx, familyFilter, familyOpts).Decode(&family)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 				Status:  false,
 				Message: "Failed to fetch family data: " + err.Error(),
 			})
@@ -140,7 +148,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 	err = customerColl.FindOne(ctx, customerFilter, customerOpts).Decode(&customer)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "Failed to fetch customer data: " + err.Error(),
 		})
@@ -162,22 +170,57 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	var service entity.ServiceEntity
 	err = serviceColl.FindOne(ctx, serviceFilter, serviceOpts).Decode(&service)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "Failed to fetch nurse data: " + err.Error(),
 		})
 	}
 
 	if service.Nurse == nil {
-		return c.Status(fiber.StatusNotFound).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusNotFound).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "nurse data not found",
 		})
 	}
 
+	nurseServiceFilter := bson.M{
+		"_id": serviceObjectID,
+		"nurse.schedule": bson.M{
+			"$elemMatch": bson.M{
+				"id": nurseServiceDataServiceObjID,
+			},
+		},
+	}
+
+	nurseProjection := bson.M{
+		"nurse.schedule.id":          1,
+		"nurse.schedule.name":        1,
+		"nurse.schedule.serviceFees": 1,
+	}
+
+	medicalLabScientistServiceOpts := options.FindOne().SetProjection(nurseProjection)
+
+	err = serviceColl.FindOne(ctx, nurseServiceFilter, medicalLabScientistServiceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
+			Status:  false,
+			Message: "Failed to fetch service data: " + err.Error(),
+		})
+	}
+
+	var nurseServiceData entity.ServiceAndSchedule
+	if service.Nurse != nil && len(service.Nurse.Schedule) > 0 {
+		for _, nurseService := range service.Nurse.Schedule {
+			if nurseService.Id == nurseServiceDataServiceObjID {
+				nurseServiceData = nurseService
+				break
+			}
+		}
+	}
+
 	longitude, err := strconv.ParseFloat(data.Longitude, 64)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "Invalid longitude format",
 		})
@@ -185,7 +228,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 	latitude, err := strconv.ParseFloat(data.Latitude, 64)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "Invalid latitude format",
 		})
@@ -195,13 +238,13 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	if data.FromDate != "" {
 		fromDate, err = time.Parse(time.DateTime, data.FromDate)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 				Status:  false,
 				Message: "Failed to parse fromDate date: " + err.Error(),
 			})
 		}
 	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "fromDate is mandatory",
 		})
@@ -211,13 +254,13 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	if data.ToDate != "" {
 		toDate, err = time.Parse(time.DateTime, data.ToDate)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 				Status:  false,
 				Message: "Failed to parse toDate date: " + err.Error(),
 			})
 		}
 	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "toDate date is mandatory",
 		})
@@ -227,13 +270,13 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	if data.RemindMeBefore != "" {
 		remindMeBefore, err = time.Parse(time.DateTime, data.RemindMeBefore)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+			return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 				Status:  false,
 				Message: "Failed to parse remindMeBefore date: " + err.Error(),
 			})
 		}
 	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "remindMeBefore date is mandatory",
 		})
@@ -252,6 +295,11 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Service: entity.ServiceAppointmentEntity{
+			Id:          nurseServiceData.Id,
+			Name:        nurseServiceData.Name,
+			ServiceFees: nurseServiceData.ServiceFees,
 		},
 		Information: entity.NurseInformation{
 			Name:  name,
@@ -295,13 +343,13 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 
 	_, err = appointmentColl.InsertOne(ctx, appointment)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(nurse.NurseAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.AppoiynmentResDto{
 			Status:  false,
 			Message: "Failed to insert nurse appointment data into MongoDB: " + err.Error(),
 		})
 	}
 
-	nurseRes := nurse.NurseAppointmentResDto{
+	nurseRes := nurse.AppoiynmentResDto{
 		Status:  true,
 		Message: "Appointment added successfully",
 	}

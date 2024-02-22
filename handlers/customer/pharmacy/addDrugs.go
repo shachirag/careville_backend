@@ -189,6 +189,7 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 			Image:   informationImage,
 			Address: informationAddress,
 		},
+		PricePaid: 0,
 	}
 
 	appointment = entity.AppointmentEntity{

@@ -1464,6 +1464,8 @@ definitions:
         type: string
       fromDate:
         type: string
+      medicalLabScientistServiceId:
+        type: string
       pricePaid:
         type: number
       remindMeBefore:
@@ -1527,6 +1529,26 @@ definitions:
       totalReviews:
         type: integer
     type: object
+  medicalLabScientist.MedicalLabScientistServiceRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+    type: object
+  medicalLabScientist.MedicalLabScientistServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/medicalLabScientist.MedicalLabScientistServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   medicalLabScientist.NextAvailable:
     properties:
       lastTime:
@@ -1564,6 +1586,13 @@ definitions:
         type: string
       startTime:
         type: string
+    type: object
+  nurse.AppoiynmentResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   nurse.GetNurseAppointmentsPaginationRes:
     properties:
@@ -1635,19 +1664,14 @@ definitions:
         type: string
       longitude:
         type: string
+      nurseServiceId:
+        type: string
       pricePaid:
         type: number
       remindMeBefore:
         type: string
       toDate:
         type: string
-    type: object
-  nurse.NurseAppointmentResDto:
-    properties:
-      message:
-        type: string
-      status:
-        type: boolean
     type: object
   nurse.NurseAppointmentsPaginationResponse:
     properties:
@@ -1697,6 +1721,26 @@ definitions:
         type: array
       totalReviews:
         type: integer
+    type: object
+  nurse.NurseServiceRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+    type: object
+  nurse.NurseServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/nurse.NurseServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   nurse.PhoneNumber:
     properties:
@@ -1942,6 +1986,8 @@ definitions:
         type: string
       longitude:
         type: string
+      physiotherapistServiceId:
+        type: string
       pricePaid:
         type: number
       remindMeBefore:
@@ -2004,6 +2050,26 @@ definitions:
         type: array
       totalReviews:
         type: integer
+    type: object
+  physiotherapist.PhysiotherapistServiceRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+    type: object
+  physiotherapist.PhysiotherapistServicesResDto:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/physiotherapist.PhysiotherapistServiceRes'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   physiotherapist.ServiceAndSchedule:
     properties:
@@ -5092,7 +5158,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/nurse.NurseAppointmentResDto'
+            $ref: '#/definitions/nurse.AppoiynmentResDto'
       summary: Add appointment
       tags:
       - customer nurse
@@ -5486,6 +5552,32 @@ paths:
       summary: Get nearest health professionals
       tags:
       - customer commonApis
+  /customer/healthProfessional/get-medicalLabScientist-services:
+    get:
+      consumes:
+      - application/json
+      description: Get all services
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: medicalLabScientist ID
+        in: query
+        name: medicalLabScientistId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.MedicalLabScientistServicesResDto'
+      summary: Get all services
+      tags:
+      - customer medicalLabScientist
   /customer/healthProfessional/get-medicalLabScientist/{id}:
     get:
       description: Get medicalLabScientist by ID
@@ -5541,6 +5633,32 @@ paths:
       summary: Get medicalLabScientist
       tags:
       - customer medicalLabScientist
+  /customer/healthProfessional/get-nurse-services:
+    get:
+      consumes:
+      - application/json
+      description: Get all services
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: nurse ID
+        in: query
+        name: nurseId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.NurseServicesResDto'
+      summary: Get all services
+      tags:
+      - customer nurse
   /customer/healthProfessional/get-nurse/{id}:
     get:
       description: Get nurse by ID
@@ -5596,6 +5714,32 @@ paths:
       summary: Get nurse
       tags:
       - customer nurse
+  /customer/healthProfessional/get-physiotherapist-services:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: physiotherapistId ID
+        in: query
+        name: physiotherapistId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.PhysiotherapistServicesResDto'
+      summary: Get all services
+      tags:
+      - customer physiotherapist
   /customer/healthProfessional/get-physiotherapist/{id}:
     get:
       description: Get physiotherapist by ID

@@ -6,13 +6,9 @@ type NurseAppointmentReqDto struct {
 	ToDate          string  `json:"toDate" form:"toDate"`
 	RemindMeBefore  string  `json:"remindMeBefore" form:"remindMeBefore"`
 	FamilyType      string  `json:"familyType" form:"familyType"`
-	Address         string  `json:"address" form:"address"`
+	PricePaid       float64 `json:"pricePaid" form:"pricePaid"`
+	NurseServiceId  string  `json:"nurseServiceId" form:"nurseServiceId"`
 	Longitude       string  `json:"longitude" form:"longitude"`
 	Latitude        string  `json:"latitude" form:"latitude"`
-	PricePaid       float64 `json:"pricePaid" form:"pricePaid"`
-}
-
-type NurseAppointmentResDto struct {
-	Status  bool   `json:"status"`
-	Message string `json:"message"`
+	Address         string  `json:"address" form:"address"`
 }

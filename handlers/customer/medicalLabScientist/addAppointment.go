@@ -72,6 +72,14 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	medicalLabScientistServiceDataServiceObjID, err := primitive.ObjectIDFromHex(data.MedicalLabScientistServiceId)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "Invalid ID format",
+		})
+	}
+
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
 	var familyData entity.FamilyMembers
 	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
@@ -171,9 +179,44 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	medicalLabScientistServiceFilter := bson.M{
+		"_id": serviceObjectID,
+		"medicalLabScientist.serviceAndSchedule": bson.M{
+			"$elemMatch": bson.M{
+				"id": medicalLabScientistServiceDataServiceObjID,
+			},
+		},
+	}
+
+	medicalLabScientistProjection := bson.M{
+		"medicalLabScientist.serviceAndSchedule.id":          1,
+		"medicalLabScientist.serviceAndSchedule.name":        1,
+		"medicalLabScientist.serviceAndSchedule.serviceFees": 1,
+	}
+
+	medicalLabScientistServiceOpts := options.FindOne().SetProjection(medicalLabScientistProjection)
+
+	err = serviceColl.FindOne(ctx, medicalLabScientistServiceFilter, medicalLabScientistServiceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch service data: " + err.Error(),
+		})
+	}
+
+	var medicalLabScientistServiceData entity.ServiceAndSchedule
+	if service.MedicalLabScientist != nil && len(service.MedicalLabScientist.ServiceAndSchedule) > 0 {
+		for _, medicalLabScientistService := range service.MedicalLabScientist.ServiceAndSchedule {
+			if medicalLabScientistService.Id == medicalLabScientistServiceDataServiceObjID {
+				medicalLabScientistServiceData = medicalLabScientistService
+				break
+			}
+		}
+	}
+
 	var fromDate time.Time
 	if data.FromDate != "" {
-		fromDate, err = time.Parse(time.RFC3339, data.FromDate)
+		fromDate, err = time.Parse(time.DateTime, data.FromDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
 				Status:  false,
@@ -189,7 +232,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 
 	var toDate time.Time
 	if data.ToDate != "" {
-		toDate, err = time.Parse(time.RFC3339, data.ToDate)
+		toDate, err = time.Parse(time.DateTime, data.ToDate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
 				Status:  false,
@@ -205,7 +248,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 
 	var remindMeBefore time.Time
 	if data.RemindMeBefore != "" {
-		remindMeBefore, err = time.Parse(time.RFC3339, data.RemindMeBefore)
+		remindMeBefore, err = time.Parse(time.DateTime, data.RemindMeBefore)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
 				Status:  false,
@@ -234,6 +277,11 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Service: entity.ServiceAppointmentEntity{
+			Id:          medicalLabScientistServiceData.Id,
+			Name:        medicalLabScientistServiceData.Name,
+			ServiceFees: medicalLabScientistServiceData.ServiceFees,
 		},
 		Information: entity.MedicalLabScientistInformation{
 			Name:       name,

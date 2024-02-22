@@ -38,6 +38,7 @@ type CustomerAppointmentEntity struct {
 type PharmacyAppointmentEntity struct {
 	RequestedDrugs RequestedDrugsAppointmentEntity      `json:"requestedDrugs" bson:"requestedDrugs"`
 	Information    PharmacyInformationAppointmentEntity `json:"information" bson:"information"`
+	PricePaid      float64                              `json:"pricePaid" bson:"pricePaid"`
 }
 
 type RequestedDrugsAppointmentEntity struct {
@@ -121,6 +122,7 @@ type DoctorAppointmentEntity struct {
 }
 
 type NurseAppointmentEntity struct {
+	Service            ServiceAppointmentEntity            `json:"service" bson:"service"`
 	Destination        Address                             `json:"destination" bson:"destination"`
 	Information        NurseInformation                    `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
@@ -135,6 +137,7 @@ type NurseInformation struct {
 }
 
 type PhysiotherapistAppointmentEntity struct {
+	Service            ServiceAppointmentEntity            `json:"service" bson:"service"`
 	Destination        Address                             `json:"destination" bson:"destination"`
 	Information        PhysiotherapistInformation          `json:"information" bson:"information"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
@@ -150,10 +153,17 @@ type PhysiotherapistInformation struct {
 
 type MedicalLabScientistAppointmentEntity struct {
 	Information        MedicalLabScientistInformation      `json:"information" bson:"information"`
+	Service            ServiceAppointmentEntity            `json:"service" bson:"service"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
 	FamilyType         string                              `json:"familyType" bson:"familyType"`
 	PricePaid          float64                             `json:"pricePaid" bson:"pricePaid"`
+}
+
+type ServiceAppointmentEntity struct {
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Name        string             `json:"name" bson:"name"`
+	ServiceFees float64            `json:"serviceFees" bson:"serviceFees"`
 }
 
 type MedicalLabScientistInformation struct {

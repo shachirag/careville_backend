@@ -2366,7 +2366,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/nurse.NurseAppointmentResDto"
+                            "$ref": "#/definitions/nurse.AppoiynmentResDto"
                         }
                     }
                 }
@@ -2958,6 +2958,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/get-medicalLabScientist-services": {
+            "get": {
+                "description": "Get all services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer medicalLabScientist"
+                ],
+                "summary": "Get all services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "medicalLabScientist ID",
+                        "name": "medicalLabScientistId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-medicalLabScientist/{id}": {
             "get": {
                 "description": "Get medicalLabScientist by ID",
@@ -3041,6 +3080,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/get-nurse-services": {
+            "get": {
+                "description": "Get all services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer nurse"
+                ],
+                "summary": "Get all services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "nurse ID",
+                        "name": "nurseId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.NurseServicesResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-nurse/{id}": {
             "get": {
                 "description": "Get nurse by ID",
@@ -3119,6 +3197,45 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/nurse.GetNurseResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-physiotherapist-services": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer physiotherapist"
+                ],
+                "summary": "Get all services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "physiotherapistId ID",
+                        "name": "physiotherapistId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.PhysiotherapistServicesResDto"
                         }
                     }
                 }
@@ -9789,6 +9906,9 @@ const docTemplate = `{
                 "fromDate": {
                     "type": "string"
                 },
+                "medicalLabScientistServiceId": {
+                    "type": "string"
+                },
                 "pricePaid": {
                     "type": "number"
                 },
@@ -9886,6 +10006,37 @@ const docTemplate = `{
                 }
             }
         },
+        "medicalLabScientist.MedicalLabScientistServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                }
+            }
+        },
+        "medicalLabScientist.MedicalLabScientistServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "medicalLabScientist.NextAvailable": {
             "type": "object",
             "properties": {
@@ -9942,6 +10093,17 @@ const docTemplate = `{
                 },
                 "startTime": {
                     "type": "string"
+                }
+            }
+        },
+        "nurse.AppoiynmentResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -10053,6 +10215,9 @@ const docTemplate = `{
                 "longitude": {
                     "type": "string"
                 },
+                "nurseServiceId": {
+                    "type": "string"
+                },
                 "pricePaid": {
                     "type": "number"
                 },
@@ -10061,17 +10226,6 @@ const docTemplate = `{
                 },
                 "toDate": {
                     "type": "string"
-                }
-            }
-        },
-        "nurse.NurseAppointmentResDto": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
                 }
             }
         },
@@ -10147,6 +10301,37 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "nurse.NurseServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                }
+            }
+        },
+        "nurse.NurseServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.NurseServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -10527,6 +10712,9 @@ const docTemplate = `{
                 "longitude": {
                     "type": "string"
                 },
+                "physiotherapistServiceId": {
+                    "type": "string"
+                },
                 "pricePaid": {
                     "type": "number"
                 },
@@ -10621,6 +10809,37 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistServiceRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "serviceFees": {
+                    "type": "number"
+                }
+            }
+        },
+        "physiotherapist.PhysiotherapistServicesResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.PhysiotherapistServiceRes"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },

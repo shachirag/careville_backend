@@ -75,6 +75,14 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	physiotherapistServiceDataServiceObjID, err := primitive.ObjectIDFromHex(data.PhysiotherapistServiceId)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(physiotherapist.PhysiotherapistAppointmentResDto{
+			Status:  false,
+			Message: "Invalid ID format",
+		})
+	}
+
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
 
 	var familyData entity.FamilyMembers
@@ -174,6 +182,41 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	nurseServiceFilter := bson.M{
+		"_id": serviceObjectID,
+		"physiotherapist.serviceAndSchedule": bson.M{
+			"$elemMatch": bson.M{
+				"id": physiotherapistServiceDataServiceObjID,
+			},
+		},
+	}
+
+	physiotherapistProjection := bson.M{
+		"physiotherapist.serviceAndSchedule.id":          1,
+		"physiotherapist.serviceAndSchedule.name":        1,
+		"physiotherapist.serviceAndSchedule.serviceFees": 1,
+	}
+
+	physiotherapistServiceOpts := options.FindOne().SetProjection(physiotherapistProjection)
+
+	err = serviceColl.FindOne(ctx, nurseServiceFilter, physiotherapistServiceOpts).Decode(&service)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.PhysiotherapistAppointmentResDto{
+			Status:  false,
+			Message: "Failed to fetch service data: " + err.Error(),
+		})
+	}
+
+	var physiotherapistServiceData entity.ServiceAndSchedule
+	if service.Physiotherapist != nil && len(service.Physiotherapist.ServiceAndSchedule) > 0 {
+		for _, physiotherapistService := range service.Physiotherapist.ServiceAndSchedule {
+			if physiotherapistService.Id == physiotherapistServiceDataServiceObjID {
+				physiotherapistServiceData = physiotherapistService
+				break
+			}
+		}
+	}
+
 	longitude, err := strconv.ParseFloat(data.Longitude, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(physiotherapist.PhysiotherapistAppointmentResDto{
@@ -251,6 +294,11 @@ func AddPhysiotherapistAppointment(c *fiber.Ctx) error {
 			From:           fromDate,
 			To:             toDate,
 			RemindMeBefore: remindMeBefore,
+		},
+		Service: entity.ServiceAppointmentEntity{
+			Id:          physiotherapistServiceData.Id,
+			Name:        physiotherapistServiceData.Name,
+			ServiceFees: physiotherapistServiceData.ServiceFees,
 		},
 		Information: entity.PhysiotherapistInformation{
 			Name:  name,

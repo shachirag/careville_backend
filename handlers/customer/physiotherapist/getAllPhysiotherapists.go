@@ -113,6 +113,10 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 				Id:    physiotherapist1.Id,
 				Image: physiotherapist1.Physiotherapist.Information.Image,
 				Name:  physiotherapist1.Physiotherapist.Information.Name,
+				NextAvailable: physiotherapist.NextAvailable{
+					StartTime: "",
+					LastTime:  "",
+				},
 			})
 		}
 	}
