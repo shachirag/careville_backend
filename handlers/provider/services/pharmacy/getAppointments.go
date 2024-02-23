@@ -49,7 +49,6 @@ func FetchPharmacyDrugsWithPagination(c *fiber.Ctx) error {
 		"customer.firstName":   1,
 		"customer.lastName":    1,
 		"facilityOrProfession": 1,
-		"role":                 1,
 		"createdAt":            1,
 	}
 
@@ -95,7 +94,6 @@ func FetchPharmacyDrugsWithPagination(c *fiber.Ctx) error {
 			Id:                   appointment.Id,
 			CustomrId:            appointment.Customer.ID,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			Role:                 appointment.Role,
 			FirstName:            appointment.Customer.FirstName,
 			LastName:             appointment.Customer.LastName,
 			CreatedAt:            appointment.CreatedAt,

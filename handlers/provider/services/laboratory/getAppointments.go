@@ -50,7 +50,6 @@ func FetchLaboratoryAppointmentsWithPagination(c *fiber.Ctx) error {
 		"customer.firstName":                 1,
 		"customer.lastName":                  1,
 		"facilityOrProfession":               1,
-		"role":                               1,
 		"laboratory.appointmentDetails.date": 1,
 	}
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -100,7 +99,6 @@ func FetchLaboratoryAppointmentsWithPagination(c *fiber.Ctx) error {
 			Id:                   appointment.Id,
 			CustomrId:            appointment.Customer.ID,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			Role:                 appointment.Role,
 			FirstName:            appointment.Customer.FirstName,
 			LastName:             appointment.Customer.LastName,
 			AppointmentDate:      appointmentDate,

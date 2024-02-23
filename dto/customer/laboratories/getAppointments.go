@@ -17,10 +17,9 @@ type LaboratoryAppointmentsPaginationResponse struct {
 }
 
 type GetLaboratoryAppointmentsRes struct {
-	Id              primitive.ObjectID `json:"id" bson:"id"`
-	ServiceId       primitive.ObjectID `json:"serviceId" bson:"serviceId"`
-	InvestigationID primitive.ObjectID `json:"investigationId" bson:"investigationId"`
-	Name            string             `json:"name" bson:"name"`
-	Image           string             `json:"image" bson:"image"`
-	Type            string             `json:"type" bson:"type"`
+	Id           primitive.ObjectID `json:"id" bson:"id"`
+	LaboratoryID primitive.ObjectID `json:"laboratoryId" bson:"laboratoryId"`
+	Name         string             `json:"name" bson:"name"`
+	Image        string             `json:"image" bson:"image"`
+	Address      Address            `json:"address" bson:"address"`
 }

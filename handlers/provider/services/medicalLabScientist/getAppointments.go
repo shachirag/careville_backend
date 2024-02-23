@@ -2,8 +2,8 @@ package medicalLabScientist
 
 import (
 	"careville_backend/database"
-	medicalLabScientist "careville_backend/dto/provider/services"
 	providerMiddleware "careville_backend/dto/provider/middleware"
+	medicalLabScientist "careville_backend/dto/provider/services"
 	"careville_backend/entity"
 	"math"
 	"strconv"
@@ -45,12 +45,11 @@ func FetchMedicalLabScientistAppointmentsWithPagination(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"_id":                              1,
-		"customer.id":                      1,
-		"customer.firstName":               1,
-		"customer.lastName":                1,
-		"facilityOrProfession":             1,
-		"role":                             1,
+		"_id":                  1,
+		"customer.id":          1,
+		"customer.firstName":   1,
+		"customer.lastName":    1,
+		"facilityOrProfession": 1,
 		"medicalLabScientist.appointmentDetails.from": 1,
 		"medicalLabScientist.appointmentDetails.to":   1,
 	}
@@ -104,7 +103,6 @@ func FetchMedicalLabScientistAppointmentsWithPagination(c *fiber.Ctx) error {
 			Id:                   appointment.Id,
 			CustomrId:            appointment.Customer.ID,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			Role:                 appointment.Role,
 			FirstName:            appointment.Customer.FirstName,
 			LastName:             appointment.Customer.LastName,
 			FromDate:             fromDate,

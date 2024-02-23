@@ -53,10 +53,13 @@ func FetchFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 	projection := bson.M{
 		"_id":                             1,
 		"serviceId":                       1,
-		"fitnessCenter.trainer.id":        1,
-		"fitnessCenter.trainer.name":      1,
-		"fitnessCenter.trainer.category":  1,
+		"fitnessCenter.information.name":  1,
 		"fitnessCenter.information.image": 1,
+		"fitnessCenter.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -99,12 +102,11 @@ func FetchFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 
 		if appointment.FitnessCenter != nil {
 			appointmentRes := fitnessCenter.GetFitnessCenterAppointmentsRes{
-				Id:        appointment.Id,
-				ServiceId: appointment.ServiceID,
-				TrainerId: appointment.FitnessCenter.Trainer.ID,
-				Image:     appointment.FitnessCenter.Information.Image,
-				Name:      appointment.FitnessCenter.Trainer.Name,
-				Category:  appointment.FitnessCenter.Trainer.Category,
+				Id:              appointment.Id,
+				FitnessCenterId: appointment.ServiceID,
+				Image:           appointment.FitnessCenter.Information.Image,
+				Name:            appointment.FitnessCenter.Information.Name,
+				Address:         fitnessCenter.Address(appointment.FitnessCenter.Information.Address),
 			}
 
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)

@@ -6,6 +6,7 @@ type GetMedicalLabScientistRes struct {
 	Id            primitive.ObjectID `json:"id" bson:"_id"`
 	Image         string             `json:"image" bson:"image"`
 	Name          string             `json:"name" bson:"name"`
+	ServiceType   string             `json:"serviceType" bson:"serviceType"`
 	NextAvailable NextAvailable      `json:"nextAvailable" bson:"nextAvailable"`
 }
 

@@ -110,9 +110,10 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 		}
 		if medicalLabScientist1.MedicalLabScientist != nil {
 			medicalLabScientistData = append(medicalLabScientistData, medicalLabScientist.GetMedicalLabScientistRes{
-				Id:    medicalLabScientist1.Id,
-				Image: medicalLabScientist1.MedicalLabScientist.Information.Image,
-				Name:  medicalLabScientist1.MedicalLabScientist.Information.Name,
+				Id:          medicalLabScientist1.Id,
+				Image:       medicalLabScientist1.MedicalLabScientist.Information.Image,
+				Name:        medicalLabScientist1.MedicalLabScientist.Information.Name,
+				ServiceType: "MedicalLabScientist",
 			})
 		}
 	}

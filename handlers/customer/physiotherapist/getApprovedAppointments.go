@@ -55,6 +55,8 @@ func FetchApprovedPhysiotherapistAppointmentsWithPagination(c *fiber.Ctx) error 
 		"serviceId":                         1,
 		"physiotherapist.information.name":  1,
 		"physiotherapist.information.image": 1,
+		"physiotherapist.appointmentsDetails.from": 1,
+		"physiotherapist.appointmentsDetails.to":   1,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -101,6 +103,8 @@ func FetchApprovedPhysiotherapistAppointmentsWithPagination(c *fiber.Ctx) error 
 				ServiceId: appointment.ServiceID,
 				Image:     appointment.Physiotherapist.Information.Image,
 				Name:      appointment.Physiotherapist.Information.Name,
+				FromDate:  appointment.Physiotherapist.AppointmentDetails.From,
+				ToDate:    appointment.Physiotherapist.AppointmentDetails.To,
 			}
 
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)

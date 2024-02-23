@@ -50,7 +50,6 @@ func FetchNurseApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 		"customer.firstName":            1,
 		"customer.lastName":             1,
 		"facilityOrProfession":          1,
-		"role":                          1,
 		"nurse.appointmentDetails.from": 1,
 		"nurse.appointmentDetails.to":   1,
 	}
@@ -104,7 +103,6 @@ func FetchNurseApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 			Id:                   appointment.Id,
 			CustomrId:            appointment.Customer.ID,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			Role:                 appointment.Role,
 			FirstName:            appointment.Customer.FirstName,
 			LastName:             appointment.Customer.LastName,
 			FromDate:             fromDate,

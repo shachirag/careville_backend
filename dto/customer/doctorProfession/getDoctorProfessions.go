@@ -3,11 +3,12 @@ package doctorProfession
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type GetDoctorProfessionRes struct {
-	Id            primitive.ObjectID `json:"id" bson:"_id"`
-	Image         string             `json:"image" bson:"image"`
-	Name          string             `json:"name" bson:"name"`
-	Speciality    string             `json:"speciality" bson:"speciality"`
-	NextAvailable NextAvailable      `json:"nextAvailable" bson:"nextAvailable"`
+	Id          primitive.ObjectID `json:"id" bson:"_id"`
+	Image       string             `json:"image" bson:"image"`
+	Name        string             `json:"name" bson:"name"`
+	Speciality  string             `json:"speciality" bson:"speciality"`
+	ServiceType string             `json:"serviceType" bson:"serviceType"`
+	NextAvailable NextAvailable `json:"nextAvailable" bson:"nextAvailable"`
 }
 
 type NextAvailable struct {

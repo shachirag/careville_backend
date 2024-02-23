@@ -110,9 +110,10 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 		}
 		if physiotherapist1.Physiotherapist != nil {
 			physiotherapistData = append(physiotherapistData, physiotherapist.GetPhysiotherapistRes{
-				Id:    physiotherapist1.Id,
-				Image: physiotherapist1.Physiotherapist.Information.Image,
-				Name:  physiotherapist1.Physiotherapist.Information.Name,
+				Id:          physiotherapist1.Id,
+				Image:       physiotherapist1.Physiotherapist.Information.Image,
+				Name:        physiotherapist1.Physiotherapist.Information.Name,
+				ServiceType: "Physiotherapist",
 				NextAvailable: physiotherapist.NextAvailable{
 					StartTime: "",
 					LastTime:  "",

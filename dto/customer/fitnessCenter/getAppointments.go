@@ -17,10 +17,9 @@ type FitnessCenterAppointmentsPaginationResponse struct {
 }
 
 type GetFitnessCenterAppointmentsRes struct {
-	Id        primitive.ObjectID `json:"id" bson:"id"`
-	ServiceId primitive.ObjectID `json:"serviceId" bson:"serviceId"`
-	TrainerId primitive.ObjectID `json:"trainerId" bson:"trainerId"`
-	Name      string             `json:"name" bson:"name"`
-	Image     string             `json:"image" bson:"image"`
-	Category  string             `json:"category" bson:"category"`
+	Id              primitive.ObjectID `json:"id" bson:"id"`
+	FitnessCenterId primitive.ObjectID `json:"fitnessCenterId" bson:"fitnessCenterId"`
+	Name            string             `json:"name" bson:"name"`
+	Image           string             `json:"image" bson:"image"`
+	Address         Address            `json:"address" bson:"address"`
 }

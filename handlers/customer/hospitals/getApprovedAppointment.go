@@ -53,10 +53,13 @@ func FetchApprovedHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 	projection := bson.M{
 		"_id":                        1,
 		"serviceId":                  1,
-		"hospital.doctor.id":         1,
-		"hospital.doctor.name":       1,
-		"hospital.doctor.image":      1,
-		"hospital.doctor.speciality": 1,
+		"hospital.information.name":  1,
+		"hospital.information.image": 1,
+		"hospital.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -100,11 +103,10 @@ func FetchApprovedHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 		if appointment.HospitalClinic != nil {
 			appointmentRes := hospitals.GetHospitalAppointmentsRes{
 				Id:         appointment.Id,
-				ServiceId:  appointment.ServiceID,
-				DoctorId:   appointment.HospitalClinic.Doctor.ID,
-				Image:      appointment.HospitalClinic.Doctor.Image,
-				Name:       appointment.HospitalClinic.Doctor.Name,
-				Speciality: appointment.HospitalClinic.Doctor.Speciality,
+				HospitalId: appointment.ServiceID,
+				Image:      appointment.HospitalClinic.Information.Image,
+				Name:       appointment.HospitalClinic.Information.Name,
+				Address:    hospitals.Address(appointment.HospitalClinic.Information.Address),
 			}
 
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)

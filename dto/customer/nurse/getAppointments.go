@@ -1,6 +1,10 @@
 package nurse
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type GetNurseAppointmentsPaginationRes struct {
 	Status  bool                                `json:"status"`
@@ -21,4 +25,6 @@ type GetNurseAppointmentsRes struct {
 	ServiceId primitive.ObjectID `json:"serviceId" bson:"serviceId"`
 	Name      string             `json:"name" bson:"name"`
 	Image     string             `json:"image" bson:"image"`
+	FromDate  time.Time             `json:"fromDate" bson:"fromDate"`
+	ToDate     time.Time             `json:"toDate" bson:"toDate"`
 }

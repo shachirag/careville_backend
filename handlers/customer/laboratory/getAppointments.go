@@ -51,12 +51,15 @@ func FetchLaboratoryAppointmentsWithPagination(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"_id":                           1,
-		"serviceId":                     1,
-		"laboratory.investigation.id":   1,
-		"laboratory.investigation.name": 1,
-		"laboratory.investigation.type": 1,
-		"laboratory.information.image":  1,
+		"_id":                          1,
+		"serviceId":                    1,
+		"laboratory.information.name":  1,
+		"laboratory.information.image": 1,
+		"laboratory.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -99,12 +102,11 @@ func FetchLaboratoryAppointmentsWithPagination(c *fiber.Ctx) error {
 
 		if appointment.Laboratory != nil {
 			appointmentRes := laboratory.GetLaboratoryAppointmentsRes{
-				Id:              appointment.Id,
-				ServiceId:       appointment.ServiceID,
-				InvestigationID: appointment.Laboratory.Investigation.ID,
-				Image:           appointment.Laboratory.Information.Image,
-				Name:            appointment.Laboratory.Investigation.Name,
-				Type:            appointment.Laboratory.Investigation.Type,
+				Id:           appointment.Id,
+				LaboratoryID: appointment.ServiceID,
+				Image:        appointment.Laboratory.Information.Image,
+				Name:         appointment.Laboratory.Investigation.Name,
+				Address:      laboratory.Address(appointment.Laboratory.Information.Address),
 			}
 
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)

@@ -1,8 +1,6 @@
 package services
 
 import (
-	"time"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -26,6 +24,6 @@ type GetFitnessCenterAppointmentsRes struct {
 	FirstName            string             `json:"firstName" bson:"firstName"`
 	LastName             string             `json:"lastName" bson:"lastName"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	Role                 string             `json:"role" bson:"role"`
-	CreatedAt            time.Time          `json:"createdAt" bson:"createdAt"`
+	Category             string             `json:"category" bson:"category"`
+	PricePaid            float64            `json:"pricePaid" bson:"pricePaid"`
 }

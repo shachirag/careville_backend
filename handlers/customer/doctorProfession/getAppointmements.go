@@ -51,11 +51,13 @@ func FetchDoctorAppointmentsWithPagination(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"_id":                           1,
-		"serviceId":                     1,
-		"doctor.information.name":       1,
-		"doctor.information.image":      1,
-		"doctor.information.speciality": 1,
+		"_id":                            1,
+		"serviceId":                      1,
+		"doctor.information.name":        1,
+		"doctor.information.image":       1,
+		"doctor.information.speciality":  1,
+		"doctor.appointmentDetails.from": 1,
+		"doctor.appointmentDetails.to":   1,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -103,6 +105,8 @@ func FetchDoctorAppointmentsWithPagination(c *fiber.Ctx) error {
 				Image:      appointment.Doctor.Information.Image,
 				Name:       appointment.Doctor.Information.Name,
 				Speciality: appointment.Doctor.Information.Speciality,
+				FromDate:   appointment.Doctor.AppointmentDetails.From,
+				ToDate:     appointment.Doctor.AppointmentDetails.To,
 			}
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)
 		}

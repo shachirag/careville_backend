@@ -44,13 +44,13 @@ func FetchFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"_id":                  1,
-		"customer.id":          1,
-		"customer.firstName":   1,
-		"customer.lastName":    1,
-		"facilityOrProfession": 1,
-		"role":                 1,
-		"createdAt":            1,
+		"_id":                            1,
+		"customer.id":                    1,
+		"customer.firstName":             1,
+		"customer.lastName":              1,
+		"facilityOrProfession":           1,
+		"fitnessCenter.trainer.category": 1,
+		"fitnessCenter.trainer.invoice.totalAmountPaid": 1,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -91,14 +91,21 @@ func FetchFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 			})
 		}
 
+		var category string
+		var pricePaid float64
+		if appointment.Physiotherapist != nil {
+			category = appointment.FitnessCenter.Trainer.Category
+			pricePaid = appointment.FitnessCenter.Invoice.TotalAmountPaid
+		}
+
 		appointmentRes := fitnessCenter.GetFitnessCenterAppointmentsRes{
 			Id:                   appointment.Id,
 			CustomerId:           appointment.Customer.ID,
 			FirstName:            appointment.Customer.FirstName,
 			LastName:             appointment.Customer.LastName,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			Role:                 appointment.Role,
-			CreatedAt:            appointment.CreatedAt,
+			Category:             category,
+			PricePaid:            pricePaid,
 		}
 
 		response.AppointmentRes = append(response.AppointmentRes, appointmentRes)

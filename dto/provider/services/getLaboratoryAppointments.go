@@ -26,6 +26,5 @@ type GetLaboratoryAppointmentsRes struct {
 	FirstName            string             `json:"firstName" bson:"firstName"`
 	LastName             string             `json:"lastName" bson:"lastName"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	Role                 string             `json:"role" bson:"role"`
 	AppointmentDate      time.Time          `json:"appointmentDate" bson:"appointmentDate"`
 }

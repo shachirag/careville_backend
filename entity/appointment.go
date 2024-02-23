@@ -107,6 +107,7 @@ type TrainerAppointmentEntity struct {
 }
 
 type HospitalAppointmentEntity struct {
+	Information        Information                         `json:"information" bson:"information"`
 	Doctor             DoctorAppointmentEntity             `json:"doctor" bson:"doctor"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`
@@ -132,8 +133,9 @@ type NurseAppointmentEntity struct {
 }
 
 type NurseInformation struct {
-	Name  string `json:"name" bson:"name"`
-	Image string `json:"image" bson:"image"`
+	Name    string  `json:"name" bson:"name"`
+	Image   string  `json:"image" bson:"image"`
+	Address Address `json:"address" bson:"address"`
 }
 
 type PhysiotherapistAppointmentEntity struct {

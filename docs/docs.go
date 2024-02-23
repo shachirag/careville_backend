@@ -5195,6 +5195,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/appointment/hospital-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetHospitalAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/appointment/hospital-appointments": {
             "get": {
                 "description": "Fetch appointments",
@@ -7964,6 +8000,9 @@ const docTemplate = `{
                 "nextAvailable": {
                     "$ref": "#/definitions/doctorProfession.NextAvailable"
                 },
+                "serviceType": {
+                    "type": "string"
+                },
                 "speciality": {
                     "type": "string"
                 }
@@ -8023,6 +8062,9 @@ const docTemplate = `{
                 },
                 "nextAvailable": {
                     "$ref": "#/definitions/medicalLabScientist.NextAvailable"
+                },
+                "serviceType": {
+                    "type": "string"
                 }
             }
         },
@@ -8040,6 +8082,9 @@ const docTemplate = `{
                 },
                 "nextAvailable": {
                     "$ref": "#/definitions/nurse.NextAvailable"
+                },
+                "serviceType": {
+                    "type": "string"
                 }
             }
         },
@@ -8077,6 +8122,9 @@ const docTemplate = `{
                 },
                 "nextAvailable": {
                     "$ref": "#/definitions/physiotherapist.NextAvailable"
+                },
+                "serviceType": {
+                    "type": "string"
                 }
             }
         },
@@ -8827,6 +8875,9 @@ const docTemplate = `{
         "doctorProfession.GetDoctorAppointmentsRes": {
             "type": "object",
             "properties": {
+                "fromDate": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -8840,6 +8891,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "speciality": {
+                    "type": "string"
+                },
+                "toDate": {
                     "type": "string"
                 }
             }
@@ -9094,7 +9148,10 @@ const docTemplate = `{
         "fitnessCenter.GetFitnessCenterAppointmentsRes": {
             "type": "object",
             "properties": {
-                "category": {
+                "address": {
+                    "$ref": "#/definitions/fitnessCenter.Address"
+                },
+                "fitnessCenterId": {
                     "type": "string"
                 },
                 "id": {
@@ -9104,12 +9161,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "serviceId": {
-                    "type": "string"
-                },
-                "trainerId": {
                     "type": "string"
                 }
             }
@@ -9323,7 +9374,10 @@ const docTemplate = `{
         "hospitals.GetHospitalAppointmentsRes": {
             "type": "object",
             "properties": {
-                "doctorId": {
+                "address": {
+                    "$ref": "#/definitions/hospitals.Address"
+                },
+                "hospitalId": {
                     "type": "string"
                 },
                 "id": {
@@ -9333,12 +9387,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "serviceId": {
-                    "type": "string"
-                },
-                "speciality": {
                     "type": "string"
                 }
             }
@@ -9579,22 +9627,19 @@ const docTemplate = `{
         "laboratory.GetLaboratoryAppointmentsRes": {
             "type": "object",
             "properties": {
+                "address": {
+                    "$ref": "#/definitions/laboratory.Address"
+                },
                 "id": {
                     "type": "string"
                 },
                 "image": {
                     "type": "string"
                 },
-                "investigationId": {
+                "laboratoryId": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "serviceId": {
-                    "type": "string"
-                },
-                "type": {
                     "type": "string"
                 }
             }
@@ -9835,6 +9880,9 @@ const docTemplate = `{
                 "department": {
                     "type": "string"
                 },
+                "fromDate": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -9845,6 +9893,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceId": {
+                    "type": "string"
+                },
+                "toDate": {
                     "type": "string"
                 }
             }
@@ -10124,6 +10175,9 @@ const docTemplate = `{
         "nurse.GetNurseAppointmentsRes": {
             "type": "object",
             "properties": {
+                "fromDate": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -10134,6 +10188,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceId": {
+                    "type": "string"
+                },
+                "toDate": {
                     "type": "string"
                 }
             }
@@ -10610,6 +10667,9 @@ const docTemplate = `{
         "physiotherapist.GetPhysiotherapistAppointmentsRes": {
             "type": "object",
             "properties": {
+                "fromDate": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -10620,6 +10680,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceId": {
+                    "type": "string"
+                },
+                "toDate": {
                     "type": "string"
                 }
             }
@@ -11267,6 +11330,34 @@ const docTemplate = `{
                 }
             }
         },
+        "services.AppointmentDetails": {
+            "type": "object",
+            "properties": {
+                "appointmentFromDate": {
+                    "type": "string"
+                },
+                "appointmentToDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.CustomerInformation": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                }
+            }
+        },
         "services.DeleteNurseProfessionalInfoResDto": {
             "type": "object",
             "properties": {
@@ -11515,6 +11606,26 @@ const docTemplate = `{
                 }
             }
         },
+        "services.FamilyMember": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationShip": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
         "services.FitnessCenterEntity": {
             "type": "object",
             "properties": {
@@ -11694,6 +11805,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetHospitalAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.HospitalAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.GetHospitalsPaginationRes": {
             "type": "object",
             "properties": {
@@ -11846,6 +11971,26 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "services.HospitalAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/services.AppointmentDetails"
+                },
+                "customer": {
+                    "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/services.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
                 }
             }
         },

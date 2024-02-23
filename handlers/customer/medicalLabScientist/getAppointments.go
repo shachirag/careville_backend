@@ -55,7 +55,9 @@ func FetchMedicalLabScientistAppointmentsWithPagination(c *fiber.Ctx) error {
 		"serviceId":                             1,
 		"medicalLabScientist.information.name":  1,
 		"medicalLabScientist.information.image": 1,
-		"medicalLabScientist.information.department": 1,
+		"medicalLabScientist.information.department":   1,
+		"medicalLabScientist.appointmentsDetails.from": 1,
+		"medicalLabScientist.appointmentsDetails.to":   1,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -103,6 +105,8 @@ func FetchMedicalLabScientistAppointmentsWithPagination(c *fiber.Ctx) error {
 				Image:      appointment.MedicalLabScientist.Information.Image,
 				Name:       appointment.MedicalLabScientist.Information.Name,
 				Department: appointment.MedicalLabScientist.Information.Department,
+				FromDate:   appointment.MedicalLabScientist.AppointmentDetails.From,
+				ToDate:     appointment.MedicalLabScientist.AppointmentDetails.To,
 			}
 
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)

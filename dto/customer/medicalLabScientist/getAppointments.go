@@ -1,6 +1,10 @@
 package medicalLabScientist
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type GetMedicalLabScientistAppointmentsPaginationRes struct {
 	Status  bool                                              `json:"status"`
@@ -22,4 +26,6 @@ type GetMedicalLabScientistAppointmentsRes struct {
 	Name       string             `json:"name" bson:"name"`
 	Image      string             `json:"image" bson:"image"`
 	Department string             `json:"department" bson:"department"`
+	FromDate   time.Time          `json:"fromDate" bson:"fromDate"`
+	ToDate     time.Time          `json:"toDate" bson:"toDate"`
 }

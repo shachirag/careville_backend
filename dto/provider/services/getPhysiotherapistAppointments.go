@@ -26,7 +26,6 @@ type GetPhysiotherapistAppointmentsRes struct {
 	FirstName            string             `json:"firstName" bson:"firstName"`
 	LastName             string             `json:"lastName" bson:"lastName"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	Role                 string             `json:"role" bson:"role"`
 	FromDate             time.Time          `json:"fromDate" bson:"fromDate"`
 	ToDate               time.Time          `json:"toDate" bson:"toDate"`
 }

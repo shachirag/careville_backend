@@ -112,10 +112,11 @@ func GetDoctors(c *fiber.Ctx) error {
 		}
 		if doctor.Doctor != nil {
 			doctorData = append(doctorData, doctorProfession.GetDoctorProfessionRes{
-				Id:         doctor.Id,
-				Image:      doctor.Doctor.Information.Image,
-				Name:       doctor.Doctor.Information.Name,
-				Speciality: doctor.Doctor.AdditionalServices.Speciality,
+				Id:          doctor.Id,
+				Image:       doctor.Doctor.Information.Image,
+				Name:        doctor.Doctor.Information.Name,
+				Speciality:  doctor.Doctor.AdditionalServices.Speciality,
+				ServiceType: "Doctor",
 			})
 		}
 	}

@@ -26,6 +26,5 @@ type GetPharmacyAppointmentsRes struct {
 	FirstName            string             `json:"firstName" bson:"firstName"`
 	LastName             string             `json:"lastName" bson:"lastName"`
 	FacilityOrProfession string             `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	Role                 string             `json:"role" bson:"role"`
 	CreatedAt            time.Time          `json:"createdAt" bson:"createdAt"`
 }

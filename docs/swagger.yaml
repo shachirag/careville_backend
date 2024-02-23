@@ -206,6 +206,8 @@ definitions:
         type: string
       nextAvailable:
         $ref: '#/definitions/doctorProfession.NextAvailable'
+      serviceType:
+        type: string
       speciality:
         type: string
     type: object
@@ -245,6 +247,8 @@ definitions:
         type: string
       nextAvailable:
         $ref: '#/definitions/medicalLabScientist.NextAvailable'
+      serviceType:
+        type: string
     type: object
   careville_backend_dto_customer_nurse.GetNurseRes:
     properties:
@@ -256,6 +260,8 @@ definitions:
         type: string
       nextAvailable:
         $ref: '#/definitions/nurse.NextAvailable'
+      serviceType:
+        type: string
     type: object
   careville_backend_dto_customer_pharmacy.GetPharmacyRes:
     properties:
@@ -280,6 +286,8 @@ definitions:
         type: string
       nextAvailable:
         $ref: '#/definitions/physiotherapist.NextAvailable'
+      serviceType:
+        type: string
     type: object
   common.GetDoctorHealthProfessionalRes:
     properties:
@@ -765,6 +773,8 @@ definitions:
     type: object
   doctorProfession.GetDoctorAppointmentsRes:
     properties:
+      fromDate:
+        type: string
       id:
         type: string
       image:
@@ -774,6 +784,8 @@ definitions:
       seviceId:
         type: string
       speciality:
+        type: string
+      toDate:
         type: string
     type: object
   doctorProfession.GetDoctorProfessionPaginationRes:
@@ -938,17 +950,15 @@ definitions:
     type: object
   fitnessCenter.GetFitnessCenterAppointmentsRes:
     properties:
-      category:
+      address:
+        $ref: '#/definitions/fitnessCenter.Address'
+      fitnessCenterId:
         type: string
       id:
         type: string
       image:
         type: string
       name:
-        type: string
-      serviceId:
-        type: string
-      trainerId:
         type: string
     type: object
   fitnessCenter.GetFitnessCenterPaginationRes:
@@ -1086,17 +1096,15 @@ definitions:
     type: object
   hospitals.GetHospitalAppointmentsRes:
     properties:
-      doctorId:
+      address:
+        $ref: '#/definitions/hospitals.Address'
+      hospitalId:
         type: string
       id:
         type: string
       image:
         type: string
       name:
-        type: string
-      serviceId:
-        type: string
-      speciality:
         type: string
     type: object
   hospitals.GetHospitalResDto:
@@ -1252,17 +1260,15 @@ definitions:
     type: object
   laboratory.GetLaboratoryAppointmentsRes:
     properties:
+      address:
+        $ref: '#/definitions/laboratory.Address'
       id:
         type: string
       image:
         type: string
-      investigationId:
+      laboratoryId:
         type: string
       name:
-        type: string
-      serviceId:
-        type: string
-      type:
         type: string
     type: object
   laboratory.GetLaboratoryPaginationRes:
@@ -1418,6 +1424,8 @@ definitions:
     properties:
       department:
         type: string
+      fromDate:
+        type: string
       id:
         type: string
       image:
@@ -1425,6 +1433,8 @@ definitions:
       name:
         type: string
       serviceId:
+        type: string
+      toDate:
         type: string
     type: object
   medicalLabScientist.GetMedicalLabScientistPaginationRes:
@@ -1605,6 +1615,8 @@ definitions:
     type: object
   nurse.GetNurseAppointmentsRes:
     properties:
+      fromDate:
+        type: string
       id:
         type: string
       image:
@@ -1612,6 +1624,8 @@ definitions:
       name:
         type: string
       serviceId:
+        type: string
+      toDate:
         type: string
     type: object
   nurse.GetNursePaginationRes:
@@ -1920,6 +1934,8 @@ definitions:
     type: object
   physiotherapist.GetPhysiotherapistAppointmentsRes:
     properties:
+      fromDate:
+        type: string
       id:
         type: string
       image:
@@ -1927,6 +1943,8 @@ definitions:
       name:
         type: string
       serviceId:
+        type: string
+      toDate:
         type: string
     type: object
   physiotherapist.GetPhysiotherapistPaginationRes:
@@ -2344,6 +2362,24 @@ definitions:
       name:
         type: string
     type: object
+  services.AppointmentDetails:
+    properties:
+      appointmentFromDate:
+        type: string
+      appointmentToDate:
+        type: string
+    type: object
+  services.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+    type: object
   services.DeleteNurseProfessionalInfoResDto:
     properties:
       message:
@@ -2505,6 +2541,19 @@ definitions:
       startTime:
         type: string
     type: object
+  services.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationShip:
+        type: string
+      sex:
+        type: string
+    type: object
   services.FitnessCenterEntity:
     properties:
       categories:
@@ -2621,6 +2670,15 @@ definitions:
       status:
         type: boolean
     type: object
+  services.GetHospitalAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.HospitalAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.GetHospitalsPaginationRes:
     properties:
       data:
@@ -2720,6 +2778,19 @@ definitions:
         items:
           type: string
         type: array
+    type: object
+  services.HospitalAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/services.AppointmentDetails'
+      customer:
+        $ref: '#/definitions/services.CustomerInformation'
+      familyMember:
+        $ref: '#/definitions/services.FamilyMember'
+      id:
+        type: string
+      pricePaid:
+        type: number
     type: object
   services.HospitalClinicReqDto:
     properties:
@@ -7020,6 +7091,30 @@ paths:
           schema:
             $ref: '#/definitions/services.GetDoctorAppointmentsPaginationRes'
       summary: Fetch doctor approved appointments
+      tags:
+      - provider appointments
+  /provider/services/appointment/hospital-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetHospitalAppointmentDetailResDto'
+      summary: Get appointment by ID
       tags:
       - provider appointments
   /provider/services/appointment/hospital-appointments:

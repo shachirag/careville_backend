@@ -18,9 +18,8 @@ type HospitalAppointmentsPaginationResponse struct {
 
 type GetHospitalAppointmentsRes struct {
 	Id         primitive.ObjectID `json:"id" bson:"id"`
-	ServiceId  primitive.ObjectID `json:"serviceId" bson:"serviceId"`
-	DoctorId   primitive.ObjectID `json:"doctorId" bson:"doctorId"`
+	HospitalId primitive.ObjectID `json:"hospitalId" bson:"hospitalId"`
 	Name       string             `json:"name" bson:"name"`
 	Image      string             `json:"image" bson:"image"`
-	Speciality string             `json:"speciality" bson:"speciality"`
+	Address    Address            `json:"address" bson:"address"`
 }

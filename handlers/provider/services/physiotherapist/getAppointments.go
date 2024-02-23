@@ -50,7 +50,6 @@ func FetchPhysiotherapistAppointmentsWithPagination(c *fiber.Ctx) error {
 		"customer.firstName":   1,
 		"customer.lastName":    1,
 		"facilityOrProfession": 1,
-		"role":                 1,
 		"physiotherapist.appointmentDetails.from": 1,
 		"physiotherapist.appointmentDetails.to":   1,
 	}
@@ -104,7 +103,6 @@ func FetchPhysiotherapistAppointmentsWithPagination(c *fiber.Ctx) error {
 			Id:                   appointment.Id,
 			CustomrId:            appointment.Customer.ID,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			Role:                 appointment.Role,
 			FirstName:            appointment.Customer.FirstName,
 			LastName:             appointment.Customer.LastName,
 			FromDate:             fromDate,

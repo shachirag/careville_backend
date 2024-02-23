@@ -45,12 +45,11 @@ func FetchHospitalApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"_id":                            1,
-		"customer.id":                    1,
-		"customer.firstName":             1,
-		"customer.lastName":              1,
-		"facilityOrProfession":           1,
-		"role":                           1,
+		"_id":                              1,
+		"customer.id":                      1,
+		"customer.firstName":               1,
+		"customer.lastName":                1,
+		"facilityOrProfession":             1,
 		"hospital.appointmentDetails.from": 1,
 		"hospital.appointmentDetails.to":   1,
 	}
@@ -105,7 +104,6 @@ func FetchHospitalApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 				Id:                   appointment.Id,
 				CustomrId:            appointment.Customer.ID,
 				FacilityOrProfession: appointment.FacilityOrProfession,
-				Role:                 appointment.Role,
 				FirstName:            appointment.Customer.FirstName,
 				LastName:             appointment.Customer.LastName,
 				FromDate:             fromDate,
