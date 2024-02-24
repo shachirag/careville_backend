@@ -5107,6 +5107,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/appointment/doctor-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetDoctorProfessionAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/appointment/doctor-appointments": {
             "get": {
                 "description": "Fetch doctor appointments",
@@ -5190,6 +5226,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.GetDoctorAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/appointment/fitnessCenter-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetFitnessCenterAppointmentDetailResDto"
                         }
                     }
                 }
@@ -5407,6 +5479,78 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/appointment/medicalLabScientist-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetMedicalLabScientistAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/appointment/nurse-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetNurseAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/appointment/nurse-appointments": {
             "get": {
                 "description": "Fetch appointments",
@@ -5534,6 +5678,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/appointment/physiotherapist-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetPhysiotherapistAppointmentDetailResDto"
                         }
                     }
                 }
@@ -7867,6 +8047,17 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_admin_services_hospitals.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_admin_services_laboratories.GetLaboratoryRes": {
             "type": "object",
             "properties": {
@@ -8124,6 +8315,20 @@ const docTemplate = `{
                     "$ref": "#/definitions/physiotherapist.NextAvailable"
                 },
                 "serviceType": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_provider_services.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
                     "type": "string"
                 }
             }
@@ -11355,6 +11560,9 @@ const docTemplate = `{
                 },
                 "lastName": {
                     "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_provider_services.PhoneNumber"
                 }
             }
         },
@@ -11406,6 +11614,29 @@ const docTemplate = `{
                 },
                 "totalPages": {
                     "type": "integer"
+                }
+            }
+        },
+        "services.DoctorProfessionAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/services.AppointmentDetails"
+                },
+                "customer": {
+                    "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/services.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
                 }
             }
         },
@@ -11618,11 +11849,37 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "relationShip": {
+                "relationship": {
                     "type": "string"
                 },
                 "sex": {
                     "type": "string"
+                }
+            }
+        },
+        "services.FitnessCenterAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "customer": {
+                    "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/services.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                },
+                "subscriptionType": {
+                    "$ref": "#/definitions/services.SubscriptionData"
+                },
+                "trainer": {
+                    "$ref": "#/definitions/services.TrainerInformation"
                 }
             }
         },
@@ -11760,6 +12017,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetDoctorProfessionAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.DoctorProfessionAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.GetDoctorProfessionProfessionalDetailsResDto": {
             "type": "object",
             "properties": {
@@ -11779,6 +12050,20 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/services.DoctorProfessionSlotsResponseDto"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetFitnessCenterAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.FitnessCenterAppointmentRes"
                 },
                 "message": {
                     "type": "string"
@@ -11849,10 +12134,24 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "phoneNumber": {
-                    "$ref": "#/definitions/services.PhoneNumber"
+                    "$ref": "#/definitions/careville_backend_dto_admin_services_hospitals.PhoneNumber"
                 },
                 "profileId": {
                     "type": "string"
+                }
+            }
+        },
+        "services.GetMedicalLabScientistAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.MedicallabScientistAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -11861,6 +12160,20 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/services.MedicalLabScientistProfessionalDetailsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetNurseAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.NurseAppointmentRes"
                 },
                 "message": {
                     "type": "string"
@@ -11892,6 +12205,20 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/services.PharmacyOtherServiceRes"
                     }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.GetPhysiotherapistAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.PhysiotherapistAppointmentRes"
                 },
                 "message": {
                     "type": "string"
@@ -11982,6 +12309,9 @@ const docTemplate = `{
                 },
                 "customer": {
                     "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
                 },
                 "familyMember": {
                     "$ref": "#/definitions/services.FamilyMember"
@@ -12319,6 +12649,29 @@ const docTemplate = `{
                 }
             }
         },
+        "services.MedicallabScientistAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/services.AppointmentDetails"
+                },
+                "customer": {
+                    "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/services.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                }
+            }
+        },
         "services.MiscRes": {
             "type": "object",
             "properties": {
@@ -12456,6 +12809,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.NurseAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/services.AppointmentDetails"
+                },
+                "customer": {
+                    "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/services.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
                 }
             }
         },
@@ -12672,14 +13048,26 @@ const docTemplate = `{
                 }
             }
         },
-        "services.PhoneNumber": {
+        "services.PhysiotherapistAppointmentRes": {
             "type": "object",
             "properties": {
-                "dialCode": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/services.AppointmentDetails"
+                },
+                "customer": {
+                    "$ref": "#/definitions/services.CustomerInformation"
+                },
+                "facilityOrProfession": {
                     "type": "string"
                 },
-                "number": {
+                "familyMember": {
+                    "$ref": "#/definitions/services.FamilyMember"
+                },
+                "id": {
                     "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
                 }
             }
         },
@@ -12929,6 +13317,17 @@ const docTemplate = `{
                 }
             }
         },
+        "services.SubscriptionData": {
+            "type": "object",
+            "properties": {
+                "package": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
         "services.SubscriptionReqDto": {
             "type": "object",
             "properties": {
@@ -12974,6 +13373,26 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.TrainerInformation": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },

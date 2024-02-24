@@ -70,49 +70,68 @@ func GetHealthFacilties(c *fiber.Ctx) error {
 	// 	}
 	// }
 
-	var maxDistance int64
-	switch c.Query("facilityOrProfession") {
-	case "hospClinic":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "hospClinic"
-	case "laboratory":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "laboratory"
-	case "pharmacy":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "pharmacy"
-	case "fitnessCenter":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "fitnessCenter"
-	default:
-		maxDistance = 50000
-	}
+	var maxDistance int64 = 50000
 
-	if latParam != "" && longParam != "" {
-		fieldName := ""
-		switch c.Query("facilityOrProfession") {
-		case "hospClinic":
-			fieldName = "hospClinic.information.address"
-		case "laboratory":
-			fieldName = "laboratory.information.address"
-		case "pharmacy":
-			fieldName = "pharmacy.information.address"
-		case "fitnessCenter":
-			fieldName = "fitnessCenter.information.address"
-		default:
-			fieldName = "hospClinic.information.address" 
-		}
+    addGeoQuery := func(fieldName string) {
+        filter[fieldName] = bson.M{
+            "$nearSphere": bson.M{
+                "$geometry": bson.M{
+                    "type":        "Point",
+                    "coordinates": []float64{long, lat},
+                },
+                "$maxDistance": maxDistance,
+            },
+        }
+    }
+
+    addGeoQuery("hospClinic.information.address")
+    addGeoQuery("laboratory.information.address")
+    addGeoQuery("pharmacy.information.address")
+    addGeoQuery("fitnessCenter.information.address")
+
+	// var maxDistance int64
+	// switch c.Query("facilityOrProfession") {
+	// case "hospClinic":
+	// 	maxDistance = 50000
+	// 	filter["facilityOrProfession"] = "hospClinic"
+	// case "laboratory":
+	// 	maxDistance = 50000
+	// 	filter["facilityOrProfession"] = "laboratory"
+	// case "pharmacy":
+	// 	maxDistance = 50000
+	// 	filter["facilityOrProfession"] = "pharmacy"
+	// case "fitnessCenter":
+	// 	maxDistance = 50000
+	// 	filter["facilityOrProfession"] = "fitnessCenter"
+	// default:
+	// 	maxDistance = 50000
+	// }
+
+	// if latParam != "" && longParam != "" {
+	// 	fieldName := ""
+	// 	switch c.Query("facilityOrProfession") {
+	// 	case "hospClinic":
+	// 		fieldName = "hospClinic.information.address"
+	// 	case "laboratory":
+	// 		fieldName = "laboratory.information.address"
+	// 	case "pharmacy":
+	// 		fieldName = "pharmacy.information.address"
+	// 	case "fitnessCenter":
+	// 		fieldName = "fitnessCenter.information.address"
+	// 	default:
+	// 		fieldName = "hospClinic.information.address" 
+	// 	}
 	
-		filter[fieldName] = bson.M{
-			"$nearSphere": bson.M{
-				"$geometry": bson.M{
-					"type":        "Point",
-					"coordinates": []float64{long, lat},
-				},
-				"$maxDistance": maxDistance,
-			},
-		}
-	}
+	// 	filter[fieldName] = bson.M{
+	// 		"$nearSphere": bson.M{
+	// 			"$geometry": bson.M{
+	// 				"type":        "Point",
+	// 				"coordinates": []float64{long, lat},
+	// 			},
+	// 			"$maxDistance": maxDistance,
+	// 		},
+	// 	}
+	// }
 	
 
 	if searchTitle != "" {
