@@ -98,10 +98,17 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/doctorProfession.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_doctorProfession.PhoneNumber'
       profileId:
         type: string
       speciality:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_doctorProfession.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes:
@@ -115,8 +122,15 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/fitnessCenter.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_fitnessCenter.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_fitnessCenter.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_admin_services_hospitals.PhoneNumber:
@@ -137,8 +151,15 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/laboratory.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_laboratories.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_admin_services_medicalLabScientist.GetMedicalLabScientistRes:
@@ -154,8 +175,15 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/medicalLabScientist.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_medicalLabScientist.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_medicalLabScientist.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_admin_services_nurse.GetNurseRes:
@@ -169,8 +197,15 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/nurse.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_nurse.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_nurse.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_admin_services_pharmacy.GetPharmacyRes:
@@ -184,8 +219,15 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/pharmacy.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_pharmacy.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_pharmacy.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_admin_services_physiotherapist.GetPhysiotherapistRes:
@@ -199,8 +241,15 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        $ref: '#/definitions/physiotherapist.PhoneNumber'
+        $ref: '#/definitions/careville_backend_dto_admin_services_physiotherapist.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_physiotherapist.PhoneNumber:
+    properties:
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes:
@@ -216,6 +265,15 @@ definitions:
       serviceType:
         type: string
       speciality:
+        type: string
+    type: object
+  careville_backend_dto_customer_doctorProfession.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_customer_fitnessCenter.GetFitnessCenterRes:
@@ -257,6 +315,15 @@ definitions:
       serviceType:
         type: string
     type: object
+  careville_backend_dto_customer_medicalLabScientist.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
   careville_backend_dto_customer_nurse.GetNurseRes:
     properties:
       id:
@@ -294,6 +361,15 @@ definitions:
       nextAvailable:
         $ref: '#/definitions/physiotherapist.NextAvailable'
       serviceType:
+        type: string
+    type: object
+  careville_backend_dto_customer_physiotherapist.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_provider_services.PhoneNumber:
@@ -679,6 +755,26 @@ definitions:
       status:
         type: boolean
     type: object
+  doctorProfession.AppointmentDetails:
+    properties:
+      appointmentFromDate:
+        type: string
+      appointmentToDate:
+        type: string
+    type: object
+  doctorProfession.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_doctorProfession.PhoneNumber'
+    type: object
   doctorProfession.DoctorAppointmentsPaginationResponse:
     properties:
       appointments:
@@ -708,6 +804,21 @@ definitions:
         type: string
       toDate:
         type: string
+    type: object
+  doctorProfession.DoctorProfessionAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/doctorProfession.AppointmentDetails'
+      customer:
+        $ref: '#/definitions/doctorProfession.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/doctorProfession.FamilyMember'
+      id:
+        type: string
+      pricePaid:
+        type: number
     type: object
   doctorProfession.DoctorProfessionAppointmentResDto:
     properties:
@@ -778,6 +889,19 @@ definitions:
       status:
         type: boolean
     type: object
+  doctorProfession.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
+    type: object
   doctorProfession.GetDoctorAppointmentsPaginationRes:
     properties:
       data:
@@ -803,6 +927,15 @@ definitions:
         type: string
       toDate:
         type: string
+    type: object
+  doctorProfession.GetDoctorProfessionAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/doctorProfession.DoctorProfessionAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   doctorProfession.GetDoctorProfessionPaginationRes:
     properties:
@@ -853,13 +986,6 @@ definitions:
       lastTime:
         type: string
       startTime:
-        type: string
-    type: object
-  doctorProfession.PhoneNumber:
-    properties:
-      dialCode:
-        type: string
-      number:
         type: string
     type: object
   fitnessCenter.AdditionalServices:
@@ -1005,13 +1131,6 @@ definitions:
         type: string
       status:
         type: boolean
-    type: object
-  fitnessCenter.PhoneNumber:
-    properties:
-      dialCode:
-        type: string
-      number:
-        type: string
     type: object
   hospitals.Address:
     properties:
@@ -1420,12 +1539,47 @@ definitions:
       totalReviews:
         type: integer
     type: object
-  laboratory.PhoneNumber:
+  medicalLabScientist.AppointmentDetails:
     properties:
-      dialCode:
+      appointmentFromDate:
         type: string
-      number:
+      appointmentToDate:
         type: string
+    type: object
+  medicalLabScientist.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_medicalLabScientist.PhoneNumber'
+    type: object
+  medicalLabScientist.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
+    type: object
+  medicalLabScientist.GetMedicalLabScientistAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/medicalLabScientist.MedicallabScientistAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   medicalLabScientist.GetMedicalLabScientistAppointmentsPaginationRes:
     properties:
@@ -1575,18 +1729,26 @@ definitions:
       status:
         type: boolean
     type: object
+  medicalLabScientist.MedicallabScientistAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/medicalLabScientist.AppointmentDetails'
+      customer:
+        $ref: '#/definitions/medicalLabScientist.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/medicalLabScientist.FamilyMember'
+      id:
+        type: string
+      pricePaid:
+        type: number
+    type: object
   medicalLabScientist.NextAvailable:
     properties:
       lastTime:
         type: string
       startTime:
-        type: string
-    type: object
-  medicalLabScientist.PhoneNumber:
-    properties:
-      dialCode:
-        type: string
-      number:
         type: string
     type: object
   medicalLabScientist.ServiceAndSchedule:
@@ -1772,13 +1934,6 @@ definitions:
       status:
         type: boolean
     type: object
-  nurse.PhoneNumber:
-    properties:
-      dialCode:
-        type: string
-      number:
-        type: string
-    type: object
   nurse.ServiceAndSchedule:
     properties:
       id:
@@ -1932,12 +2087,47 @@ definitions:
       totalReviews:
         type: integer
     type: object
-  pharmacy.PhoneNumber:
+  physiotherapist.AppointmentDetails:
     properties:
-      dialCode:
+      appointmentFromDate:
         type: string
-      number:
+      appointmentToDate:
         type: string
+    type: object
+  physiotherapist.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_physiotherapist.PhoneNumber'
+    type: object
+  physiotherapist.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
+    type: object
+  physiotherapist.GetPhysiotherapistAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/physiotherapist.PhysiotherapistAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   physiotherapist.GetPhysiotherapistAppointmentsPaginationRes:
     properties:
@@ -1999,13 +2189,6 @@ definitions:
       startTime:
         type: string
     type: object
-  physiotherapist.PhoneNumber:
-    properties:
-      dialCode:
-        type: string
-      number:
-        type: string
-    type: object
   physiotherapist.PhysiotherapistAppointmentReqDto:
     properties:
       address:
@@ -2028,6 +2211,21 @@ definitions:
         type: string
       toDate:
         type: string
+    type: object
+  physiotherapist.PhysiotherapistAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/physiotherapist.AppointmentDetails'
+      customer:
+        $ref: '#/definitions/physiotherapist.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/physiotherapist.FamilyMember'
+      id:
+        type: string
+      pricePaid:
+        type: number
     type: object
   physiotherapist.PhysiotherapistAppointmentResDto:
     properties:
@@ -2376,6 +2574,11 @@ definitions:
       information:
         type: string
       name:
+        type: string
+    type: object
+  services.AppointmentData:
+    properties:
+      appointmentDate:
         type: string
     type: object
   services.AppointmentDetails:
@@ -2771,6 +2974,15 @@ definitions:
       profileId:
         type: string
     type: object
+  services.GetLaboratoryAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.LaboratoryAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.GetMedicalLabScientistAppointmentDetailResDto:
     properties:
       data:
@@ -2802,6 +3014,15 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/services.PhysiotherapistDetailsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.GetPharmacyDrugsDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.PharmacyDrugsRes'
       message:
         type: string
       status:
@@ -2938,6 +3159,19 @@ definitions:
       totalPages:
         type: integer
     type: object
+  services.Investigation:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
   services.InvestigationReqDto:
     properties:
       information:
@@ -2990,6 +3224,23 @@ definitions:
         type: number
       type:
         type: string
+    type: object
+  services.LaboratoryAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/services.AppointmentData'
+      customer:
+        $ref: '#/definitions/services.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/services.FamilyMember'
+      id:
+        type: string
+      investigation:
+        $ref: '#/definitions/services.Investigation'
+      pricePaid:
+        type: number
     type: object
   services.LaboratoryEntity:
     properties:
@@ -3313,6 +3564,25 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.PharmacyDrugsRes:
+    properties:
+      customer:
+        $ref: '#/definitions/services.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      modeOfDelivery:
+        type: string
+      nameAndQuantity:
+        type: string
+      prescription:
+        items:
+          type: string
+        type: array
+      pricePaid:
+        type: number
     type: object
   services.PharmacyOtherServiceRes:
     properties:
@@ -5420,6 +5690,30 @@ paths:
       summary: Add appointment
       tags:
       - customer physiotherapist
+  /customer/healthProfessional/appointment/doctor-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.GetDoctorProfessionAppointmentDetailResDto'
+      summary: Get appointment by ID
+      tags:
+      - customer appointments
   /customer/healthProfessional/appointment/doctor-appointments:
     get:
       consumes:
@@ -5486,6 +5780,30 @@ paths:
           schema:
             $ref: '#/definitions/doctorProfession.GetDoctorAppointmentsPaginationRes'
       summary: Fetch doctor appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/medicalLabScientist-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistAppointmentDetailResDto'
+      summary: Get appointment by ID
       tags:
       - customer appointments
   /customer/healthProfessional/appointment/medicalLabScientist-appointments:
@@ -5556,6 +5874,30 @@ paths:
       summary: Fetch appointments
       tags:
       - customer appointments
+  /customer/healthProfessional/appointment/nurse-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetNurseAppointmentDetailResDto'
+      summary: Get appointment by ID
+      tags:
+      - customer appointments
   /customer/healthProfessional/appointment/nurse-appointments:
     get:
       consumes:
@@ -5622,6 +5964,30 @@ paths:
           schema:
             $ref: '#/definitions/nurse.GetNurseAppointmentsPaginationRes'
       summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthProfessional/appointment/physiotherapist-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.GetPhysiotherapistAppointmentDetailResDto'
+      summary: Get appointment by ID
       tags:
       - customer appointments
   /customer/healthProfessional/appointment/physiotherapist-appointments:
@@ -7378,6 +7744,30 @@ paths:
       summary: Fetch appointments
       tags:
       - provider appointments
+  /provider/services/appointment/laboratory-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetLaboratoryAppointmentDetailResDto'
+      summary: Get appointment by ID
+      tags:
+      - provider appointments
   /provider/services/appointment/laboratory-appointments:
     get:
       consumes:
@@ -7540,6 +7930,30 @@ paths:
           schema:
             $ref: '#/definitions/nurse.GetNurseAppointmentsPaginationRes'
       summary: Fetch appointments
+      tags:
+      - provider appointments
+  /provider/services/appointment/pharmacy-drug/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetPharmacyDrugsDetailResDto'
+      summary: Get appointment by ID
       tags:
       - provider appointments
   /provider/services/appointment/pharmacy-drugs:
