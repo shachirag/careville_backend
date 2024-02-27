@@ -83,6 +83,13 @@ func GetFitnessCenterByID(c *fiber.Ctx) error {
 		}
 	}
 
+	var avgRating float64
+	var totalReviews int32
+	if fitnessCenterData.FitnessCenter != nil && fitnessCenterData.FitnessCenter.Review != nil {
+		avgRating = fitnessCenterData.FitnessCenter.Review.AvgRating
+		totalReviews = fitnessCenterData.FitnessCenter.Review.TotalReviews
+	}
+
 	fitnessCenterRes := fitnessCenter.GetFitnessCenterResDto{
 		Status:  true,
 		Message: "FitnessCenter data fetched successfully",
@@ -93,8 +100,8 @@ func GetFitnessCenterByID(c *fiber.Ctx) error {
 			AboutUs:            fitnessCenterData.FitnessCenter.Information.AdditionalText,
 			Address:            fitnessCenter.Address(fitnessCenterData.FitnessCenter.Information.Address),
 			AdditionalServices: servicesData,
-			TotalReviews:       fitnessCenterData.FitnessCenter.Review.TotalReviews,
-			AvgRating:          fitnessCenterData.FitnessCenter.Review.AvgRating,
+			TotalReviews:       totalReviews,
+			AvgRating:          avgRating,
 		},
 	}
 

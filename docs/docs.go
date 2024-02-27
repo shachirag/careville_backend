@@ -4049,6 +4049,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/fitnessCenter/appointment/fitnessCenter-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/forgot-password": {
             "post": {
                 "description": "Forgot Password",
@@ -8526,6 +8562,20 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_customer_fitnessCenter.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_customer_laboratories.GetLaboratoryRes": {
             "type": "object",
             "properties": {
@@ -9636,6 +9686,46 @@ const docTemplate = `{
                 }
             }
         },
+        "fitnessCenter.CustomerInformation": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_customer_fitnessCenter.PhoneNumber"
+                }
+            }
+        },
+        "fitnessCenter.FamilyMember": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationship": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
         "fitnessCenter.FitnessCenterAppointmentReqDto": {
             "type": "object",
             "properties": {
@@ -9656,6 +9746,35 @@ const docTemplate = `{
                 },
                 "trainerId": {
                     "type": "string"
+                }
+            }
+        },
+        "fitnessCenter.FitnessCenterAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "customer": {
+                    "$ref": "#/definitions/fitnessCenter.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/fitnessCenter.FamilyMember"
+                },
+                "fitnessCenterInformation": {
+                    "$ref": "#/definitions/fitnessCenter.FitnessCenterInformation"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                },
+                "subscriptionType": {
+                    "$ref": "#/definitions/fitnessCenter.SubscriptionData"
+                },
+                "trainer": {
+                    "$ref": "#/definitions/fitnessCenter.TrainerInformation"
                 }
             }
         },
@@ -9690,6 +9809,26 @@ const docTemplate = `{
                 },
                 "totalPages": {
                     "type": "integer"
+                }
+            }
+        },
+        "fitnessCenter.FitnessCenterInformation": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/fitnessCenter.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -9745,6 +9884,20 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "fitnessCenter.GetFitnessCenterAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/fitnessCenter.FitnessCenterAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -9824,6 +9977,37 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "fitnessCenter.SubscriptionData": {
+            "type": "object",
+            "properties": {
+                "package": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "fitnessCenter.TrainerInformation": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },

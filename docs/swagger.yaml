@@ -289,6 +289,15 @@ definitions:
       name:
         type: string
     type: object
+  careville_backend_dto_customer_fitnessCenter.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
   careville_backend_dto_customer_laboratories.GetLaboratoryRes:
     properties:
       address:
@@ -1008,6 +1017,32 @@ definitions:
       type:
         type: string
     type: object
+  fitnessCenter.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.PhoneNumber'
+    type: object
+  fitnessCenter.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
+    type: object
   fitnessCenter.FitnessCenterAppointmentReqDto:
     properties:
       familyMemberId:
@@ -1022,6 +1057,25 @@ definitions:
         type: number
       trainerId:
         type: string
+    type: object
+  fitnessCenter.FitnessCenterAppointmentRes:
+    properties:
+      customer:
+        $ref: '#/definitions/fitnessCenter.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/fitnessCenter.FamilyMember'
+      fitnessCenterInformation:
+        $ref: '#/definitions/fitnessCenter.FitnessCenterInformation'
+      id:
+        type: string
+      pricePaid:
+        type: number
+      subscriptionType:
+        $ref: '#/definitions/fitnessCenter.SubscriptionData'
+      trainer:
+        $ref: '#/definitions/fitnessCenter.TrainerInformation'
     type: object
   fitnessCenter.FitnessCenterAppointmentResDto:
     properties:
@@ -1044,6 +1098,19 @@ definitions:
         type: integer
       totalPages:
         type: integer
+    type: object
+  fitnessCenter.FitnessCenterInformation:
+    properties:
+      address:
+        $ref: '#/definitions/fitnessCenter.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
     type: object
   fitnessCenter.FitnessCenterPaginationResponse:
     properties:
@@ -1080,6 +1147,15 @@ definitions:
         type: string
       totalReviews:
         type: integer
+    type: object
+  fitnessCenter.GetFitnessCenterAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/fitnessCenter.FitnessCenterAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   fitnessCenter.GetFitnessCenterAppointmentsPaginationRes:
     properties:
@@ -1131,6 +1207,26 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  fitnessCenter.SubscriptionData:
+    properties:
+      package:
+        type: string
+      price:
+        type: number
+    type: object
+  fitnessCenter.TrainerInformation:
+    properties:
+      category:
+        type: string
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
     type: object
   hospitals.Address:
     properties:
@@ -6766,6 +6862,30 @@ paths:
       summary: change appointment status
       tags:
       - provider appointments
+  /provider/fitnessCenter/appointment/fitnessCenter-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentDetailResDto'
+      summary: Get appointment by ID
+      tags:
+      - customer appointments
   /provider/forgot-password:
     post:
       consumes:

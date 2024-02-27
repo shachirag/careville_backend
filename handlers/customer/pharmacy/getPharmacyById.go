@@ -83,6 +83,13 @@ func GetPharmacyByID(c *fiber.Ctx) error {
 		}
 	}
 
+	var avgRating float64
+	var totalReviews int32
+	if pharmacyData.Pharmacy != nil && pharmacyData.Pharmacy.Review != nil {
+		avgRating = pharmacyData.Pharmacy.Review.AvgRating
+		totalReviews = pharmacyData.Pharmacy.Review.TotalReviews
+	}
+
 	laboratoryRes := pharmacy.GetPharmacyResDto{
 		Status:  true,
 		Message: "Pharmacy data fetched successfully",
@@ -93,8 +100,8 @@ func GetPharmacyByID(c *fiber.Ctx) error {
 			AboutUs:            pharmacyData.Pharmacy.Information.AdditionalText,
 			Address:            pharmacy.Address(pharmacyData.Pharmacy.Information.Address),
 			AdditionalServices: servicesData,
-			TotalReviews:       pharmacyData.Pharmacy.Review.TotalReviews,
-			AvgRating:          pharmacyData.Pharmacy.Review.AvgRating,
+			TotalReviews:       totalReviews,
+			AvgRating:          avgRating,
 		},
 	}
 

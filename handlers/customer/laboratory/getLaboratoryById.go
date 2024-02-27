@@ -87,6 +87,13 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 		}
 	}
 
+	var avgRating float64
+	var totalReviews int32
+	if laboratoryData.Laboratory != nil && laboratoryData.Laboratory.Review != nil {
+		avgRating = laboratoryData.Laboratory.Review.AvgRating
+		totalReviews = laboratoryData.Laboratory.Review.TotalReviews
+	}
+
 	laboratoryRes := laboratory.GetLaboratoryResDto{
 		Status:  true,
 		Message: "Laboratory data fetched successfully",
@@ -97,8 +104,8 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 			AboutUs:        laboratoryData.Laboratory.Information.AdditionalText,
 			Address:        laboratory.Address(laboratoryData.Laboratory.Information.Address),
 			Investigations: investigationData,
-			TotalReviews:   laboratoryData.Laboratory.Review.TotalReviews,
-			AvgRating:      laboratoryData.Laboratory.Review.AvgRating,
+			TotalReviews:   totalReviews,
+			AvgRating:      avgRating,
 		},
 	}
 

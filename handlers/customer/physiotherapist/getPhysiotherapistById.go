@@ -93,6 +93,13 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 
 	}
 
+	var avgRating float64
+	var totalReviews int32
+	if physiotherapistData.Physiotherapist != nil && physiotherapistData.Physiotherapist.Review != nil {
+		avgRating = physiotherapistData.Physiotherapist.Review.AvgRating
+		totalReviews = physiotherapistData.Physiotherapist.Review.TotalReviews
+	}
+
 	physiotherapistRes := physiotherapist.GetPhysiotherapistResDto{
 		Status:  true,
 		Message: "Physiotherapist data fetched successfully",
@@ -102,8 +109,8 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 			Name:               physiotherapistData.Physiotherapist.Information.Name,
 			AboutMe:            physiotherapistData.Physiotherapist.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
-			TotalReviews:       physiotherapistData.Physiotherapist.Review.TotalReviews,
-			AvgRating:          physiotherapistData.Physiotherapist.Review.AvgRating,
+			TotalReviews:       totalReviews,
+			AvgRating:          avgRating,
 		},
 	}
 

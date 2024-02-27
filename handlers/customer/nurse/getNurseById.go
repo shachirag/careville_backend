@@ -92,6 +92,13 @@ func GetNurseByID(c *fiber.Ctx) error {
 
 	}
 
+	var avgRating float64
+	var totalReviews int32
+	if nurseData.Nurse != nil && nurseData.Nurse.Review != nil {
+		avgRating = nurseData.Nurse.Review.AvgRating
+		totalReviews = nurseData.Nurse.Review.TotalReviews
+	}
+
 	nurseRes := nurse.GetNurseResDto{
 		Status:  true,
 		Message: "Nurse data fetched successfully",
@@ -101,8 +108,8 @@ func GetNurseByID(c *fiber.Ctx) error {
 			Name:               nurseData.Nurse.Information.Name,
 			AboutMe:            nurseData.Nurse.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
-			TotalReviews:       nurseData.Nurse.Review.TotalReviews,
-			AvgRating:          nurseData.Nurse.Review.AvgRating,
+			TotalReviews:       totalReviews,
+			AvgRating:          avgRating,
 		},
 	}
 

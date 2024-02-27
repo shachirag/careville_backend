@@ -98,6 +98,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	appointments.Get("/pharmacy-approved-drugs", pharmacy.FetchApprovedPharmacyDrugsWithPagination)
 	appointments.Get("/fitnessCenter-appointments", fitnessCenter.FetchFitnessCenterAppointmentsWithPagination)
 	appointments.Get("/fitnessCenter-approved-appointments", fitnessCenter.FetchApprovedFitnessCenterAppointmentsWithPagination)
+	appointments.Get("/fitnessCenter-appointment/:id", fitnessCenter.GetFitnessCenterAppointmentByID)
 	appointments.Get("/laboratory-appointments", laboratory.FetchLaboratoryAppointmentsWithPagination)
 	appointments.Get("/laboratory-approved-appointments", laboratory.FetchApprovedLaboratoryAppointmentsWithPagination)
 
