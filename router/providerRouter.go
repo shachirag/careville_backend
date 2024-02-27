@@ -140,7 +140,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	appointmentServices.Get("/fitnessCenter-appointment/:id", fitnessCenter.GetFitnessCenterAppointmentByID)
 	appointmentServices.Get("/hospital-appointments", hospClinic.FetchHospitalAppointmentsWithPagination)
 	appointmentServices.Get("/hospital-approved-appointments", hospClinic.FetchHospitalApprovedAppointmentsWithPagination)
-	// appointmentServices.Get("/hospital-appointment/:id", hospClinic.GetHospitalAppointmentByID)
+	appointmentServices.Get("/hospital-appointment/:id", hospClinic.GetHospitalAppointmentByID)
 	appointmentServices.Get("/laboratory-appointments", laboratory.FetchLaboratoryAppointmentsWithPagination)
 	appointmentServices.Get("/laboratory-approved-appointments", laboratory.FetchLaboratoryApprovedAppointmentsWithPagination)
 	appointmentServices.Get("/laboratory-appointment/:id", laboratory.GetLaboratoryAppointmentByID)
