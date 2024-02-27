@@ -49,7 +49,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 			"countryCode": 1,
 		},
 		"facilityOrProfession":                    1,
-		"doctor.pricePaid":                        1,
+		"fitnessCenter.invoice.totalAmountPaid":   1,
 		"fitnessCenter.package":                   1,
 		"fitnessCenter.trainer.id":                1,
 		"fitnessCenter.trainer.name":              1,

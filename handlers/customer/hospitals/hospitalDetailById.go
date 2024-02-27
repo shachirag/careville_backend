@@ -70,13 +70,6 @@ func GetHospitalByID(c *fiber.Ctx) error {
 		})
 	}
 
-	var avgRating float64
-	var totalReviews int32
-	if hospitalData.HospClinic != nil && hospitalData.HospClinic.Review != nil {
-		avgRating = hospitalData.HospClinic.Review.AvgRating
-		totalReviews = hospitalData.HospClinic.Review.TotalReviews
-	}
-
 	hospitalRes := hospitals.GetHospitalsResDto{
 		Status:  true,
 		Message: "Hospital data fetched successfully",
@@ -87,8 +80,8 @@ func GetHospitalByID(c *fiber.Ctx) error {
 			AboutUs:       hospitalData.HospClinic.Information.AdditionalText,
 			Address:       hospitals.Address(hospitalData.HospClinic.Information.Address),
 			OtherServices: hospitalData.HospClinic.OtherServices,
-			TotalReviews:  totalReviews,
-			AvgRating:     avgRating,
+			TotalReviews:  hospitalData.HospClinic.Review.TotalReviews,
+			AvgRating:     hospitalData.HospClinic.Review.AvgRating,
 		},
 	}
 

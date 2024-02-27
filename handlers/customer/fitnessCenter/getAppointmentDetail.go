@@ -41,7 +41,6 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 
 	projection := bson.M{
 		"_id":                1,
-		"serviceId":          1,
 		"customer.id":        1,
 		"customer.firstName": 1,
 		"customer.lastName":  1,
@@ -51,15 +50,8 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
-		"facilityOrProfession":            1,
-		"fitnessCenter.information.name":  1,
-		"fitnessCenter.information.image": 1,
-		"fitnessCenter.information.address": bson.M{
-			"coordinates": 1,
-			"type":        1,
-			"add":         1,
-		},
-		"fitnessCenter.invoice.totalPricePaid":    1,
+		"facilityOrProfession":                    1,
+		"doctor.pricePaid":                        1,
 		"fitnessCenter.package":                   1,
 		"fitnessCenter.trainer.id":                1,
 		"fitnessCenter.trainer.name":              1,
@@ -86,12 +78,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 
 	var fitnessCeter entity.ServiceEntity
 	reviewFilter := bson.M{"_id": appointment.ServiceID}
-	projection = bson.M{
-		"fitnessCenter.review.totalReviews": 1,
-	}
-
-	reviewFindOptions := options.FindOne().SetProjection(projection)
-	err = serviceColl.FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	err = serviceColl.FindOne(ctx, reviewFilter, findOptions).Decode(&appointment)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterAppointmentDetailResDto{
 			Status:  false,
@@ -100,7 +87,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 	}
 
 	var avgRating float64
-	if fitnessCeter.FitnessCenter != nil && fitnessCeter.FitnessCenter.Review != nil {
+	if fitnessCeter.FitnessCenter != nil {
 		avgRating = fitnessCeter.FitnessCenter.Review.AvgRating
 	}
 

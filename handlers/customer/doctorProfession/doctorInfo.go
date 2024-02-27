@@ -84,13 +84,6 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 		}
 	}
 
-	var avgRating float64
-	var totalReviews int32
-	if doctorProfessionData.Doctor != nil && doctorProfessionData.Doctor.Review != nil {
-		avgRating = doctorProfessionData.Doctor.Review.AvgRating
-		totalReviews = doctorProfessionData.Doctor.Review.TotalReviews
-	}
-
 	doctorProfessionRes := doctorProfession.GetDoctorProfessionResDto{
 		Status:  true,
 		Message: "Doctor data fetched successfully",
@@ -102,8 +95,8 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 			AboutMe:          doctorProfessionData.Doctor.Information.AdditionalText,
 			ConsultationFees: doctorProfessionData.Doctor.Schedule.ConsultationFees,
 			DoctorSchedule:   scheduleData,
-			TotalReviews:     totalReviews,
-			AvgRating:        avgRating,
+			TotalReviews:     doctorProfessionData.Doctor.Review.TotalReviews,
+			AvgRating:        doctorProfessionData.Doctor.Review.AvgRating,
 		},
 	}
 

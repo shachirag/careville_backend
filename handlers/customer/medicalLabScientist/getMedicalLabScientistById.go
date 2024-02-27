@@ -94,13 +94,6 @@ func GetMedicalLabScientistByID(c *fiber.Ctx) error {
 
 	}
 
-	var avgRating float64
-	var totalReviews int32
-	if medicalLabScientistData.MedicalLabScientist != nil && medicalLabScientistData.MedicalLabScientist.Review != nil {
-		avgRating = medicalLabScientistData.MedicalLabScientist.Review.AvgRating
-		totalReviews = medicalLabScientistData.MedicalLabScientist.Review.TotalReviews
-	}
-
 	medicalLabScientistRes := medicalLabScientist.GetMedicalLabScientistResDto{
 		Status:  true,
 		Message: "MedicalLabScientist data fetched successfully",
@@ -110,8 +103,8 @@ func GetMedicalLabScientistByID(c *fiber.Ctx) error {
 			Name:               medicalLabScientistData.MedicalLabScientist.Information.Name,
 			AboutMe:            medicalLabScientistData.MedicalLabScientist.Information.AdditionalText,
 			ServiceAndSchedule: scheduleData,
-			TotalReviews:       totalReviews,
-			AvgRating:          avgRating,
+			TotalReviews:       medicalLabScientistData.MedicalLabScientist.Review.TotalReviews,
+			AvgRating:          medicalLabScientistData.MedicalLabScientist.Review.AvgRating,
 		},
 	}
 
