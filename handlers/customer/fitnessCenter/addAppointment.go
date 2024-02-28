@@ -73,46 +73,50 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	trainerObjID, err := primitive.ObjectIDFromHex(data.TrainerId)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
-			Status:  false,
-			Message: "Invalid ID format",
-		})
+	var trainerObjID primitive.ObjectID
+	if data.TrainerId != nil && *data.TrainerId != "" {
+		trainerObjID, err = primitive.ObjectIDFromHex(*data.TrainerId)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+				Status:  false,
+				Message: "Invalid ID format",
+			})
+		}
 	}
-
-	trainerFilter := bson.M{
-		"_id": serviceObjectID,
-		"fitnessCenter.trainers": bson.M{
-			"$elemMatch": bson.M{
-				"id": trainerObjID,
+	if data.TrainerId != nil && *data.TrainerId != "" {
+		trainerFilter := bson.M{
+			"_id": serviceObjectID,
+			"fitnessCenter.trainers": bson.M{
+				"$elemMatch": bson.M{
+					"id": trainerObjID,
+				},
 			},
-		},
-	}
+		}
 
-	trainerProjection := bson.M{
-		"fitnessCenter.trainers.id":          1,
-		"fitnessCenter.trainers.name":        1,
-		"fitnessCenter.trainers.price":       1,
-		"fitnessCenter.trainers.information": 1,
-		"fitnessCenter.trainers.category":    1,
-	}
+		trainerProjection := bson.M{
+			"fitnessCenter.trainers.id":          1,
+			"fitnessCenter.trainers.name":        1,
+			"fitnessCenter.trainers.price":       1,
+			"fitnessCenter.trainers.information": 1,
+			"fitnessCenter.trainers.category":    1,
+		}
 
-	trainerOpts := options.FindOne().SetProjection(trainerProjection)
+		trainerOpts := options.FindOne().SetProjection(trainerProjection)
 
-	err = serviceColl.FindOne(ctx, trainerFilter, trainerOpts).Decode(&service)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
-			Status:  false,
-			Message: "Failed to fetch trainer data: " + err.Error(),
-		})
-	}
+		err = serviceColl.FindOne(ctx, trainerFilter, trainerOpts).Decode(&service)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+				Status:  false,
+				Message: "Failed to fetch trainer data: " + err.Error(),
+			})
+		}
 
-	if service.FitnessCenter == nil {
-		return c.Status(fiber.StatusNotFound).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
-			Status:  false,
-			Message: "Fitness Center data not found",
-		})
+		if service.FitnessCenter == nil {
+			return c.Status(fiber.StatusNotFound).JSON(fitnessCenter.FitnessCenterAppointmentResDto{
+				Status:  false,
+				Message: "Fitness Center data not found",
+			})
+		}
 	}
 
 	var trainerData entity.Trainers

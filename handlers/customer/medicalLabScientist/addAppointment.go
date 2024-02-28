@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"careville_backend/database"
+	"careville_backend/dto/customer/hospitals"
 	"careville_backend/dto/customer/medicalLabScientist"
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
@@ -11,6 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -299,8 +301,9 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		PricePaid:  data.PricePaid,
 	}
 
+	var id = primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   id,
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "medicalLabScientist",
 		ServiceID:            serviceObjectID,
@@ -318,12 +321,49 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		CreatedAt:           time.Now().UTC(),
 		UpdatedAt:           time.Now().UTC(),
 	}
-
-	_, err = appointmentColl.InsertOne(ctx, appointment)
+	
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
 			Status:  false,
-			Message: "Failed to insert medicalLabScientist appointment data into MongoDB: " + err.Error(),
+			Message: "Failed to start session",
+		})
+	}
+	defer session.EndSession(ctx)
+
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		_, err := appointmentColl.InsertOne(sessCtx, appointment)
+		if err != nil {
+			return nil, err
+		}
+
+		filter := bson.M{
+			"_id":                  serviceObjectID,
+			"facilityOrProfession": "medicalLabScientist",
+		}
+
+		update := bson.M{
+			"$push": bson.M{
+				"medicalLabScientist.upcommingEvents": bson.M{
+					"id":        id,
+					"startTime": fromDate,
+					"endTime":   toDate,
+				},
+			},
+		}
+
+		_, err = serviceColl.UpdateOne(sessCtx, filter, update)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
+			Status:  false,
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

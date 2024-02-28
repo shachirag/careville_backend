@@ -2,6 +2,7 @@ package pharmacy
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"careville_backend/database"
@@ -13,6 +14,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -157,30 +159,30 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 		informationAddress = service.Pharmacy.Information.Address
 	}
 
-	// longitude, err := strconv.ParseFloat(data.Longitude, 64)
-	// if err != nil {
-	// 	return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
-	// 		Status:  false,
-	// 		Message: "Invalid longitude format",
-	// 	})
-	// }
+	longitude, err := strconv.ParseFloat(data.Longitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+			Status:  false,
+			Message: "Invalid longitude format",
+		})
+	}
 
-	// latitude, err := strconv.ParseFloat(data.Latitude, 64)
-	// if err != nil {
-	// 	return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
-	// 		Status:  false,
-	// 		Message: "Invalid latitude format",
-	// 	})
-	// }
+	latitude, err := strconv.ParseFloat(data.Latitude, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(pharmacy.PharmacyDrugsResDto{
+			Status:  false,
+			Message: "Invalid latitude format",
+		})
+	}
 
 	drugData := entity.PharmacyAppointmentEntity{
 		RequestedDrugs: entity.RequestedDrugsAppointmentEntity{
 			ModeOfDelivery:  data.ModeOfDelivery,
 			NameAndQuantity: data.NameAndQuantity,
 			Address: entity.Address{
-				Coordinates: customer.Address.Coordinates,
-				Type:        customer.Address.Type,
-				Add:         customer.Address.Add,
+				Coordinates: []float64{longitude, latitude},
+				Type:        "Point",
+				Add:         data.Address,
 			},
 			Prescription: make([]string, 0),
 		},
@@ -243,6 +245,32 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.PharmacyDrugsResDto{
 			Status:  false,
 			Message: "Failed to insert pharmacy appointment data into MongoDB: " + err.Error(),
+		})
+	}
+
+	session, err := database.GetMongoClient().StartSession()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.PharmacyDrugsResDto{
+			Status:  false,
+			Message: "Failed to start session",
+		})
+	}
+	defer session.EndSession(ctx)
+
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		_, err := appointmentColl.InsertOne(sessCtx, appointment)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(pharmacy.PharmacyDrugsResDto{
+			Status:  false,
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

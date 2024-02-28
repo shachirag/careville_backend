@@ -1195,6 +1195,21 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "name": "address",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "latitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "longitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
                         "name": "modeOfDelivery",
                         "in": "formData"
                     },
@@ -2972,6 +2987,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/get-doctor-available-slots": {
+            "get": {
+                "description": "Get all doctorProfession",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer doctorProfession"
+                ],
+                "summary": "Get all doctorProfession",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "doctorId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.AvailableSlotsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-doctor/{id}": {
             "get": {
                 "description": "Get doctorProfession by ID",
@@ -3102,6 +3156,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/get-medicalLabScientist-available-slots": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer medicalLabScientist"
+                ],
+                "summary": "Get all medicalLabScientist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "medicalLabScientistId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/medicalLabScientist.AvailableSlotsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-medicalLabScientist-services": {
             "get": {
                 "description": "Get all services",
@@ -3224,6 +3317,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/get-nurse-available-slots": {
+            "get": {
+                "description": "Get all investigations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer nurse"
+                ],
+                "summary": "Get all nurse",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "nurseId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/nurse.AvailableSlotsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/get-nurse-services": {
             "get": {
                 "description": "Get all services",
@@ -3341,6 +3473,45 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/nurse.GetNurseResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/get-physiotherapist-available-slots": {
+            "get": {
+                "description": "Get all physiotherapist",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer physiotherapist"
+                ],
+                "summary": "Get all physiotherapist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "service ID",
+                        "name": "physiotherapistId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/physiotherapist.AvailableSlotsResDto"
                         }
                     }
                 }
@@ -9307,6 +9478,48 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.AvailableSlotsRes": {
+            "type": "object",
+            "properties": {
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.Schedule"
+                    }
+                },
+                "upcommingEvents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.UpcommingEvents"
+                    }
+                }
+            }
+        },
+        "doctorProfession.AvailableSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/doctorProfession.AvailableSlotsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.BreakinSlots": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "doctorProfession.CustomerInformation": {
             "type": "object",
             "properties": {
@@ -9648,6 +9861,43 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "lastTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.Schedule": {
+            "type": "object",
+            "properties": {
+                "breakinSlots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.BreakinSlots"
+                    }
+                },
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.UpcommingEvents": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "startTime": {
@@ -10650,6 +10900,48 @@ const docTemplate = `{
                 }
             }
         },
+        "medicalLabScientist.AvailableSlotsRes": {
+            "type": "object",
+            "properties": {
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.Schedule"
+                    }
+                },
+                "upcommingEvents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.UpcommingEvents"
+                    }
+                }
+            }
+        },
+        "medicalLabScientist.AvailableSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/medicalLabScientist.AvailableSlotsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "medicalLabScientist.BreakinSlots": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "medicalLabScientist.CustomerInformation": {
             "type": "object",
             "properties": {
@@ -10966,6 +11258,29 @@ const docTemplate = `{
                 }
             }
         },
+        "medicalLabScientist.Schedule": {
+            "type": "object",
+            "properties": {
+                "breakinSlots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/medicalLabScientist.BreakinSlots"
+                    }
+                },
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "medicalLabScientist.ServiceAndSchedule": {
             "type": "object",
             "properties": {
@@ -11003,6 +11318,20 @@ const docTemplate = `{
                 }
             }
         },
+        "medicalLabScientist.UpcommingEvents": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "nurse.AppoiynmentResDto": {
             "type": "object",
             "properties": {
@@ -11011,6 +11340,48 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "nurse.AvailableSlotsRes": {
+            "type": "object",
+            "properties": {
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.Schedule"
+                    }
+                },
+                "upcommingEvents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.UpcommingEvents"
+                    }
+                }
+            }
+        },
+        "nurse.AvailableSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/nurse.AvailableSlotsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "nurse.BreakinSlots": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
                 }
             }
         },
@@ -11248,6 +11619,29 @@ const docTemplate = `{
                 }
             }
         },
+        "nurse.Schedule": {
+            "type": "object",
+            "properties": {
+                "breakinSlots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nurse.BreakinSlots"
+                    }
+                },
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "nurse.ServiceAndSchedule": {
             "type": "object",
             "properties": {
@@ -11278,6 +11672,20 @@ const docTemplate = `{
                     }
                 },
                 "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "nurse.UpcommingEvents": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "startTime": {
@@ -11491,6 +11899,48 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "appointmentToDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.AvailableSlotsRes": {
+            "type": "object",
+            "properties": {
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.Schedule"
+                    }
+                },
+                "upcommingEvents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.UpcommingEvents"
+                    }
+                }
+            }
+        },
+        "physiotherapist.AvailableSlotsResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/physiotherapist.AvailableSlotsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "physiotherapist.BreakinSlots": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
                     "type": "string"
                 }
             }
@@ -11817,6 +12267,29 @@ const docTemplate = `{
                 }
             }
         },
+        "physiotherapist.Schedule": {
+            "type": "object",
+            "properties": {
+                "breakinSlots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/physiotherapist.BreakinSlots"
+                    }
+                },
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "physiotherapist.ServiceAndSchedule": {
             "type": "object",
             "properties": {
@@ -11847,6 +12320,20 @@ const docTemplate = `{
                     }
                 },
                 "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "physiotherapist.UpcommingEvents": {
+            "type": "object",
+            "properties": {
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "startTime": {

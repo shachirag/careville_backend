@@ -248,12 +248,14 @@ func AddNurse(c *fiber.Ctx) error {
 	var schedule []subEntity.ServiceAndScheduleUpdateServiceSubEntity
 	for _, scheduleItem := range data.NurseReqDto.Schedule {
 		var slots []subEntity.SlotsUpdateServiceSubEntity
-		for _, slot := range scheduleItem.Slots {
-			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
 
-				StartTime: slot.StartTime,
-				EndTime:   slot.EndTime,
-				Days:      slot.Days,
+		for _, slot := range scheduleItem.Slots {
+			breakingSlots := generateBreakingSlots(slot.StartTime, slot.EndTime)
+			scheduleSlot := subEntity.SlotsUpdateServiceSubEntity{
+				StartTime:     slot.StartTime,
+				EndTime:       slot.EndTime,
+				Days:          slot.Days,
+				BreakingSlots: breakingSlots,
 			}
 			slots = append(slots, scheduleSlot)
 		}
@@ -333,4 +335,30 @@ func AddNurse(c *fiber.Ctx) error {
 		},
 	}
 	return c.Status(fiber.StatusOK).JSON(fitnessRes)
+}
+
+func generateBreakingSlots(startTime, endTime string) []subEntity.BreakingSlots {
+	layout := "15:04"
+	start, _ := time.Parse(layout, startTime)
+	end, _ := time.Parse(layout, endTime)
+
+	if start.After(end) {
+		return []subEntity.BreakingSlots{}
+	}
+
+	var breakingSlots []subEntity.BreakingSlots
+
+	for start.Before(end) {
+		next := start.Add(20 * time.Minute)
+		if next.After(end) {
+			break
+		}
+		breakingSlots = append(breakingSlots, subEntity.BreakingSlots{
+			StartTime: start.Format(layout),
+			EndTime:   next.Format(layout),
+		})
+		start = next
+	}
+
+	return breakingSlots
 }

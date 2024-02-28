@@ -167,16 +167,18 @@ type DoctorScheduleUpdateServiceSubEntity struct {
 }
 
 type SlotsUpdateServiceSubEntity struct {
-	StartTime string   `json:"startTime" bson:"startTime"`
-	EndTime   string   `json:"endTime" bson:"endTime"`
-	Days      []string `json:"days" bson:"days"`
+	StartTime     string          `json:"startTime" bson:"startTime"`
+	EndTime       string          `json:"endTime" bson:"endTime"`
+	Days          []string        `json:"days" bson:"days"`
+	BreakingSlots []BreakingSlots `json:"breakingSlots" bson:"breakingSlots"`
 }
 
 type DoctorSlotsUpdateServiceSubEntity struct {
-	Id        primitive.ObjectID `json:"id" bson:"id"`
-	StartTime string             `json:"startTime" bson:"startTime"`
-	EndTime   string             `json:"endTime" bson:"endTime"`
-	Days      []string           `json:"days" bson:"days"`
+	Id            primitive.ObjectID `json:"id" bson:"id"`
+	StartTime     string             `json:"startTime" bson:"startTime"`
+	EndTime       string             `json:"endTime" bson:"endTime"`
+	Days          []string           `json:"days" bson:"days"`
+	BreakingSlots []BreakingSlots    `json:"breakingSlots" bson:"breakingSlots"`
 }
 
 type MedicalLabScientistUpdateServiceSubEntity struct {

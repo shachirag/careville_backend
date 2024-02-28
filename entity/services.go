@@ -164,6 +164,7 @@ type DoctorEntityDto struct {
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	Schedule                   DoctorSchedule             `json:"schedule" bson:"schedule"`
+	UpcommingEvents            []UpcommingEvents          `json:"upcommingEvents" bson:"upcommingEvents"`
 }
 
 type AdditionalService struct {
@@ -187,16 +188,18 @@ type DoctorSchedule struct {
 }
 
 type DoctorSlots struct {
-	Id        primitive.ObjectID `json:"id" bson:"id"`
-	StartTime string             `json:"startTime" bson:"startTime"`
-	EndTime   string             `json:"endTime" bson:"endTime"`
-	Days      []string           `json:"days" bson:"days"`
+	Id            primitive.ObjectID `json:"id" bson:"id"`
+	StartTime     string             `json:"startTime" bson:"startTime"`
+	EndTime       string             `json:"endTime" bson:"endTime"`
+	Days          []string           `json:"days" bson:"days"`
+	BreakingSlots []BreakingSlots    `json:"breakingSlots" bson:"breakingSlots"`
 }
 
 type Slots struct {
-	StartTime string   `json:"startTime" bson:"startTime"`
-	EndTime   string   `json:"endTime" bson:"endTime"`
-	Days      []string `json:"days" bson:"days"`
+	StartTime     string          `json:"startTime" bson:"startTime"`
+	EndTime       string          `json:"endTime" bson:"endTime"`
+	Days          []string        `json:"days" bson:"days"`
+	BreakingSlots []BreakingSlots `json:"breakingSlots" bson:"breakingSlots"`
 }
 
 type MedicalLabScientist struct {
@@ -206,6 +209,7 @@ type MedicalLabScientist struct {
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndSchedule       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
+	UpcommingEvents            []UpcommingEvents          `json:"upcommingEvents" bson:"upcommingEvents"`
 }
 
 type ProfessionalDetailsEntity struct {
@@ -220,6 +224,7 @@ type Nurse struct {
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	Schedule                   []ServiceAndSchedule       `json:"schedule" bson:"schedule"`
+	UpcommingEvents            []UpcommingEvents          `json:"upcommingEvents" bson:"upcommingEvents"`
 }
 
 type ProfessionalDetails struct {
@@ -240,4 +245,5 @@ type Physiotherapist struct {
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndSchedule       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
+	UpcommingEvents            []UpcommingEvents          `json:"upcommingEvents" bson:"upcommingEvents"`
 }

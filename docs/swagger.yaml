@@ -771,6 +771,33 @@ definitions:
       appointmentToDate:
         type: string
     type: object
+  doctorProfession.AvailableSlotsRes:
+    properties:
+      schedule:
+        items:
+          $ref: '#/definitions/doctorProfession.Schedule'
+        type: array
+      upcommingEvents:
+        items:
+          $ref: '#/definitions/doctorProfession.UpcommingEvents'
+        type: array
+    type: object
+  doctorProfession.AvailableSlotsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/doctorProfession.AvailableSlotsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  doctorProfession.BreakinSlots:
+    properties:
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   doctorProfession.CustomerInformation:
     properties:
       firstName:
@@ -993,6 +1020,30 @@ definitions:
   doctorProfession.NextAvailable:
     properties:
       lastTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  doctorProfession.Schedule:
+    properties:
+      breakinSlots:
+        items:
+          $ref: '#/definitions/doctorProfession.BreakinSlots'
+        type: array
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  doctorProfession.UpcommingEvents:
+    properties:
+      endTime:
+        type: string
+      id:
         type: string
       startTime:
         type: string
@@ -1642,6 +1693,33 @@ definitions:
       appointmentToDate:
         type: string
     type: object
+  medicalLabScientist.AvailableSlotsRes:
+    properties:
+      schedule:
+        items:
+          $ref: '#/definitions/medicalLabScientist.Schedule'
+        type: array
+      upcommingEvents:
+        items:
+          $ref: '#/definitions/medicalLabScientist.UpcommingEvents'
+        type: array
+    type: object
+  medicalLabScientist.AvailableSlotsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/medicalLabScientist.AvailableSlotsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  medicalLabScientist.BreakinSlots:
+    properties:
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   medicalLabScientist.CustomerInformation:
     properties:
       firstName:
@@ -1847,6 +1925,21 @@ definitions:
       startTime:
         type: string
     type: object
+  medicalLabScientist.Schedule:
+    properties:
+      breakinSlots:
+        items:
+          $ref: '#/definitions/medicalLabScientist.BreakinSlots'
+        type: array
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   medicalLabScientist.ServiceAndSchedule:
     properties:
       id:
@@ -1871,12 +1964,48 @@ definitions:
       startTime:
         type: string
     type: object
+  medicalLabScientist.UpcommingEvents:
+    properties:
+      endTime:
+        type: string
+      id:
+        type: string
+      startTime:
+        type: string
+    type: object
   nurse.AppoiynmentResDto:
     properties:
       message:
         type: string
       status:
         type: boolean
+    type: object
+  nurse.AvailableSlotsRes:
+    properties:
+      schedule:
+        items:
+          $ref: '#/definitions/nurse.Schedule'
+        type: array
+      upcommingEvents:
+        items:
+          $ref: '#/definitions/nurse.UpcommingEvents'
+        type: array
+    type: object
+  nurse.AvailableSlotsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/nurse.AvailableSlotsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  nurse.BreakinSlots:
+    properties:
+      endTime:
+        type: string
+      startTime:
+        type: string
     type: object
   nurse.GetNurseAppointmentsPaginationRes:
     properties:
@@ -2030,6 +2159,21 @@ definitions:
       status:
         type: boolean
     type: object
+  nurse.Schedule:
+    properties:
+      breakinSlots:
+        items:
+          $ref: '#/definitions/nurse.BreakinSlots'
+        type: array
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   nurse.ServiceAndSchedule:
     properties:
       id:
@@ -2050,6 +2194,15 @@ definitions:
           type: string
         type: array
       endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  nurse.UpcommingEvents:
+    properties:
+      endTime:
+        type: string
+      id:
         type: string
       startTime:
         type: string
@@ -2188,6 +2341,33 @@ definitions:
       appointmentFromDate:
         type: string
       appointmentToDate:
+        type: string
+    type: object
+  physiotherapist.AvailableSlotsRes:
+    properties:
+      schedule:
+        items:
+          $ref: '#/definitions/physiotherapist.Schedule'
+        type: array
+      upcommingEvents:
+        items:
+          $ref: '#/definitions/physiotherapist.UpcommingEvents'
+        type: array
+    type: object
+  physiotherapist.AvailableSlotsResDto:
+    properties:
+      data:
+        $ref: '#/definitions/physiotherapist.AvailableSlotsRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  physiotherapist.BreakinSlots:
+    properties:
+      endTime:
+        type: string
+      startTime:
         type: string
     type: object
   physiotherapist.CustomerInformation:
@@ -2399,6 +2579,21 @@ definitions:
       status:
         type: boolean
     type: object
+  physiotherapist.Schedule:
+    properties:
+      breakinSlots:
+        items:
+          $ref: '#/definitions/physiotherapist.BreakinSlots'
+        type: array
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   physiotherapist.ServiceAndSchedule:
     properties:
       id:
@@ -2419,6 +2614,15 @@ definitions:
           type: string
         type: array
       endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  physiotherapist.UpcommingEvents:
+    properties:
+      endTime:
+        type: string
+      id:
         type: string
       startTime:
         type: string
@@ -4968,6 +5172,15 @@ paths:
         required: true
         type: string
       - in: formData
+        name: address
+        type: string
+      - in: formData
+        name: latitude
+        type: string
+      - in: formData
+        name: longitude
+        type: string
+      - in: formData
         name: modeOfDelivery
         type: string
       - in: formData
@@ -6154,6 +6367,32 @@ paths:
       summary: Fetch appointments
       tags:
       - customer appointments
+  /customer/healthProfessional/get-doctor-available-slots:
+    get:
+      consumes:
+      - application/json
+      description: Get all doctorProfession
+      parameters:
+      - description: service ID
+        in: query
+        name: doctorId
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.AvailableSlotsResDto'
+      summary: Get all doctorProfession
+      tags:
+      - customer doctorProfession
   /customer/healthProfessional/get-doctor/{id}:
     get:
       description: Get doctorProfession by ID
@@ -6240,6 +6479,32 @@ paths:
       summary: Get nearest health professionals
       tags:
       - customer commonApis
+  /customer/healthProfessional/get-medicalLabScientist-available-slots:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: service ID
+        in: query
+        name: medicalLabScientistId
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.AvailableSlotsResDto'
+      summary: Get all medicalLabScientist
+      tags:
+      - customer medicalLabScientist
   /customer/healthProfessional/get-medicalLabScientist-services:
     get:
       consumes:
@@ -6321,6 +6586,32 @@ paths:
       summary: Get medicalLabScientist
       tags:
       - customer medicalLabScientist
+  /customer/healthProfessional/get-nurse-available-slots:
+    get:
+      consumes:
+      - application/json
+      description: Get all investigations
+      parameters:
+      - description: service ID
+        in: query
+        name: nurseId
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.AvailableSlotsResDto'
+      summary: Get all nurse
+      tags:
+      - customer nurse
   /customer/healthProfessional/get-nurse-services:
     get:
       consumes:
@@ -6402,6 +6693,32 @@ paths:
       summary: Get nurse
       tags:
       - customer nurse
+  /customer/healthProfessional/get-physiotherapist-available-slots:
+    get:
+      consumes:
+      - application/json
+      description: Get all physiotherapist
+      parameters:
+      - description: service ID
+        in: query
+        name: physiotherapistId
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.AvailableSlotsResDto'
+      summary: Get all physiotherapist
+      tags:
+      - customer physiotherapist
   /customer/healthProfessional/get-physiotherapist-services:
     get:
       consumes:

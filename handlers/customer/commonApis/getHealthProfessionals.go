@@ -25,178 +25,154 @@ import (
 // @Router /customer/healthProfessional/get-health-professionals [get]
 func GetHealthProfessionals(c *fiber.Ctx) error {
 
-	var (
-		serviceColl = database.GetCollection("service")
-	)
-
 	searchTitle := c.Query("search", "")
 
-	var lat, long float64
 	latParam := c.Query("lat")
 	longParam := c.Query("long")
-	var err error
 
-	if latParam != "" && longParam != "" {
-		lat, err = strconv.ParseFloat(latParam, 64)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(common.GetHealthProfessionalResDto{
-				Status:  false,
-				Message: "Invalid latitude format",
-			})
-		}
+	doctorData, err := getProfessionalsByLocation("doctor", "doctor.information.address", latParam, longParam, "doctor.information.name", searchTitle)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(common.GetHealthFacilityResDto{
+			Status:  false,
+			Message: "Failed to get doctor data: " + err.Error(),
+		})
+	}
 
-		long, err = strconv.ParseFloat(longParam, 64)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(common.GetHealthProfessionalResDto{
-				Status:  false,
-				Message: "Invalid longitude format",
-			})
+	physiotherapistData, err := getProfessionalsByLocation("physiotherapist", "physiotherapist.information.address", latParam, longParam, "physiotherapist.information.name", searchTitle)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(common.GetHealthFacilityResDto{
+			Status:  false,
+			Message: "Failed to get physiotherapist data: " + err.Error(),
+		})
+	}
+
+	nurseData, err := getProfessionalsByLocation("nurse", "nurse.information.address", latParam, longParam, "nurse.information.name", searchTitle)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(common.GetHealthFacilityResDto{
+			Status:  false,
+			Message: "Failed to get nurse data: " + err.Error(),
+		})
+	}
+
+	medicalLabScientistData, err := getProfessionalsByLocation("medicalLabScientist", "medicalLabScientist.information.address", latParam, longParam, "medicalLabScientist.information.name", searchTitle)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(common.GetHealthFacilityResDto{
+			Status:  false,
+			Message: "Failed to get medicalLabScientist data: " + err.Error(),
+		})
+	}
+
+	response := common.GetHealthProfessionalResDto{
+		Status:  true,
+		Message: "Successfully fetched health professionals data.",
+		Data: common.HealthProfessionalResDto{
+			Doctors:              []common.GetDoctorHealthProfessionalRes{},
+			Physiotherapists:     []common.GetHealthProfessionalRes{},
+			Nurse:                []common.GetHealthProfessionalRes{},
+			MedicalLabScientists: []common.GetHealthProfessionalRes{},
+		},
+	}
+	for _, entity := range *doctorData {
+		switch entity.FacilityOrProfession {
+		case "doctor":
+			if entity.Doctor != nil {
+				response.Data.Doctors = append(response.Data.Doctors, common.GetDoctorHealthProfessionalRes{
+					Id:         entity.Id,
+					Image:      entity.Doctor.Information.Image,
+					Name:       entity.Doctor.Information.Name,
+					AvgRating:  entity.Doctor.Review.AvgRating,
+					Speciality: entity.Doctor.AdditionalServices.Speciality,
+				})
+			}
 		}
 	}
 
+	for _, entity := range *medicalLabScientistData {
+		switch entity.FacilityOrProfession {
+		case "medicalLabScientist":
+			if entity.MedicalLabScientist != nil {
+				response.Data.MedicalLabScientists = append(response.Data.MedicalLabScientists, common.GetHealthProfessionalRes{
+					Id:        entity.Id,
+					Image:     entity.MedicalLabScientist.Information.Image,
+					Name:      entity.MedicalLabScientist.Information.Name,
+					AvgRating: entity.MedicalLabScientist.Review.AvgRating,
+				})
+			}
+		}
+	}
+
+	for _, entity := range *nurseData {
+		switch entity.FacilityOrProfession {
+		case "nurse":
+			if entity.Nurse != nil {
+				response.Data.Nurse = append(response.Data.Nurse, common.GetHealthProfessionalRes{
+					Id:        entity.Id,
+					Image:     entity.Nurse.Information.Image,
+					Name:      entity.Nurse.Information.Name,
+					AvgRating: entity.Nurse.Review.AvgRating,
+				})
+			}
+		}
+	}
+
+	for _, entity := range *physiotherapistData {
+		switch entity.FacilityOrProfession {
+		case "physiotherapist":
+			if entity.Physiotherapist != nil {
+				response.Data.Physiotherapists = append(response.Data.Physiotherapists, common.GetHealthProfessionalRes{
+					Id:        entity.Id,
+					Image:     entity.Physiotherapist.Information.Image,
+					Name:      entity.Physiotherapist.Information.Name,
+					AvgRating: entity.Physiotherapist.Review.AvgRating,
+				})
+			}
+		}
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func getProfessionalsByLocation(facilityOrProfession string, addressFieldKey string, lat string, lng string, searchFieldKey string, searchQuery string) (*[]entity.ServiceEntity, error) {
 	filter := bson.M{
 		"role": "healthProfessional",
 	}
-
-	var maxDistance int64
-	switch c.Query("facilityOrProfession") {
-	case "doctor":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "doctor"
-	case "physiotherapist":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "physiotherapist"
-	case "nurse":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "nurse"
-	case "medicalLabScientist":
-		maxDistance = 50000
-		filter["facilityOrProfession"] = "medicalLabScientist"
-	default:
-		maxDistance = 50000
-	}
-
-	if latParam != "" && longParam != "" {
-		fieldName := "doctor.information.address"
-		if filter["facilityOrProfession"] != "doctor" {
-			fieldName = "hospClinic.information.address"
-		} else if filter["facilityOrProfession"] != "physiotherapist" {
-			fieldName = "physiotherapist.information.address"
-		} else if filter["facilityOrProfession"] != "nurse" {
-			fieldName = "nurse.information.address"
-		} else if filter["facilityOrProfession"] != "medicalLabScientist" {
-			fieldName = "medicalLabScientist.information.address"
+	filter["facilityOrProfession"] = facilityOrProfession
+	if lat != "" && lng != "" {
+		lat1, err := strconv.ParseFloat(lat, 64)
+		if err != nil {
+			return nil, err
 		}
-		filter[fieldName] = bson.M{
+
+		long1, err := strconv.ParseFloat(lng, 64)
+		if err != nil {
+			return nil, err
+		}
+		filter[addressFieldKey] = bson.M{
 			"$nearSphere": bson.M{
 				"$geometry": bson.M{
 					"type":        "Point",
-					"coordinates": []float64{long, lat},
+					"coordinates": []float64{long1, lat1},
 				},
-				"$maxDistance": maxDistance,
+				"$maxDistance": 50000,
 			},
 		}
 	}
-
-	if searchTitle != "" {
-		fieldName := "doctor.information.name"
-		if filter["facilityOrProfession"] != "doctor" {
-			fieldName = "doctor.information.name"
-		} else if filter["facilityOrProfession"] != "physiotherapist" {
-			fieldName = "physiotherapist.information.name"
-		} else if filter["facilityOrProfession"] != "nurse" {
-			fieldName = "nurse.information.name"
-		} else if filter["facilityOrProfession"] != "medicalLabScientist" {
-			fieldName = "medicalLabScientist.information.name"
-		}
-		filter[fieldName] = bson.M{"$regex": searchTitle, "$options": "i"}
+	if searchQuery != "" {
+		filter[searchFieldKey] = searchQuery
 	}
-
 	limit := int64(5)
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1}).SetLimit(limit)
 
-	cursor, err := serviceColl.Find(ctx, filter, sortOptions)
+	cursor, err := database.GetCollection("service").Find(ctx, filter, sortOptions)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(common.GetHealthProfessionalResDto{
-			Status:  false,
-			Message: "Failed to fetch health professionals data: " + err.Error(),
-		})
+		return nil, err
 	}
 	defer cursor.Close(ctx)
-
-	var healthProfessionalData common.HealthProfessionalResDto
-	for cursor.Next(ctx) {
-		var healthProfessional entity.ServiceEntity
-		if err := cursor.Decode(&healthProfessional); err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(common.GetHealthProfessionalResDto{
-				Status:  false,
-				Message: "Failed to decode health professionals data: " + err.Error(),
-			})
-		}
-
-		switch healthProfessional.FacilityOrProfession {
-		case "doctor":
-			if healthProfessional.Doctor != nil {
-				healthProfessionalData.Doctors = append(healthProfessionalData.Doctors, common.GetDoctorHealthProfessionalRes{
-					Id:         healthProfessional.Id,
-					Image:      healthProfessional.Doctor.Information.Image,
-					Name:       healthProfessional.Doctor.Information.Name,
-					AvgRating:  healthProfessional.Doctor.Review.AvgRating,
-					Speciality: healthProfessional.Doctor.AdditionalServices.Speciality,
-				})
-			}
-		case "physiotherapist":
-			if healthProfessional.Physiotherapist != nil {
-				healthProfessionalData.Physiotherapists = append(healthProfessionalData.Physiotherapists, common.GetHealthProfessionalRes{
-					Id:        healthProfessional.Id,
-					Image:     healthProfessional.Physiotherapist.Information.Image,
-					Name:      healthProfessional.Physiotherapist.Information.Name,
-					AvgRating: healthProfessional.Physiotherapist.Review.AvgRating,
-				})
-			}
-		case "nurse":
-			if healthProfessional.Nurse != nil {
-				healthProfessionalData.Nurse = append(healthProfessionalData.Nurse, common.GetHealthProfessionalRes{
-					Id:        healthProfessional.Id,
-					Image:     healthProfessional.Nurse.Information.Image,
-					Name:      healthProfessional.Nurse.Information.Name,
-					AvgRating: healthProfessional.Nurse.Review.AvgRating,
-				})
-			}
-		case "medicalLabScientist":
-			if healthProfessional.MedicalLabScientist != nil {
-				healthProfessionalData.MedicalLabScientists = append(healthProfessionalData.MedicalLabScientists, common.GetHealthProfessionalRes{
-					Id:        healthProfessional.Id,
-					Image:     healthProfessional.MedicalLabScientist.Information.Image,
-					Name:      healthProfessional.MedicalLabScientist.Information.Name,
-					AvgRating: healthProfessional.MedicalLabScientist.Review.AvgRating,
-				})
-			}
-		}
+	var healthProfessionals []entity.ServiceEntity
+	err = cursor.All(ctx, &healthProfessionals)
+	if err != nil {
+		return nil, err
 	}
-
-	if len(healthProfessionalData.Physiotherapists) == 0 {
-		healthProfessionalData.Physiotherapists = []common.GetHealthProfessionalRes{}
-	}
-	if len(healthProfessionalData.Doctors) == 0 {
-		healthProfessionalData.Doctors = []common.GetDoctorHealthProfessionalRes{}
-	}
-	if len(healthProfessionalData.Nurse) == 0 {
-		healthProfessionalData.Nurse = []common.GetHealthProfessionalRes{}
-	}
-	if len(healthProfessionalData.MedicalLabScientists) == 0 {
-		healthProfessionalData.MedicalLabScientists = []common.GetHealthProfessionalRes{}
-	}
-
-	return c.Status(fiber.StatusOK).JSON(common.GetHealthProfessionalResDto{
-		Status:  true,
-		Message: "Successfully fetched health professionals data.",
-		Data: common.HealthProfessionalResDto{
-			Doctors:              healthProfessionalData.Doctors,
-			Physiotherapists:     healthProfessionalData.Physiotherapists,
-			Nurse:                healthProfessionalData.Nurse,
-			MedicalLabScientists: healthProfessionalData.MedicalLabScientists,
-		},
-	})
+	return &healthProfessionals, nil
 }

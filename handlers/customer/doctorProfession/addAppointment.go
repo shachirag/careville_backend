@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -279,6 +280,51 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
 			Status:  false,
 			Message: "Failed to insert doctor appointment data into MongoDB: " + err.Error(),
+		})
+	}
+
+	session, err := database.GetMongoClient().StartSession()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "Failed to start session",
+		})
+	}
+	defer session.EndSession(ctx)
+
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		_, err := appointmentColl.InsertOne(sessCtx, appointment)
+		if err != nil {
+			return nil, err
+		}
+		filter := bson.M{
+			"_id":                  serviceObjectID,
+			"facilityOrProfession": "doctor",
+		}
+
+		update := bson.M{
+			"$push": bson.M{
+				"doctor.schedule.upcommingEvents": bson.M{
+					"id":        appointment.Id,
+					"startTime": fromDate,
+					"endTime":   toDate,
+				},
+			},
+		}
+
+		_, err = serviceColl.UpdateOne(sessCtx, filter, update)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 
