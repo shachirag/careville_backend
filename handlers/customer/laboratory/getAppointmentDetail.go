@@ -2,7 +2,7 @@ package laboratory
 
 import (
 	"careville_backend/database"
-	"careville_backend/dto/provider/services"
+	laboratory "careville_backend/dto/customer/laboratories"
 	"careville_backend/entity"
 	"time"
 
@@ -13,15 +13,15 @@ import (
 )
 
 // @Summary Get appointment by ID
-// @Tags provider appointments
+// @Tags customer appointments
 // @Description Get appointment by ID
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Param id path string true "appointment ID"
 // @Produce json
-// @Success 200 {object} services.GetLaboratoryAppointmentDetailResDto
-// @Router /provider/services/appointment/laboratory-appointment/{id} [get]
+// @Success 200 {object} laboratory.GetLaboratoryAppointmentDetailResDto
+// @Router /customer/healthFacility/appointment/laboratory-appointment/{id} [get]
 func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 	var (
 		appointmentColl = database.GetCollection("appointment")
@@ -30,7 +30,7 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 	idParam := c.Params("id")
 	appointmentID, err := primitive.ObjectIDFromHex(idParam)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(services.GetLaboratoryAppointmentDetailResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(laboratory.GetLaboratoryAppointmentDetailResDto{
 			Status:  false,
 			Message: "Invalid appointment ID",
 		})
@@ -40,6 +40,7 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 
 	projection := bson.M{
 		"_id":                1,
+		"serviceId":          1,
 		"customer.id":        1,
 		"customer.firstName": 1,
 		"customer.lastName":  1,
@@ -48,6 +49,13 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 			"dialCode":    1,
 			"number":      1,
 			"countryCode": 1,
+		},
+		"laboratory.information.name":  1,
+		"laboratory.information.image": 1,
+		"laboratory.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
 		},
 		"facilityOrProfession":                 1,
 		"laboratory.appointmentDetails.date":   1,
@@ -69,7 +77,7 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 	var appointment entity.AppointmentEntity
 	err = appointmentColl.FindOne(ctx, filter, findOptions).Decode(&appointment)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.GetLaboratoryAppointmentDetailResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.GetLaboratoryAppointmentDetailResDto{
 			Status:  false,
 			Message: "Failed to fetch appointment data: " + err.Error(),
 		})
@@ -87,6 +95,9 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 	var investigationType string
 	var investigationPrice float64
 	var pricePaid float64
+	var laboratoryImage string
+	var laboratoryName string
+	var laboratoryAddress laboratory.Address
 	if appointment.Laboratory != nil {
 		appointmentDate = appointment.Laboratory.AppointmentDetails.Date
 		familiyMemberId = appointment.Laboratory.FamilyMember.ID
@@ -100,36 +111,45 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 		investigationType = appointment.Laboratory.Investigation.Type
 		investigationPrice = appointment.Laboratory.Investigation.Price
 		pricePaid = appointment.Laboratory.PricePaid
+		laboratoryName = appointment.Laboratory.Information.Name
+		laboratoryImage = appointment.Laboratory.Information.Image
+		laboratoryAddress = laboratory.Address(appointment.Laboratory.Information.Address)
 	}
 
-	expertiseRes := services.GetLaboratoryAppointmentDetailResDto{
+	expertiseRes := laboratory.GetLaboratoryAppointmentDetailResDto{
 		Status:  true,
 		Message: "Data fetched successfully",
-		Data: services.LaboratoryAppointmentRes{
+		Data: laboratory.LaboratoryAppointmentRes{
 			Id: appointment.Id,
-			Customer: services.CustomerInformation{
+			Customer: laboratory.CustomerInformation{
 				Id:        appointment.Customer.ID,
 				FirstName: appointment.Customer.FirstName,
 				LastName:  appointment.Customer.LastName,
 				Image:     appointment.Customer.Image,
-				PhoneNumber: services.PhoneNumber{
+				PhoneNumber: laboratory.PhoneNumber{
 					DialCode:    appointment.Customer.PhoneNumber.DialCode,
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
 			},
+			LaboratoryInformation: laboratory.LaboratoryInformation{
+				Id:      appointment.ServiceID,
+				Name:    laboratoryName,
+				Image:   laboratoryImage,
+				Address: laboratory.Address(laboratoryAddress),
+			},
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			AppointmentDetails: services.AppointmentData{
+			AppointmentDetails: laboratory.AppointmentData{
 				AppointmentDate: appointmentDate,
 			},
-			Investigation: services.Investigation{
+			Investigation: laboratory.Investigation{
 				ID:          investigationId,
 				Name:        investigationName,
 				Information: investigationInformation,
 				Type:        investigationType,
 				Price:       investigationPrice,
 			},
-			FamilyMember: services.FamilyMember{
+			FamilyMember: laboratory.FamilyMember{
 				Id:           familiyMemberId,
 				Name:         familiyMemberName,
 				Age:          familiyMemberAge,

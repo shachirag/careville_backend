@@ -98,7 +98,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	appointments.Use(jwt, middlewares.CustomerData)
 	appointments.Get("/hospital-appointments", hospitals.FetchHospitalAppointmentsWithPagination)
 	appointments.Get("/hospital-approved-appointments", hospitals.FetchApprovedHospitalAppointmentsWithPagination)
-	// appointments.Get("/hospital-appointment/:id", hospitals.GetHospitalAppointmentByID)
+	appointments.Get("/hospital-appointment/:id", hospitals.GetHospitalAppointmentByID)
 	appointments.Get("/pharmacy-drugs", pharmacy.FetchPharmacyDrugsWithPagination)
 	appointments.Get("/pharmacy-approved-drugs", pharmacy.FetchApprovedPharmacyDrugsWithPagination)
 	appointments.Get("/fitnessCenter-appointments", fitnessCenter.FetchFitnessCenterAppointmentsWithPagination)
@@ -106,6 +106,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	appointments.Get("/fitnessCenter-appointment/:id", fitnessCenter.GetFitnessCenterAppointmentByID)
 	appointments.Get("/laboratory-appointments", laboratory.FetchLaboratoryAppointmentsWithPagination)
 	appointments.Get("/laboratory-approved-appointments", laboratory.FetchApprovedLaboratoryAppointmentsWithPagination)
+	appointments.Get("/laboratory-appointment/:id", laboratory.GetLaboratoryAppointmentByID)
 
 	appointment := healthProfessional.Group("/appointment")
 	appointments.Use(jwt, middlewares.CustomerData)

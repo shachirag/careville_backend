@@ -20,12 +20,12 @@ import (
 // @Param id path string true "appointment ID"
 // @Produce json
 // @Success 200 {object} fitnessCenter.GetFitnessCenterAppointmentDetailResDto
-// @Router /provider/fitnessCenter/appointment/fitnessCenter-appointment/{id} [get]
+// @Router /customer/healthFacility/appointment/fitnessCenter-appointment/{id} [get]
 func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 
 	var (
 		appointmentColl = database.GetCollection("appointment")
-		serviceColl     = database.GetCollection("service")
+		// serviceColl     = database.GetCollection("service")
 	)
 
 	idParam := c.Params("id")
@@ -41,6 +41,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 
 	projection := bson.M{
 		"_id":                1,
+		"serviceId":          1,
 		"customer.id":        1,
 		"customer.firstName": 1,
 		"customer.lastName":  1,
@@ -50,8 +51,15 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"fitnessCenter.information.name":  1,
+		"fitnessCenter.information.image": 1,
+		"fitnessCenter.information.address": bson.M{
+			"coordinates": 1,
+			"type":        1,
+			"add":         1,
+		},
 		"facilityOrProfession":                    1,
-		"doctor.pricePaid":                        1,
+		"fitnessCenter.invoice.totalAmountPaid":   1,
 		"fitnessCenter.package":                   1,
 		"fitnessCenter.trainer.id":                1,
 		"fitnessCenter.trainer.name":              1,
@@ -76,20 +84,20 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 		})
 	}
 
-	var fitnessCeter entity.ServiceEntity
-	reviewFilter := bson.M{"_id": appointment.ServiceID}
-	err = serviceColl.FindOne(ctx, reviewFilter, findOptions).Decode(&appointment)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterAppointmentDetailResDto{
-			Status:  false,
-			Message: "Failed to fetch average rating: " + err.Error(),
-		})
-	}
+	// var fitnessCeter entity.ServiceEntity
+	// reviewFilter := bson.M{"_id": appointment.ServiceID}
+	// err = serviceColl.FindOne(ctx, reviewFilter, findOptions).Decode(&appointment)
+	// if err != nil {
+	// 	return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterAppointmentDetailResDto{
+	// 		Status:  false,
+	// 		Message: "Failed to fetch average rating: " + err.Error(),
+	// 	})
+	// }
 
 	var avgRating float64
-	if fitnessCeter.FitnessCenter != nil {
-		avgRating = fitnessCeter.FitnessCenter.Review.AvgRating
-	}
+	// if fitnessCeter.FitnessCenter != nil {
+	// 	avgRating = fitnessCeter.FitnessCenter.Review.AvgRating
+	// }
 
 	var trainerId primitive.ObjectID
 	var trainerName string
