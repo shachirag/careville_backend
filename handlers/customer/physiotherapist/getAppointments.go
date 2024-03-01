@@ -47,6 +47,7 @@ func FetchPhysiotherapistAppointmentsWithPagination(c *fiber.Ctx) error {
 		"role":                 "healthProfessional",
 		"facilityOrProfession": "physiotherapist",
 		"appointmentStatus":    "pending",
+		"paymentStatus":        "initiated",
 		"customer.id":          customerObjID,
 	}
 

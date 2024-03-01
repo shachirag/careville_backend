@@ -75,7 +75,7 @@ func VerifyOtpForLogin(c *fiber.Ctx) error {
 		})
 	}
 
-	err = adminColl.FindOne(ctx, bson.M{"email": data.Email}).Decode(&admin)
+	err = adminColl.FindOne(ctx, bson.M{"email": email}).Decode(&admin)
 	if err != nil {
 		return c.Status(400).JSON(adminAuth.LoginVerifyOtpResDto{
 			Status:  false,

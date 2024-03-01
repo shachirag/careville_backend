@@ -264,6 +264,10 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 	}
 
 	doctorData := subEntity.DoctorProfessionUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.DoctorProfessionReqDto.InformationName,
 			AdditionalText: data.DoctorProfessionReqDto.AdditionalText,
@@ -293,10 +297,21 @@ func AddDoctorProfession(c *fiber.Ctx) error {
 		},
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	doctorProfession = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "doctor",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		Doctor:               &doctorData,
 		UpdatedAt:            time.Now().UTC(),
 	}

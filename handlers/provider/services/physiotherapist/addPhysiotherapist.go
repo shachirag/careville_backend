@@ -273,6 +273,10 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 	}
 
 	physiotherapistData := subEntity.PhysiotherapistUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PhysiotherapistReqDto.InformationName,
 			AdditionalText: data.PhysiotherapistReqDto.AdditionalText,
@@ -297,10 +301,21 @@ func AddPhysiotherapist(c *fiber.Ctx) error {
 		ServiceAndSchedule: schedule,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	physiotherapist = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "physiotherapist",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		Physiotherapist:      &physiotherapistData,
 		UpdatedAt:            time.Now().UTC(),
 	}

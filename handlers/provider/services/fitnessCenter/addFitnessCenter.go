@@ -212,6 +212,10 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		subscription = append(subscription, convertedInv)
 	}
 	fitnessCenterData := subEntity.FitnessCenterUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.FitnessCenterReqDto.InformationName,
 			AdditionalText: data.FitnessCenterReqDto.AdditionalText,
@@ -232,10 +236,21 @@ func AddFitnessCenter(c *fiber.Ctx) error {
 		Subscription:       subscription,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	fitnessCenter = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "fitnessCenter",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		FitnessCenter:        &fitnessCenterData,
 		UpdatedAt:            time.Now().UTC(),
 	}

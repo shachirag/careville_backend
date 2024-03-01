@@ -188,6 +188,10 @@ func AddPharmacy(c *fiber.Ctx) error {
 	}
 
 	pharmacyData := subEntity.PharmacyUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.PharmacyReqDto.InformationName,
 			AdditionalText: data.PharmacyReqDto.AdditionalText,
@@ -206,10 +210,21 @@ func AddPharmacy(c *fiber.Ctx) error {
 		AdditionalServices: additionalServices,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	pharmacy = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "pharmacy",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		Pharmacy:             &pharmacyData,
 		UpdatedAt:            time.Now().UTC(),
 	}

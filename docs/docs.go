@@ -604,6 +604,84 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/requests/get-requests": {
+            "get": {
+                "description": "Fetch requests With Filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin requests"
+                ],
+                "summary": "Fetch requests With Filters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetRequestsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/resend-otp": {
+            "post": {
+                "description": "Resend 6 digit OTP to email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin authorization"
+                ],
+                "summary": "Resend OTP",
+                "parameters": [
+                    {
+                        "description": "Resend 6 digit OTP to email",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.ResendOtpReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/adminAuth.UserPasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/reset-password": {
             "put": {
                 "description": "Reset admin password after OTP verification using the new password and confirm password",
@@ -774,6 +852,51 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/customerAuth.CustomerChangePasswordResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/change-payment-status": {
+            "put": {
+                "description": "change payment status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "change payment status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment Id",
+                        "name": "appointmentId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "change status",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.PaymnetStatusResDto"
                         }
                     }
                 }
@@ -1069,6 +1192,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/add-fitnessCenter-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/add-hospClinic-appointment": {
             "post": {
                 "description": "Add appointment",
@@ -1117,6 +1281,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/add-hospital-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/add-laboratory-appointment": {
             "post": {
                 "description": "Add appointment",
@@ -1160,6 +1365,47 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/laboratory.LaboratoryAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/add-laboratory-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
                         }
                     }
                 }
@@ -1231,6 +1477,83 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/pharmacy.PharmacyDrugsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/add-pharmacy-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/fitnessCenter-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentDetailResDto"
                         }
                     }
                 }
@@ -1338,6 +1661,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/appointment/hospital-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hospitals.GetHospitalAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/appointment/hospital-appointments": {
             "get": {
                 "description": "Fetch appointments",
@@ -1435,6 +1794,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/hospitals.GetHospitalAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/laboratory-appointment/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory.GetLaboratoryAppointmentDetailResDto"
                         }
                     }
                 }
@@ -1542,6 +1937,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthFacility/appointment/past-appointments": {
+            "get": {
+                "description": "Fetch past appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Fetch past appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer ID",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.GetPastAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/appointment/pharmacy-approved-drugs": {
             "get": {
                 "description": "Fetch drugs",
@@ -1588,6 +2034,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/pharmacy-drug/{id}": {
+            "get": {
+                "description": "Get appointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer appointments"
+                ],
+                "summary": "Get appointment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.GetPharmacyDrugsDetailResDto"
                         }
                     }
                 }
@@ -2291,6 +2773,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/add-doctor-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/add-medicalLabScientist-appointment": {
             "post": {
                 "description": "Add appointment",
@@ -2334,6 +2857,47 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/medicalLabScientist.MedicalLabScientistAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/add-medicalLabScientist-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
                         }
                     }
                 }
@@ -2387,6 +2951,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/healthProfessional/add-nurse-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthProfessional/add-physiotherapist-appointment": {
             "post": {
                 "description": "Add appointment",
@@ -2430,6 +3035,47 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/physiotherapist.PhysiotherapistAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthProfessional/add-physiotherapist-review": {
+            "post": {
+                "description": "Add Review for service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer reviews"
+                ],
+                "summary": "Add Review for service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.ReviewsResDto"
                         }
                     }
                 }
@@ -2741,7 +3387,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.GetNurseAppointmentDetailResDto"
+                            "$ref": "#/definitions/nurse.GetNurseAppointmentDetailResDto"
                         }
                     }
                 }
@@ -4215,42 +4861,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.NotificationResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/provider/fitnessCenter/appointment/fitnessCenter-appointment/{id}": {
-            "get": {
-                "description": "Get appointment by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer appointments"
-                ],
-                "summary": "Get appointment by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "appointment ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentDetailResDto"
                         }
                     }
                 }
@@ -8385,6 +8995,14 @@ const docTemplate = `{
                 }
             }
         },
+        "adminAuth.ResendOtpReqDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
         "adminAuth.ResetPasswordAfterOtpReqDto": {
             "type": "object",
             "properties": {
@@ -8400,6 +9018,17 @@ const docTemplate = `{
             }
         },
         "adminAuth.UpdateAdminResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "adminAuth.UserPasswordResDto": {
             "type": "object",
             "properties": {
                 "message": {
@@ -8767,6 +9396,20 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_customer_laboratories.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes": {
             "type": "object",
             "properties": {
@@ -8821,6 +9464,20 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_customer_nurse.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_customer_pharmacy.GetPharmacyRes": {
             "type": "object",
             "properties": {
@@ -8837,6 +9494,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_customer_pharmacy.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
                     "type": "string"
                 }
             }
@@ -8971,6 +9642,40 @@ const docTemplate = `{
                 }
             }
         },
+        "common.GetPastAppointmentsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/common.PastAppointmentsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "common.GetPastAppointmentsRes": {
+            "type": "object",
+            "properties": {
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                }
+            }
+        },
         "common.HealthFacilityResDto": {
             "type": "object",
             "properties": {
@@ -9026,6 +9731,40 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/common.GetHealthProfessionalRes"
                     }
+                }
+            }
+        },
+        "common.PastAppointmentsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "pastAppointments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.GetPastAppointmentsRes"
+                    }
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "common.PaymnetStatusResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -9591,6 +10330,9 @@ const docTemplate = `{
             "properties": {
                 "appointmentDetails": {
                     "$ref": "#/definitions/doctorProfession.AppointmentDetails"
+                },
+                "avgRating": {
+                    "type": "number"
                 },
                 "customer": {
                     "$ref": "#/definitions/doctorProfession.CustomerInformation"
@@ -10278,6 +11020,17 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.AppointmentDetails": {
+            "type": "object",
+            "properties": {
+                "appointmentFromDate": {
+                    "type": "string"
+                },
+                "appointmentToDate": {
+                    "type": "string"
+                }
+            }
+        },
         "hospitals.AvailableSlotsRes": {
             "type": "object",
             "properties": {
@@ -10320,6 +11073,26 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.CustomerInformation": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/hospitals.PhoneNumber"
+                }
+            }
+        },
         "hospitals.DoctorRes": {
             "type": "object",
             "properties": {
@@ -10354,6 +11127,26 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "hospitals.FamilyMember": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationship": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
                 }
             }
         },
@@ -10394,6 +11187,20 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "hospitals.GetHospitalAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/hospitals.HospitalAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -10482,6 +11289,32 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.HospitalAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/hospitals.AppointmentDetails"
+                },
+                "customer": {
+                    "$ref": "#/definitions/hospitals.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/hospitals.FamilyMember"
+                },
+                "hospitalInformation": {
+                    "$ref": "#/definitions/hospitals.HospitalInformation"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
+                }
+            }
+        },
         "hospitals.HospitalAppointmentsPaginationResponse": {
             "type": "object",
             "properties": {
@@ -10539,6 +11372,26 @@ const docTemplate = `{
                 }
             }
         },
+        "hospitals.HospitalInformation": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/hospitals.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "hospitals.HospitalsResponse": {
             "type": "object",
             "properties": {
@@ -10578,6 +11431,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "hospitals.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
                     "type": "string"
                 }
             }
@@ -10647,6 +11514,68 @@ const docTemplate = `{
                 },
                 "type": {
                     "type": "string"
+                }
+            }
+        },
+        "laboratory.AppointmentData": {
+            "type": "object",
+            "properties": {
+                "appointmentDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory.CustomerInformation": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_customer_laboratories.PhoneNumber"
+                }
+            }
+        },
+        "laboratory.FamilyMember": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationship": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory.GetLaboratoryAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/laboratory.LaboratoryAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -10729,6 +11658,26 @@ const docTemplate = `{
                 }
             }
         },
+        "laboratory.Investigation": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "laboratory.InvestigationRes": {
             "type": "object",
             "properties": {
@@ -10800,6 +11749,35 @@ const docTemplate = `{
                 }
             }
         },
+        "laboratory.LaboratoryAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/laboratory.AppointmentData"
+                },
+                "customer": {
+                    "$ref": "#/definitions/laboratory.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/laboratory.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "investigation": {
+                    "$ref": "#/definitions/laboratory.Investigation"
+                },
+                "laboratoryInformation": {
+                    "$ref": "#/definitions/laboratory.LaboratoryInformation"
+                },
+                "pricePaid": {
+                    "type": "number"
+                }
+            }
+        },
         "laboratory.LaboratoryAppointmentResDto": {
             "type": "object",
             "properties": {
@@ -10831,6 +11809,26 @@ const docTemplate = `{
                 },
                 "totalPages": {
                     "type": "integer"
+                }
+            }
+        },
+        "laboratory.LaboratoryInformation": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/laboratory.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -11230,6 +12228,9 @@ const docTemplate = `{
                 "appointmentDetails": {
                     "$ref": "#/definitions/medicalLabScientist.AppointmentDetails"
                 },
+                "avgRating": {
+                    "type": "number"
+                },
                 "customer": {
                     "$ref": "#/definitions/medicalLabScientist.CustomerInformation"
                 },
@@ -11332,6 +12333,17 @@ const docTemplate = `{
                 }
             }
         },
+        "nurse.AppointmentDetails": {
+            "type": "object",
+            "properties": {
+                "appointmentFromDate": {
+                    "type": "string"
+                },
+                "appointmentToDate": {
+                    "type": "string"
+                }
+            }
+        },
         "nurse.AppoiynmentResDto": {
             "type": "object",
             "properties": {
@@ -11382,6 +12394,60 @@ const docTemplate = `{
                 },
                 "startTime": {
                     "type": "string"
+                }
+            }
+        },
+        "nurse.CustomerInformation": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_customer_nurse.PhoneNumber"
+                }
+            }
+        },
+        "nurse.FamilyMember": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationship": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "nurse.GetNurseAppointmentDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/nurse.NurseAppointmentRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -11510,6 +12576,32 @@ const docTemplate = `{
                 },
                 "toDate": {
                     "type": "string"
+                }
+            }
+        },
+        "nurse.NurseAppointmentRes": {
+            "type": "object",
+            "properties": {
+                "appointmentDetails": {
+                    "$ref": "#/definitions/nurse.AppointmentDetails"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "customer": {
+                    "$ref": "#/definitions/nurse.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "familyMember": {
+                    "$ref": "#/definitions/nurse.FamilyMember"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pricePaid": {
+                    "type": "number"
                 }
             }
         },
@@ -11724,6 +12816,26 @@ const docTemplate = `{
                 }
             }
         },
+        "pharmacy.CustomerInformation": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_customer_pharmacy.PhoneNumber"
+                }
+            }
+        },
         "pharmacy.GetPharmacyAppointmentsPaginationRes": {
             "type": "object",
             "properties": {
@@ -11755,6 +12867,20 @@ const docTemplate = `{
                 },
                 "serviceId": {
                     "type": "string"
+                }
+            }
+        },
+        "pharmacy.GetPharmacyDrugsDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/pharmacy.PharmacyDrugsRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -11826,6 +12952,38 @@ const docTemplate = `{
                 }
             }
         },
+        "pharmacy.PharmacyDrugsRes": {
+            "type": "object",
+            "properties": {
+                "customer": {
+                    "$ref": "#/definitions/pharmacy.CustomerInformation"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "modeOfDelivery": {
+                    "type": "string"
+                },
+                "nameAndQuantity": {
+                    "type": "string"
+                },
+                "pharmacyInformation": {
+                    "$ref": "#/definitions/pharmacy.PharmacyInformation"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "pricePaid": {
+                    "type": "number"
+                }
+            }
+        },
         "pharmacy.PharmacyDrugsResDto": {
             "type": "object",
             "properties": {
@@ -11834,6 +12992,26 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "pharmacy.PharmacyInformation": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/pharmacy.Address"
+                },
+                "avgRating": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -12132,6 +13310,9 @@ const docTemplate = `{
             "properties": {
                 "appointmentDetails": {
                     "$ref": "#/definitions/physiotherapist.AppointmentDetails"
+                },
+                "avgRating": {
+                    "type": "number"
                 },
                 "customer": {
                     "$ref": "#/definitions/physiotherapist.CustomerInformation"
@@ -12703,6 +13884,111 @@ const docTemplate = `{
                 },
                 "otp": {
                     "type": "string"
+                }
+            }
+        },
+        "requests.GetRequestsPaginationRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/requests.RequestsPaginationResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "requests.GetRequestsRes": {
+            "type": "object",
+            "properties": {
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/requests.PhoneNumber"
+                },
+                "profileId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.PhoneNumber": {
+            "type": "object",
+            "properties": {
+                "countryCode": {
+                    "type": "string"
+                },
+                "dialCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.RequestsPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                },
+                "requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.GetRequestsRes"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "reviews.ReviewsReqDto": {
+            "type": "object",
+            "properties": {
+                "customerId": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "serviceId": {
+                    "type": "string"
+                }
+            }
+        },
+        "reviews.ReviewsResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },

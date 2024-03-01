@@ -46,6 +46,7 @@ func FetchApprovedDoctorAppointmentsWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthProfessional",
 		"facilityOrProfession": "doctor",
+		"paymentStatus":        "initiated",
 		"appointmentStatus":    "approved",
 		"customer.id":          customerObjID,
 	}

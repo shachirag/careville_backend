@@ -189,6 +189,10 @@ func AddLaboratory(c *fiber.Ctx) error {
 	}
 
 	laboratoryData := &subEntity.LaboratoryUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.LaboratoryReqDto.InformationName,
 			AdditionalText: data.LaboratoryReqDto.AdditionalText,
@@ -207,10 +211,21 @@ func AddLaboratory(c *fiber.Ctx) error {
 		Investigations: investigations,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	laboratory = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "laboratory",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		Laboratory:           laboratoryData,
 		UpdatedAt:            time.Now().UTC(),
 	}

@@ -269,6 +269,10 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 	}
 
 	MedicalLabScientistData := subEntity.MedicalLabScientistUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.MedicalLabScientistReqDto.InformationName,
 			AdditionalText: data.MedicalLabScientistReqDto.AdditionalText,
@@ -295,10 +299,21 @@ func AddMedicalLabScientist(c *fiber.Ctx) error {
 		ServiceAndSchedule: schedule,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	medicalLabScientist = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "medicalLabScientist",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		MedicalLabScientist:  &MedicalLabScientistData,
 		UpdatedAt:            time.Now().UTC(),
 	}

@@ -274,6 +274,10 @@ func AddNurse(c *fiber.Ctx) error {
 	}
 
 	NurseData := subEntity.NurseUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.NurseReqDto.InformationName,
 			AdditionalText: data.NurseReqDto.AdditionalText,
@@ -299,10 +303,21 @@ func AddNurse(c *fiber.Ctx) error {
 		Schedule: schedule,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	nurse = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "nurse",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		Nurse:                &NurseData,
 		UpdatedAt:            time.Now().UTC(),
 	}

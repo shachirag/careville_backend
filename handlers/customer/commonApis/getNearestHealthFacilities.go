@@ -4,15 +4,12 @@ import (
 	"careville_backend/database"
 	common "careville_backend/dto/customer/commonApis"
 	"careville_backend/entity"
-	"context"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-var ctx = context.Background()
 
 // @Summary Get nearest health facilties
 // @Tags customer commonApis

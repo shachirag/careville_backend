@@ -54,6 +54,7 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 			"number":   1,
 		},
 		"doctor.additionalServices.speciality": 1,
+		"profileId":                            1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -106,7 +107,7 @@ func FetchDoctorsWithPagination(c *fiber.Ctx) error {
 				Number:   service.User.PhoneNumber.Number,
 			},
 			Speciality: speciality,
-			// ProfileId: service.ProfileId,
+			ProfileId:  service.ProfileId,
 		}
 
 		response.DoctorProfessionRes = append(response.DoctorProfessionRes, medicalLabScientistRes)

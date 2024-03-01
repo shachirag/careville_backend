@@ -47,6 +47,7 @@ func FetchApprovedPharmacyDrugsWithPagination(c *fiber.Ctx) error {
 		"role":                 "healthFacility",
 		"facilityOrProfession": "pharmacy",
 		"appointmentStatus":    "approved",
+		"paymentStatus":        "initiated",
 		"customer.id":          customerObjID,
 	}
 

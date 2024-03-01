@@ -64,6 +64,11 @@ definitions:
       token:
         type: string
     type: object
+  adminAuth.ResendOtpReqDto:
+    properties:
+      email:
+        type: string
+    type: object
   adminAuth.ResetPasswordAfterOtpReqDto:
     properties:
       confirmPassword:
@@ -74,6 +79,13 @@ definitions:
         type: string
     type: object
   adminAuth.UpdateAdminResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  adminAuth.UserPasswordResDto:
     properties:
       message:
         type: string
@@ -311,6 +323,15 @@ definitions:
       name:
         type: string
     type: object
+  careville_backend_dto_customer_laboratories.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
   careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes:
     properties:
       id:
@@ -346,6 +367,15 @@ definitions:
       serviceType:
         type: string
     type: object
+  careville_backend_dto_customer_nurse.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
   careville_backend_dto_customer_pharmacy.GetPharmacyRes:
     properties:
       address:
@@ -357,6 +387,15 @@ definitions:
       image:
         type: string
       name:
+        type: string
+    type: object
+  careville_backend_dto_customer_pharmacy.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes:
@@ -443,6 +482,28 @@ definitions:
       status:
         type: boolean
     type: object
+  common.GetPastAppointmentsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/common.PastAppointmentsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  common.GetPastAppointmentsRes:
+    properties:
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      pricePaid:
+        type: number
+    type: object
   common.HealthFacilityResDto:
     properties:
       fitnessCenters:
@@ -480,6 +541,28 @@ definitions:
         items:
           $ref: '#/definitions/common.GetHealthProfessionalRes'
         type: array
+    type: object
+  common.PastAppointmentsPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      pastAppointments:
+        items:
+          $ref: '#/definitions/common.GetPastAppointmentsRes'
+        type: array
+      perPage:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  common.PaymnetStatusResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   customerAuth.AddMemberReqDto:
     properties:
@@ -845,6 +928,8 @@ definitions:
     properties:
       appointmentDetails:
         $ref: '#/definitions/doctorProfession.AppointmentDetails'
+      avgRating:
+        type: number
       customer:
         $ref: '#/definitions/doctorProfession.CustomerInformation'
       facilityOrProfession:
@@ -1290,6 +1375,13 @@ definitions:
       type:
         type: string
     type: object
+  hospitals.AppointmentDetails:
+    properties:
+      appointmentFromDate:
+        type: string
+      appointmentToDate:
+        type: string
+    type: object
   hospitals.AvailableSlotsRes:
     properties:
       schedule:
@@ -1317,6 +1409,19 @@ definitions:
       startTime:
         type: string
     type: object
+  hospitals.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/hospitals.PhoneNumber'
+    type: object
   hospitals.DoctorRes:
     properties:
       id:
@@ -1340,6 +1445,19 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  hospitals.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
     type: object
   hospitals.GetEmergencyHospitalResDto:
     properties:
@@ -1366,6 +1484,15 @@ definitions:
         type: boolean
       name:
         type: string
+    type: object
+  hospitals.GetHospitalAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/hospitals.HospitalAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   hospitals.GetHospitalAppointmentsPaginationRes:
     properties:
@@ -1422,6 +1549,23 @@ definitions:
       status:
         type: boolean
     type: object
+  hospitals.HospitalAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/hospitals.AppointmentDetails'
+      customer:
+        $ref: '#/definitions/hospitals.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/hospitals.FamilyMember'
+      hospitalInformation:
+        $ref: '#/definitions/hospitals.HospitalInformation'
+      id:
+        type: string
+      pricePaid:
+        type: number
+    type: object
   hospitals.HospitalAppointmentsPaginationResponse:
     properties:
       appointments:
@@ -1459,6 +1603,19 @@ definitions:
       status:
         type: boolean
     type: object
+  hospitals.HospitalInformation:
+    properties:
+      address:
+        $ref: '#/definitions/hospitals.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   hospitals.HospitalsResponse:
     properties:
       aboutUs:
@@ -1485,6 +1642,15 @@ definitions:
       lastTime:
         type: string
       startTime:
+        type: string
+    type: object
+  hospitals.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
         type: string
     type: object
   hospitals.Schedule:
@@ -1530,6 +1696,46 @@ definitions:
         type: array
       type:
         type: string
+    type: object
+  laboratory.AppointmentData:
+    properties:
+      appointmentDate:
+        type: string
+    type: object
+  laboratory.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_laboratories.PhoneNumber'
+    type: object
+  laboratory.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
+    type: object
+  laboratory.GetLaboratoryAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/laboratory.LaboratoryAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   laboratory.GetLaboratoryAppointmentsPaginationRes:
     properties:
@@ -1582,6 +1788,19 @@ definitions:
       status:
         type: boolean
     type: object
+  laboratory.Investigation:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
   laboratory.InvestigationRes:
     properties:
       id:
@@ -1628,6 +1847,25 @@ definitions:
       pricePaid:
         type: number
     type: object
+  laboratory.LaboratoryAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/laboratory.AppointmentData'
+      customer:
+        $ref: '#/definitions/laboratory.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/laboratory.FamilyMember'
+      id:
+        type: string
+      investigation:
+        $ref: '#/definitions/laboratory.Investigation'
+      laboratoryInformation:
+        $ref: '#/definitions/laboratory.LaboratoryInformation'
+      pricePaid:
+        type: number
+    type: object
   laboratory.LaboratoryAppointmentResDto:
     properties:
       message:
@@ -1649,6 +1887,19 @@ definitions:
         type: integer
       totalPages:
         type: integer
+    type: object
+  laboratory.LaboratoryInformation:
+    properties:
+      address:
+        $ref: '#/definitions/laboratory.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
     type: object
   laboratory.LaboratoryPaginationResponse:
     properties:
@@ -1907,6 +2158,8 @@ definitions:
     properties:
       appointmentDetails:
         $ref: '#/definitions/medicalLabScientist.AppointmentDetails'
+      avgRating:
+        type: number
       customer:
         $ref: '#/definitions/medicalLabScientist.CustomerInformation'
       facilityOrProfession:
@@ -1973,6 +2226,13 @@ definitions:
       startTime:
         type: string
     type: object
+  nurse.AppointmentDetails:
+    properties:
+      appointmentFromDate:
+        type: string
+      appointmentToDate:
+        type: string
+    type: object
   nurse.AppoiynmentResDto:
     properties:
       message:
@@ -2006,6 +2266,41 @@ definitions:
         type: string
       startTime:
         type: string
+    type: object
+  nurse.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_nurse.PhoneNumber'
+    type: object
+  nurse.FamilyMember:
+    properties:
+      age:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      relationship:
+        type: string
+      sex:
+        type: string
+    type: object
+  nurse.GetNurseAppointmentDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/nurse.NurseAppointmentRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   nurse.GetNurseAppointmentsPaginationRes:
     properties:
@@ -2089,6 +2384,23 @@ definitions:
         type: string
       toDate:
         type: string
+    type: object
+  nurse.NurseAppointmentRes:
+    properties:
+      appointmentDetails:
+        $ref: '#/definitions/nurse.AppointmentDetails'
+      avgRating:
+        type: number
+      customer:
+        $ref: '#/definitions/nurse.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      familyMember:
+        $ref: '#/definitions/nurse.FamilyMember'
+      id:
+        type: string
+      pricePaid:
+        type: number
     type: object
   nurse.NurseAppointmentsPaginationResponse:
     properties:
@@ -2227,6 +2539,19 @@ definitions:
       type:
         type: string
     type: object
+  pharmacy.CustomerInformation:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.PhoneNumber'
+    type: object
   pharmacy.GetPharmacyAppointmentsPaginationRes:
     properties:
       data:
@@ -2248,6 +2573,15 @@ definitions:
         type: string
       serviceId:
         type: string
+    type: object
+  pharmacy.GetPharmacyDrugsDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/pharmacy.PharmacyDrugsRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   pharmacy.GetPharmacyPaginationRes:
     properties:
@@ -2293,12 +2627,46 @@ definitions:
       totalPages:
         type: integer
     type: object
+  pharmacy.PharmacyDrugsRes:
+    properties:
+      customer:
+        $ref: '#/definitions/pharmacy.CustomerInformation'
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      modeOfDelivery:
+        type: string
+      nameAndQuantity:
+        type: string
+      pharmacyInformation:
+        $ref: '#/definitions/pharmacy.PharmacyInformation'
+      prescription:
+        items:
+          type: string
+        type: array
+      pricePaid:
+        type: number
+    type: object
   pharmacy.PharmacyDrugsResDto:
     properties:
       message:
         type: string
       status:
         type: boolean
+    type: object
+  pharmacy.PharmacyInformation:
+    properties:
+      address:
+        $ref: '#/definitions/pharmacy.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
     type: object
   pharmacy.PharmacyPaginationResponse:
     properties:
@@ -2492,6 +2860,8 @@ definitions:
     properties:
       appointmentDetails:
         $ref: '#/definitions/physiotherapist.AppointmentDetails'
+      avgRating:
+        type: number
       customer:
         $ref: '#/definitions/physiotherapist.CustomerInformation'
       facilityOrProfession:
@@ -2861,6 +3231,74 @@ definitions:
         type: string
       otp:
         type: string
+    type: object
+  requests.GetRequestsPaginationRes:
+    properties:
+      data:
+        $ref: '#/definitions/requests.RequestsPaginationResponse'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  requests.GetRequestsRes:
+    properties:
+      facilityOrProfession:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/requests.PhoneNumber'
+      profileId:
+        type: string
+      role:
+        type: string
+    type: object
+  requests.PhoneNumber:
+    properties:
+      countryCode:
+        type: string
+      dialCode:
+        type: string
+      number:
+        type: string
+    type: object
+  requests.RequestsPaginationResponse:
+    properties:
+      currentPage:
+        type: integer
+      perPage:
+        type: integer
+      requests:
+        items:
+          $ref: '#/definitions/requests.GetRequestsRes'
+        type: array
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  reviews.ReviewsReqDto:
+    properties:
+      customerId:
+        type: string
+      description:
+        type: string
+      rating:
+        type: number
+      serviceId:
+        type: string
+    type: object
+  reviews.ReviewsResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   services.AddPharmacyOtherServiceReqDto:
     properties:
@@ -4785,6 +5223,57 @@ paths:
       summary: Update Admin
       tags:
       - admin authorization
+  /admin/requests/get-requests:
+    get:
+      consumes:
+      - application/json
+      description: Fetch requests With Filters
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/requests.GetRequestsPaginationRes'
+      summary: Fetch requests With Filters
+      tags:
+      - admin requests
+  /admin/resend-otp:
+    post:
+      consumes:
+      - application/json
+      description: Resend 6 digit OTP to email
+      parameters:
+      - description: Resend 6 digit OTP to email
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/adminAuth.ResendOtpReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/adminAuth.UserPasswordResDto'
+      summary: Resend OTP
+      tags:
+      - admin authorization
   /admin/reset-password:
     put:
       consumes:
@@ -4900,6 +5389,36 @@ paths:
       summary: Change customer Password
       tags:
       - customer authorization
+  /customer/change-payment-status:
+    put:
+      consumes:
+      - application/json
+      description: change payment status
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment Id
+        in: query
+        name: appointmentId
+        required: true
+        type: string
+      - description: change status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.PaymnetStatusResDto'
+      summary: change payment status
+      tags:
+      - provider appointments
   /customer/emergency/add-emergency-doctor:
     post:
       consumes:
@@ -5091,6 +5610,33 @@ paths:
       summary: Add appointment
       tags:
       - customer fitnessCenter
+  /customer/healthFacility/add-fitnessCenter-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthFacility/add-hospClinic-appointment:
     post:
       consumes:
@@ -5123,6 +5669,33 @@ paths:
       summary: Add appointment
       tags:
       - customer hospitals
+  /customer/healthFacility/add-hospital-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthFacility/add-laboratory-appointment:
     post:
       consumes:
@@ -5155,6 +5728,33 @@ paths:
       summary: Add appointment
       tags:
       - customer laboratory
+  /customer/healthFacility/add-laboratory-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthFacility/add-pharmacy-drug:
     post:
       consumes:
@@ -5201,6 +5801,57 @@ paths:
       summary: Add drugs
       tags:
       - customer pharmacy
+  /customer/healthFacility/add-pharmacy-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
+  /customer/healthFacility/appointment/fitnessCenter-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentDetailResDto'
+      summary: Get appointment by ID
+      tags:
+      - customer appointments
   /customer/healthFacility/appointment/fitnessCenter-appointments:
     get:
       consumes:
@@ -5267,6 +5918,30 @@ paths:
           schema:
             $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
       summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/hospital-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hospitals.GetHospitalAppointmentDetailResDto'
+      summary: Get appointment by ID
       tags:
       - customer appointments
   /customer/healthFacility/appointment/hospital-appointments:
@@ -5337,6 +6012,30 @@ paths:
       summary: Fetch appointments
       tags:
       - customer appointments
+  /customer/healthFacility/appointment/laboratory-appointment/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryAppointmentDetailResDto'
+      summary: Get appointment by ID
+      tags:
+      - customer appointments
   /customer/healthFacility/appointment/laboratory-appointments:
     get:
       consumes:
@@ -5405,6 +6104,40 @@ paths:
       summary: Fetch appointments
       tags:
       - customer appointments
+  /customer/healthFacility/appointment/past-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch past appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer ID
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.GetPastAppointmentsPaginationRes'
+      summary: Fetch past appointments
+      tags:
+      - customer appointments
   /customer/healthFacility/appointment/pharmacy-approved-drugs:
     get:
       consumes:
@@ -5437,6 +6170,30 @@ paths:
           schema:
             $ref: '#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes'
       summary: Fetch appointments
+      tags:
+      - customer appointments
+  /customer/healthFacility/appointment/pharmacy-drug/{id}:
+    get:
+      description: Get appointment by ID
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyDrugsDetailResDto'
+      summary: Get appointment by ID
       tags:
       - customer appointments
   /customer/healthFacility/appointment/pharmacy-drugs:
@@ -5903,6 +6660,33 @@ paths:
       summary: Add appointment
       tags:
       - customer doctorProfession
+  /customer/healthProfessional/add-doctor-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthProfessional/add-medicalLabScientist-appointment:
     post:
       consumes:
@@ -5935,6 +6719,33 @@ paths:
       summary: Add appointment
       tags:
       - customer medicalLabScientist
+  /customer/healthProfessional/add-medicalLabScientist-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthProfessional/add-nurse-appointment:
     post:
       consumes:
@@ -5967,6 +6778,33 @@ paths:
       summary: Add appointment
       tags:
       - customer nurse
+  /customer/healthProfessional/add-nurse-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthProfessional/add-physiotherapist-appointment:
     post:
       consumes:
@@ -5999,6 +6837,33 @@ paths:
       summary: Add appointment
       tags:
       - customer physiotherapist
+  /customer/healthProfessional/add-physiotherapist-review:
+    post:
+      consumes:
+      - application/json
+      description: Add Review for service
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/reviews.ReviewsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsResDto'
+      summary: Add Review for service
+      tags:
+      - customer reviews
   /customer/healthProfessional/appointment/doctor-appointment/{id}:
     get:
       description: Get appointment by ID
@@ -6203,7 +7068,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.GetNurseAppointmentDetailResDto'
+            $ref: '#/definitions/nurse.GetNurseAppointmentDetailResDto'
       summary: Get appointment by ID
       tags:
       - customer appointments
@@ -7179,30 +8044,6 @@ paths:
       summary: change appointment status
       tags:
       - provider appointments
-  /provider/fitnessCenter/appointment/fitnessCenter-appointment/{id}:
-    get:
-      description: Get appointment by ID
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: appointment ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentDetailResDto'
-      summary: Get appointment by ID
-      tags:
-      - customer appointments
   /provider/forgot-password:
     post:
       consumes:

@@ -182,9 +182,9 @@ func AddHospClinic(c *fiber.Ctx) error {
 		for j, sch := range doc.Schedule {
 			breakingSlots := generateBreakingSlots(sch.StartTime, sch.EndTime)
 			schedule[j] = subEntity.ScheduleUpdateServiceSubEntity{
-				StartTime: sch.StartTime,
-				EndTime:   sch.EndTime,
-				Days:      sch.Days,
+				StartTime:     sch.StartTime,
+				EndTime:       sch.EndTime,
+				Days:          sch.Days,
 				BreakingSlots: breakingSlots,
 			}
 		}
@@ -198,6 +198,10 @@ func AddHospClinic(c *fiber.Ctx) error {
 	}
 
 	hospClinicData := subEntity.HospClinicUpdateServiceSubEntity{
+		Review: subEntity.Review{
+			TotalReviews: 0,
+			AvgRating:    0,
+		},
 		Information: subEntity.InformationUpdateServiceSubEntity{
 			Name:           data.HospitalClinicReqDto.InformationName,
 			AdditionalText: data.HospitalClinicReqDto.AdditionalText,
@@ -218,10 +222,21 @@ func AddHospClinic(c *fiber.Ctx) error {
 		Doctor:        doctors,
 	}
 
+	currentCount, err := servicesColl.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.DoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to count documents in service collection: " + err.Error(),
+		})
+	}
+
+	profileID := fmt.Sprintf("%06d", currentCount+1)
+
 	hospClinic = subEntity.UpdateServiceSubEntity{
 		Role:                 "healthFacility",
 		FacilityOrProfession: "hospClinic",
 		ServiceStatus:        "pending",
+		ProfileId:            profileID,
 		HospClinic:           &hospClinicData,
 		UpdatedAt:            time.Now().UTC(),
 	}
@@ -261,7 +276,7 @@ func generateBreakingSlots(startTime, endTime string) []subEntity.BreakingSlots 
 	end, _ := time.Parse(layout, endTime)
 
 	if start.After(end) {
-		return nil 
+		return nil
 	}
 
 	var breakingSlots []subEntity.BreakingSlots

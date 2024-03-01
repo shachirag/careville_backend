@@ -99,19 +99,19 @@ func FetchHospitalAppointmentsWithPagination(c *fiber.Ctx) error {
 			toDate = appointment.HospitalClinic.AppointmentDetails.To
 		}
 
-		if appointment.HospitalClinic != nil {
-			appointmentRes := hospitals.GetHospitalAppointmentsRes{
-				Id:                   appointment.Id,
-				CustomrId:            appointment.Customer.ID,
-				FacilityOrProfession: appointment.FacilityOrProfession,
-				FirstName:            appointment.Customer.FirstName,
-				LastName:             appointment.Customer.LastName,
-				FromDate:             fromDate,
-				ToDate:               toDate,
-			}
-
-			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)
+		// if appointment.HospitalClinic != nil {
+		appointmentRes := hospitals.GetHospitalAppointmentsRes{
+			Id:                   appointment.Id,
+			CustomrId:            appointment.Customer.ID,
+			FacilityOrProfession: appointment.FacilityOrProfession,
+			FirstName:            appointment.Customer.FirstName,
+			LastName:             appointment.Customer.LastName,
+			FromDate:             fromDate,
+			ToDate:               toDate,
 		}
+
+		response.AppointmentRes = append(response.AppointmentRes, appointmentRes)
+		// }
 	}
 
 	if err != nil {

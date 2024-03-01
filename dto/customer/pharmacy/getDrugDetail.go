@@ -16,10 +16,19 @@ type PharmacyDrugsRes struct {
 	Id                   primitive.ObjectID  `json:"id" bson:"id"`
 	Customer             CustomerInformation `json:"customer" bson:"customer"`
 	FacilityOrProfession string              `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	PharmacyInformation  PharmacyInformation `json:"pharmacyInformation" bson:"pharmacyInformation"`
 	PricePaid            float64             `json:"pricePaid" bson:"pricePaid"`
 	ModeOfDelivery       string              `json:"modeOfDelivery" bson:"modeOfDelivery"`
 	NameAndQuantity      string              `json:"nameAndQuantity" bson:"nameAndQuantity"`
 	Prescription         []string            `json:"prescription" bson:"prescription"`
+}
+
+type PharmacyInformation struct {
+	Id        primitive.ObjectID `json:"id" bson:"id"`
+	Address   Address            `json:"address" bson:"address"`
+	Image     string             `json:"image" bson:"image"`
+	Name      string             `json:"name" bson:"name"`
+	AvgRating float64            `json:"avgRating" bson:"avgRating"`
 }
 
 type FamilyMember struct {

@@ -47,6 +47,7 @@ func FetchApprovedFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 		"role":                 "healthFacility",
 		"facilityOrProfession": "fitnessCenter",
 		"appointmentStatus":    "approved",
+		"paymentStatus":        "initiated",
 		"customer.id":          customerObjID,
 	}
 

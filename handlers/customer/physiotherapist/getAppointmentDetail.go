@@ -49,7 +49,7 @@ func GetPhysiotherpistAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
-		"facilityOrProfession":             1,
+		"facilityOrProfession":                      1,
 		"physiotherapist.appointmentDetails.from":   1,
 		"physiotherapist.appointmentDetails.to":     1,
 		"physiotherapist.pricePaid":                 1,
@@ -69,6 +69,26 @@ func GetPhysiotherpistAppointmentByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to fetch appointment data: " + err.Error(),
 		})
+	}
+
+	var physiotherapist1 entity.ServiceEntity
+	reviewFilter := bson.M{"_id": appointment.ServiceID}
+	projection = bson.M{
+		"physiotherapist.review.avgRating": 1,
+	}
+
+	reviewFindOptions := options.FindOne().SetProjection(projection)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.GetPhysiotherapistAppointmentDetailResDto{
+			Status:  false,
+			Message: "Failed to fetch average rating: " + err.Error(),
+		})
+	}
+
+	var avgRating float64
+	if physiotherapist1.Physiotherapist != nil {
+		avgRating = physiotherapist1.Physiotherapist.Review.AvgRating
 	}
 
 	var appointmentFromDate time.Time
@@ -106,6 +126,7 @@ func GetPhysiotherpistAppointmentByID(c *fiber.Ctx) error {
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
 			},
+			AvgRating:            avgRating,
 			FacilityOrProfession: appointment.FacilityOrProfession,
 			AppointmentDetails: physiotherapist.AppointmentDetails{
 				AppointmentFromDate: appointmentFromDate,

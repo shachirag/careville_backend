@@ -9,6 +9,7 @@ import (
 type UpdateServiceSubEntity struct {
 	Role                 string                                     `json:"role" bson:"role"`
 	FacilityOrProfession string                                     `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	ProfileId            string                                     `json:"profileId" bson:"profileId"`
 	HospClinic           *HospClinicUpdateServiceSubEntity          `json:"hospClinic" bson:"hospClinic,omitempty"`
 	FitnessCenter        *FitnessCenterUpdateServiceSubEntity       `json:"fitnessCenter" bson:"fitnessCenter,omitempty"`
 	Laboratory           *LaboratoryUpdateServiceSubEntity          `json:"laboratory" bson:"laboratory,omitempty"`
@@ -31,6 +32,7 @@ type ProviderUserUpdateServiceSubEntity struct {
 }
 
 type HospClinicUpdateServiceSubEntity struct {
+	Review        Review                            `json:"review" bson:"review"`
 	Information   InformationUpdateServiceSubEntity `json:"information" bson:"information"`
 	Doctor        []DoctorUpdateServiceSubEntity    `json:"doctor" bson:"doctor"`
 	OtherServices []string                          `json:"otherServices" bson:"otherServices"`
@@ -90,6 +92,7 @@ type DocumentsUpdateServiceSubEntity struct {
 }
 
 type FitnessCenterUpdateServiceSubEntity struct {
+	Review             Review                                     `json:"review" bson:"review"`
 	Information        InformationUpdateServiceSubEntity          `json:"information" bson:"information"`
 	Trainers           []TrainersUpdateServiceSubEntity           `json:"trainers" bson:"trainers"`
 	AdditionalServices []AdditionalServicesUpdateServiceSubEntity `json:"additionalServices" bson:"additionalServices"`
@@ -119,6 +122,7 @@ type AdditionalServicesUpdateServiceSubEntity struct {
 }
 
 type LaboratoryUpdateServiceSubEntity struct {
+	Review         Review                                 `json:"review" bson:"review"`
 	Information    InformationUpdateServiceSubEntity      `json:"information" bson:"information"`
 	Investigations []InvestigationsUpdateServiceSubEntity `json:"investigations" bson:"investigations"`
 	Documents      DocumentsUpdateServiceSubEntity        `json:"documents" bson:"documents"`
@@ -133,12 +137,14 @@ type InvestigationsUpdateServiceSubEntity struct {
 }
 
 type PharmacyUpdateServiceSubEntity struct {
+	Review             Review                                     `json:"review" bson:"review"`
 	Information        InformationUpdateServiceSubEntity          `json:"information" bson:"information"`
 	AdditionalServices []AdditionalServicesUpdateServiceSubEntity `json:"additionalServices" bson:"additionalServices"`
 	Documents          DocumentsUpdateServiceSubEntity            `json:"documents" bson:"documents"`
 }
 
 type DoctorProfessionUpdateServiceSubEntity struct {
+	Review                     Review                                           `json:"review" bson:"review"`
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
 	AdditionalServices         AdditionalServiceUpdateServiceSubEntity          `json:"additionalServices" bson:"additionalServices"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
@@ -182,6 +188,7 @@ type DoctorSlotsUpdateServiceSubEntity struct {
 }
 
 type MedicalLabScientistUpdateServiceSubEntity struct {
+	Review                     Review                                           `json:"review" bson:"review"`
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetailUpdateServiceSubEntity         `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
@@ -195,6 +202,7 @@ type ProfessionalDetailUpdateServiceSubEntity struct {
 }
 
 type NurseUpdateServiceSubEntity struct {
+	Review                     Review                                           `json:"review" bson:"review"`
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetailsUpdateServiceSubEntity        `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
@@ -214,9 +222,15 @@ type ServiceAndScheduleUpdateServiceSubEntity struct {
 }
 
 type PhysiotherapistUpdateServiceSubEntity struct {
+	Review                     Review                                           `json:"review" bson:"review"`
 	Information                InformationUpdateServiceSubEntity                `json:"information" bson:"information"`
 	ProfessionalDetails        ProfessionalDetailsUpdateServiceSubEntity        `json:"professionalDetails" bson:"professionalDetails"`
 	PersonalIdentificationDocs PersonalIdentificationDocsUpdateServiceSubEntity `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocsUpdateServiceSubEntity    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	ServiceAndSchedule         []ServiceAndScheduleUpdateServiceSubEntity       `json:"serviceAndSchedule" bson:"serviceAndSchedule"`
+}
+
+type Review struct {
+	TotalReviews int32   `json:"totalReviews" bson:"totalReviews"`
+	AvgRating    float64 `json:"avgRating" bson:"avgRating"`
 }

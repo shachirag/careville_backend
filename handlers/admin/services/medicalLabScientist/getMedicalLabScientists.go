@@ -54,6 +54,7 @@ func FetchMedicalLabScientistsWithPagination(c *fiber.Ctx) error {
 			"number":   1,
 		},
 		"medicalLabScientist.professionalDetails.department": 1,
+		"profileId": 1,
 	}
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
@@ -106,7 +107,7 @@ func FetchMedicalLabScientistsWithPagination(c *fiber.Ctx) error {
 				Number:   service.User.PhoneNumber.Number,
 			},
 			Department: department,
-			// ProfileId: service.ProfileId,
+			ProfileId:  service.ProfileId,
 		}
 
 		response.MedicalLabScientistRes = append(response.MedicalLabScientistRes, medicalLabScientistRes)

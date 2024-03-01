@@ -47,6 +47,7 @@ func FetchApprovedMedicalLabScientistAppointmentsWithPagination(c *fiber.Ctx) er
 		"role":                 "healthProfessional",
 		"facilityOrProfession": "medicalLabScientist",
 		"appointmentStatus":    "approved",
+		"paymentStatus":        "initiated",
 		"customer.id":          customerObjID,
 	}
 

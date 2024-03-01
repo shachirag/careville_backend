@@ -84,20 +84,25 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 		})
 	}
 
-	// var fitnessCeter entity.ServiceEntity
-	// reviewFilter := bson.M{"_id": appointment.ServiceID}
-	// err = serviceColl.FindOne(ctx, reviewFilter, findOptions).Decode(&appointment)
-	// if err != nil {
-	// 	return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterAppointmentDetailResDto{
-	// 		Status:  false,
-	// 		Message: "Failed to fetch average rating: " + err.Error(),
-	// 	})
-	// }
+	var fitnessCeter1 entity.ServiceEntity
+	reviewFilter := bson.M{"_id": appointment.ServiceID}
+	projection = bson.M{
+		"fitnessCenter.review.avgRating": 1,
+	}
+
+	reviewFindOptions := options.FindOne().SetProjection(projection)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterAppointmentDetailResDto{
+			Status:  false,
+			Message: "Failed to fetch average rating: " + err.Error(),
+		})
+	}
 
 	var avgRating float64
-	// if fitnessCeter.FitnessCenter != nil {
-	// 	avgRating = fitnessCeter.FitnessCenter.Review.AvgRating
-	// }
+	if fitnessCeter1.FitnessCenter != nil {
+		avgRating = fitnessCeter1.FitnessCenter.Review.AvgRating
+	}
 
 	var trainerId primitive.ObjectID
 	var trainerName string

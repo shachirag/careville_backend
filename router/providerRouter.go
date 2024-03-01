@@ -129,7 +129,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 
 	appointment := provider.Group("/appointment")
 	appointment.Use(jwt, middlewares.ProviderData)
-
+	appointment.Put("/change-appointment-status", commonApi.ChangeAppointmentStatus)
 	appointmentServices := providerServices.Group("/appointment")
 	appointmentServices.Use(jwt, middlewares.ProviderData)
 	appointmentServices.Get("/doctor-appointments", doctorProfession.FetchDoctorAppointmentsWithPagination)
@@ -156,5 +156,4 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	appointmentServices.Get("/physiotherapist-appointments", physiotherapist.FetchPhysiotherapistAppointmentsWithPagination)
 	appointmentServices.Get("/physiotherapist-approved-appointments", physiotherapist.FetchPhysiotherapistApprovedAppointmentsWithPagination)
 	appointmentServices.Get("/physiotherapist-appointment/:id", physiotherapist.GetPhysiotherpistAppointmentByID)
-	appointmentServices.Get("/change-appointment-status", commonApi.ChangeAppointmentStatus)
 }

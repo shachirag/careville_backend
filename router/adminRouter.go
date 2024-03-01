@@ -4,14 +4,15 @@ import (
 	"careville_backend/handlers"
 	adminAuth "careville_backend/handlers/admin/adminAuthorization"
 	dashboard "careville_backend/handlers/admin/dashboard"
-	fitnessCenter "careville_backend/handlers/admin/services/fitnessCenter"
-	laboratory "careville_backend/handlers/admin/services/laboratory"
-	hospitals "careville_backend/handlers/admin/services/hospitals"
-	pharmacy "careville_backend/handlers/admin/services/pharmacy"
 	doctorProfession "careville_backend/handlers/admin/services/doctorProfession"
-	nurse "careville_backend/handlers/admin/services/nurse"
-	physiotherapist "careville_backend/handlers/admin/services/physiotherapist"
+	fitnessCenter "careville_backend/handlers/admin/services/fitnessCenter"
+	hospitals "careville_backend/handlers/admin/services/hospitals"
+	laboratory "careville_backend/handlers/admin/services/laboratory"
 	medicalLabScientist "careville_backend/handlers/admin/services/medicalLabScientist"
+	nurse "careville_backend/handlers/admin/services/nurse"
+	request "careville_backend/handlers/admin/requests"
+	pharmacy "careville_backend/handlers/admin/services/pharmacy"
+	physiotherapist "careville_backend/handlers/admin/services/physiotherapist"
 	"careville_backend/middlewares"
 	"os"
 
@@ -36,6 +37,7 @@ func AdminSetupsRoutes(app *fiber.App) {
 	admin.Post("/forgot-password", adminAuth.ForgotPassword)
 	admin.Post("/verify-otp", adminAuth.VerifyOtp)
 	admin.Put("/reset-password", adminAuth.ResetPasswordAfterOtp)
+	admin.Post("/resend-otp", adminAuth.ResendOTP)
 
 	adminProfile := admin.Group("/profile")
 	adminProfile.Use(jwt, middlewares.AdminData)
@@ -47,6 +49,9 @@ func AdminSetupsRoutes(app *fiber.App) {
 	// dashboard
 	adminProfile.Get("/total-counts", jwt, dashboard.CountAll)
 
+	requests := admin.Group("/requests")
+	// requests.Use(jwt, middlewares.AdminData)
+	requests.Get("/get-requests", request.FetchRequestsWithPagination)
 	// services
 	healthFacility := admin.Group("/healthFacility")
 	healthFacility.Use(jwt, middlewares.AdminData)

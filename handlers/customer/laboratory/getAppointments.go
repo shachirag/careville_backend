@@ -47,6 +47,7 @@ func FetchLaboratoryAppointmentsWithPagination(c *fiber.Ctx) error {
 		"role":                 "healthFacility",
 		"facilityOrProfession": "laboratory",
 		"appointmentStatus":    "pending",
+		"paymentStatus":        "initiated",
 		"customer.id":          customerObjID,
 	}
 

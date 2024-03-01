@@ -53,6 +53,7 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 			"dialCode": 1,
 			"number":   1,
 		},
+		"profileId": 1,
 	}
 	findOptions := options.Find().SetProjection(projection).SetSkip(int64(skip)).SetLimit(int64(limit))
 
@@ -98,7 +99,7 @@ func FetchNurseWithPagination(c *fiber.Ctx) error {
 				DialCode: service.User.PhoneNumber.DialCode,
 				Number:   service.User.PhoneNumber.Number,
 			},
-			// ProfileId: service.ProfileId,
+			ProfileId: service.ProfileId,
 		}
 
 		response.NurseRes = append(response.NurseRes, nurseRes)

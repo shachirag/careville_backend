@@ -51,7 +51,7 @@ func GetHospitalAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
-		"facilityOrProfession":               1,
+		"facilityOrProfession":         1,
 		"hospClinic.information.name":  1,
 		"hospClinic.information.image": 1,
 		"hospClinic.information.address": bson.M{
@@ -80,25 +80,25 @@ func GetHospitalAppointmentByID(c *fiber.Ctx) error {
 		})
 	}
 
-	// var hospital entity.ServiceEntity
-	// reviewFilter := bson.M{"_id": appointment.ServiceID}
-	// projection = bson.M{
-	// 	"hospClinic.review.avgRating": 1,
-	// }
+	var hospital entity.ServiceEntity
+	reviewFilter := bson.M{"_id": appointment.ServiceID}
+	projection = bson.M{
+		"hospClinic.review.avgRating": 1,
+	}
 
-	// reviewFindOptions := options.FindOne().SetProjection(projection)
-	// err = serviceColl.FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
-	// if err != nil {
-	// 	return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentDetailResDto{
-	// 		Status:  false,
-	// 		Message: "Failed to fetch average rating: " + err.Error(),
-	// 	})
-	// }
+	reviewFindOptions := options.FindOne().SetProjection(projection)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentDetailResDto{
+			Status:  false,
+			Message: "Failed to fetch average rating: " + err.Error(),
+		})
+	}
 
 	var avgRating float64
-	// if hospital.HospClinic != nil && hospital.HospClinic.Review != nil {
-	// 	avgRating = hospital.HospClinic.Review.AvgRating
-	// }
+	if hospital.HospClinic != nil {
+		avgRating = hospital.HospClinic.Review.AvgRating
+	}
 
 	var appointmentFromDate time.Time
 	var appointmentToDate time.Time

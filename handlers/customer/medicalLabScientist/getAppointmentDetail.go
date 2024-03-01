@@ -71,6 +71,26 @@ func GetMedicalLabScientistAppointmentByID(c *fiber.Ctx) error {
 		})
 	}
 
+	var medicalLabScientist1 entity.ServiceEntity
+	reviewFilter := bson.M{"_id": appointment.ServiceID}
+	projection = bson.M{
+		"medicalLabScientist.review.avgRating": 1,
+	}
+
+	reviewFindOptions := options.FindOne().SetProjection(projection)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.GetMedicalLabScientistAppointmentDetailResDto{
+			Status:  false,
+			Message: "Failed to fetch average rating: " + err.Error(),
+		})
+	}
+
+	var avgRating float64
+	if medicalLabScientist1.MedicalLabScientist != nil {
+		avgRating = medicalLabScientist1.MedicalLabScientist.Review.AvgRating
+	}
+
 	var appointmentFromDate time.Time
 	var appointmentToDate time.Time
 	var familiyMemberId primitive.ObjectID
@@ -106,6 +126,7 @@ func GetMedicalLabScientistAppointmentByID(c *fiber.Ctx) error {
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
 			},
+			AvgRating:            avgRating,
 			FacilityOrProfession: appointment.FacilityOrProfession,
 			AppointmentDetails: medicalLabScientist.AppointmentDetails{
 				AppointmentFromDate: appointmentFromDate,

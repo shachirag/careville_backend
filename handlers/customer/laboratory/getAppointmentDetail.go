@@ -83,6 +83,26 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 		})
 	}
 
+	var laboratory1 entity.ServiceEntity
+	reviewFilter := bson.M{"_id": appointment.ServiceID}
+	projection = bson.M{
+		"laboratory.review.avgRating": 1,
+	}
+
+	reviewFindOptions := options.FindOne().SetProjection(projection)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.GetLaboratoryAppointmentDetailResDto{
+			Status:  false,
+			Message: "Failed to fetch average rating: " + err.Error(),
+		})
+	}
+
+	var avgRating float64
+	if laboratory1.Laboratory != nil {
+		avgRating = laboratory1.Laboratory.Review.AvgRating
+	}
+
 	var appointmentDate time.Time
 	var familiyMemberId primitive.ObjectID
 	var familiyMemberRelationShip string
@@ -133,10 +153,11 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 				},
 			},
 			LaboratoryInformation: laboratory.LaboratoryInformation{
-				Id:      appointment.ServiceID,
-				Name:    laboratoryName,
-				Image:   laboratoryImage,
-				Address: laboratory.Address(laboratoryAddress),
+				Id:        appointment.ServiceID,
+				Name:      laboratoryName,
+				Image:     laboratoryImage,
+				Address:   laboratory.Address(laboratoryAddress),
+				AvgRating: avgRating,
 			},
 			FacilityOrProfession: appointment.FacilityOrProfession,
 			AppointmentDetails: laboratory.AppointmentData{

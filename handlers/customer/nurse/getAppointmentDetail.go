@@ -2,7 +2,7 @@ package nurse
 
 import (
 	"careville_backend/database"
-	"careville_backend/dto/provider/services"
+	nurse "careville_backend/dto/customer/nurse"
 	"careville_backend/entity"
 	"time"
 
@@ -20,7 +20,7 @@ import (
 //
 // @Param id path string true "appointment ID"
 // @Produce json
-// @Success 200 {object} services.GetNurseAppointmentDetailResDto
+// @Success 200 {object} nurse.GetNurseAppointmentDetailResDto
 // @Router /customer/healthProfessional/appointment/nurse-appointment/{id} [get]
 func GetNurseAppointmentByID(c *fiber.Ctx) error {
 	var (
@@ -30,7 +30,7 @@ func GetNurseAppointmentByID(c *fiber.Ctx) error {
 	idParam := c.Params("id")
 	appointmentID, err := primitive.ObjectIDFromHex(idParam)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(services.GetNurseAppointmentDetailResDto{
+		return c.Status(fiber.StatusBadRequest).JSON(nurse.GetNurseAppointmentDetailResDto{
 			Status:  false,
 			Message: "Invalid appointment ID",
 		})
@@ -65,10 +65,30 @@ func GetNurseAppointmentByID(c *fiber.Ctx) error {
 	var appointment entity.AppointmentEntity
 	err = appointmentColl.FindOne(ctx, filter, findOptions).Decode(&appointment)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.GetNurseAppointmentDetailResDto{
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseAppointmentDetailResDto{
 			Status:  false,
 			Message: "Failed to fetch appointment data: " + err.Error(),
 		})
+	}
+
+	var nurse1 entity.ServiceEntity
+	reviewFilter := bson.M{"_id": appointment.ServiceID}
+	projection = bson.M{
+		"nurse.review.avgRating": 1,
+	}
+
+	reviewFindOptions := options.FindOne().SetProjection(projection)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseAppointmentDetailResDto{
+			Status:  false,
+			Message: "Failed to fetch average rating: " + err.Error(),
+		})
+	}
+
+	var avgRating float64
+	if nurse1.Nurse != nil {
+		avgRating = nurse1.Nurse.Review.AvgRating
 	}
 
 	var appointmentFromDate time.Time
@@ -90,28 +110,29 @@ func GetNurseAppointmentByID(c *fiber.Ctx) error {
 		pricePaid = appointment.Nurse.PricePaid
 	}
 
-	expertiseRes := services.GetNurseAppointmentDetailResDto{
+	expertiseRes := nurse.GetNurseAppointmentDetailResDto{
 		Status:  true,
 		Message: "Data fetched successfully",
-		Data: services.NurseAppointmentRes{
+		Data: nurse.NurseAppointmentRes{
 			Id: appointment.Id,
-			Customer: services.CustomerInformation{
+			Customer: nurse.CustomerInformation{
 				Id:        appointment.Customer.ID,
 				FirstName: appointment.Customer.FirstName,
 				LastName:  appointment.Customer.LastName,
 				Image:     appointment.Customer.Image,
-				PhoneNumber: services.PhoneNumber{
+				PhoneNumber: nurse.PhoneNumber{
 					DialCode:    appointment.Customer.PhoneNumber.DialCode,
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
 			},
+			AvgRating:            avgRating,
 			FacilityOrProfession: appointment.FacilityOrProfession,
-			AppointmentDetails: services.AppointmentDetails{
+			AppointmentDetails: nurse.AppointmentDetails{
 				AppointmentFromDate: appointmentFromDate,
 				AppointmentToDate:   appointmentToDate,
 			},
-			FamilyMember: services.FamilyMember{
+			FamilyMember: nurse.FamilyMember{
 				Id:           familiyMemberId,
 				Name:         familiyMemberName,
 				Age:          familiyMemberAge,

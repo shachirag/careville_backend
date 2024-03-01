@@ -49,6 +49,7 @@ func FetchHospitalsWithPagination(c *fiber.Ctx) error {
 			"dialCode": 1,
 			"number":   1,
 		},
+		"profileId": 1,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
@@ -98,7 +99,7 @@ func FetchHospitalsWithPagination(c *fiber.Ctx) error {
 				DialCode: service.User.PhoneNumber.DialCode,
 				Number:   service.User.PhoneNumber.Number,
 			},
-			// ProfileId: service.ProfileId,
+			ProfileId: service.ProfileId,
 		}
 
 		response.HospitalRes = append(response.HospitalRes, hospitalRes)

@@ -19,6 +19,7 @@ type DoctorProfessionAppointmentRes struct {
 	FacilityOrProfession string              `json:"facilityOrProfession" bson:"facilityOrProfession"`
 	PricePaid            float64             `json:"pricePaid" bson:"pricePaid"`
 	FamilyMember         FamilyMember        `json:"familyMember"`
+	AvgRating            float64             `json:"avgRating"`
 }
 
 type FamilyMember struct {

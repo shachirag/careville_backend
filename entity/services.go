@@ -11,6 +11,7 @@ type ServiceEntity struct {
 	Role                 string               `json:"role" bson:"role"`
 	User                 ProviderUser         `json:"user" bson:"user"`
 	FacilityOrProfession string               `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	ProfileId            string               `json:"profileId" bson:"profileId"`
 	HospClinic           *HospClinic          `json:"hospClinic" bson:"hospClinic,omitempty"`
 	FitnessCenter        *FitnessCenter       `json:"fitnessCenter" bson:"fitnessCenter,omitempty"`
 	Laboratory           *Laboratory          `json:"laboratory" bson:"laboratory,omitempty"`

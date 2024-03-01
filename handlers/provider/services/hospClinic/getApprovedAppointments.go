@@ -39,7 +39,7 @@ func FetchHospitalApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "hospClinic",
-		"paymentStatus":        "success",
+		"paymentStatus":        "initiated",
 		"appointmentStatus":    "approved",
 		"serviceId":            providerData.ProviderId,
 	}
@@ -99,7 +99,7 @@ func FetchHospitalApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 			toDate = appointment.HospitalClinic.AppointmentDetails.To
 		}
 
-		if appointment.HospitalClinic != nil {
+		// if appointment.HospitalClinic != nil {
 			appointmentRes := hospitals.GetHospitalAppointmentsRes{
 				Id:                   appointment.Id,
 				CustomrId:            appointment.Customer.ID,
@@ -112,7 +112,7 @@ func FetchHospitalApprovedAppointmentsWithPagination(c *fiber.Ctx) error {
 
 			response.AppointmentRes = append(response.AppointmentRes, appointmentRes)
 		}
-	}
+	// }
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalAppointmentsPaginationRes{
