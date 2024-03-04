@@ -96,19 +96,48 @@ func UpdateCustomer(c *fiber.Ctx) error {
 	}}
 
 	opts := options.Update().SetUpsert(true)
-	// Execute the update operation
-	updateRes, err := customerColl.UpdateOne(ctx, filter, update, opts)
+
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(customerAuth.UpdateCustomerResDto{
 			Status:  false,
-			Message: "Failed to update customer data in MongoDB: " + err.Error(),
+			Message: "Failed to start session",
 		})
 	}
+	defer session.EndSession(ctx)
 
-	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(customerAuth.UpdateCustomerResDto{
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		updateRes, err := customerColl.UpdateOne(sessCtx, filter, update, opts)
+		if err != nil {
+			return nil, err
+		}
+
+		if updateRes.MatchedCount == 0 {
+			return nil, mongo.ErrNoDocuments
+		}
+
+		appointmentUpdate := bson.M{"$set": bson.M{
+			"customer.firstName": data.FirstName,
+			"customer.lastName":  data.LastName,
+			"customer.phoneNumber": bson.M{
+				"dialCode":    data.DialCode,
+				"number":      data.PhoneNumber,
+				"countryCode": data.CountryCode,
+			},
+		}}
+
+		_, err = database.GetCollection("appointment").UpdateMany(sessCtx, bson.M{"customer.id": customerData.CustomerId}, appointmentUpdate)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(customerAuth.UpdateCustomerResDto{
 			Status:  false,
-			Message: "customer not found",
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

@@ -65,26 +65,49 @@ func UpdateDoctorProfessionDetails(c *fiber.Ctx) error {
 		update = bson.M{"$set": bson.M{
 			"doctor.additionalServices.qualifications": data.Qualifications,
 			"doctor.additionalServices.speciality":     data.Speciality,
-			"doctor.schedule.consultationFees":           data.ConsultingFees,
+			"doctor.schedule.consultationFees":         data.ConsultingFees,
 			"updatedAt":                                time.Now().UTC(),
 		},
 		}
 	}
 
 	opts := options.Update().SetUpsert(true)
-	// Execute the update operation
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update, opts)
+
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorProfessionProfessionalInfoResDto{
 			Status:  false,
-			Message: "Failed to update provider data in MongoDB: " + err.Error(),
+			Message: "Failed to start session",
 		})
 	}
+	defer session.EndSession(ctx)
 
-	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.UpdateDoctorProfessionProfessionalInfoResDto{
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		updateRes, err := serviceColl.UpdateOne(sessCtx, filter, update, opts)
+		if err != nil {
+			return nil, err
+		}
+
+		if updateRes.MatchedCount == 0 {
+			return nil, mongo.ErrNoDocuments
+		}
+
+		appointmentUpdate := bson.M{"$set": bson.M{
+			"doctor.information.speciality": data.Speciality,
+		}}
+
+		_, err = database.GetCollection("appointment").UpdateMany(sessCtx, bson.M{"serviceId": providerData.ProviderId}, appointmentUpdate)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateDoctorProfessionProfessionalInfoResDto{
 			Status:  false,
-			Message: "provider not found",
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

@@ -100,19 +100,48 @@ func UpdatePhysiotherapistServiceInfo(c *fiber.Ctx) error {
 		update["$set"].(bson.M)["physiotherapist.serviceAndSchedule.$.slots"] = append(update["$set"].(bson.M)["physiotherapist.serviceAndSchedule.$.slots"].(bson.A), slotUpdate)
 	}
 
-	// Execute the update operation
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdatePhysiotherapistServiceResDto{
 			Status:  false,
-			Message: "Failed to update service data in MongoDB: " + err.Error(),
+			Message: "Failed to start session",
 		})
 	}
+	defer session.EndSession(ctx)
 
-	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.UpdatePhysiotherapistServiceResDto{
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		updateRes, err := serviceColl.UpdateOne(sessCtx, filter, update)
+		if err != nil {
+			return nil, err
+		}
+
+		if updateRes.MatchedCount == 0 {
+			return nil, mongo.ErrNoDocuments
+		}
+
+		appointmentUpdate := bson.M{
+			"$set": bson.M{
+				"physiotherapist.service.serviceFees": data.ServiceFees,
+				"physiotherapist.service.name":        data.Name,
+			}}
+
+		filter := bson.M{
+			"serviceId":                      providerData.ProviderId,
+			"physiotherapist.service.id": serviceObjID,
+		}
+
+		_, err = database.GetCollection("appointment").UpdateMany(sessCtx, filter, appointmentUpdate)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdatePhysiotherapistServiceResDto{
 			Status:  false,
-			Message: "service not found",
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

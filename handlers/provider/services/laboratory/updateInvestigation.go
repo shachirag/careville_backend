@@ -57,7 +57,7 @@ func UpdateinvestigationInfo(c *fiber.Ctx) error {
 
 	filter := bson.M{
 		"_id": providerData.ProviderId,
-		"laboratory.investigations": bson.M{
+		"laboratory.investigation": bson.M{
 			"$elemMatch": bson.M{
 				"id": investigationObjID,
 			},
@@ -88,19 +88,50 @@ func UpdateinvestigationInfo(c *fiber.Ctx) error {
 		},
 	}
 
-	// Execute the update operation
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update)
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateInvestigationResDto{
 			Status:  false,
-			Message: "Failed to update investigation data in MongoDB: " + err.Error(),
+			Message: "Failed to start session",
 		})
 	}
+	defer session.EndSession(ctx)
 
-	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(services.UpdateInvestigationResDto{
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		updateRes, err := serviceColl.UpdateOne(sessCtx, filter, update)
+		if err != nil {
+			return nil, err
+		}
+
+		if updateRes.MatchedCount == 0 {
+			return nil, mongo.ErrNoDocuments
+		}
+
+		appointmentUpdate := bson.M{
+			"$set": bson.M{
+				"laboratory.investigation.type":         data.Type,
+				"laboratory.investigation.name":         data.Name,
+				"laboratory.investigations.information": data.Information,
+				"laboratory.investigations.price":       data.Price,
+			}}
+
+		filter := bson.M{
+			"serviceId":                   providerData.ProviderId,
+			"laboratory.investigation.id": investigationObjID,
+		}
+
+		_, err = database.GetCollection("appointment").UpdateMany(sessCtx, filter, appointmentUpdate)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(services.UpdateInvestigationResDto{
 			Status:  false,
-			Message: "Investigation not found",
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

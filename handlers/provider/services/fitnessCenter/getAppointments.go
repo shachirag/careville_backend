@@ -25,7 +25,7 @@ import (
 // @Param perPage query int false "Limit of products to fetch is 15"
 // @Produce json
 // @Success 200 {object} fitnessCenter.GetFitnessCenterAppointmentsPaginationRes
-// @Router /customer/services/appointment/fitnessCenter-appointments [get]
+// @Router /provider/services/appointment/fitnessCenter-appointments [get]
 func FetchFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
@@ -50,7 +50,7 @@ func FetchFitnessCenterAppointmentsWithPagination(c *fiber.Ctx) error {
 		"customer.lastName":              1,
 		"facilityOrProfession":           1,
 		"fitnessCenter.trainer.category": 1,
-		"fitnessCenter.trainer.invoice.totalAmountPaid": 1,
+		"fitnessCenter.invoice.totalAmountPaid": 1,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})

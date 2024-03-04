@@ -107,7 +107,7 @@ type TrainerAppointmentEntity struct {
 }
 
 type HospitalAppointmentEntity struct {
-	Information        Information                         `json:"information" bson:"information"`
+	Information        NurseInformation                    `json:"information" bson:"information"`
 	Doctor             DoctorAppointmentEntity             `json:"doctor" bson:"doctor"`
 	AppointmentDetails AppointmentDetailsAppointmentEntity `json:"appointmentDetails" bson:"appointmentDetails"`
 	FamilyMember       FamilyMemberAppointmentEntity       `json:"familyMember" bson:"familyMember"`

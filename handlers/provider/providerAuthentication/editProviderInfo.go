@@ -288,21 +288,120 @@ func UpdateProvider(c *fiber.Ctx) error {
 		}
 	}
 
-	// Default update operation to set the 'updatedAt' field to the current time
-	// update["$set"] = bson.M{"updatedAt": time.Now().UTC()}
 	opts := options.Update().SetUpsert(true)
-	updateRes, err := serviceColl.UpdateOne(ctx, filter, update, opts)
+	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
 			Status:  false,
-			Message: "Failed to update provider data in MongoDB: " + err.Error(),
+			Message: "Failed to start session",
 		})
 	}
+	defer session.EndSession(ctx)
 
-	if updateRes.MatchedCount == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(providerAuth.UpdateProviderResDto{
+	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
+		updateRes, err := serviceColl.UpdateOne(sessCtx, filter, update, opts)
+		if err != nil {
+			return nil, err
+		}
+
+		if updateRes.MatchedCount == 0 {
+			return nil, mongo.ErrNoDocuments
+		}
+
+		filter := bson.M{"serviceId": providerData.ProviderId}
+
+		var appointment entity.AppointmentEntity
+		err = database.GetCollection("appointment").FindOne(ctx, filter).Decode(&appointment)
+		if err != nil {
+			return nil, err
+		}
+
+		var appointmentUpdate bson.M
+		switch appointment.Role {
+		case "healthFacility":
+			switch appointment.FacilityOrProfession {
+			case "hospital":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"hospital.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			case "laboratory":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"laboratory.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			case "fitnessCenter":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"fitnessCenter.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			case "pharmacy":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"pharmacy.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			}
+		case "healthProfessional":
+			switch appointment.FacilityOrProfession {
+			case "doctor":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"doctor.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			case "physiotherapist":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"physiotherapist.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			case "medicalLabScientist":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"medicalLabScientist.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			case "nurse":
+				appointmentUpdate = bson.M{"$set": bson.M{
+					"nurse.information.address": providerAuth.Address{
+						Coordinates: []float64{longitude, latitude},
+						Type:        "Point",
+						Add:         data.Address,
+					},
+				}}
+			}
+		}
+
+		_, err = database.GetCollection("appointment").UpdateMany(sessCtx, filter, appointmentUpdate)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+
+	_, err = session.WithTransaction(ctx, callback)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.UpdateProviderResDto{
 			Status:  false,
-			Message: "Provider not found",
+			Message: "Failed to update appointment data: " + err.Error(),
 		})
 	}
 

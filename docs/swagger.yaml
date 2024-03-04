@@ -332,19 +332,6 @@ definitions:
       number:
         type: string
     type: object
-  careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes:
-    properties:
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-      nextAvailable:
-        $ref: '#/definitions/medicalLabScientist.NextAvailable'
-      serviceType:
-        type: string
-    type: object
   careville_backend_dto_customer_medicalLabScientist.PhoneNumber:
     properties:
       countryCode:
@@ -2050,17 +2037,6 @@ definitions:
       status:
         type: boolean
     type: object
-  medicalLabScientist.GetMedicalLabScientistResponseDto:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes'
-        type: array
-      message:
-        type: string
-      status:
-        type: boolean
-    type: object
   medicalLabScientist.MedicalLabScientistAppointmentReqDto:
     properties:
       familyMemberId:
@@ -2170,13 +2146,6 @@ definitions:
         type: string
       pricePaid:
         type: number
-    type: object
-  medicalLabScientist.NextAvailable:
-    properties:
-      lastTime:
-        type: string
-      startTime:
-        type: string
     type: object
   medicalLabScientist.Schedule:
     properties:
@@ -7420,37 +7389,6 @@ paths:
       summary: Get medicalLabScientist by ID
       tags:
       - customer medicalLabScientist
-  /customer/healthProfessional/get-medicalLabScientists:
-    get:
-      description: Get medicalLabScientist
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Filter medicalLabScientist by search
-        in: query
-        name: search
-        type: string
-      - description: Longitude for memories sorting (required for distance sorting)
-        in: query
-        name: long
-        type: number
-      - description: Latitude for memories sorting (required for distance sorting)
-        in: query
-        name: lat
-        type: number
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistResponseDto'
-      summary: Get medicalLabScientist
-      tags:
-      - customer medicalLabScientist
   /customer/healthProfessional/get-nurse-available-slots:
     get:
       consumes:
@@ -7834,64 +7772,6 @@ paths:
       summary: Reset customer Password after OTP Verification
       tags:
       - customer authorization
-  /customer/services/appointment/fitnessCenter-appointments:
-    get:
-      consumes:
-      - application/json
-      description: Fetch appointments
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Page no. to fetch the products for 1
-        in: query
-        name: page
-        type: integer
-      - description: Limit of products to fetch is 15
-        in: query
-        name: perPage
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
-      summary: Fetch appointments
-      tags:
-      - provider appointments
-  /customer/services/appointment/fitnessCenter-approved-appointments:
-    get:
-      consumes:
-      - application/json
-      description: Fetch appointments
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Page no. to fetch the products for 1
-        in: query
-        name: page
-        type: integer
-      - description: Limit of products to fetch is 15
-        in: query
-        name: perPage
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
-      summary: Fetch appointments
-      tags:
-      - provider appointments
   /customer/services/appointment/medicalLabScientist-appointments:
     get:
       consumes:
@@ -8938,6 +8818,64 @@ paths:
           schema:
             $ref: '#/definitions/services.GetFitnessCenterAppointmentDetailResDto'
       summary: Get appointment by ID
+      tags:
+      - provider appointments
+  /provider/services/appointment/fitnessCenter-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - provider appointments
+  /provider/services/appointment/fitnessCenter-approved-appointments:
+    get:
+      consumes:
+      - application/json
+      description: Fetch appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes'
+      summary: Fetch appointments
       tags:
       - provider appointments
   /provider/services/appointment/hospital-appointment/{id}:

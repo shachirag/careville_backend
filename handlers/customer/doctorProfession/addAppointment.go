@@ -275,14 +275,6 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		UpdatedAt:         time.Now().UTC(),
 	}
 
-	_, err = appointmentColl.InsertOne(ctx, appointment)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-			Status:  false,
-			Message: "Failed to insert doctor appointment data into MongoDB: " + err.Error(),
-		})
-	}
-
 	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{

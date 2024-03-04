@@ -3916,53 +3916,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/healthProfessional/get-medicalLabScientists": {
-            "get": {
-                "description": "Get medicalLabScientist",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customer medicalLabScientist"
-                ],
-                "summary": "Get medicalLabScientist",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter medicalLabScientist by search",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "description": "Longitude for memories sorting (required for distance sorting)",
-                        "name": "long",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "description": "Latitude for memories sorting (required for distance sorting)",
-                        "name": "lat",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/medicalLabScientist.GetMedicalLabScientistResponseDto"
-                        }
-                    }
-                }
-            }
-        },
         "/customer/healthProfessional/get-nurse-available-slots": {
             "get": {
                 "description": "Get all investigations",
@@ -4541,94 +4494,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/customerAuth.CustomerPasswordResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/services/appointment/fitnessCenter-appointments": {
-            "get": {
-                "description": "Fetch appointments",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider appointments"
-                ],
-                "summary": "Fetch appointments",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/customer/services/appointment/fitnessCenter-approved-appointments": {
-            "get": {
-                "description": "Fetch appointments",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "provider appointments"
-                ],
-                "summary": "Fetch appointments",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page no. to fetch the products for 1",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of products to fetch is 15",
-                        "name": "perPage",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes"
                         }
                     }
                 }
@@ -6223,6 +6088,94 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.GetFitnessCenterAppointmentDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/appointment/fitnessCenter-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/appointment/fitnessCenter-approved-appointments": {
+            "get": {
+                "description": "Fetch appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Fetch appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page no. to fetch the products for 1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of products to fetch is 15",
+                        "name": "perPage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fitnessCenter.GetFitnessCenterAppointmentsPaginationRes"
                         }
                     }
                 }
@@ -9410,26 +9363,6 @@ const docTemplate = `{
                 }
             }
         },
-        "careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "nextAvailable": {
-                    "$ref": "#/definitions/medicalLabScientist.NextAvailable"
-                },
-                "serviceType": {
-                    "type": "string"
-                }
-            }
-        },
         "careville_backend_dto_customer_medicalLabScientist.PhoneNumber": {
             "type": "object",
             "properties": {
@@ -12062,23 +11995,6 @@ const docTemplate = `{
                 }
             }
         },
-        "medicalLabScientist.GetMedicalLabScientistResponseDto": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/careville_backend_dto_customer_medicalLabScientist.GetMedicalLabScientistRes"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "medicalLabScientist.MedicalLabScientistAppointmentReqDto": {
             "type": "object",
             "properties": {
@@ -12245,17 +12161,6 @@ const docTemplate = `{
                 },
                 "pricePaid": {
                     "type": "number"
-                }
-            }
-        },
-        "medicalLabScientist.NextAvailable": {
-            "type": "object",
-            "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
-                "startTime": {
-                    "type": "string"
                 }
             }
         },

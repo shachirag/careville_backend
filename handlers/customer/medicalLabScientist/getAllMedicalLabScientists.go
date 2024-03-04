@@ -2,10 +2,11 @@ package medicalLabScientist
 
 import (
 	"careville_backend/database"
-	medicalLabScientist "careville_backend/dto/customer/medicalLabScientist"
+	"careville_backend/dto/customer/medicalLabScientist"
 	"careville_backend/entity"
 	"context"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,20 +15,7 @@ import (
 
 var ctx = context.Background()
 
-// @Summary Get medicalLabScientist
-// @Tags customer medicalLabScientist
-// @Description Get medicalLabScientist
-//
-//	@Param Authorization header	string true	"Authentication header"
-//
-// @Param search query string false "Filter medicalLabScientist by search"
-// @Param long query float64 false "Longitude for memories sorting (required for distance sorting)"
-// @Param lat query float64 false "Latitude for memories sorting (required for distance sorting)"
-// @Produce json
-// @Success 200 {object} medicalLabScientist.GetMedicalLabScientistResponseDto
-// @Router /customer/healthProfessional/get-medicalLabScientists [get]
 func GetMedicalLabScientist1(c *fiber.Ctx) error {
-
 	var (
 		serviceColl = database.GetCollection("service")
 	)
@@ -109,11 +97,19 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 			})
 		}
 		if medicalLabScientist1.MedicalLabScientist != nil {
+			nextAvailableSlots, err := getNextAvailableDayAndSlots(medicalLabScientist1.MedicalLabScientist.ServiceAndSchedule)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.GetMedicalLabScientistResponseDto{
+					Status:  false,
+					Message: "Failed to get next available time slots: ",
+				})
+			}
 			medicalLabScientistData = append(medicalLabScientistData, medicalLabScientist.GetMedicalLabScientistRes{
-				Id:          medicalLabScientist1.Id,
-				Image:       medicalLabScientist1.MedicalLabScientist.Information.Image,
-				Name:        medicalLabScientist1.MedicalLabScientist.Information.Name,
-				ServiceType: "MedicalLabScientist",
+				Id:            medicalLabScientist1.Id,
+				Image:         medicalLabScientist1.MedicalLabScientist.Information.Image,
+				Name:          medicalLabScientist1.MedicalLabScientist.Information.Name,
+				ServiceType:   "MedicalLabScientist",
+				NextAvailable: nextAvailableSlots,
 			})
 		}
 	}
@@ -130,4 +126,99 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 		Message: "Successfully fetched medicalLabScientists data.",
 		Data:    medicalLabScientistData,
 	})
+}
+
+func getNextAvailableDayAndSlots(schedules []entity.ServiceAndSchedule) (medicalLabScientist.NextAvailable, []entity.ServiceAndSchedule) {
+    currentTime := time.Now()
+    var nextAvailable medicalLabScientist.NextAvailable
+    for _, schedule := range schedules {
+        if !hasBreakingSlots(schedule.Slots) {
+            for _, slot := range schedule.Slots {
+                if containsDay(slot.Days, currentTime.Weekday().String()) && dayAfterCurrentDay(slot.Days[0], currentTime) {
+                    nextAvailable.StartTime = slot.Days[0]
+                    nextAvailable.LastTime = getLastTimeAvailable(schedule.Slots)
+                    return nextAvailable, []entity.ServiceAndSchedule{schedule}
+                }
+            }
+        } else {
+            nextAvailable.StartTime, nextAvailable.LastTime = getUpcomingStartAndLastTime(schedule.Slots)
+            if nextAvailable.StartTime != "" && nextAvailable.LastTime != "" {
+                return nextAvailable, []entity.ServiceAndSchedule{schedule}
+            }
+        }
+    }
+    return medicalLabScientist.NextAvailable{}, nil
+}
+
+func getUpcomingStartAndLastTime(slots []entity.Slots) (string, string) {
+    currentTime := time.Now()
+    for _, slot := range slots {
+        for _, breakingSlot := range slot.BreakingSlots {
+            startTime, _ := time.Parse("15:04", breakingSlot.StartTime)
+            endTime, _ := time.Parse("15:04", breakingSlot.EndTime)
+            if startTime.After(currentTime) && endTime.After(startTime) {
+                return breakingSlot.StartTime, breakingSlot.EndTime
+            }
+        }
+    }
+    return "", ""
+}
+
+func getLastTimeAvailable(slots []entity.Slots) string {
+    var lastEndTime string
+    for _, slot := range slots {
+        for _, breakingSlot := range slot.BreakingSlots {
+            endTime := breakingSlot.EndTime
+            if endTime > lastEndTime {
+                lastEndTime = endTime
+            }
+        }
+    }
+    return lastEndTime
+}
+
+func hasBreakingSlots(slots []entity.Slots) bool {
+	for _, slot := range slots {
+		for _, breakingSlot := range slot.BreakingSlots {
+			startTime, _ := time.Parse("15:04", breakingSlot.StartTime)
+			endTime, _ := time.Parse("15:04", breakingSlot.EndTime)
+			currentTime := time.Now()
+
+			if currentTime.After(startTime) && currentTime.Before(endTime) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func containsDay(days []string, target string) bool {
+	for _, day := range days {
+		if day == target {
+			return true
+		}
+	}
+	return false
+}
+
+func dayAfterCurrentDay(day string, currentTime time.Time) bool {
+	currentWeekday := currentTime.Weekday().String()
+	if day == currentWeekday {
+		return false
+	}
+
+	daysMap := map[string]int{
+		"Sunday":    0,
+		"Monday":    1,
+		"Tuesday":   2,
+		"Wednesday": 3,
+		"Thursday":  4,
+		"Friday":    5,
+		"Saturday":  6,
+	}
+
+	currentDayNum := daysMap[currentWeekday]
+	targetDayNum := daysMap[day]
+
+	return currentDayNum < targetDayNum
 }
