@@ -145,11 +145,46 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_admin_services_hospitals.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_hospitals.Doctor:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_hospitals.Schedule'
+        type: array
+      speciality:
+        type: string
+    type: object
   careville_backend_dto_admin_services_hospitals.PhoneNumber:
     properties:
       dialCode:
         type: string
       number:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_hospitals.Schedule:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
         type: string
     type: object
   careville_backend_dto_admin_services_laboratories.GetLaboratoryRes:
@@ -407,6 +442,17 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_provider_services.Doctor:
+    properties:
+      name:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/careville_backend_dto_provider_services.Schedule'
+        type: array
+      speciality:
+        type: string
+    type: object
   careville_backend_dto_provider_services.PhoneNumber:
     properties:
       countryCode:
@@ -414,6 +460,17 @@ definitions:
       dialCode:
         type: string
       number:
+        type: string
+    type: object
+  careville_backend_dto_provider_services.Schedule:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
         type: string
     type: object
   common.GetDoctorHealthProfessionalRes:
@@ -3315,17 +3372,6 @@ definitions:
       status:
         type: boolean
     type: object
-  services.Doctor:
-    properties:
-      name:
-        type: string
-      schedule:
-        items:
-          $ref: '#/definitions/services.Schedule'
-        type: array
-      speciality:
-        type: string
-    type: object
   services.DoctorAppointmentsPaginationResponse:
     properties:
       appointments:
@@ -3482,6 +3528,13 @@ definitions:
       id:
         type: string
       startTime:
+        type: string
+    type: object
+  services.Documents:
+    properties:
+      certificate:
+        type: string
+      license:
         type: string
     type: object
   services.FamilyMember:
@@ -3657,6 +3710,46 @@ definitions:
       status:
         type: boolean
     type: object
+  services.GetHospitalDetailRes:
+    properties:
+      doctor:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_hospitals.Doctor'
+        type: array
+      documents:
+        $ref: '#/definitions/services.Documents'
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/services.HospitalInformation'
+      insurances:
+        items:
+          type: string
+        type: array
+      otherServices:
+        items:
+          type: string
+        type: array
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/services.User'
+    type: object
+  services.GetHospitalDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.GetHospitalDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.GetHospitalsPaginationRes:
     properties:
       data:
@@ -3825,7 +3918,7 @@ definitions:
         type: string
       doctor:
         items:
-          $ref: '#/definitions/services.Doctor'
+          $ref: '#/definitions/careville_backend_dto_provider_services.Doctor'
         type: array
       informationName:
         type: string
@@ -3850,6 +3943,17 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  services.HospitalInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/careville_backend_dto_admin_services_hospitals.Address'
+      image:
+        type: string
+      name:
+        type: string
     type: object
   services.HospitalsPaginationResponse:
     properties:
@@ -4097,7 +4201,7 @@ definitions:
         type: string
       schedule:
         items:
-          $ref: '#/definitions/services.Schedule'
+          $ref: '#/definitions/careville_backend_dto_provider_services.Schedule'
         type: array
       speciality:
         type: string
@@ -4435,17 +4539,6 @@ definitions:
       role:
         type: string
       serviceStatus:
-        type: string
-    type: object
-  services.Schedule:
-    properties:
-      days:
-        items:
-          type: string
-        type: array
-      endTime:
-        type: string
-      startTime:
         type: string
     type: object
   services.Slots:
@@ -4799,6 +4892,17 @@ definitions:
       status:
         type: boolean
     type: object
+  services.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_hospitals.PhoneNumber'
+    type: object
 host: mmpn2atpcm.eu-west-1.awsapprunner.com
 info:
   contact:
@@ -4885,6 +4989,27 @@ paths:
       summary: Fetch fitnessCenter With Filters
       tags:
       - admin fitnessCenter
+  /admin/healthFacility/get-hospital/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-hospital detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetHospitalDetailResDto'
+      summary: get-hospital detail
+      tags:
+      - admin hospitals
   /admin/healthFacility/get-hospitals:
     get:
       consumes:

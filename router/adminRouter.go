@@ -56,6 +56,7 @@ func AdminSetupsRoutes(app *fiber.App) {
 	healthFacility := admin.Group("/healthFacility")
 	healthFacility.Use(jwt, middlewares.AdminData)
 	healthFacility.Get("/get-hospitals", hospitals.FetchHospitalsWithPagination)
+	healthFacility.Get("/get-hospital/:id", hospitals.GetHospitalDetail)
 	healthFacility.Get("/get-fitnessCenters", fitnessCenter.FetchFitnessCenterWithPagination)
 	healthFacility.Get("/get-laboratories", laboratory.FetchLaboratoriesWithPagination)
 	healthFacility.Get("/get-pharmacies", pharmacy.FetchPharmacyWithPagination)

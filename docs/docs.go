@@ -136,6 +136,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/healthFacility/get-hospital/{id}": {
+            "get": {
+                "description": "get-hospital detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin hospitals"
+                ],
+                "summary": "get-hospital detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetHospitalDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/healthFacility/get-hospitals": {
             "get": {
                 "description": "Fetch hospitals With Filters",
@@ -9074,6 +9106,43 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_admin_services_hospitals.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_admin_services_hospitals.Doctor": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_hospitals.Schedule"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_admin_services_hospitals.PhoneNumber": {
             "type": "object",
             "properties": {
@@ -9081,6 +9150,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_admin_services_hospitals.Schedule": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
                     "type": "string"
                 }
             }
@@ -9479,6 +9565,23 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_provider_services.Doctor": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_provider_services.Schedule"
+                    }
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
         "careville_backend_dto_provider_services.PhoneNumber": {
             "type": "object",
             "properties": {
@@ -9489,6 +9592,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "careville_backend_dto_provider_services.Schedule": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
                     "type": "string"
                 }
             }
@@ -13969,23 +14089,6 @@ const docTemplate = `{
                 }
             }
         },
-        "services.Doctor": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "schedule": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/services.Schedule"
-                    }
-                },
-                "speciality": {
-                    "type": "string"
-                }
-            }
-        },
         "services.DoctorAppointmentsPaginationResponse": {
             "type": "object",
             "properties": {
@@ -14225,6 +14328,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.Documents": {
+            "type": "object",
+            "properties": {
+                "certificate": {
+                    "type": "string"
+                },
+                "license": {
                     "type": "string"
                 }
             }
@@ -14496,6 +14610,67 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetHospitalDetailRes": {
+            "type": "object",
+            "properties": {
+                "doctor": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/careville_backend_dto_admin_services_hospitals.Doctor"
+                    }
+                },
+                "documents": {
+                    "$ref": "#/definitions/services.Documents"
+                },
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "$ref": "#/definitions/services.HospitalInformation"
+                },
+                "insurances": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "otherServices": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "profileId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "serviceStatus": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/services.User"
+                }
+            }
+        },
+        "services.GetHospitalDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.GetHospitalDetailRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.GetHospitalsPaginationRes": {
             "type": "object",
             "properties": {
@@ -14756,7 +14931,7 @@ const docTemplate = `{
                 "doctor": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/services.Doctor"
+                        "$ref": "#/definitions/careville_backend_dto_provider_services.Doctor"
                     }
                 },
                 "informationName": {
@@ -14793,6 +14968,23 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.HospitalInformation": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/careville_backend_dto_admin_services_hospitals.Address"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -15175,7 +15367,7 @@ const docTemplate = `{
                 "schedule": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/services.Schedule"
+                        "$ref": "#/definitions/careville_backend_dto_provider_services.Schedule"
                     }
                 },
                 "speciality": {
@@ -15696,23 +15888,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "serviceStatus": {
-                    "type": "string"
-                }
-            }
-        },
-        "services.Schedule": {
-            "type": "object",
-            "properties": {
-                "days": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "endTime": {
-                    "type": "string"
-                },
-                "startTime": {
                     "type": "string"
                 }
             }
@@ -16261,6 +16436,23 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "services.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_admin_services_hospitals.PhoneNumber"
                 }
             }
         }
