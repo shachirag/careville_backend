@@ -13,8 +13,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// @Summary get-hospital detail 
-// @Description get-hospital detail 
+// @Summary get-hospital detail
+// @Description get-hospital detail
 // @Tags admin hospitals
 // @Accept application/json
 //
@@ -126,6 +126,8 @@ func GetHospitalDetail(c *fiber.Ctx) error {
 	var hospitalName string
 	var additionalText string
 	var hospitalAddress services.Address
+	var license string
+	var certificate string
 	if service.HospClinic != nil {
 		hospitalServices = service.HospClinic.OtherServices
 		hospitalInsurances = service.HospClinic.Insurances
@@ -133,6 +135,8 @@ func GetHospitalDetail(c *fiber.Ctx) error {
 		hospitalImage = service.HospClinic.Information.Image
 		additionalText = service.HospClinic.Information.AdditionalText
 		hospitalAddress = services.Address(service.HospClinic.Information.Address)
+		license = service.HospClinic.Documents.License
+		certificate = service.HospClinic.Documents.Certificate
 	}
 
 	response := services.GetHospitalDetailResDto{
@@ -162,6 +166,10 @@ func GetHospitalDetail(c *fiber.Ctx) error {
 			},
 			OtherServices: hospitalServices,
 			Insurances:    hospitalInsurances,
+			Documents: services.Documents{
+				License:     license,
+				Certificate: certificate,
+			},
 		},
 	}
 

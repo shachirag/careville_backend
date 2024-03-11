@@ -123,6 +123,28 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_admin_services_fitnessCenter.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_fitnessCenter.FitnessCenterInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/careville_backend_dto_admin_services_fitnessCenter.Address'
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   careville_backend_dto_admin_services_fitnessCenter.GetFitnessCenterRes:
     properties:
       email:
@@ -187,6 +209,17 @@ definitions:
       startTime:
         type: string
     type: object
+  careville_backend_dto_admin_services_laboratories.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
   careville_backend_dto_admin_services_laboratories.GetLaboratoryRes:
     properties:
       email:
@@ -200,6 +233,30 @@ definitions:
       phoneNumber:
         $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_laboratories.Investigations:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_laboratories.LaboratoryInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.Address'
+      image:
+        type: string
+      name:
         type: string
     type: object
   careville_backend_dto_admin_services_laboratories.PhoneNumber:
@@ -233,6 +290,30 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_admin_services_medicalLabScientist.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_medicalLabScientist.Slots'
+        type: array
+    type: object
+  careville_backend_dto_admin_services_medicalLabScientist.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   careville_backend_dto_admin_services_nurse.GetNurseRes:
     properties:
       email:
@@ -255,6 +336,41 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_admin_services_nurse.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_nurse.Slots'
+        type: array
+    type: object
+  careville_backend_dto_admin_services_nurse.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_pharmacy.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
   careville_backend_dto_admin_services_pharmacy.GetPharmacyRes:
     properties:
       email:
@@ -268,6 +384,17 @@ definitions:
       phoneNumber:
         $ref: '#/definitions/careville_backend_dto_admin_services_pharmacy.PhoneNumber'
       profileId:
+        type: string
+    type: object
+  careville_backend_dto_admin_services_pharmacy.PharmacyInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/careville_backend_dto_admin_services_pharmacy.Address'
+      image:
+        type: string
+      name:
         type: string
     type: object
   careville_backend_dto_admin_services_pharmacy.PhoneNumber:
@@ -299,6 +426,30 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_admin_services_physiotherapist.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_physiotherapist.Slots'
+        type: array
+    type: object
+  careville_backend_dto_admin_services_physiotherapist.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   careville_backend_dto_customer_doctorProfession.GetDoctorProfessionRes:
     properties:
       id:
@@ -323,10 +474,49 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_customer_doctorProfession.Schedule:
+    properties:
+      breakinSlots:
+        items:
+          $ref: '#/definitions/doctorProfession.BreakinSlots'
+        type: array
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  careville_backend_dto_customer_fitnessCenter.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+  careville_backend_dto_customer_fitnessCenter.FitnessCenterInformation:
+    properties:
+      address:
+        $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   careville_backend_dto_customer_fitnessCenter.GetFitnessCenterRes:
     properties:
       address:
-        $ref: '#/definitions/fitnessCenter.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.Address'
       avgRating:
         type: number
       id:
@@ -345,10 +535,47 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_customer_laboratories.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
   careville_backend_dto_customer_laboratories.GetLaboratoryRes:
     properties:
       address:
-        $ref: '#/definitions/laboratory.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_laboratories.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_laboratories.Investigations:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  careville_backend_dto_customer_laboratories.LaboratoryInformation:
+    properties:
+      address:
+        $ref: '#/definitions/careville_backend_dto_customer_laboratories.Address'
       avgRating:
         type: number
       id:
@@ -376,6 +603,30 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_customer_medicalLabScientist.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/careville_backend_dto_customer_medicalLabScientist.Slots'
+        type: array
+    type: object
+  careville_backend_dto_customer_medicalLabScientist.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
   careville_backend_dto_customer_nurse.GetNurseRes:
     properties:
       id:
@@ -398,10 +649,58 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_customer_nurse.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/careville_backend_dto_customer_nurse.Slots'
+        type: array
+    type: object
+  careville_backend_dto_customer_nurse.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  careville_backend_dto_customer_pharmacy.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
   careville_backend_dto_customer_pharmacy.GetPharmacyRes:
     properties:
       address:
-        $ref: '#/definitions/pharmacy.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.Address'
+      avgRating:
+        type: number
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  careville_backend_dto_customer_pharmacy.PharmacyInformation:
+    properties:
+      address:
+        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.Address'
       avgRating:
         type: number
       id:
@@ -440,6 +739,30 @@ definitions:
       dialCode:
         type: string
       number:
+        type: string
+    type: object
+  careville_backend_dto_customer_physiotherapist.ServiceAndSchedule:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      serviceFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/careville_backend_dto_customer_physiotherapist.Slots'
+        type: array
+    type: object
+  careville_backend_dto_customer_physiotherapist.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      startTime:
         type: string
     type: object
   careville_backend_dto_provider_services.Doctor:
@@ -902,7 +1225,7 @@ definitions:
     properties:
       schedule:
         items:
-          $ref: '#/definitions/doctorProfession.Schedule'
+          $ref: '#/definitions/careville_backend_dto_customer_doctorProfession.Schedule'
         type: array
       upcommingEvents:
         items:
@@ -1153,21 +1476,6 @@ definitions:
       startTime:
         type: string
     type: object
-  doctorProfession.Schedule:
-    properties:
-      breakinSlots:
-        items:
-          $ref: '#/definitions/doctorProfession.BreakinSlots'
-        type: array
-      days:
-        items:
-          type: string
-        type: array
-      endTime:
-        type: string
-      startTime:
-        type: string
-    type: object
   doctorProfession.UpcommingEvents:
     properties:
       endTime:
@@ -1186,17 +1494,6 @@ definitions:
       name:
         type: string
     type: object
-  fitnessCenter.Address:
-    properties:
-      add:
-        type: string
-      coordinates:
-        items:
-          type: number
-        type: array
-      type:
-        type: string
-    type: object
   fitnessCenter.CustomerInformation:
     properties:
       firstName:
@@ -1209,6 +1506,13 @@ definitions:
         type: string
       phoneNumber:
         $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.PhoneNumber'
+    type: object
+  fitnessCenter.Documents:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
     type: object
   fitnessCenter.FamilyMember:
     properties:
@@ -1247,7 +1551,7 @@ definitions:
       familyMember:
         $ref: '#/definitions/fitnessCenter.FamilyMember'
       fitnessCenterInformation:
-        $ref: '#/definitions/fitnessCenter.FitnessCenterInformation'
+        $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.FitnessCenterInformation'
       id:
         type: string
       pricePaid:
@@ -1279,19 +1583,6 @@ definitions:
       totalPages:
         type: integer
     type: object
-  fitnessCenter.FitnessCenterInformation:
-    properties:
-      address:
-        $ref: '#/definitions/fitnessCenter.Address'
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-    type: object
   fitnessCenter.FitnessCenterPaginationResponse:
     properties:
       currentPage:
@@ -1316,7 +1607,7 @@ definitions:
           $ref: '#/definitions/fitnessCenter.AdditionalServices'
         type: array
       address:
-        $ref: '#/definitions/fitnessCenter.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.Address'
       avgRating:
         type: number
       id:
@@ -1349,7 +1640,7 @@ definitions:
   fitnessCenter.GetFitnessCenterAppointmentsRes:
     properties:
       address:
-        $ref: '#/definitions/fitnessCenter.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_fitnessCenter.Address'
       fitnessCenterId:
         type: string
       id:
@@ -1358,6 +1649,46 @@ definitions:
         type: string
       name:
         type: string
+    type: object
+  fitnessCenter.GetFitnessCenterDetailRes:
+    properties:
+      documents:
+        $ref: '#/definitions/fitnessCenter.Documents'
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/careville_backend_dto_admin_services_fitnessCenter.FitnessCenterInformation'
+      otherServices:
+        items:
+          $ref: '#/definitions/fitnessCenter.OtherServices'
+        type: array
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceStatus:
+        type: string
+      subscripions:
+        items:
+          $ref: '#/definitions/fitnessCenter.Subscripions'
+        type: array
+      trainers:
+        items:
+          $ref: '#/definitions/fitnessCenter.Trainers'
+        type: array
+      user:
+        $ref: '#/definitions/fitnessCenter.User'
+    type: object
+  fitnessCenter.GetFitnessCenterDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/fitnessCenter.GetFitnessCenterDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   fitnessCenter.GetFitnessCenterPaginationRes:
     properties:
@@ -1388,6 +1719,26 @@ definitions:
       status:
         type: boolean
     type: object
+  fitnessCenter.OtherServices:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+    type: object
+  fitnessCenter.Subscripions:
+    properties:
+      details:
+        type: string
+      id:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
   fitnessCenter.SubscriptionData:
     properties:
       package:
@@ -1407,6 +1758,30 @@ definitions:
         type: string
       price:
         type: number
+    type: object
+  fitnessCenter.Trainers:
+    properties:
+      category:
+        type: string
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  fitnessCenter.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_fitnessCenter.PhoneNumber'
     type: object
   hospitals.Address:
     properties:
@@ -1730,17 +2105,6 @@ definitions:
       startTime:
         type: string
     type: object
-  laboratory.Address:
-    properties:
-      add:
-        type: string
-      coordinates:
-        items:
-          type: number
-        type: array
-      type:
-        type: string
-    type: object
   laboratory.AppointmentData:
     properties:
       appointmentDate:
@@ -1758,6 +2122,13 @@ definitions:
         type: string
       phoneNumber:
         $ref: '#/definitions/careville_backend_dto_customer_laboratories.PhoneNumber'
+    type: object
+  laboratory.Documents:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
     type: object
   laboratory.FamilyMember:
     properties:
@@ -1793,7 +2164,7 @@ definitions:
   laboratory.GetLaboratoryAppointmentsRes:
     properties:
       address:
-        $ref: '#/definitions/laboratory.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_laboratories.Address'
       id:
         type: string
       image:
@@ -1802,6 +2173,38 @@ definitions:
         type: string
       name:
         type: string
+    type: object
+  laboratory.GetLaboratoryDetailRes:
+    properties:
+      documents:
+        $ref: '#/definitions/laboratory.Documents'
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.LaboratoryInformation'
+      investigations:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.Investigations'
+        type: array
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/laboratory.User'
+    type: object
+  laboratory.GetLaboratoryDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/laboratory.GetLaboratoryDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   laboratory.GetLaboratoryPaginationRes:
     properties:
@@ -1865,19 +2268,6 @@ definitions:
       status:
         type: boolean
     type: object
-  laboratory.Investigations:
-    properties:
-      id:
-        type: string
-      information:
-        type: string
-      name:
-        type: string
-      price:
-        type: number
-      type:
-        type: string
-    type: object
   laboratory.LaboratoryAppointmentReqDto:
     properties:
       appointmentDate:
@@ -1906,7 +2296,7 @@ definitions:
       investigation:
         $ref: '#/definitions/laboratory.Investigation'
       laboratoryInformation:
-        $ref: '#/definitions/laboratory.LaboratoryInformation'
+        $ref: '#/definitions/careville_backend_dto_customer_laboratories.LaboratoryInformation'
       pricePaid:
         type: number
     type: object
@@ -1932,19 +2322,6 @@ definitions:
       totalPages:
         type: integer
     type: object
-  laboratory.LaboratoryInformation:
-    properties:
-      address:
-        $ref: '#/definitions/laboratory.Address'
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-    type: object
   laboratory.LaboratoryPaginationResponse:
     properties:
       currentPage:
@@ -1965,7 +2342,7 @@ definitions:
       aboutUs:
         type: string
       address:
-        $ref: '#/definitions/laboratory.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_laboratories.Address'
       avgRating:
         type: number
       id:
@@ -1974,12 +2351,34 @@ definitions:
         type: string
       investigations:
         items:
-          $ref: '#/definitions/laboratory.Investigations'
+          $ref: '#/definitions/careville_backend_dto_customer_laboratories.Investigations'
         type: array
       name:
         type: string
       totalReviews:
         type: integer
+    type: object
+  laboratory.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_laboratories.PhoneNumber'
+    type: object
+  medicalLabScientist.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
     type: object
   medicalLabScientist.AppointmentDetails:
     properties:
@@ -2076,6 +2475,42 @@ definitions:
       toDate:
         type: string
     type: object
+  medicalLabScientist.GetMedicalLabScientistDetailRes:
+    properties:
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/medicalLabScientist.MedicalLabScientistInformation'
+      personalDocuments:
+        $ref: '#/definitions/medicalLabScientist.PersonalDocuments'
+      professionalDetails:
+        $ref: '#/definitions/medicalLabScientist.ProfessionalDetails'
+      professionalDocuments:
+        $ref: '#/definitions/medicalLabScientist.ProfessionalDocuments'
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceAndSchedule:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_medicalLabScientist.ServiceAndSchedule'
+        type: array
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/medicalLabScientist.User'
+    type: object
+  medicalLabScientist.GetMedicalLabScientistDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   medicalLabScientist.GetMedicalLabScientistPaginationRes:
     properties:
       data:
@@ -2133,6 +2568,17 @@ definitions:
       totalPages:
         type: integer
     type: object
+  medicalLabScientist.MedicalLabScientistInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/medicalLabScientist.Address'
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   medicalLabScientist.MedicalLabScientistPaginationResponse:
     properties:
       currentPage:
@@ -2162,7 +2608,7 @@ definitions:
         type: string
       serviceAndSchedule:
         items:
-          $ref: '#/definitions/medicalLabScientist.ServiceAndSchedule'
+          $ref: '#/definitions/careville_backend_dto_customer_medicalLabScientist.ServiceAndSchedule'
         type: array
       totalReviews:
         type: integer
@@ -2204,36 +2650,33 @@ definitions:
       pricePaid:
         type: number
     type: object
+  medicalLabScientist.PersonalDocuments:
+    properties:
+      license:
+        type: string
+      nimc:
+        type: string
+    type: object
+  medicalLabScientist.ProfessionalDetails:
+    properties:
+      department:
+        type: string
+      qualification:
+        type: string
+    type: object
+  medicalLabScientist.ProfessionalDocuments:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
+    type: object
   medicalLabScientist.Schedule:
     properties:
       breakinSlots:
         items:
           $ref: '#/definitions/medicalLabScientist.BreakinSlots'
         type: array
-      days:
-        items:
-          type: string
-        type: array
-      endTime:
-        type: string
-      startTime:
-        type: string
-    type: object
-  medicalLabScientist.ServiceAndSchedule:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      serviceFees:
-        type: number
-      slots:
-        items:
-          $ref: '#/definitions/medicalLabScientist.Slots'
-        type: array
-    type: object
-  medicalLabScientist.Slots:
-    properties:
       days:
         items:
           type: string
@@ -2250,6 +2693,28 @@ definitions:
       id:
         type: string
       startTime:
+        type: string
+    type: object
+  medicalLabScientist.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_medicalLabScientist.PhoneNumber'
+    type: object
+  nurse.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
         type: string
     type: object
   nurse.AppointmentDetails:
@@ -2352,6 +2817,42 @@ definitions:
       toDate:
         type: string
     type: object
+  nurse.GetNurseDetailRes:
+    properties:
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/nurse.NurseInformation'
+      personalDocuments:
+        $ref: '#/definitions/nurse.PersonalDocuments'
+      professionalDetails:
+        $ref: '#/definitions/nurse.ProfessionalDetails'
+      professionalDocuments:
+        $ref: '#/definitions/nurse.ProfessionalDocuments'
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceAndSchedule:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_nurse.ServiceAndSchedule'
+        type: array
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/nurse.User'
+    type: object
+  nurse.GetNurseDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/nurse.GetNurseDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   nurse.GetNursePaginationRes:
     properties:
       data:
@@ -2443,6 +2944,17 @@ definitions:
       totalPages:
         type: integer
     type: object
+  nurse.NurseInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/nurse.Address'
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   nurse.NursePaginationResponse:
     properties:
       currentPage:
@@ -2472,7 +2984,7 @@ definitions:
         type: string
       serviceAndSchedule:
         items:
-          $ref: '#/definitions/nurse.ServiceAndSchedule'
+          $ref: '#/definitions/careville_backend_dto_customer_nurse.ServiceAndSchedule'
         type: array
       totalReviews:
         type: integer
@@ -2497,36 +3009,31 @@ definitions:
       status:
         type: boolean
     type: object
+  nurse.PersonalDocuments:
+    properties:
+      license:
+        type: string
+      nimc:
+        type: string
+    type: object
+  nurse.ProfessionalDetails:
+    properties:
+      qualification:
+        type: string
+    type: object
+  nurse.ProfessionalDocuments:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
+    type: object
   nurse.Schedule:
     properties:
       breakinSlots:
         items:
           $ref: '#/definitions/nurse.BreakinSlots'
         type: array
-      days:
-        items:
-          type: string
-        type: array
-      endTime:
-        type: string
-      startTime:
-        type: string
-    type: object
-  nurse.ServiceAndSchedule:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      serviceFees:
-        type: number
-      slots:
-        items:
-          $ref: '#/definitions/nurse.Slots'
-        type: array
-    type: object
-  nurse.Slots:
-    properties:
       days:
         items:
           type: string
@@ -2545,6 +3052,17 @@ definitions:
       startTime:
         type: string
     type: object
+  nurse.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_nurse.PhoneNumber'
+    type: object
   pharmacy.AdditionalServices:
     properties:
       id:
@@ -2552,17 +3070,6 @@ definitions:
       information:
         type: string
       name:
-        type: string
-    type: object
-  pharmacy.Address:
-    properties:
-      add:
-        type: string
-      coordinates:
-        items:
-          type: number
-        type: array
-      type:
         type: string
     type: object
   pharmacy.CustomerInformation:
@@ -2578,6 +3085,13 @@ definitions:
       phoneNumber:
         $ref: '#/definitions/careville_backend_dto_customer_pharmacy.PhoneNumber'
     type: object
+  pharmacy.Documents:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
+    type: object
   pharmacy.GetPharmacyAppointmentsPaginationRes:
     properties:
       data:
@@ -2590,7 +3104,7 @@ definitions:
   pharmacy.GetPharmacyAppointmentsRes:
     properties:
       address:
-        $ref: '#/definitions/pharmacy.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.Address'
       id:
         type: string
       image:
@@ -2599,6 +3113,38 @@ definitions:
         type: string
       serviceId:
         type: string
+    type: object
+  pharmacy.GetPharmacyDetailRes:
+    properties:
+      documents:
+        $ref: '#/definitions/pharmacy.Documents'
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/careville_backend_dto_admin_services_pharmacy.PharmacyInformation'
+      otherServices:
+        items:
+          $ref: '#/definitions/pharmacy.OtherServices'
+        type: array
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/pharmacy.User'
+    type: object
+  pharmacy.GetPharmacyDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/pharmacy.GetPharmacyDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   pharmacy.GetPharmacyDrugsDetailResDto:
     properties:
@@ -2638,6 +3184,15 @@ definitions:
       status:
         type: boolean
     type: object
+  pharmacy.OtherServices:
+    properties:
+      id:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+    type: object
   pharmacy.PharmacyAppointmentsPaginationResponse:
     properties:
       currentPage:
@@ -2666,7 +3221,7 @@ definitions:
       nameAndQuantity:
         type: string
       pharmacyInformation:
-        $ref: '#/definitions/pharmacy.PharmacyInformation'
+        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.PharmacyInformation'
       prescription:
         items:
           type: string
@@ -2680,19 +3235,6 @@ definitions:
         type: string
       status:
         type: boolean
-    type: object
-  pharmacy.PharmacyInformation:
-    properties:
-      address:
-        $ref: '#/definitions/pharmacy.Address'
-      avgRating:
-        type: number
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
     type: object
   pharmacy.PharmacyPaginationResponse:
     properties:
@@ -2718,7 +3260,7 @@ definitions:
           $ref: '#/definitions/pharmacy.AdditionalServices'
         type: array
       address:
-        $ref: '#/definitions/pharmacy.Address'
+        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.Address'
       avgRating:
         type: number
       id:
@@ -2729,6 +3271,28 @@ definitions:
         type: string
       totalReviews:
         type: integer
+    type: object
+  pharmacy.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_pharmacy.PhoneNumber'
+    type: object
+  physiotherapist.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
     type: object
   physiotherapist.AppointmentDetails:
     properties:
@@ -2823,6 +3387,42 @@ definitions:
       toDate:
         type: string
     type: object
+  physiotherapist.GetPhysiotherapistDetailRes:
+    properties:
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/physiotherapist.PhysiotherapistInformation'
+      personalDocuments:
+        $ref: '#/definitions/physiotherapist.PersonalDocuments'
+      professionalDetails:
+        $ref: '#/definitions/physiotherapist.ProfessionalDetails'
+      professionalDocuments:
+        $ref: '#/definitions/physiotherapist.ProfessionalDocuments'
+      profileId:
+        type: string
+      role:
+        type: string
+      serviceAndSchedule:
+        items:
+          $ref: '#/definitions/careville_backend_dto_admin_services_physiotherapist.ServiceAndSchedule'
+        type: array
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/physiotherapist.User'
+    type: object
+  physiotherapist.GetPhysiotherapistDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/physiotherapist.GetPhysiotherapistDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   physiotherapist.GetPhysiotherapistPaginationRes:
     properties:
       data:
@@ -2857,6 +3457,13 @@ definitions:
       lastTime:
         type: string
       startTime:
+        type: string
+    type: object
+  physiotherapist.PersonalDocuments:
+    properties:
+      license:
+        type: string
+      nimc:
         type: string
     type: object
   physiotherapist.PhysiotherapistAppointmentReqDto:
@@ -2921,6 +3528,17 @@ definitions:
       totalPages:
         type: integer
     type: object
+  physiotherapist.PhysiotherapistInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/physiotherapist.Address'
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   physiotherapist.PhysiotherapistPaginationResponse:
     properties:
       currentPage:
@@ -2950,7 +3568,7 @@ definitions:
         type: string
       serviceAndSchedule:
         items:
-          $ref: '#/definitions/physiotherapist.ServiceAndSchedule'
+          $ref: '#/definitions/careville_backend_dto_customer_physiotherapist.ServiceAndSchedule'
         type: array
       totalReviews:
         type: integer
@@ -2975,36 +3593,24 @@ definitions:
       status:
         type: boolean
     type: object
+  physiotherapist.ProfessionalDetails:
+    properties:
+      qualification:
+        type: string
+    type: object
+  physiotherapist.ProfessionalDocuments:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
+    type: object
   physiotherapist.Schedule:
     properties:
       breakinSlots:
         items:
           $ref: '#/definitions/physiotherapist.BreakinSlots'
         type: array
-      days:
-        items:
-          type: string
-        type: array
-      endTime:
-        type: string
-      startTime:
-        type: string
-    type: object
-  physiotherapist.ServiceAndSchedule:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      serviceFees:
-        type: number
-      slots:
-        items:
-          $ref: '#/definitions/physiotherapist.Slots'
-        type: array
-    type: object
-  physiotherapist.Slots:
-    properties:
       days:
         items:
           type: string
@@ -3022,6 +3628,17 @@ definitions:
         type: string
       startTime:
         type: string
+    type: object
+  physiotherapist.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_physiotherapist.PhoneNumber'
     type: object
   providerAuth.AdditionalInformation:
     properties:
@@ -4960,6 +5577,27 @@ paths:
       summary: Forgot Password
       tags:
       - admin authorization
+  /admin/healthFacility/get-fitnessCenter/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-fitnessCenter detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fitnessCenter.GetFitnessCenterDetailResDto'
+      summary: get-fitnessCenter detail
+      tags:
+      - admin fitnessCenter
   /admin/healthFacility/get-fitnessCenters:
     get:
       consumes:
@@ -5068,6 +5706,27 @@ paths:
       summary: Fetch laboratory With Filters
       tags:
       - admin laboratory
+  /admin/healthFacility/get-laboratory/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-laboratory detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/laboratory.GetLaboratoryDetailResDto'
+      summary: get-laboratory detail
+      tags:
+      - admin laboratory
   /admin/healthFacility/get-pharmacies:
     get:
       consumes:
@@ -5095,6 +5754,27 @@ paths:
           schema:
             $ref: '#/definitions/pharmacy.GetPharmacyPaginationRes'
       summary: Fetch pharmacy With Filters
+      tags:
+      - admin pharmacy
+  /admin/healthFacility/get-pharmacy/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-pharmacy detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyDetailResDto'
+      summary: get-pharmacy detail
       tags:
       - admin pharmacy
   /admin/healthProfessional/get-doctors:
@@ -5126,6 +5806,27 @@ paths:
       summary: Fetch doctorProfession With Filters
       tags:
       - admin doctorProfession
+  /admin/healthProfessional/get-medicalLabScientist/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-medicalLabScientist detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/medicalLabScientist.GetMedicalLabScientistDetailResDto'
+      summary: get-medicalLabScientist detail
+      tags:
+      - admin medicalLabScientist
   /admin/healthProfessional/get-medicalLabScientists:
     get:
       consumes:
@@ -5155,6 +5856,27 @@ paths:
       summary: Fetch medicalLabScientists With Filters
       tags:
       - admin medicalLabScientist
+  /admin/healthProfessional/get-nurse/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-nurse detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/nurse.GetNurseDetailResDto'
+      summary: get-nurse detail
+      tags:
+      - admin nurse
   /admin/healthProfessional/get-nurses:
     get:
       consumes:
@@ -5184,6 +5906,27 @@ paths:
       summary: Fetch nurse With Filters
       tags:
       - admin nurse
+  /admin/healthProfessional/get-physiotherapist/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-physiotherapist detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/physiotherapist.GetPhysiotherapistDetailResDto'
+      summary: get-physiotherapist detail
+      tags:
+      - admin physiotherapist
   /admin/healthProfessional/get-physiotherapists:
     get:
       consumes:
@@ -9270,6 +10013,35 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/nurse.GetNurseAppointmentsPaginationRes'
+      summary: Fetch appointments
+      tags:
+      - provider appointments
+  /provider/services/appointment/pharmacy-approved-drugs:
+    get:
+      consumes:
+      - application/json
+      description: Fetch drugs
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page no. to fetch the products for 1
+        in: query
+        name: page
+        type: integer
+      - description: Limit of products to fetch is 15
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.GetPharmacyAppointmentsPaginationRes'
       summary: Fetch appointments
       tags:
       - provider appointments

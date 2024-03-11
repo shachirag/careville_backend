@@ -25,7 +25,7 @@ import (
 // @Param perPage query int false "Limit of products to fetch is 15"
 // @Produce json
 // @Success 200 {object} pharmacy.GetPharmacyAppointmentsPaginationRes
-// @Router /provider/services/appointment/pharmacy-drugs [get]
+// @Router /provider/services/appointment/pharmacy-approved-drugs [get]
 func FetchPharmacyApprovedDrugsWithPagination(c *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
@@ -38,8 +38,8 @@ func FetchPharmacyApprovedDrugsWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "pharmacy",
-		"paymentStatus":        "success",
-		"appointmentStatus":    "approved",
+		"paymentStatus":        "initiated",
+		"appointmentStatus":    "pending",
 		"serviceId":            providerData.ProviderId,
 	}
 

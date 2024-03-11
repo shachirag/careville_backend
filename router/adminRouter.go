@@ -4,13 +4,13 @@ import (
 	"careville_backend/handlers"
 	adminAuth "careville_backend/handlers/admin/adminAuthorization"
 	dashboard "careville_backend/handlers/admin/dashboard"
+	request "careville_backend/handlers/admin/requests"
 	doctorProfession "careville_backend/handlers/admin/services/doctorProfession"
 	fitnessCenter "careville_backend/handlers/admin/services/fitnessCenter"
 	hospitals "careville_backend/handlers/admin/services/hospitals"
 	laboratory "careville_backend/handlers/admin/services/laboratory"
 	medicalLabScientist "careville_backend/handlers/admin/services/medicalLabScientist"
 	nurse "careville_backend/handlers/admin/services/nurse"
-	request "careville_backend/handlers/admin/requests"
 	pharmacy "careville_backend/handlers/admin/services/pharmacy"
 	physiotherapist "careville_backend/handlers/admin/services/physiotherapist"
 	"careville_backend/middlewares"
@@ -58,13 +58,20 @@ func AdminSetupsRoutes(app *fiber.App) {
 	healthFacility.Get("/get-hospitals", hospitals.FetchHospitalsWithPagination)
 	healthFacility.Get("/get-hospital/:id", hospitals.GetHospitalDetail)
 	healthFacility.Get("/get-fitnessCenters", fitnessCenter.FetchFitnessCenterWithPagination)
+	healthFacility.Get("/get-fitnessCenter/:id", fitnessCenter.GetFitnessCenterDetail)
 	healthFacility.Get("/get-laboratories", laboratory.FetchLaboratoriesWithPagination)
+	healthFacility.Get("/get-laboratory/:id", laboratory.GetLaboratoryDetail)
 	healthFacility.Get("/get-pharmacies", pharmacy.FetchPharmacyWithPagination)
+	healthFacility.Get("/get-pharmacy/:id", pharmacy.GetPharmacyDetail)
 
 	healthProfessional := admin.Group("/healthProfessional")
 	healthProfessional.Use(jwt, middlewares.AdminData)
 	healthProfessional.Get("/get-doctors", doctorProfession.FetchDoctorsWithPagination)
+	healthProfessional.Get("/get-doctor/:id", doctorProfession.FetchDoctorsWithPagination)
 	healthProfessional.Get("/get-medicalLabScientists", medicalLabScientist.FetchMedicalLabScientistsWithPagination)
+	healthProfessional.Get("/get-medicalLabScientist/:id", medicalLabScientist.GetMedicalLabScientistDetail)
 	healthProfessional.Get("/get-nurses", nurse.FetchNurseWithPagination)
+	healthProfessional.Get("/get-nurse/:id", nurse.GetNurseDetail)
 	healthProfessional.Get("/get-physiotherapists", physiotherapist.FetchPhysiotherapistWithPagination)
+	healthProfessional.Get("/get-physiotherapist/:id", physiotherapist.GetPhysiotherapistDetail)
 }
