@@ -19,21 +19,21 @@ var ctx = context.Background()
 // @Param Authorization header	string true	"Authentication header"
 // @Produce json
 // @Success 200 {object} dashboard.GetAllCounts
-// @Router /admin/total-counts [get]
+// @Router /admin/profile/total-counts [get]
 func CountAll(c *fiber.Ctx) error {
 
 	var (
 		serviceColl = database.GetCollection("service")
 	)
 
-	hospitalFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "hospClinic", "serviceStatus": "approved"}
-	pharmacyFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "pharmacy", "serviceStatus": "approved"}
-	fitnessCenterFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "fitnessCenter", "serviceStatus": "approved"}
-	laboratoryFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "laboratory", "serviceStatus": "approved"}
-	doctorFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "doctor", "serviceStatus": "approved"}
-	nurseFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "nurse", "serviceStatus": "approved"}
-	medicalLabScientistFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "medicalLabScientist", "serviceStatus": "approved"}
-	physiotherapistFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "physiotherapist", "serviceStatus": "approved"}
+	hospitalFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "hospClinic", "serviceStatus": "pending"}
+	pharmacyFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "pharmacy", "serviceStatus": "pending"}
+	fitnessCenterFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "fitnessCenter", "serviceStatus": "pending"}
+	laboratoryFilter := bson.M{"role": "healthFacility", "facilityOrProfession": "laboratory", "serviceStatus": "pending"}
+	doctorFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "doctor", "serviceStatus": "pending"}
+	nurseFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "nurse", "serviceStatus": "pending"}
+	medicalLabScientistFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "medicalLabScientist", "serviceStatus": "pending"}
+	physiotherapistFilter := bson.M{"role": "healthProfessional", "facilityOrProfession": "physiotherapist", "serviceStatus": "pending"}
 
 	hospitalCount, err1 := serviceColl.CountDocuments(ctx, hospitalFilter)
 	pharmacyCount, err2 := serviceColl.CountDocuments(ctx, pharmacyFilter)

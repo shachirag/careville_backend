@@ -396,6 +396,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/healthProfessional/get-doctor/{id}": {
+            "get": {
+                "description": "get-doctor detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin hospitals"
+                ],
+                "summary": "get-doctor detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/doctorProfession.GetDoctorProfessionDetailResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/healthProfessional/get-doctors": {
             "get": {
                 "description": "Fetch doctorProfession With Filters",
@@ -775,6 +807,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/profile/total-counts": {
+            "get": {
+                "description": "Count the number of documents in various collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard in admin pannel"
+                ],
+                "summary": "Count All",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dashboard.GetAllCounts"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/profile/update-admin-info": {
             "put": {
                 "description": "Update Admin",
@@ -935,38 +999,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/adminAuth.AdminPasswordResDto"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/total-counts": {
-            "get": {
-                "description": "Count the number of documents in various collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "dashboard in admin pannel"
-                ],
-                "summary": "Count All",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dashboard.GetAllCounts"
                         }
                     }
                 }
@@ -9308,6 +9340,20 @@ const docTemplate = `{
                 }
             }
         },
+        "careville_backend_dto_admin_services_doctorProfession.Schedule": {
+            "type": "object",
+            "properties": {
+                "consultationFees": {
+                    "type": "number"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/doctorProfession.Slots"
+                    }
+                }
+            }
+        },
         "careville_backend_dto_admin_services_fitnessCenter.Address": {
             "type": "object",
             "properties": {
@@ -10993,6 +11039,23 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.Address": {
+            "type": "object",
+            "properties": {
+                "add": {
+                    "type": "string"
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "doctorProfession.AppointmentDetails": {
             "type": "object",
             "properties": {
@@ -11146,6 +11209,23 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "boolean"
+                }
+            }
+        },
+        "doctorProfession.DoctorProfessionInformation": {
+            "type": "object",
+            "properties": {
+                "additionalText": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/doctorProfession.Address"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -11318,6 +11398,58 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.GetDoctorProfessionDetailRes": {
+            "type": "object",
+            "properties": {
+                "facilityOrProfession": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "information": {
+                    "$ref": "#/definitions/doctorProfession.DoctorProfessionInformation"
+                },
+                "personalDocuments": {
+                    "$ref": "#/definitions/doctorProfession.PersonalDocuments"
+                },
+                "professionalDetails": {
+                    "$ref": "#/definitions/doctorProfession.ProfessionalDetails"
+                },
+                "professionalDocuments": {
+                    "$ref": "#/definitions/doctorProfession.ProfessionalDocuments"
+                },
+                "profileId": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "schedule": {
+                    "$ref": "#/definitions/careville_backend_dto_admin_services_doctorProfession.Schedule"
+                },
+                "serviceStatus": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/doctorProfession.User"
+                }
+            }
+        },
+        "doctorProfession.GetDoctorProfessionDetailResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/doctorProfession.GetDoctorProfessionDetailRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "doctorProfession.GetDoctorProfessionPaginationRes": {
             "type": "object",
             "properties": {
@@ -11397,6 +11529,59 @@ const docTemplate = `{
                 }
             }
         },
+        "doctorProfession.PersonalDocuments": {
+            "type": "object",
+            "properties": {
+                "license": {
+                    "type": "string"
+                },
+                "nimc": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.ProfessionalDetails": {
+            "type": "object",
+            "properties": {
+                "qualifications": {
+                    "type": "string"
+                },
+                "speciality": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.ProfessionalDocuments": {
+            "type": "object",
+            "properties": {
+                "certificate": {
+                    "type": "string"
+                },
+                "license": {
+                    "type": "string"
+                }
+            }
+        },
+        "doctorProfession.Slots": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
         "doctorProfession.UpcommingEvents": {
             "type": "object",
             "properties": {
@@ -11408,6 +11593,23 @@ const docTemplate = `{
                 },
                 "startTime": {
                     "type": "string"
+                }
+            }
+        },
+        "doctorProfession.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "$ref": "#/definitions/careville_backend_dto_admin_services_doctorProfession.PhoneNumber"
                 }
             }
         },

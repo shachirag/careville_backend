@@ -67,7 +67,7 @@ func AdminSetupsRoutes(app *fiber.App) {
 	healthProfessional := admin.Group("/healthProfessional")
 	healthProfessional.Use(jwt, middlewares.AdminData)
 	healthProfessional.Get("/get-doctors", doctorProfession.FetchDoctorsWithPagination)
-	healthProfessional.Get("/get-doctor/:id", doctorProfession.FetchDoctorsWithPagination)
+	healthProfessional.Get("/get-doctor/:id", doctorProfession.GetDoctorDetail)
 	healthProfessional.Get("/get-medicalLabScientists", medicalLabScientist.FetchMedicalLabScientistsWithPagination)
 	healthProfessional.Get("/get-medicalLabScientist/:id", medicalLabScientist.GetMedicalLabScientistDetail)
 	healthProfessional.Get("/get-nurses", nurse.FetchNurseWithPagination)

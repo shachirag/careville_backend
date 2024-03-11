@@ -123,6 +123,15 @@ definitions:
       number:
         type: string
     type: object
+  careville_backend_dto_admin_services_doctorProfession.Schedule:
+    properties:
+      consultationFees:
+        type: number
+      slots:
+        items:
+          $ref: '#/definitions/doctorProfession.Slots'
+        type: array
+    type: object
   careville_backend_dto_admin_services_fitnessCenter.Address:
     properties:
       add:
@@ -1214,6 +1223,17 @@ definitions:
       status:
         type: boolean
     type: object
+  doctorProfession.Address:
+    properties:
+      add:
+        type: string
+      coordinates:
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
   doctorProfession.AppointmentDetails:
     properties:
       appointmentFromDate:
@@ -1314,6 +1334,17 @@ definitions:
         type: string
       status:
         type: boolean
+    type: object
+  doctorProfession.DoctorProfessionInformation:
+    properties:
+      additionalText:
+        type: string
+      address:
+        $ref: '#/definitions/doctorProfession.Address'
+      image:
+        type: string
+      name:
+        type: string
     type: object
   doctorProfession.DoctorProfessionPaginationResponse:
     properties:
@@ -1425,6 +1456,40 @@ definitions:
       status:
         type: boolean
     type: object
+  doctorProfession.GetDoctorProfessionDetailRes:
+    properties:
+      facilityOrProfession:
+        type: string
+      id:
+        type: string
+      information:
+        $ref: '#/definitions/doctorProfession.DoctorProfessionInformation'
+      personalDocuments:
+        $ref: '#/definitions/doctorProfession.PersonalDocuments'
+      professionalDetails:
+        $ref: '#/definitions/doctorProfession.ProfessionalDetails'
+      professionalDocuments:
+        $ref: '#/definitions/doctorProfession.ProfessionalDocuments'
+      profileId:
+        type: string
+      role:
+        type: string
+      schedule:
+        $ref: '#/definitions/careville_backend_dto_admin_services_doctorProfession.Schedule'
+      serviceStatus:
+        type: string
+      user:
+        $ref: '#/definitions/doctorProfession.User'
+    type: object
+  doctorProfession.GetDoctorProfessionDetailResDto:
+    properties:
+      data:
+        $ref: '#/definitions/doctorProfession.GetDoctorProfessionDetailRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   doctorProfession.GetDoctorProfessionPaginationRes:
     properties:
       data:
@@ -1476,6 +1541,40 @@ definitions:
       startTime:
         type: string
     type: object
+  doctorProfession.PersonalDocuments:
+    properties:
+      license:
+        type: string
+      nimc:
+        type: string
+    type: object
+  doctorProfession.ProfessionalDetails:
+    properties:
+      qualifications:
+        type: string
+      speciality:
+        type: string
+    type: object
+  doctorProfession.ProfessionalDocuments:
+    properties:
+      certificate:
+        type: string
+      license:
+        type: string
+    type: object
+  doctorProfession.Slots:
+    properties:
+      days:
+        items:
+          type: string
+        type: array
+      endTime:
+        type: string
+      id:
+        type: string
+      startTime:
+        type: string
+    type: object
   doctorProfession.UpcommingEvents:
     properties:
       endTime:
@@ -1484,6 +1583,17 @@ definitions:
         type: string
       startTime:
         type: string
+    type: object
+  doctorProfession.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        $ref: '#/definitions/careville_backend_dto_admin_services_doctorProfession.PhoneNumber'
     type: object
   fitnessCenter.AdditionalServices:
     properties:
@@ -5777,6 +5887,27 @@ paths:
       summary: get-pharmacy detail
       tags:
       - admin pharmacy
+  /admin/healthProfessional/get-doctor/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get-doctor detail
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/doctorProfession.GetDoctorProfessionDetailResDto'
+      summary: get-doctor detail
+      tags:
+      - admin hospitals
   /admin/healthProfessional/get-doctors:
     get:
       consumes:
@@ -6026,6 +6157,27 @@ paths:
       summary: Fetch Admin By ID
       tags:
       - admin authorization
+  /admin/profile/total-counts:
+    get:
+      consumes:
+      - application/json
+      description: Count the number of documents in various collections
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dashboard.GetAllCounts'
+      summary: Count All
+      tags:
+      - dashboard in admin pannel
   /admin/profile/update-admin-info:
     put:
       consumes:
@@ -6134,27 +6286,6 @@ paths:
       summary: Reset admin Password after OTP Verification
       tags:
       - admin authorization
-  /admin/total-counts:
-    get:
-      consumes:
-      - application/json
-      description: Count the number of documents in various collections
-      parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dashboard.GetAllCounts'
-      summary: Count All
-      tags:
-      - dashboard in admin pannel
   /admin/verify-otp:
     post:
       consumes:
