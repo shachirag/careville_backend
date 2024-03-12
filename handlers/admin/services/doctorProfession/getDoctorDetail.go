@@ -103,16 +103,17 @@ func GetDoctorDetail(c *fiber.Ctx) error {
 
 	var slotsData []doctorProfession.Slots
 	if service.Doctor != nil && len(service.Doctor.Schedule.Slots) > 0 {
-		scheduleData := make([]doctorProfession.Slots, 0)
 		for _, schedule := range service.Doctor.Schedule.Slots {
-			scheduleData = append(scheduleData, doctorProfession.Slots{
+			scheduleData := doctorProfession.Slots{
 				Id:        schedule.Id,
 				StartTime: schedule.StartTime,
 				EndTime:   schedule.EndTime,
 				Days:      schedule.Days,
-			})
+			}
+			slotsData = append(slotsData, scheduleData)
 		}
 	}
+	
 
 	var doctorImage string
 	var doctorName string

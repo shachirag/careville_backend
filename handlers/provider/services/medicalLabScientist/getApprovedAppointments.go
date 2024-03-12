@@ -39,7 +39,7 @@ func FetchMedicalLabScientistApprovedAppointmentsWithPagination(c *fiber.Ctx) er
 	filter := bson.M{
 		"role":                 "healthProfessional",
 		"facilityOrProfession": "medicalLabScientist",
-		"paymentStatus":        "success",
+		"paymentStatus":        "initiated",
 		"appointmentStatus":    "approved",
 		"serviceId":            providerData.ProviderId,
 	}
