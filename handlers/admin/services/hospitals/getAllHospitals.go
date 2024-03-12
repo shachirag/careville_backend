@@ -38,6 +38,7 @@ func FetchHospitalsWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "hospClinic",
+		"serviceStatus":        "approved",
 	}
 
 	projection := bson.M{

@@ -406,7 +406,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin hospitals"
+                    "admin doctorProfession"
                 ],
                 "summary": "get-doctor detail",
                 "parameters": [

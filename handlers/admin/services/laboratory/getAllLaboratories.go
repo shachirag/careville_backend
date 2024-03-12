@@ -38,6 +38,7 @@ func FetchLaboratoriesWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthFacility",
 		"facilityOrProfession": "laboratory",
+		"serviceStatus":        "approved",
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})

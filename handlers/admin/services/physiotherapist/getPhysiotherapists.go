@@ -38,6 +38,7 @@ func FetchPhysiotherapistWithPagination(c *fiber.Ctx) error {
 	filter := bson.M{
 		"role":                 "healthProfessional",
 		"facilityOrProfession": "physiotherapist",
+		"serviceStatus":        "approved",
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})

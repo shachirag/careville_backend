@@ -5907,7 +5907,7 @@ paths:
             $ref: '#/definitions/doctorProfession.GetDoctorProfessionDetailResDto'
       summary: get-doctor detail
       tags:
-      - admin hospitals
+      - admin doctorProfession
   /admin/healthProfessional/get-doctors:
     get:
       consumes:

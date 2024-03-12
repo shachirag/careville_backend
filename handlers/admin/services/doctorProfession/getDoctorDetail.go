@@ -15,7 +15,7 @@ import (
 
 // @Summary get-doctor detail
 // @Description get-doctor detail
-// @Tags admin hospitals
+// @Tags admin doctorProfession
 // @Accept application/json
 //
 //	@Param Authorization header	string true	"Authentication header"
