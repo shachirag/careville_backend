@@ -95,7 +95,7 @@ func VerifyOtpForLogin(c *fiber.Ctx) error {
 	token := jtoken.NewWithClaims(jtoken.SigningMethodHS256, claims)
 	_token, err := token.SignedString([]byte(_secret))
 	if err != nil {
-		return c.Status(400).JSON(providerAuth.LoginProviderResDto{
+		return c.Status(400).JSON(adminAuth.LoginAdminResDto{
 			Status:  false,
 			Message: "Token is not valid" + err.Error(),
 		})

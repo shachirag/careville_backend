@@ -41,7 +41,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 			Message: err.Error(),
 		})
 	}
-	
+
 	email := strings.ToLower(data.Email)
 	err = adminColl.FindOne(ctx, bson.M{"email": email}).Decode(&admin)
 	if err != nil {
@@ -71,7 +71,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 	otpData := entity.OtpEntity{
 		Id:        primitive.NewObjectID(),
 		Otp:       otp,
-		Email:     data.Email,
+		Email:     email,
 		CreatedAt: time.Now().UTC(),
 	}
 
