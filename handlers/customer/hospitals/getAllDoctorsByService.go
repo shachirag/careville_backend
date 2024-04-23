@@ -4,7 +4,8 @@ import (
 	"careville_backend/database"
 	hospitals "careville_backend/dto/customer/hospitals"
 	"careville_backend/entity"
-	"fmt"
+	helper "careville_backend/utils/helperFunctions"
+	"errors"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -78,35 +79,19 @@ func GetAllDoctors(c *fiber.Ctx) error {
 	}
 	if service.HospClinic != nil && len(service.HospClinic.Doctor) >= 1 {
 		for _, doctor := range service.HospClinic.Doctor {
-			nextAvailable := hospitals.NextAvailable{}
-
-			for _, schedule := range doctor.Schedule {
-				for _, breakingSlot := range schedule.BreakingSlots {
-					startTime, err := time.Parse("15:04", breakingSlot.StartTime)
-					if err != nil {
-						return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
-							Status:  false,
-							Message: "Invalid start time format",
-						})
-					}
-
-					startTimeUTC := startTime.UTC()
-
-					if startTimeUTC.After(time.Now()) {
-						nextAvailable.StartTime = startTimeUTC.Format("15:04")
-						nextAvailable.LastTime = breakingSlot.EndTime
-						break
-					}
-
-				}
-
+			nextAvailableSlots, _, err := GetDoctorNextAvailableDayAndSlots(doctor.Schedule)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(hospitals.DoctorResDto{
+					Status:  false,
+					Message: "Failed to get next available time slots",
+				})
 			}
 			doctorRes := hospitals.DoctorRes{
 				Id:            doctor.Id,
 				Name:          doctor.Name,
 				Image:         doctor.Image,
 				Speciality:    doctor.Speciality,
-				NextAvailable: nextAvailable,
+				NextAvailable: nextAvailableSlots,
 			}
 
 			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
@@ -115,33 +100,12 @@ func GetAllDoctors(c *fiber.Ctx) error {
 
 		if len(service.HospClinic.Doctor) == 1 {
 			doctor := service.HospClinic.Doctor[0]
-			nextAvailable := hospitals.NextAvailable{}
-
-			for _, schedule := range doctor.Schedule {
-				for _, breakingSlot := range schedule.BreakingSlots {
-					startTime, err := time.Parse("15:04", breakingSlot.StartTime)
-					if err != nil {
-						return c.Status(fiber.StatusBadRequest).JSON(hospitals.DoctorResDto{
-							Status:  false,
-							Message: "Invalid start time format",
-						})
-					}
-
-					startTimeUTC := startTime.UTC()
-
-					if startTimeUTC.After(time.Now()) {
-						nextAvailable.StartTime = startTimeUTC.Format("15:04")
-						nextAvailable.LastTime = breakingSlot.EndTime
-						break
-					}
-				}
-			}
 			doctorRes := hospitals.DoctorRes{
-				Id:            doctor.Id,
-				Name:          doctor.Name,
-				Image:         doctor.Image,
-				Speciality:    doctor.Speciality,
-				NextAvailable: nextAvailable,
+				Id:         doctor.Id,
+				Name:       doctor.Name,
+				Image:      doctor.Image,
+				Speciality: doctor.Speciality,
+				// NextAvailable: nextAvailable,
 			}
 
 			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
@@ -164,23 +128,67 @@ func GetAllDoctors(c *fiber.Ctx) error {
 	})
 }
 
-func stringToWeekday(day string) (time.Weekday, error) {
-	switch day {
-	case "Sunday":
-		return time.Sunday, nil
-	case "Monday":
-		return time.Monday, nil
-	case "Tuesday":
-		return time.Tuesday, nil
-	case "Wednesday":
-		return time.Wednesday, nil
-	case "Thursday":
-		return time.Thursday, nil
-	case "Friday":
-		return time.Friday, nil
-	case "Saturday":
-		return time.Saturday, nil
-	default:
-		return time.Sunday, fmt.Errorf("invalid day: %s", day)
+func GetDoctorNextAvailableDayAndSlots(schedules []entity.Schedule) (hospitals.NextAvailable, []entity.Schedule, error) {
+	currentTime := time.Now().UTC()
+	var nextAvailable hospitals.NextAvailable
+
+	for _, schedule := range schedules {
+		if !HasBreakingSlots(schedule.BreakingSlots) {
+			for _, slot := range schedule.BreakingSlots {
+				if helper.ContainsDay(schedule.Days, currentTime.Weekday().String()) && helper.DayAfterCurrentDay(schedule.Days[0], currentTime) {
+					continue
+				}
+				for _, day := range schedule.Days {
+					if helper.DayAfterCurrentDay(day, currentTime) {
+						nextAvailable.StartTime = slot.StartTime
+						return nextAvailable, []entity.Schedule{schedule}, nil
+					}
+				}
+			}
+		} else {
+			nextAvailable.StartTime = GetUpcomingStartAndLastTime(schedules)
+			if nextAvailable.StartTime != "" {
+				return nextAvailable, []entity.Schedule{schedule}, nil
+			}
+		}
 	}
+
+	return nextAvailable, nil, errors.New("no next available slot found")
+}
+
+func HasBreakingSlots(slots []entity.BreakingSlots) bool {
+	for _, slot := range slots {
+		startTime, _ := time.Parse("15:04", slot.StartTime)
+		endTime, _ := time.Parse("15:04", slot.EndTime)
+		currentTime := time.Now().UTC()
+
+		if currentTime.After(startTime) && currentTime.Before(endTime) {
+			return true
+		}
+	}
+	return false
+}
+
+func GetUpcomingStartAndLastTime(slots []entity.Schedule) string {
+	var upcomingStartTime string
+	currentTime := time.Now().UTC()
+
+	for _, slot := range slots {
+		// Check if the slot is for the current day or later
+		if helper.ContainsDay(slot.Days, currentTime.Weekday().String()) && helper.DayAfterCurrentDay(slot.Days[0], currentTime) {
+			// Check if the slot's start time is after the current time
+			slotStartTime, err := time.Parse("15:04", slot.StartTime)
+			if err != nil {
+				continue // Skip this slot if parsing fails
+			}
+			if slotStartTime.After(currentTime) {
+				// Update upcomingStartTime if it's empty or later than the current slot's start time
+				if upcomingStartTime == "" || slot.StartTime < upcomingStartTime {
+					upcomingStartTime = slot.StartTime
+				}
+			}
+		}
+	}
+
+	return upcomingStartTime
 }

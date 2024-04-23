@@ -72,14 +72,6 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
 
-	// projection := bson.M{
-	// 	"medicalLabScientist.information.name":  1,
-	// 	"medicalLabScientist.information.image": 1,
-	// 	"_id":                                   1,
-	// }
-
-	// findOptions := options.Find().SetProjection(projection)
-
 	cursor, err := serviceColl.Find(ctx, filter, sortOptions)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.GetMedicalLabScientistResponseDto{

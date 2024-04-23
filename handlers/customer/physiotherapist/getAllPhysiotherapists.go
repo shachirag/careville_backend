@@ -4,8 +4,8 @@ import (
 	"careville_backend/database"
 	"careville_backend/dto/customer/nurse"
 	physiotherapist "careville_backend/dto/customer/physiotherapist"
-	helper "careville_backend/utils/helperFunctions"
 	"careville_backend/entity"
+	helper "careville_backend/utils/helperFunctions"
 	"context"
 	"errors"
 	"strconv"
@@ -86,15 +86,7 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
 
-	projection := bson.M{
-		"physiotherapist.information.name":  1,
-		"physiotherapist.information.image": 1,
-		"_id":                               1,
-	}
-
-	findOptions := options.Find().SetProjection(projection)
-
-	cursor, err := serviceColl.Find(ctx, filter, sortOptions, findOptions)
+	cursor, err := serviceColl.Find(ctx, filter, sortOptions)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.GetPhysiotherapistResponseDto{
 			Status:  false,
@@ -113,15 +105,14 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 			})
 		}
 
-		nextAvailableSlots, _, err := GetPhysiotherapistNextAvailableDayAndSlots(physiotherapist1.Physiotherapist.ServiceAndSchedule)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
-				Status:  false,
-				Message: "Failed to get next available time slots",
-			})
-		}
-
 		if physiotherapist1.Physiotherapist != nil {
+			nextAvailableSlots, _, err := GetPhysiotherapistNextAvailableDayAndSlots(physiotherapist1.Physiotherapist.ServiceAndSchedule)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
+					Status:  false,
+					Message: "Failed to get next available time slots",
+				})
+			}
 			physiotherapistData = append(physiotherapistData, physiotherapist.GetPhysiotherapistRes{
 				Id:            physiotherapist1.Id,
 				Image:         physiotherapist1.Physiotherapist.Information.Image,
