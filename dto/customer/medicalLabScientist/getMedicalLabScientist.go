@@ -12,7 +12,7 @@ type GetMedicalLabScientistRes struct {
 
 type NextAvailable struct {
 	StartTime string `json:"startTime" bson:"startTime"`
-	LastTime  string `json:"lastTime" bson:"lastTime"`
+	// LastTime  string `json:"lastTime" bson:"lastTime"`
 }
 
 type GetMedicalLabScientistResponseDto struct {

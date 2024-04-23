@@ -77,7 +77,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	healthFacility.Post("/add-laboratory-review", laboratory.AddLaboratoryReview)
 
 	healthProfessional := customer.Group("/healthProfessional")
-	healthProfessional.Use(jwt, middlewares.CustomerData)
+	// healthProfessional.Use(jwt, middlewares.CustomerData)
 	healthProfessional.Get("/get-health-professionals", common.GetHealthProfessionals)
 	healthProfessional.Post("/add-physiotherapist-appointment", physiotherapist.AddPhysiotherapistAppointment)
 	healthProfessional.Get("/get-physiotherapists", physiotherapist.GetPhysiotherapists)

@@ -2,10 +2,14 @@ package physiotherapist
 
 import (
 	"careville_backend/database"
+	"careville_backend/dto/customer/nurse"
 	physiotherapist "careville_backend/dto/customer/physiotherapist"
+	helper "careville_backend/utils/helperFunctions"
 	"careville_backend/entity"
 	"context"
+	"errors"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -108,16 +112,22 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 				Message: "Failed to decode physiotherapist data: " + err.Error(),
 			})
 		}
+
+		nextAvailableSlots, _, err := GetPhysiotherapistNextAvailableDayAndSlots(physiotherapist1.Physiotherapist.ServiceAndSchedule)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
+				Status:  false,
+				Message: "Failed to get next available time slots",
+			})
+		}
+
 		if physiotherapist1.Physiotherapist != nil {
 			physiotherapistData = append(physiotherapistData, physiotherapist.GetPhysiotherapistRes{
-				Id:          physiotherapist1.Id,
-				Image:       physiotherapist1.Physiotherapist.Information.Image,
-				Name:        physiotherapist1.Physiotherapist.Information.Name,
-				ServiceType: "Physiotherapist",
-				NextAvailable: physiotherapist.NextAvailable{
-					StartTime: "",
-					LastTime:  "",
-				},
+				Id:            physiotherapist1.Id,
+				Image:         physiotherapist1.Physiotherapist.Information.Image,
+				Name:          physiotherapist1.Physiotherapist.Information.Name,
+				ServiceType:   "Physiotherapist",
+				NextAvailable: nextAvailableSlots,
 			})
 		}
 	}
@@ -134,4 +144,33 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 		Message: "Successfully fetched physiotherapists data.",
 		Data:    physiotherapistData,
 	})
+}
+
+func GetPhysiotherapistNextAvailableDayAndSlots(schedules []entity.ServiceAndSchedule) (physiotherapist.NextAvailable, []entity.ServiceAndSchedule, error) {
+	currentTime := time.Now().UTC()
+	var nextAvailable physiotherapist.NextAvailable
+	// fmt.Println("Length of schedules:", len(schedules))
+	for _, schedule := range schedules {
+		if !helper.HasBreakingSlots(schedule.Slots) {
+
+			for _, slot := range schedule.Slots {
+				if helper.ContainsDay(slot.Days, currentTime.Weekday().String()) && helper.DayAfterCurrentDay(slot.Days[0], currentTime) {
+					continue
+				}
+				for _, day := range slot.Days {
+					if helper.DayAfterCurrentDay(day, currentTime) {
+						nextAvailable.StartTime = slot.StartTime
+						return nextAvailable, []entity.ServiceAndSchedule{schedule}, nil
+					}
+				}
+			}
+		} else {
+			nextAvailable.StartTime = helper.GetUpcomingStartAndLastTime(schedule.Slots)
+			if nextAvailable.StartTime != "" {
+				return nextAvailable, []entity.ServiceAndSchedule{schedule}, nil
+			}
+		}
+	}
+
+	return nextAvailable, nil, errors.New("no next available slot found")
 }

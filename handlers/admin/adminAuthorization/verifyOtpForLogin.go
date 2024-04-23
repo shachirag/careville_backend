@@ -3,7 +3,6 @@ package adminAuth
 import (
 	"careville_backend/database"
 	"careville_backend/dto/admin/adminAuth"
-	"careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
 	"os"
 	"strings"
