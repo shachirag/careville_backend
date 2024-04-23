@@ -79,7 +79,7 @@ func GetAllDoctors(c *fiber.Ctx) error {
 	if service.HospClinic != nil && len(service.HospClinic.Doctor) >= 1 {
 		for _, doctor := range service.HospClinic.Doctor {
 			nextAvailable := hospitals.NextAvailable{}
-	
+
 			for _, schedule := range doctor.Schedule {
 				for _, breakingSlot := range schedule.BreakingSlots {
 					startTime, err := time.Parse("15:04", breakingSlot.StartTime)
@@ -89,17 +89,17 @@ func GetAllDoctors(c *fiber.Ctx) error {
 							Message: "Invalid start time format",
 						})
 					}
-	
+
 					startTimeUTC := startTime.UTC()
-	
+
 					if startTimeUTC.After(time.Now()) {
 						nextAvailable.StartTime = startTimeUTC.Format("15:04")
 						nextAvailable.LastTime = breakingSlot.EndTime
 						break
 					}
-	
+
 				}
-	
+
 			}
 			doctorRes := hospitals.DoctorRes{
 				Id:            doctor.Id,
@@ -108,7 +108,7 @@ func GetAllDoctors(c *fiber.Ctx) error {
 				Speciality:    doctor.Speciality,
 				NextAvailable: nextAvailable,
 			}
-	
+
 			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 		}
 	} else {
@@ -116,7 +116,7 @@ func GetAllDoctors(c *fiber.Ctx) error {
 		if len(service.HospClinic.Doctor) == 1 {
 			doctor := service.HospClinic.Doctor[0]
 			nextAvailable := hospitals.NextAvailable{}
-	
+
 			for _, schedule := range doctor.Schedule {
 				for _, breakingSlot := range schedule.BreakingSlots {
 					startTime, err := time.Parse("15:04", breakingSlot.StartTime)
@@ -126,9 +126,9 @@ func GetAllDoctors(c *fiber.Ctx) error {
 							Message: "Invalid start time format",
 						})
 					}
-	
+
 					startTimeUTC := startTime.UTC()
-	
+
 					if startTimeUTC.After(time.Now()) {
 						nextAvailable.StartTime = startTimeUTC.Format("15:04")
 						nextAvailable.LastTime = breakingSlot.EndTime
@@ -143,7 +143,7 @@ func GetAllDoctors(c *fiber.Ctx) error {
 				Speciality:    doctor.Speciality,
 				NextAvailable: nextAvailable,
 			}
-	
+
 			doctorsBySpeciality[doctor.Speciality] = append(doctorsBySpeciality[doctor.Speciality], doctorRes)
 		}
 	}
