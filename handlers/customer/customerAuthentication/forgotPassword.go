@@ -4,7 +4,6 @@ import (
 	"careville_backend/database"
 	customerAuth "careville_backend/dto/customer/customerAuth"
 	"careville_backend/entity"
-	"careville_backend/utils"
 	"strings"
 	"time"
 
@@ -25,9 +24,9 @@ import (
 func ForgotPassword(c *fiber.Ctx) error {
 	var (
 		customerColl = database.GetCollection("customer")
-		otpColl     = database.GetCollection("otp")
-		data        customerAuth.CustomerForgotPasswordReqDto
-		customer    entity.CustomerEntity
+		otpColl      = database.GetCollection("otp")
+		data         customerAuth.CustomerForgotPasswordReqDto
+		customer     entity.CustomerEntity
 	)
 
 	// Parsing the request body
@@ -59,7 +58,8 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	// Generate 6-digit OTP
-	otp := utils.Generate6DigitOtp()
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	// Store the OTP in the forgotPassword collection
 	otpData := entity.OtpEntity{
@@ -77,13 +77,13 @@ func ForgotPassword(c *fiber.Ctx) error {
 		})
 	}
 
-	_, err = utils.SendEmailForPassword(data.Email, otp)
-	if err != nil {
-		return c.Status(500).JSON(customerAuth.CustomerPasswordResDto{
-			Status:  false,
-			Message: "Internal server error, while sending email: " + err.Error(),
-		})
-	}
+	// _, err = utils.SendEmailForPassword(data.Email, otp)
+	// if err != nil {
+	// 	return c.Status(500).JSON(customerAuth.CustomerPasswordResDto{
+	// 		Status:  false,
+	// 		Message: "Internal server error, while sending email: " + err.Error(),
+	// 	})
+	// }
 
 	return c.Status(200).JSON(customerAuth.CustomerPasswordResDto{
 		Status:  true,

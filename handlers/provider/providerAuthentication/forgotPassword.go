@@ -4,7 +4,6 @@ import (
 	"careville_backend/database"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
-	"careville_backend/utils"
 	"strings"
 	"time"
 
@@ -59,7 +58,8 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	// Generate 6-digit OTP
-	otp := utils.Generate6DigitOtp()
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	// Store the OTP in the forgotPassword collection
 	otpData := entity.OtpEntity{
@@ -78,13 +78,13 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	// Sending email to the recipient with the OTP
-	_, err = utils.SendEmailForPassword(data.Email, otp)
-	if err != nil {
-		return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
-			Status:  false,
-			Message: "Internal server error, while sending email: " + err.Error(),
-		})
-	}
+	// _, err = utils.SendEmailForPassword(data.Email, otp)
+	// if err != nil {
+	// 	return c.Status(500).JSON(providerAuth.ProviderPasswordResDto{
+	// 		Status:  false,
+	// 		Message: "Internal server error, while sending email: " + err.Error(),
+	// 	})
+	// }
 
 	return c.Status(200).JSON(providerAuth.ProviderPasswordResDto{
 		Status:  true,

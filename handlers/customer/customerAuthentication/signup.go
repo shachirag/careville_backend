@@ -4,7 +4,6 @@ import (
 	"careville_backend/database"
 	"careville_backend/dto/customer/customerAuth"
 	"careville_backend/entity"
-	"careville_backend/utils"
 	"strings"
 	"time"
 
@@ -79,7 +78,8 @@ func SignupCustomer(c *fiber.Ctx) error {
 
 	smallEmail := strings.ToLower(data.Email)
 
-	otp := utils.Generate6DigitOtp()
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	otpData := entity.OtpEntity{
 		Id:        primitive.NewObjectID(),
@@ -96,13 +96,13 @@ func SignupCustomer(c *fiber.Ctx) error {
 		})
 	}
 
-	_, err = utils.SendEmail(data.Email, otp)
-	if err != nil {
-		return c.Status(500).JSON(customerAuth.CustomerResponseDto{
-			Status:  false,
-			Message: "failed to send OTP email: " + err.Error(),
-		})
-	}
+	// _, err = utils.SendEmail(data.Email, otp)
+	// if err != nil {
+	// 	return c.Status(500).JSON(customerAuth.CustomerResponseDto{
+	// 		Status:  false,
+	// 		Message: "failed to send OTP email: " + err.Error(),
+	// 	})
+	// }
 
 	return c.Status(fiber.StatusOK).JSON(customerAuth.CustomerResponseDto{
 		Status:  true,

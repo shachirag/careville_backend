@@ -4,7 +4,6 @@ import (
 	"careville_backend/database"
 	providerAuth "careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
-	"careville_backend/utils"
 	"context"
 	"strings"
 	"time"
@@ -83,7 +82,8 @@ func SignupProvider(c *fiber.Ctx) error {
 	smallEmail := strings.ToLower(data.Email)
 
 	// Generate a 6-digit OTP
-	otp := utils.Generate6DigitOtp()
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	// Store the OTP in the forgotPassword collection
 	otpData := entity.OtpEntity{
@@ -101,13 +101,13 @@ func SignupProvider(c *fiber.Ctx) error {
 		})
 	}
 	// Send OTP to the provided email
-	_, err = utils.SendEmail(data.Email, otp)
-	if err != nil {
-		return c.Status(500).JSON(providerAuth.ProviderResponseDto{
-			Status:  false,
-			Message: "failed to send OTP email: " + err.Error(),
-		})
-	}
+	// _, err = utils.SendEmail(data.Email, otp)
+	// if err != nil {
+	// 	return c.Status(500).JSON(providerAuth.ProviderResponseDto{
+	// 		Status:  false,
+	// 		Message: "failed to send OTP email: " + err.Error(),
+	// 	})
+	// }
 
 	return c.Status(fiber.StatusOK).JSON(providerAuth.ProviderResponseDto{
 		Status:  true,
