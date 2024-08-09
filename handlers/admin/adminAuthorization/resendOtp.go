@@ -55,7 +55,8 @@ func ResendOTP(c *fiber.Ctx) error {
 	newOTP := utils.Generate6DigitOtp()
 
 	// Update the existing OTP with the new OTP and reset the creation time
-	otpData.Otp = newOTP
+	otpData.Otp = "111111"
+	// otpData.Otp = newOTP
 	otpData.CreatedAt = time.Now().UTC()
 
 	update := bson.M{"$set": bson.M{"otp": newOTP, "createdAt": otpData.CreatedAt}}

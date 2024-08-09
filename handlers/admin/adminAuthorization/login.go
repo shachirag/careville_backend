@@ -67,7 +67,8 @@ func LoginAdmin(c *fiber.Ctx) error {
 		})
 	}
 
-	otp := utils.Generate6DigitOtp()
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 	otpData := entity.OtpEntity{
 		Id:        primitive.NewObjectID(),
 		Otp:       otp,

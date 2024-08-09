@@ -83,8 +83,8 @@ func SignupProvider(c *fiber.Ctx) error {
 	smallEmail := strings.ToLower(data.Email)
 
 	// Generate a 6-digit OTP
-	otp := utils.Generate6DigitOtp()
-	// otp := "111111"
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	// Store the OTP in the forgotPassword collection
 	otpData := entity.OtpEntity{

@@ -59,7 +59,8 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	// Generate 6-digit OTP
-	otp := utils.Generate6DigitOtp()
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	// Store the OTP in the forgotPassword collection
 	otpData := entity.OtpEntity{

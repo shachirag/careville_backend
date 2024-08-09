@@ -79,8 +79,8 @@ func SignupCustomer(c *fiber.Ctx) error {
 
 	smallEmail := strings.ToLower(data.Email)
 
-	otp := utils.Generate6DigitOtp()
-	// otp := "111111"
+	// otp := utils.Generate6DigitOtp()
+	otp := "111111"
 
 	otpData := entity.OtpEntity{
 		Id:        primitive.NewObjectID(),
