@@ -15,7 +15,7 @@ type CustomerEntity struct {
 	PhoneNumber   PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
 	Address       Address            `json:"address" bson:"address"`
 	Notification  Notification       `json:"notification" bson:"notification"`
-	FamilyMembers []FamilyMembers    `json:"familyMembers,omitempty" bson:"familyMembers,omitempty"`
+	FamilyMembers []FamilyMembers    `json:"familyMembers" bson:"familyMembers"`
 	Password      string             `json:"password" bson:"password"`
 	Sex           string             `json:"sex" bson:"sex"`
 	Age           string             `json:"age" bson:"age"`

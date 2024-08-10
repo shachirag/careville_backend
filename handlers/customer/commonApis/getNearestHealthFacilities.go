@@ -156,7 +156,7 @@ func getFacilitiesByLocation(facilityOrProfession string, addressFieldKey string
 		}
 	}
 	if searchQuery != "" {
-		filter[searchFieldKey] = searchQuery
+		filter[searchFieldKey] = bson.M{"$regex": searchQuery, "$options": "i"}
 	}
 	limit := int64(5)
 

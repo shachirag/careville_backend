@@ -52,7 +52,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	customerProfile.Put("/edit-customer-info", customerAuth.UpdateCustomer)
 
 	healthFacility := customer.Group("/healthFacility")
-	// healthFacility.Use(jwt, middlewares.CustomerData)
+	healthFacility.Use(jwt, middlewares.CustomerData)
 	healthFacility.Get("/get-health-facilities", common.GetHealthFacilties)
 	healthFacility.Post("/add-hospClinic-appointment", hospitals.AddHospClinicAppointment)
 	healthFacility.Get("/get-hospitals", hospitals.GetHospitals)

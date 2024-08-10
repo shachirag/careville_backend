@@ -9,7 +9,7 @@ import (
 type EmergencyEntity struct {
 	ID                   primitive.ObjectID       `json:"id" bson:"_id"`
 	Doctor               *DoctorEmergencyEntity   `json:"doctor,omitempty" bson:"doctor,omitempty"`
-	Hospital             *HospitalEmergencyEntity `json:"hospital" bson:"hospital"`
+	Hospital             *HospitalEmergencyEntity `json:"hospital,omitempty" bson:"hospital,omitempty"`
 	Price                PriceEmergencyEntity     `json:"price" bson:"price"`
 	Type                 string                   `json:"type" bson:"type"`
 	Customer             CustomerEmergencyEntity  `json:"customer" bson:"customer"`
