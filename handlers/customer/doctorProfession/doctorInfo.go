@@ -3,6 +3,7 @@ package doctorProfession
 import (
 	"careville_backend/database"
 	"careville_backend/dto/customer/doctorProfession"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,6 +34,25 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid doctorProfession ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.GetDoctorProfessionResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": doctorProfessionID}
@@ -88,15 +108,16 @@ func GetDoctorProfessionByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "Doctor data fetched successfully",
 		Data: doctorProfession.DoctorProfessionResponse{
-			Id:               doctorProfessionData.Id,
-			Image:            doctorProfessionData.Doctor.Information.Image,
-			Name:             doctorProfessionData.Doctor.Information.Name,
-			Speciality:       doctorProfessionData.Doctor.AdditionalServices.Speciality,
-			AboutMe:          doctorProfessionData.Doctor.Information.AdditionalText,
-			ConsultationFees: doctorProfessionData.Doctor.Schedule.ConsultationFees,
-			DoctorSchedule:   scheduleData,
-			TotalReviews:     doctorProfessionData.Doctor.Review.TotalReviews,
-			AvgRating:        doctorProfessionData.Doctor.Review.AvgRating,
+			Id:                     doctorProfessionData.Id,
+			Image:                  doctorProfessionData.Doctor.Information.Image,
+			Name:                   doctorProfessionData.Doctor.Information.Name,
+			Speciality:             doctorProfessionData.Doctor.AdditionalServices.Speciality,
+			AboutMe:                doctorProfessionData.Doctor.Information.AdditionalText,
+			ConsultationFees:       doctorProfessionData.Doctor.Schedule.ConsultationFees,
+			DoctorSchedule:         scheduleData,
+			TotalReviews:           doctorProfessionData.Doctor.Review.TotalReviews,
+			AvgRating:              doctorProfessionData.Doctor.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 

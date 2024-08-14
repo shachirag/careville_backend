@@ -2,6 +2,7 @@ package nurse
 
 import (
 	"careville_backend/database"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/dto/customer/nurse"
 	"careville_backend/entity"
 
@@ -33,6 +34,25 @@ func GetNurseByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid nurse ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": nurseID}
@@ -96,13 +116,14 @@ func GetNurseByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "Nurse data fetched successfully",
 		Data: nurse.NurseResponse{
-			Id:                 nurseData.Id,
-			Image:              nurseData.Nurse.Information.Image,
-			Name:               nurseData.Nurse.Information.Name,
-			AboutMe:            nurseData.Nurse.Information.AdditionalText,
-			ServiceAndSchedule: scheduleData,
-			TotalReviews:       nurseData.Nurse.Review.TotalReviews,
-			AvgRating:          nurseData.Nurse.Review.AvgRating,
+			Id:                     nurseData.Id,
+			Image:                  nurseData.Nurse.Information.Image,
+			Name:                   nurseData.Nurse.Information.Name,
+			AboutMe:                nurseData.Nurse.Information.AdditionalText,
+			ServiceAndSchedule:     scheduleData,
+			TotalReviews:           nurseData.Nurse.Review.TotalReviews,
+			AvgRating:              nurseData.Nurse.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 

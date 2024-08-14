@@ -11270,6 +11270,9 @@ const docTemplate = `{
                 "image": {
                     "type": "string"
                 },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -11810,6 +11813,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -12496,9 +12502,6 @@ const docTemplate = `{
         "hospitals.NextAvailable": {
             "type": "object",
             "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
                 "startTime": {
                     "type": "string"
                 }
@@ -12951,6 +12954,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/careville_backend_dto_customer_laboratories.Investigations"
                     }
                 },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -13337,6 +13343,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -13771,9 +13780,6 @@ const docTemplate = `{
         "nurse.NextAvailable": {
             "type": "object",
             "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
                 "startTime": {
                     "type": "string"
                 }
@@ -13917,6 +13923,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -14650,9 +14659,6 @@ const docTemplate = `{
         "physiotherapist.NextAvailable": {
             "type": "object",
             "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
                 "startTime": {
                     "type": "string"
                 }
@@ -14818,6 +14824,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

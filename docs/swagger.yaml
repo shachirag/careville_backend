@@ -1373,6 +1373,8 @@ definitions:
         type: string
       image:
         type: string
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       schedule:
@@ -1724,6 +1726,8 @@ definitions:
         type: string
       image:
         type: string
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       totalReviews:
@@ -2168,8 +2172,6 @@ definitions:
     type: object
   hospitals.NextAvailable:
     properties:
-      lastTime:
-        type: string
       startTime:
         type: string
     type: object
@@ -2463,6 +2465,8 @@ definitions:
         items:
           $ref: '#/definitions/careville_backend_dto_customer_laboratories.Investigations'
         type: array
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       totalReviews:
@@ -2714,6 +2718,8 @@ definitions:
         type: string
       image:
         type: string
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       serviceAndSchedule:
@@ -2994,8 +3000,6 @@ definitions:
     type: object
   nurse.NextAvailable:
     properties:
-      lastTime:
-        type: string
       startTime:
         type: string
     type: object
@@ -3090,6 +3094,8 @@ definitions:
         type: string
       image:
         type: string
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       serviceAndSchedule:
@@ -3564,8 +3570,6 @@ definitions:
     type: object
   physiotherapist.NextAvailable:
     properties:
-      lastTime:
-        type: string
       startTime:
         type: string
     type: object
@@ -3674,6 +3678,8 @@ definitions:
         type: string
       image:
         type: string
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       serviceAndSchedule:

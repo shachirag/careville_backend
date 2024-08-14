@@ -3,6 +3,7 @@ package laboratory
 import (
 	"careville_backend/database"
 	laboratory "careville_backend/dto/customer/laboratories"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,6 +34,25 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid laboratory ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.GetLaboratoryResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": laboratoryID}
@@ -91,14 +111,15 @@ func GetLaboratoryByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "Laboratory data fetched successfully",
 		Data: laboratory.LaboratoryResponse{
-			Id:             laboratoryData.Id,
-			Image:          laboratoryData.Laboratory.Information.Image,
-			Name:           laboratoryData.Laboratory.Information.Name,
-			AboutUs:        laboratoryData.Laboratory.Information.AdditionalText,
-			Address:        laboratory.Address(laboratoryData.Laboratory.Information.Address),
-			Investigations: investigationData,
-			TotalReviews:   laboratoryData.Laboratory.Review.TotalReviews,
-			AvgRating:      laboratoryData.Laboratory.Review.AvgRating,
+			Id:                     laboratoryData.Id,
+			Image:                  laboratoryData.Laboratory.Information.Image,
+			Name:                   laboratoryData.Laboratory.Information.Name,
+			AboutUs:                laboratoryData.Laboratory.Information.AdditionalText,
+			Address:                laboratory.Address(laboratoryData.Laboratory.Information.Address),
+			Investigations:         investigationData,
+			TotalReviews:           laboratoryData.Laboratory.Review.TotalReviews,
+			AvgRating:              laboratoryData.Laboratory.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 

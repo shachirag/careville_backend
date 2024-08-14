@@ -11263,6 +11263,9 @@
                 "image": {
                     "type": "string"
                 },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -11803,6 +11806,9 @@
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -12489,9 +12495,6 @@
         "hospitals.NextAvailable": {
             "type": "object",
             "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
                 "startTime": {
                     "type": "string"
                 }
@@ -12944,6 +12947,9 @@
                         "$ref": "#/definitions/careville_backend_dto_customer_laboratories.Investigations"
                     }
                 },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -13330,6 +13336,9 @@
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -13764,9 +13773,6 @@
         "nurse.NextAvailable": {
             "type": "object",
             "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
                 "startTime": {
                     "type": "string"
                 }
@@ -13910,6 +13916,9 @@
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -14643,9 +14652,6 @@
         "physiotherapist.NextAvailable": {
             "type": "object",
             "properties": {
-                "lastTime": {
-                    "type": "string"
-                },
                 "startTime": {
                     "type": "string"
                 }
@@ -14811,6 +14817,9 @@
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

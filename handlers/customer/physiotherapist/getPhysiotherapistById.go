@@ -2,6 +2,7 @@ package physiotherapist
 
 import (
 	"careville_backend/database"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	physiotherapist "careville_backend/dto/customer/physiotherapist"
 	"careville_backend/entity"
 
@@ -33,6 +34,25 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid physiotherapist ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(physiotherapist.GetPhysiotherapistResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": physiotherapistID}
@@ -97,13 +117,14 @@ func GetPhysiotherapistByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "Physiotherapist data fetched successfully",
 		Data: physiotherapist.PhysiotherapistResponse{
-			Id:                 physiotherapistData.Id,
-			Image:              physiotherapistData.Physiotherapist.Information.Image,
-			Name:               physiotherapistData.Physiotherapist.Information.Name,
-			AboutMe:            physiotherapistData.Physiotherapist.Information.AdditionalText,
-			ServiceAndSchedule: scheduleData,
-			TotalReviews:       physiotherapistData.Physiotherapist.Review.TotalReviews,
-			AvgRating:          physiotherapistData.Physiotherapist.Review.AvgRating,
+			Id:                     physiotherapistData.Id,
+			Image:                  physiotherapistData.Physiotherapist.Information.Image,
+			Name:                   physiotherapistData.Physiotherapist.Information.Name,
+			AboutMe:                physiotherapistData.Physiotherapist.Information.AdditionalText,
+			ServiceAndSchedule:     scheduleData,
+			TotalReviews:           physiotherapistData.Physiotherapist.Review.TotalReviews,
+			AvgRating:              physiotherapistData.Physiotherapist.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 

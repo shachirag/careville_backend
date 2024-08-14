@@ -9,15 +9,16 @@ type GetDoctorProfessionResDto struct {
 }
 
 type DoctorProfessionResponse struct {
-	Id               primitive.ObjectID `json:"id" bson:"_id"`
-	Image            string             `json:"image" bson:"image"`
-	Name             string             `json:"name" bson:"name"`
-	Speciality       string             `json:"speciality" bson:"speciality"`
-	AboutMe          string             `json:"aboutMe" bson:"aboutMe"`
-	ConsultationFees float64            `json:"consultationFees" bson:"consultationFees"`
-	TotalReviews     int32              `json:"totalReviews" bson:"totalReviews"`
-	AvgRating        float64            `json:"avgRating" bson:"avgRating"`
-	DoctorSchedule   []DoctorSchedule   `json:"schedule" bson:"schedule"`
+	Id                     primitive.ObjectID `json:"id" bson:"_id"`
+	Image                  string             `json:"image" bson:"image"`
+	Name                   string             `json:"name" bson:"name"`
+	Speciality             string             `json:"speciality" bson:"speciality"`
+	AboutMe                string             `json:"aboutMe" bson:"aboutMe"`
+	ConsultationFees       float64            `json:"consultationFees" bson:"consultationFees"`
+	TotalReviews           int32              `json:"totalReviews" bson:"totalReviews"`
+	AvgRating              float64            `json:"avgRating" bson:"avgRating"`
+	DoctorSchedule         []DoctorSchedule   `json:"schedule" bson:"schedule"`
+	IsCustomerFamilyMember bool               `json:"isCustomerFamilyMember" bson:"isCustomerFamilyMember"`
 }
 
 type DoctorSchedule struct {

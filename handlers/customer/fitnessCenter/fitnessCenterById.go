@@ -3,6 +3,7 @@ package fitnessCenter
 import (
 	"careville_backend/database"
 	"careville_backend/dto/customer/fitnessCenter"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,6 +34,25 @@ func GetFitnessCenterByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid fitnessCenter ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fitnessCenter.GetFitnessCenterResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": fitnessCenterID}
@@ -87,14 +107,15 @@ func GetFitnessCenterByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "FitnessCenter data fetched successfully",
 		Data: fitnessCenter.FitnessCenterResponse{
-			Id:                 fitnessCenterData.Id,
-			Image:              fitnessCenterData.FitnessCenter.Information.Image,
-			Name:               fitnessCenterData.FitnessCenter.Information.Name,
-			AboutUs:            fitnessCenterData.FitnessCenter.Information.AdditionalText,
-			Address:            fitnessCenter.Address(fitnessCenterData.FitnessCenter.Information.Address),
-			AdditionalServices: servicesData,
-			TotalReviews:       fitnessCenterData.FitnessCenter.Review.TotalReviews,
-			AvgRating:          fitnessCenterData.FitnessCenter.Review.AvgRating,
+			Id:                     fitnessCenterData.Id,
+			Image:                  fitnessCenterData.FitnessCenter.Information.Image,
+			Name:                   fitnessCenterData.FitnessCenter.Information.Name,
+			AboutUs:                fitnessCenterData.FitnessCenter.Information.AdditionalText,
+			Address:                fitnessCenter.Address(fitnessCenterData.FitnessCenter.Information.Address),
+			AdditionalServices:     servicesData,
+			TotalReviews:           fitnessCenterData.FitnessCenter.Review.TotalReviews,
+			AvgRating:              fitnessCenterData.FitnessCenter.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 

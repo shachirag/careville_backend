@@ -3,6 +3,7 @@ package medicalLabScientist
 import (
 	"careville_backend/database"
 	medicalLabScientist "careville_backend/dto/customer/medicalLabScientist"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
 	"fmt"
 
@@ -34,6 +35,25 @@ func GetMedicalLabScientistByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid medicalLabScientist ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.GetMedicalLabScientistResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": medicalLabScientistID}
@@ -98,13 +118,14 @@ func GetMedicalLabScientistByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "MedicalLabScientist data fetched successfully",
 		Data: medicalLabScientist.MedicalLabScientistResponse{
-			Id:                 medicalLabScientistData.Id,
-			Image:              medicalLabScientistData.MedicalLabScientist.Information.Image,
-			Name:               medicalLabScientistData.MedicalLabScientist.Information.Name,
-			AboutMe:            medicalLabScientistData.MedicalLabScientist.Information.AdditionalText,
-			ServiceAndSchedule: scheduleData,
-			TotalReviews:       medicalLabScientistData.MedicalLabScientist.Review.TotalReviews,
-			AvgRating:          medicalLabScientistData.MedicalLabScientist.Review.AvgRating,
+			Id:                     medicalLabScientistData.Id,
+			Image:                  medicalLabScientistData.MedicalLabScientist.Information.Image,
+			Name:                   medicalLabScientistData.MedicalLabScientist.Information.Name,
+			AboutMe:                medicalLabScientistData.MedicalLabScientist.Information.AdditionalText,
+			ServiceAndSchedule:     scheduleData,
+			TotalReviews:           medicalLabScientistData.MedicalLabScientist.Review.TotalReviews,
+			AvgRating:              medicalLabScientistData.MedicalLabScientist.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 

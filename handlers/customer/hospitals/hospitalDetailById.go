@@ -3,6 +3,7 @@ package hospitals
 import (
 	"careville_backend/database"
 	"careville_backend/dto/customer/hospitals"
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,6 +34,25 @@ func GetHospitalByID(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Invalid hospital ID",
 		})
+	}
+
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
+	customerFilter := bson.M{
+		"_id": customerData.CustomerId,
+	}
+
+	var customer entity.CustomerEntity
+	err = database.GetCollection("customer").FindOne(ctx, customerFilter).Decode(&customer)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.GetHospitalsResDto{
+			Status:  false,
+			Message: "Failed to fetch customer data: " + err.Error(),
+		})
+	}
+
+	isCustomerFamilyMember := false
+	if len(customer.FamilyMembers) > 0 {
+		isCustomerFamilyMember = true
 	}
 
 	filter := bson.M{"_id": hospitalID}
@@ -74,14 +94,15 @@ func GetHospitalByID(c *fiber.Ctx) error {
 		Status:  true,
 		Message: "Hospital data fetched successfully",
 		Data: hospitals.HospitalsResponse{
-			Id:            hospitalData.Id,
-			Image:         hospitalData.HospClinic.Information.Image,
-			Name:          hospitalData.HospClinic.Information.Name,
-			AboutUs:       hospitalData.HospClinic.Information.AdditionalText,
-			Address:       hospitals.Address(hospitalData.HospClinic.Information.Address),
-			OtherServices: hospitalData.HospClinic.OtherServices,
-			TotalReviews:  hospitalData.HospClinic.Review.TotalReviews,
-			AvgRating:     hospitalData.HospClinic.Review.AvgRating,
+			Id:                     hospitalData.Id,
+			Image:                  hospitalData.HospClinic.Information.Image,
+			Name:                   hospitalData.HospClinic.Information.Name,
+			AboutUs:                hospitalData.HospClinic.Information.AdditionalText,
+			Address:                hospitals.Address(hospitalData.HospClinic.Information.Address),
+			OtherServices:          hospitalData.HospClinic.OtherServices,
+			TotalReviews:           hospitalData.HospClinic.Review.TotalReviews,
+			AvgRating:              hospitalData.HospClinic.Review.AvgRating,
+			IsCustomerFamilyMember: isCustomerFamilyMember,
 		},
 	}
 
