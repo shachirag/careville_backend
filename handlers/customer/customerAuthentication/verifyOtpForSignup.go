@@ -179,7 +179,6 @@ func VerifyOtpForSignup(c *fiber.Ctx) error {
 
 	familyData := make([]customerAuth.FamilyMembers, 0)
 	if customer.FamilyMembers != nil {
-
 		for _, family := range customer.FamilyMembers {
 			familyData = append(familyData, customerAuth.FamilyMembers{
 				Id:           family.Id,

@@ -60,6 +60,22 @@ func AddMoreMembers(c *fiber.Ctx) error {
 		})
 	}
 
+	if customer.FamilyMembers == nil {
+		customer.FamilyMembers = []entity.FamilyMembers{}
+		update := bson.M{
+			"$set": bson.M{
+				"familyMembers": customer.FamilyMembers,
+			},
+		}
+		_, err := customerColl.UpdateOne(ctx, filter, update)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(customerAuth.AddMemberResDto{
+				Status:  false,
+				Message: "Failed to initialize familyMembers field in MongoDB: " + err.Error(),
+			})
+		}
+	}
+
 	update := bson.M{
 		"$addToSet": bson.M{
 			"familyMembers": bson.M{
