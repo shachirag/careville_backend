@@ -2,7 +2,6 @@ package physiotherapist
 
 import (
 	"careville_backend/database"
-	"careville_backend/dto/customer/nurse"
 	physiotherapist "careville_backend/dto/customer/physiotherapist"
 	"careville_backend/entity"
 	helper "careville_backend/utils/helperFunctions"
@@ -106,19 +105,21 @@ func GetPhysiotherapists(c *fiber.Ctx) error {
 		}
 
 		if physiotherapist1.Physiotherapist != nil {
-			nextAvailableSlots, _, err := GetPhysiotherapistNextAvailableDayAndSlots(physiotherapist1.Physiotherapist.ServiceAndSchedule)
-			if err != nil {
-				return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
-					Status:  false,
-					Message: "Failed to get next available time slots",
-				})
-			}
+			// nextAvailableSlots, _, err := GetPhysiotherapistNextAvailableDayAndSlots(physiotherapist1.Physiotherapist.ServiceAndSchedule)
+			// if err != nil {
+			// 	return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
+			// 		Status:  false,
+			// 		Message: "Failed to get next available time slots",
+			// 	})
+			// }
 			physiotherapistData = append(physiotherapistData, physiotherapist.GetPhysiotherapistRes{
-				Id:            physiotherapist1.Id,
-				Image:         physiotherapist1.Physiotherapist.Information.Image,
-				Name:          physiotherapist1.Physiotherapist.Information.Name,
-				ServiceType:   "Physiotherapist",
-				NextAvailable: nextAvailableSlots,
+				Id:          physiotherapist1.Id,
+				Image:       physiotherapist1.Physiotherapist.Information.Image,
+				Name:        physiotherapist1.Physiotherapist.Information.Name,
+				ServiceType: "Physiotherapist",
+				NextAvailable: physiotherapist.NextAvailable{
+					StartTime: "",
+				},
 			})
 		}
 	}

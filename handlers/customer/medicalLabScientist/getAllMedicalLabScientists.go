@@ -3,8 +3,8 @@ package medicalLabScientist
 import (
 	"careville_backend/database"
 	"careville_backend/dto/customer/medicalLabScientist"
-	helper "careville_backend/utils/helperFunctions"
 	"careville_backend/entity"
+	helper "careville_backend/utils/helperFunctions"
 	"context"
 	"errors"
 	"strconv"
@@ -91,20 +91,22 @@ func GetMedicalLabScientist1(c *fiber.Ctx) error {
 			})
 		}
 		if medicalLabScientist1.MedicalLabScientist != nil {
-			nextAvailableSlots, _, err := GetNextAvailableDayAndSlots(medicalLabScientist1.MedicalLabScientist.ServiceAndSchedule)
-			if err != nil {
-				return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.GetMedicalLabScientistResponseDto{
-					Status:  false,
-					Message: "Failed to get next available time slots: " + err.Error(),
-				})
-			}
+			// nextAvailableSlots, _, err := GetNextAvailableDayAndSlots(medicalLabScientist1.MedicalLabScientist.ServiceAndSchedule)
+			// if err != nil {
+			// 	return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.GetMedicalLabScientistResponseDto{
+			// 		Status:  false,
+			// 		Message: "Failed to get next available time slots: " + err.Error(),
+			// 	})
+			// }
 
 			medicalLabScientistData = append(medicalLabScientistData, medicalLabScientist.GetMedicalLabScientistRes{
-				Id:            medicalLabScientist1.Id,
-				Image:         medicalLabScientist1.MedicalLabScientist.Information.Image,
-				Name:          medicalLabScientist1.MedicalLabScientist.Information.Name,
-				ServiceType:   "MedicalLabScientist",
-				NextAvailable: nextAvailableSlots,
+				Id:          medicalLabScientist1.Id,
+				Image:       medicalLabScientist1.MedicalLabScientist.Information.Image,
+				Name:        medicalLabScientist1.MedicalLabScientist.Information.Name,
+				ServiceType: "MedicalLabScientist",
+				NextAvailable: medicalLabScientist.NextAvailable{
+					StartTime: "",
+				},
 			})
 		}
 	}

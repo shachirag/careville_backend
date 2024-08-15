@@ -104,19 +104,21 @@ func GetNurses(c *fiber.Ctx) error {
 			})
 		}
 		if nurse1.Nurse != nil {
-			nextAvailableSlots, _, err := GetNurseNextAvailableDayAndSlots(nurse1.Nurse.Schedule)
-			if err != nil {
-				return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
-					Status:  false,
-					Message: "Failed to get next available time slots: " + err.Error(),
-				})
-			}
+			// nextAvailableSlots, _, err := GetNurseNextAvailableDayAndSlots(nurse1.Nurse.Schedule)
+			// if err != nil {
+			// 	return c.Status(fiber.StatusInternalServerError).JSON(nurse.GetNurseResponseDto{
+			// 		Status:  false,
+			// 		Message: "Failed to get next available time slots: " + err.Error(),
+			// 	})
+			// }
 			nurseData = append(nurseData, nurse.GetNurseRes{
-				Id:            nurse1.Id,
-				Image:         nurse1.Nurse.Information.Image,
-				Name:          nurse1.Nurse.Information.Name,
-				ServiceType:   "Nurse",
-				NextAvailable: nextAvailableSlots,
+				Id:          nurse1.Id,
+				Image:       nurse1.Nurse.Information.Image,
+				Name:        nurse1.Nurse.Information.Name,
+				ServiceType: "Nurse",
+				NextAvailable: nurse.NextAvailable{
+					StartTime: "",
+				},
 			})
 		}
 	}
