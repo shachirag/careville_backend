@@ -2,7 +2,7 @@ module careville_backend
 
 go 1.21
 
-toolchain go1.22.2
+toolchain go1.22
 
 require (
 	firebase.google.com/go v3.13.0+incompatible
