@@ -11,6 +11,7 @@ type UpdateCustomerReqDto struct {
 	Address     string `json:"address" form:"address"`
 	Age         string `json:"age" form:"age"`
 	Sex         string `json:"sex" form:"sex"`
+	OldImage    string `json:"oldImage" form:"oldImage"`
 }
 
 type UpdateCustomerResDto struct {

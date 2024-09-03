@@ -6,11 +6,14 @@ import (
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/dto/provider/providerAuth"
 	"careville_backend/entity"
+	"careville_backend/utils"
+	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -22,6 +25,7 @@ import (
 //
 //	@Param Authorization header	string true	"Authentication header"
 //
+// @Param newCustomerImage formData file false "customer profile image"
 // @Param customer formData customerAuth.UpdateCustomerReqDto true "Update data of customer"
 // @Produce json
 // @Success 200 {object} customerAuth.UpdateCustomerResDto
@@ -77,6 +81,32 @@ func UpdateCustomer(c *fiber.Ctx) error {
 		})
 	}
 
+	formFile, err := c.FormFile("newCustomerImage")
+	var imageURL string
+	if err != nil {
+		imageURL = data.OldImage
+	} else {
+		file, err := formFile.Open()
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(customerAuth.UpdateCustomerResDto{
+				Status:  false,
+				Message: "Failed to open image file: " + err.Error(),
+			})
+		}
+		defer file.Close()
+
+		id := primitive.NewObjectID()
+		fileName := fmt.Sprintf("customer/%v-profilepic%s", id.Hex(), formFile.Filename)
+
+		imageURL, err = utils.UploadToS3(fileName, file)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(customerAuth.UpdateCustomerResDto{
+				Status:  false,
+				Message: "Failed to upload image to S3: " + err.Error(),
+			})
+		}
+	}
+
 	update := bson.M{"$set": bson.M{
 		"firstName": data.FirstName,
 		"lastName":  data.LastName,
@@ -85,6 +115,7 @@ func UpdateCustomer(c *fiber.Ctx) error {
 			"number":      data.PhoneNumber,
 			"countryCode": data.CountryCode,
 		},
+		"image": imageURL,
 		"address": customerAuth.Address{
 			Coordinates: []float64{longitude, latitude},
 			Type:        "Point",
@@ -119,6 +150,7 @@ func UpdateCustomer(c *fiber.Ctx) error {
 		appointmentUpdate := bson.M{"$set": bson.M{
 			"customer.firstName": data.FirstName,
 			"customer.lastName":  data.LastName,
+			"customer.image":     imageURL,
 			"customer.phoneNumber": bson.M{
 				"dialCode":    data.DialCode,
 				"number":      data.PhoneNumber,

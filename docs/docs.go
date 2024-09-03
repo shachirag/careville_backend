@@ -4661,6 +4661,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "type": "file",
+                        "description": "customer profile image",
+                        "name": "newCustomerImage",
+                        "in": "formData"
+                    },
+                    {
                         "type": "string",
                         "name": "address",
                         "in": "formData"
@@ -4698,6 +4704,11 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "name": "longitude",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "oldImage",
                         "in": "formData"
                     },
                     {

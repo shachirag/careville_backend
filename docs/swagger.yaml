@@ -8716,6 +8716,10 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: customer profile image
+        in: formData
+        name: newCustomerImage
+        type: file
       - in: formData
         name: address
         type: string
@@ -8739,6 +8743,9 @@ paths:
         type: string
       - in: formData
         name: longitude
+        type: string
+      - in: formData
+        name: oldImage
         type: string
       - in: formData
         name: phoneNumber
