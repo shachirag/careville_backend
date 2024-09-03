@@ -71,8 +71,11 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 	}
 
 	informationProjection := bson.M{
-		"pharmacy.information.name":  1,
-		"pharmacy.information.image": 1,
+		"_id":                           1,
+		"user.notification.deviceToken": 1,
+		"user.notification.deviceType":  1,
+		"pharmacy.information.name":     1,
+		"pharmacy.information.image":    1,
 		"pharmacy.information.address": bson.M{
 			"coordinates": 1,
 			"type":        1,
@@ -193,8 +196,9 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 		PricePaid: 0,
 	}
 
+	appointmentId := primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   appointmentId,
 		Role:                 "healthFacility",
 		FacilityOrProfession: "pharmacy",
 		ServiceID:            serviceObjectID,
@@ -245,6 +249,19 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to insert pharmacy appointment data into MongoDB: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		notificationTitle := "Drugs Added to Pharmacy"
+		notificationBody := "Drugs have been successfully added for the pharmacy: " + service.Pharmacy.Information.Name
+		notificationData := map[string]string{
+			"type":                 "drugs-added",
+			"appointmentId":        appointmentId.Hex(),
+			"role":                 "healthFacility",
+			"facilityOrProfession": "pharmacy",
+		}
+	
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	pharmacyRes := pharmacy.PharmacyDrugsResDto{

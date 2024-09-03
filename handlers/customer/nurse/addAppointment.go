@@ -8,6 +8,7 @@ import (
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/dto/customer/nurse"
 	"careville_backend/entity"
+	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -162,8 +163,11 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	}
 
 	serviceProjection := bson.M{
-		"nurse.information.name":  1,
-		"nurse.information.image": 1,
+		"_id":                           1,
+		"user.notification.deviceToken": 1,
+		"user.notification.deviceType":  1,
+		"nurse.information.name":        1,
+		"nurse.information.image":       1,
 	}
 
 	serviceOpts := options.FindOne().SetProjection(serviceProjection)
@@ -322,8 +326,9 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 		PricePaid:  data.PricePaid,
 	}
 
+	appointmentId := primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   appointmentId,
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "nurse",
 		ServiceID:            serviceObjectID,
@@ -386,6 +391,22 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to update appointment data: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		formattedFromDate := fromDate.Format("02 Jan 2006")
+		formattedToDate := toDate.Format("02 Jan 2006")
+
+		notificationTitle := "New Appointment Scheduled"
+		notificationBody := "A new appointment has been scheduled from " + formattedFromDate + " to " + formattedToDate + "."
+		notificationData := map[string]string{
+			"type":                 "appointment-scheduled",
+			"appointmentId":        appointmentId.Hex(),
+			"role":                 "healthProfessional",
+			"facilityOrProfession": "nurse",
+		}
+
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	nurseRes := nurse.AppoiynmentResDto{

@@ -3,6 +3,7 @@ package app
 import (
 	"careville_backend/config"
 	"careville_backend/database"
+	"careville_backend/firebase"
 	"careville_backend/router"
 	"os"
 
@@ -30,6 +31,11 @@ func SetupAndRunApp() error {
 
 	// Setup s3
 	err = database.SetupAWSClient()
+	if err != nil {
+		return err
+	}
+
+	err = firebase.StartFirebase()
 	if err != nil {
 		return err
 	}

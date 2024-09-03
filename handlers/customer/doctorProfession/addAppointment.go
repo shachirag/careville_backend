@@ -7,6 +7,7 @@ import (
 	"careville_backend/dto/customer/doctorProfession"
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
+	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -152,6 +153,9 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 	}
 
 	serviceProjection := bson.M{
+		"_id":                                1,
+		"user.notification.deviceToken":      1,
+		"user.notification.deviceType":       1,
 		"doctor.information.name":            1,
 		"doctor.information.image":           1,
 		"doctor.addionalServices.speciality": 1,
@@ -255,8 +259,9 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		PricePaid:  data.PricePaid,
 	}
 
+	appointmentId := primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   appointmentId,
 		Role:                 "healthProfessional",
 		FacilityOrProfession: "doctor",
 		ServiceID:            serviceObjectID,
@@ -318,6 +323,21 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to update appointment data: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		formattedFromDate := fromDate.Format("02 Jan 2006")
+		formattedToDate := toDate.Format("02 Jan 2006")
+		notificationTitle := "Appointment Created"
+		notificationBody := "A new appointment has been scheduled from " + formattedFromDate + " to " + formattedToDate + "."
+		notificationData := map[string]string{
+			"type":                 "appointment-created",
+			"appointmentId":        appointmentId.Hex(),
+			"role":                 "healthProfessional",
+			"facilityOrProfession": "doctor",
+		}
+
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	doctorRes := doctorProfession.DoctorProfessionAppointmentResDto{

@@ -114,13 +114,6 @@ func FetchDoctorAppointmentsWithPagination(c *fiber.Ctx) error {
 		response.AppointmentRes = append(response.AppointmentRes, appointmentRes)
 	}
 
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(services.GetDoctorAppointmentsPaginationRes{
-			Status:  false,
-			Message: "Failed to count appointments: " + err.Error(),
-		})
-	}
-
 	totalCount, err := appointmentColl.CountDocuments(ctx, filter)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(services.GetDoctorAppointmentsPaginationRes{

@@ -4975,6 +4975,12 @@ const docTemplate = `{
                         "description": "change status",
                         "name": "status",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "reason for rejection",
+                        "name": "reason",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -12484,6 +12490,9 @@ const docTemplate = `{
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

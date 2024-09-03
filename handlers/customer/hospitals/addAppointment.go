@@ -7,6 +7,7 @@ import (
 	hospitals "careville_backend/dto/customer/hospitals"
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
+	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -92,10 +93,13 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 	}
 
 	doctorProjection := bson.M{
-		"hospClinic.doctor.id":         1,
-		"hospClinic.doctor.name":       1,
-		"hospClinic.doctor.speciality": 1,
-		"hospClinic.doctor.image":      1,
+		"_id":                           1,
+		"user.notification.deviceToken": 1,
+		"user.notification.deviceType":  1,
+		"hospClinic.doctor.id":          1,
+		"hospClinic.doctor.name":        1,
+		"hospClinic.doctor.speciality":  1,
+		"hospClinic.doctor.image":       1,
 	}
 
 	doctorOpts := options.FindOne().SetProjection(doctorProjection)
@@ -264,8 +268,9 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 		PricePaid:  0,
 	}
 
+	appointmentId := primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   appointmentId,
 		Role:                 "healthFacility",
 		FacilityOrProfession: "hospClinic",
 		ServiceID:            serviceObjectID,
@@ -332,6 +337,21 @@ func AddHospClinicAppointment(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to update appointment data: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		formattedFromDate := fromDate.Format("02 Jan 2006")
+		formattedToDate := toDate.Format("02 Jan 2006")
+		notificationTitle := "New Appointment Booking"
+		notificationBody := "An appointment has been booked for a doctor at your hospital from " + formattedFromDate + " to " + formattedToDate + "."
+		notificationData := map[string]string{
+			"type":                 "appointment-booked",
+			"appointmentId":        appointmentId.Hex(),
+			"role":                 "healthFacility",
+			"facilityOrProfession": "hospClinic",
+		}
+
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	hospClinicRes := hospitals.HospitalClinicAppointmentResDto{

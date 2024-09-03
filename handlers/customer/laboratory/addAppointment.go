@@ -7,6 +7,7 @@ import (
 	laboratory "careville_backend/dto/customer/laboratories"
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
+	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -92,6 +93,9 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 	}
 
 	investigationProjection := bson.M{
+		"_id":                                   1,
+		"user.notification.deviceToken":         1,
+		"user.notification.deviceType":          1,
 		"laboratory.investigations.id":          1,
 		"laboratory.investigations.name":        1,
 		"laboratory.investigations.type":        1,
@@ -149,7 +153,7 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 
 	var familyData entity.FamilyMembers
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
-	if data.FamillyMemberId != nil && *data.FamillyMemberId != ""{
+	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 		familyFilter := bson.M{
 			"_id": customerMiddlewareData.CustomerId,
 			"familyMembers": bson.M{
@@ -295,8 +299,9 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		PricePaid:  data.PricePaid,
 	}
 
+	appointmentId := primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   appointmentId,
 		Role:                 "healthFacility",
 		FacilityOrProfession: "laboratory",
 		ServiceID:            serviceObjectID,
@@ -321,6 +326,19 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to insert laboratory appointment data into MongoDB: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		notificationTitle := "New Investigation Notification"
+		notificationBody := "A new investigation has been scheduled at your laboratory."
+		notificationData := map[string]string{
+			"type":                 "investigation-notification",
+			"appointmentId":        appointmentId.Hex(),
+			"role":                 "healthFacility",
+			"facilityOrProfession": "laboratory",
+		}
+	
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	laboratoryRes := laboratory.LaboratoryAppointmentResDto{

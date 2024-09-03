@@ -4968,6 +4968,12 @@
                         "description": "change status",
                         "name": "status",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "reason for rejection",
+                        "name": "reason",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -12477,6 +12483,9 @@
                 },
                 "image": {
                     "type": "string"
+                },
+                "isCustomerFamilyMember": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

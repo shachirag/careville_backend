@@ -7,6 +7,7 @@ import (
 	"careville_backend/dto/customer/fitnessCenter"
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
+	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -94,6 +95,9 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		}
 
 		trainerProjection := bson.M{
+			"_id":                                1,
+			"user.notification.deviceToken":      1,
+			"user.notification.deviceType":       1,
 			"fitnessCenter.trainers.id":          1,
 			"fitnessCenter.trainers.name":        1,
 			"fitnessCenter.trainers.price":       1,
@@ -266,8 +270,9 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 		},
 	}
 
+	appointmentId := primitive.NewObjectID()
 	appointment = entity.AppointmentEntity{
-		Id:                   primitive.NewObjectID(),
+		Id:                   appointmentId,
 		Role:                 "healthFacility",
 		FacilityOrProfession: "fitnessCenter",
 		ServiceID:            serviceObjectID,
@@ -292,6 +297,19 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to insert fitnessCenter appointment data into MongoDB: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		notificationTitle := "New Membership Purchase"
+		notificationBody := "A customer has purchased a membership for a trainer at your fitness center."
+		notificationData := map[string]string{
+			"type":                 "membership-purchased",
+			"appointmentId":        appointmentId.Hex(),
+			"role":                 "healthFacility",
+			"facilityOrProfession": "fitnessCenter",
+		}
+
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	fitnessCenterRes := fitnessCenter.FitnessCenterAppointmentResDto{

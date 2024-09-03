@@ -2161,6 +2161,8 @@ definitions:
         type: string
       image:
         type: string
+      isCustomerFamilyMember:
+        type: boolean
       name:
         type: string
       otherServices:
@@ -8918,6 +8920,10 @@ paths:
       - description: change status
         in: query
         name: status
+        type: string
+      - description: reason for rejection
+        in: query
+        name: reason
         type: string
       produces:
       - application/json

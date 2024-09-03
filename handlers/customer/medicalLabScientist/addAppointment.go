@@ -8,6 +8,7 @@ import (
 	"careville_backend/dto/customer/medicalLabScientist"
 	customerMiddleware "careville_backend/dto/customer/middleware"
 	"careville_backend/entity"
+	"careville_backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -158,6 +159,9 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 	}
 
 	serviceProjection := bson.M{
+		"_id":                                                1,
+		"user.notification.deviceToken":                      1,
+		"user.notification.deviceType":                       1,
 		"medicalLabScientist.information.name":               1,
 		"medicalLabScientist.information.image":              1,
 		"medicalLabScientist.professionalDetails.department": 1,
@@ -321,7 +325,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		CreatedAt:           time.Now().UTC(),
 		UpdatedAt:           time.Now().UTC(),
 	}
-	
+
 	session, err := database.GetMongoClient().StartSession()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(hospitals.HospitalClinicAppointmentResDto{
@@ -365,6 +369,22 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 			Status:  false,
 			Message: "Failed to update appointment data: " + err.Error(),
 		})
+	}
+
+	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
+		formattedFromDate := fromDate.Format("02 Jan 2006")
+		formattedToDate := toDate.Format("02 Jan 2006")
+
+		notificationTitle := "Appointment Scheduled for Medical Lab Scientist"
+		notificationBody := "An appointment has been scheduled for a medical lab scientist from " + formattedFromDate + " to " + formattedToDate + "."
+		notificationData := map[string]string{
+			"type":                 "appointment-scheduled",
+			"appointmentId":        id.Hex(),
+			"role":                 "healthProfessional",
+			"facilityOrProfession": "medicalLabScientist",
+		}
+
+		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 
 	medicalLabScientistRes := medicalLabScientist.MedicalLabScientistAppointmentResDto{
