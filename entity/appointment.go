@@ -36,9 +36,18 @@ type CustomerAppointmentEntity struct {
 }
 
 type PharmacyAppointmentEntity struct {
-	RequestedDrugs RequestedDrugsAppointmentEntity      `json:"requestedDrugs" bson:"requestedDrugs"`
-	Information    PharmacyInformationAppointmentEntity `json:"information" bson:"information"`
-	PricePaid      float64                              `json:"pricePaid" bson:"pricePaid"`
+	RequestedDrugs             RequestedDrugsAppointmentEntity      `json:"requestedDrugs" bson:"requestedDrugs"`
+	Information                PharmacyInformationAppointmentEntity `json:"information" bson:"information"`
+	ProvderProvidedInformation *ProvderProvidedInformation          `json:"providerProvidedInformation,omitempty" bson:"providerProvidedInformation,omitempty"`
+	PricePaid                  float64                              `json:"pricePaid" bson:"pricePaid"`
+}
+
+type ProvderProvidedInformation struct {
+	AvailableDrugs     string  `json:"availableDrugs" bson:"availableDrugs"`
+	NotAvailableDrugs  string  `json:"notAvailableDrugs" bson:"notAvailableDrugs"`
+	DoctorApprovel     string  `json:"doctorApprovel" bson:"doctorApprovel"`
+	HomeDelivery       string  `json:"homeDelivery" bson:"homeDelivery"`
+	TotalPriceToBePaid float64 `json:"totalPriceToBePaid" bson:"totalPriceToBePaid"`
 }
 
 type RequestedDrugsAppointmentEntity struct {

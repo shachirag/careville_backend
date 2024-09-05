@@ -25,7 +25,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 
 	/* ---------- HEALTH ---------- */
 	app.Get("/health", handlers.HealthCheck)
-
+	app.Get("/get-sended-pharmacy-drug/:id", pharmacy.GetSendedPharmacyDrugsByID)
 	/* ---------- Protected Routes ----- */
 	secret := os.Getenv("JWT_SECRET_KEY")
 	jwt := middlewares.NewAuthMiddleware(secret)
@@ -153,6 +153,8 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	appointmentServices.Get("/pharmacy-drugs", pharmacy.FetchPharmacyDrugsWithPagination)
 	appointmentServices.Get("/pharmacy-approved-drugs", pharmacy.FetchPharmacyApprovedDrugsWithPagination)
 	appointmentServices.Get("/pharmacy-drug/:id", pharmacy.GetPharmacyAppointmentByID)
+	appointmentServices.Put("/send-pharmacy-drugs", pharmacy.SendPharmacyDrugs)
+	appointmentServices.Get("/get-sended-pharmacy-drug/:id", pharmacy.GetSendedPharmacyDrugsByID)
 	appointmentServices.Get("/physiotherapist-appointments", physiotherapist.FetchPhysiotherapistAppointmentsWithPagination)
 	appointmentServices.Get("/physiotherapist-approved-appointments", physiotherapist.FetchPhysiotherapistApprovedAppointmentsWithPagination)
 	appointmentServices.Get("/physiotherapist-appointment/:id", physiotherapist.GetPhysiotherpistAppointmentByID)

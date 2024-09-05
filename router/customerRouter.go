@@ -39,6 +39,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	customer.Post("/signup", customerAuth.SignupCustomer)
 	customer.Post("/verify-otp-for-signup", customerAuth.VerifyOtpForSignup)
 	customer.Put("/change-payment-status", jwt, common.ChangePaymentStatus)
+	customer.Put("/cancel-appointment", jwt, common.CancelAppointment)
 	customer.Get("/past-appointments", jwt, common.FetchPastAppointmentsWithPagination)
 
 	customerProfile := customer.Group("/profile")
@@ -69,6 +70,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	healthFacility.Get("/get-fitnessCenter/:id", fitnessCenter.GetFitnessCenterByID)
 	healthFacility.Get("/get-all-trainers", fitnessCenter.GetAllTrainers)
 	healthFacility.Post("/add-pharmacy-drug", pharmacy.AddPharmacyDrugs)
+	healthFacility.Put("/pharmacy-amount-payment", pharmacy.AmountPaymentForPharmacy)
 	healthFacility.Get("/get-pharmacies", pharmacy.GetPharmacy)
 	healthFacility.Get("/get-pharmacy/:id", pharmacy.GetPharmacyByID)
 	healthFacility.Post("/add-hospital-review", hospitals.AddReview)

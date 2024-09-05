@@ -719,15 +719,6 @@ definitions:
       name:
         type: string
     type: object
-  careville_backend_dto_customer_pharmacy.PhoneNumber:
-    properties:
-      countryCode:
-        type: string
-      dialCode:
-        type: string
-      number:
-        type: string
-    type: object
   careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes:
     properties:
       id:
@@ -804,6 +795,13 @@ definitions:
         type: string
       startTime:
         type: string
+    type: object
+  common.CancelAppointmentResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   common.GetDoctorHealthProfessionalRes:
     properties:
@@ -3190,18 +3188,19 @@ definitions:
       name:
         type: string
     type: object
-  pharmacy.CustomerInformation:
+  pharmacy.AmountPaymentForPharmacyDrugsReqDto:
     properties:
-      firstName:
+      amount:
+        type: number
+      appointmentId:
         type: string
-      id:
+    type: object
+  pharmacy.AmountPaymentForPharmacyDrugsResDto:
+    properties:
+      message:
         type: string
-      image:
-        type: string
-      lastName:
-        type: string
-      phoneNumber:
-        $ref: '#/definitions/careville_backend_dto_customer_pharmacy.PhoneNumber'
+      status:
+        type: boolean
     type: object
   pharmacy.Documents:
     properties:
@@ -3328,24 +3327,14 @@ definitions:
     type: object
   pharmacy.PharmacyDrugsRes:
     properties:
-      customer:
-        $ref: '#/definitions/pharmacy.CustomerInformation'
       facilityOrProfession:
         type: string
       id:
         type: string
-      modeOfDelivery:
-        type: string
-      nameAndQuantity:
-        type: string
       pharmacyInformation:
         $ref: '#/definitions/careville_backend_dto_customer_pharmacy.PharmacyInformation'
-      prescription:
-        items:
-          type: string
-        type: array
-      pricePaid:
-        type: number
+      provderProvidedInformation:
+        $ref: '#/definitions/pharmacy.ProvderProvidedInformation'
     type: object
   pharmacy.PharmacyDrugsResDto:
     properties:
@@ -3389,6 +3378,19 @@ definitions:
         type: string
       totalReviews:
         type: integer
+    type: object
+  pharmacy.ProvderProvidedInformation:
+    properties:
+      availableDrugs:
+        type: string
+      doctorApprovel:
+        type: string
+      homeDelivery:
+        type: string
+      notAvailableDrugs:
+        type: string
+      totalPriceToBePaid:
+        type: number
     type: object
   pharmacy.User:
     properties:
@@ -4563,6 +4565,15 @@ definitions:
       status:
         type: boolean
     type: object
+  services.GetPharmacyDrugsInfoResDto:
+    properties:
+      data:
+        $ref: '#/definitions/services.PharmacyDrugsInfoRes'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
   services.GetPharmacyOtherServicesResDto:
     properties:
       data:
@@ -5111,6 +5122,21 @@ definitions:
       status:
         type: boolean
     type: object
+  services.PharmacyDrugsInfoRes:
+    properties:
+      appointmentId:
+        type: string
+      availableDrugs:
+        type: string
+      doctorApprovel:
+        type: string
+      homeDelivery:
+        type: string
+      notAvailableDrugs:
+        type: string
+      totalPriceToBePaid:
+        type: number
+    type: object
   services.PharmacyDrugsRes:
     properties:
       customer:
@@ -5275,6 +5301,28 @@ definitions:
         type: string
       serviceStatus:
         type: string
+    type: object
+  services.SendPharmacyDrugsInfoReqDto:
+    properties:
+      appointmentId:
+        type: string
+      availableDrugs:
+        type: string
+      doctorApprovel:
+        type: string
+      homeDelivery:
+        type: string
+      notAvailableDrugs:
+        type: string
+      totalPriceToBePaid:
+        type: number
+    type: object
+  services.SendPharmacyDrugsInfoResDto:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
     type: object
   services.Slots:
     properties:
@@ -6338,6 +6386,32 @@ paths:
       summary: Verify OTP for login
       tags:
       - admin authorization
+  /customer/cancel-appointment:
+    put:
+      consumes:
+      - application/json
+      description: cancel appointments
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment Id
+        in: query
+        name: appointmentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.CancelAppointmentResDto'
+      summary: cancel appointments
+      tags:
+      - customer commonApis
   /customer/change-password:
     put:
       consumes:
@@ -7114,6 +7188,33 @@ paths:
       summary: Fetch past appointments
       tags:
       - customer appointments
+  /customer/healthFacility/appointment/pharmacy-amount-payment:
+    put:
+      consumes:
+      - multipart/form-data
+      description: amount payment for pharmacy
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: send pharmacy drugs
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/pharmacy.AmountPaymentForPharmacyDrugsReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pharmacy.AmountPaymentForPharmacyDrugsResDto'
+      summary: amount payment for pharmacy
+      tags:
+      - customer pharmacy
   /customer/healthFacility/appointment/pharmacy-approved-drugs:
     get:
       consumes:
@@ -9896,6 +9997,30 @@ paths:
       summary: Fetch appointments
       tags:
       - provider appointments
+  /provider/services/appointment/get-sended-pharmacy-drug/{id}:
+    get:
+      description: Get sended drugs by Id
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: appointment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GetPharmacyDrugsInfoResDto'
+      summary: Get sended drugs by Id
+      tags:
+      - provider appointments
   /provider/services/appointment/hospital-appointment/{id}:
     get:
       description: Get appointment by ID
@@ -10299,6 +10424,33 @@ paths:
           schema:
             $ref: '#/definitions/physiotherapist.GetPhysiotherapistAppointmentsPaginationRes'
       summary: Fetch appointments
+      tags:
+      - provider appointments
+  /provider/services/appointment/send-pharmacy-drugs:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Summary send pharmcy frugs
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: send pharmacy drugs
+        in: body
+        name: provider
+        required: true
+        schema:
+          $ref: '#/definitions/services.SendPharmacyDrugsInfoReqDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.SendPharmacyDrugsInfoResDto'
+      summary: send pharmcy frugs
       tags:
       - provider appointments
   /provider/services/change-notification:

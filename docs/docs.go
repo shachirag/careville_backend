@@ -1072,6 +1072,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/cancel-appointment": {
+            "put": {
+                "description": "cancel appointments",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer commonApis"
+                ],
+                "summary": "cancel appointments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment Id",
+                        "name": "appointmentId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.CancelAppointmentResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/change-password": {
             "put": {
                 "description": "Change customer Password",
@@ -2239,6 +2278,47 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/common.GetPastAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/healthFacility/appointment/pharmacy-amount-payment": {
+            "put": {
+                "description": "amount payment for pharmacy",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer pharmacy"
+                ],
+                "summary": "amount payment for pharmacy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "send pharmacy drugs",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.AmountPaymentForPharmacyDrugsReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy.AmountPaymentForPharmacyDrugsResDto"
                         }
                     }
                 }
@@ -6454,6 +6534,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/services/appointment/get-sended-pharmacy-drug/{id}": {
+            "get": {
+                "description": "Get sended drugs by Id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "Get sended drugs by Id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.GetPharmacyDrugsInfoResDto"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/services/appointment/hospital-appointment/{id}": {
             "get": {
                 "description": "Get appointment by ID",
@@ -7061,6 +7177,47 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/physiotherapist.GetPhysiotherapistAppointmentsPaginationRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/services/appointment/send-pharmacy-drugs": {
+            "put": {
+                "description": "Summary send pharmcy frugs",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider appointments"
+                ],
+                "summary": "send pharmcy frugs",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "send pharmacy drugs",
+                        "name": "provider",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.SendPharmacyDrugsInfoReqDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.SendPharmacyDrugsInfoResDto"
                         }
                     }
                 }
@@ -10277,20 +10434,6 @@ const docTemplate = `{
                 }
             }
         },
-        "careville_backend_dto_customer_pharmacy.PhoneNumber": {
-            "type": "object",
-            "properties": {
-                "countryCode": {
-                    "type": "string"
-                },
-                "dialCode": {
-                    "type": "string"
-                },
-                "number": {
-                    "type": "string"
-                }
-            }
-        },
         "careville_backend_dto_customer_physiotherapist.GetPhysiotherapistRes": {
             "type": "object",
             "properties": {
@@ -10407,6 +10550,17 @@ const docTemplate = `{
                 },
                 "startTime": {
                     "type": "string"
+                }
+            }
+        },
+        "common.CancelAppointmentResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -14090,23 +14244,25 @@ const docTemplate = `{
                 }
             }
         },
-        "pharmacy.CustomerInformation": {
+        "pharmacy.AmountPaymentForPharmacyDrugsReqDto": {
             "type": "object",
             "properties": {
-                "firstName": {
+                "amount": {
+                    "type": "number"
+                },
+                "appointmentId": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacy.AmountPaymentForPharmacyDrugsResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "phoneNumber": {
-                    "$ref": "#/definitions/careville_backend_dto_customer_pharmacy.PhoneNumber"
+                "status": {
+                    "type": "boolean"
                 }
             }
         },
@@ -14303,32 +14459,17 @@ const docTemplate = `{
         "pharmacy.PharmacyDrugsRes": {
             "type": "object",
             "properties": {
-                "customer": {
-                    "$ref": "#/definitions/pharmacy.CustomerInformation"
-                },
                 "facilityOrProfession": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "modeOfDelivery": {
-                    "type": "string"
-                },
-                "nameAndQuantity": {
-                    "type": "string"
-                },
                 "pharmacyInformation": {
                     "$ref": "#/definitions/careville_backend_dto_customer_pharmacy.PharmacyInformation"
                 },
-                "prescription": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "pricePaid": {
-                    "type": "number"
+                "provderProvidedInformation": {
+                    "$ref": "#/definitions/pharmacy.ProvderProvidedInformation"
                 }
             }
         },
@@ -14395,6 +14536,26 @@ const docTemplate = `{
                 },
                 "totalReviews": {
                     "type": "integer"
+                }
+            }
+        },
+        "pharmacy.ProvderProvidedInformation": {
+            "type": "object",
+            "properties": {
+                "availableDrugs": {
+                    "type": "string"
+                },
+                "doctorApprovel": {
+                    "type": "string"
+                },
+                "homeDelivery": {
+                    "type": "string"
+                },
+                "notAvailableDrugs": {
+                    "type": "string"
+                },
+                "totalPriceToBePaid": {
+                    "type": "number"
                 }
             }
         },
@@ -16211,6 +16372,20 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetPharmacyDrugsInfoResDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/services.PharmacyDrugsInfoRes"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
         "services.GetPharmacyOtherServicesResDto": {
             "type": "object",
             "properties": {
@@ -17057,6 +17232,29 @@ const docTemplate = `{
                 }
             }
         },
+        "services.PharmacyDrugsInfoRes": {
+            "type": "object",
+            "properties": {
+                "appointmentId": {
+                    "type": "string"
+                },
+                "availableDrugs": {
+                    "type": "string"
+                },
+                "doctorApprovel": {
+                    "type": "string"
+                },
+                "homeDelivery": {
+                    "type": "string"
+                },
+                "notAvailableDrugs": {
+                    "type": "string"
+                },
+                "totalPriceToBePaid": {
+                    "type": "number"
+                }
+            }
+        },
         "services.PharmacyDrugsRes": {
             "type": "object",
             "properties": {
@@ -17308,6 +17506,40 @@ const docTemplate = `{
                 },
                 "serviceStatus": {
                     "type": "string"
+                }
+            }
+        },
+        "services.SendPharmacyDrugsInfoReqDto": {
+            "type": "object",
+            "properties": {
+                "appointmentId": {
+                    "type": "string"
+                },
+                "availableDrugs": {
+                    "type": "string"
+                },
+                "doctorApprovel": {
+                    "type": "string"
+                },
+                "homeDelivery": {
+                    "type": "string"
+                },
+                "notAvailableDrugs": {
+                    "type": "string"
+                },
+                "totalPriceToBePaid": {
+                    "type": "number"
+                }
+            }
+        },
+        "services.SendPharmacyDrugsInfoResDto": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
                 }
             }
         },

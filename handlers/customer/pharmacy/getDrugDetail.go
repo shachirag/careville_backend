@@ -39,17 +39,8 @@ func GetPharmacyAppointmentByID(c *fiber.Ctx) error {
 	filter := bson.M{"_id": appointmentID}
 
 	projection := bson.M{
-		"_id":                1,
-		"serviceId":          1,
-		"customer.id":        1,
-		"customer.firstName": 1,
-		"customer.lastName":  1,
-		"customer.image":     1,
-		"customer.phoneNumber": bson.M{
-			"dialCode":    1,
-			"number":      1,
-			"countryCode": 1,
-		},
+		"_id":                        1,
+		"serviceId":                  1,
 		"pharmacy.information.name":  1,
 		"pharmacy.information.image": 1,
 		"pharmacy.information.address": bson.M{
@@ -57,11 +48,12 @@ func GetPharmacyAppointmentByID(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
-		"facilityOrProfession":                    1,
-		"pharmacy.pricePaid":                      1,
-		"pharmacy.requestedDrugs.nameAndQuantity": 1,
-		"pharmacy.requestedDrugs.modeOfDelivery":  1,
-		"pharmacy.requestedDrugs.prescription":    1,
+		"facilityOrProfession":                                    1,
+		"pharmacy.providerProvidedInformation.availableDrugs":     1,
+		"pharmacy.providerProvidedInformation.notAvailableDrugs":  1,
+		"pharmacy.providerProvidedInformation.homeDelivery":       1,
+		"pharmacy.providerProvidedInformation.doctorApprovel":     1,
+		"pharmacy.providerProvidedInformation.totalPriceToBePaid": 1,
 	}
 
 	findOptions := options.FindOne().SetProjection(projection)
@@ -95,39 +87,34 @@ func GetPharmacyAppointmentByID(c *fiber.Ctx) error {
 		avgRating = pharmacy1.Pharmacy.Review.AvgRating
 	}
 
-	var nameAndQuantity string
-	var modeOfDelivery string
-	var pricePaid float64
-	var prescription []string
 	var pharmacyImage string
 	var pharmacyName string
 	var pharmacyAddress pharmacy.Address
 	if appointment.Pharmacy != nil {
-		nameAndQuantity = appointment.Pharmacy.RequestedDrugs.NameAndQuantity
-		modeOfDelivery = appointment.Pharmacy.RequestedDrugs.ModeOfDelivery
-		pricePaid = appointment.Pharmacy.PricePaid
-		prescription = appointment.Pharmacy.RequestedDrugs.Prescription
 		pharmacyName = appointment.Pharmacy.Information.Name
 		pharmacyImage = appointment.Pharmacy.Information.Image
 		pharmacyAddress = pharmacy.Address(appointment.Pharmacy.Information.Address)
+	}
+
+	var availableDrugs string
+	var notAvailableDrugs string
+	var totalPriceToBePaid float64
+	var homeDelivery string
+	var doctorApprovel string
+	if appointment.Pharmacy != nil && appointment.Pharmacy.ProvderProvidedInformation != nil {
+		availableDrugs = appointment.Pharmacy.ProvderProvidedInformation.AvailableDrugs
+		notAvailableDrugs = appointment.Pharmacy.ProvderProvidedInformation.NotAvailableDrugs
+		totalPriceToBePaid = appointment.Pharmacy.ProvderProvidedInformation.TotalPriceToBePaid
+		homeDelivery = appointment.Pharmacy.ProvderProvidedInformation.HomeDelivery
+		doctorApprovel = appointment.Pharmacy.ProvderProvidedInformation.DoctorApprovel
 	}
 
 	expertiseRes := pharmacy.GetPharmacyDrugsDetailResDto{
 		Status:  true,
 		Message: "Data fetched successfully",
 		Data: pharmacy.PharmacyDrugsRes{
-			Id: appointment.Id,
-			Customer: pharmacy.CustomerInformation{
-				Id:        appointment.Customer.ID,
-				FirstName: appointment.Customer.FirstName,
-				LastName:  appointment.Customer.LastName,
-				Image:     appointment.Customer.Image,
-				PhoneNumber: pharmacy.PhoneNumber{
-					DialCode:    appointment.Customer.PhoneNumber.DialCode,
-					Number:      appointment.Customer.PhoneNumber.Number,
-					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
-				},
-			},
+			Id:                   appointment.Id,
+			FacilityOrProfession: appointment.FacilityOrProfession,
 			PharmacyInformation: pharmacy.PharmacyInformation{
 				Id:        appointment.ServiceID,
 				Name:      pharmacyName,
@@ -135,11 +122,28 @@ func GetPharmacyAppointmentByID(c *fiber.Ctx) error {
 				Address:   pharmacyAddress,
 				AvgRating: avgRating,
 			},
-			Prescription:         prescription,
-			NameAndQuantity:      nameAndQuantity,
-			ModeOfDelivery:       modeOfDelivery,
-			FacilityOrProfession: appointment.FacilityOrProfession,
-			PricePaid:            pricePaid,
+			ProvderProvidedInformation: pharmacy.ProvderProvidedInformation{
+				AvailableDrugs:     availableDrugs,
+				NotAvailableDrugs:  notAvailableDrugs,
+				HomeDelivery:       homeDelivery,
+				TotalPriceToBePaid: totalPriceToBePaid,
+				DoctorApprovel:     doctorApprovel,
+			},
+			// Customer: pharmacy.CustomerInformation{
+			// 	Id:        appointment.Customer.ID,
+			// 	FirstName: appointment.Customer.FirstName,
+			// 	LastName:  appointment.Customer.LastName,
+			// 	Image:     appointment.Customer.Image,
+			// 	PhoneNumber: pharmacy.PhoneNumber{
+			// 		DialCode:    appointment.Customer.PhoneNumber.DialCode,
+			// 		Number:      appointment.Customer.PhoneNumber.Number,
+			// 		CountryCode: appointment.Customer.PhoneNumber.CountryCode,
+			// 	},
+			// },
+			// Prescription:         prescription,
+			// NameAndQuantity:      nameAndQuantity,
+			// ModeOfDelivery:       modeOfDelivery,
+			// PricePaid:            pricePaid,
 		},
 	}
 

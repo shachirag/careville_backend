@@ -13,14 +13,23 @@ type GetPharmacyDrugsDetailResDto struct {
 }
 
 type PharmacyDrugsRes struct {
-	Id                   primitive.ObjectID  `json:"id" bson:"id"`
-	Customer             CustomerInformation `json:"customer" bson:"customer"`
-	FacilityOrProfession string              `json:"facilityOrProfession" bson:"facilityOrProfession"`
-	PharmacyInformation  PharmacyInformation `json:"pharmacyInformation" bson:"pharmacyInformation"`
-	PricePaid            float64             `json:"pricePaid" bson:"pricePaid"`
-	ModeOfDelivery       string              `json:"modeOfDelivery" bson:"modeOfDelivery"`
-	NameAndQuantity      string              `json:"nameAndQuantity" bson:"nameAndQuantity"`
-	Prescription         []string            `json:"prescription" bson:"prescription"`
+	Id                         primitive.ObjectID         `json:"id" bson:"id"`
+	FacilityOrProfession       string                     `json:"facilityOrProfession" bson:"facilityOrProfession"`
+	PharmacyInformation        PharmacyInformation        `json:"pharmacyInformation" bson:"pharmacyInformation"`
+	ProvderProvidedInformation ProvderProvidedInformation `json:"provderProvidedInformation" bson:"provderProvidedInformation"`
+	// Customer             CustomerInformation `json:"customer" bson:"customer"`
+	// PricePaid            float64             `json:"pricePaid" bson:"pricePaid"`
+	// ModeOfDelivery       string              `json:"modeOfDelivery" bson:"modeOfDelivery"`
+	// NameAndQuantity      string              `json:"nameAndQuantity" bson:"nameAndQuantity"`
+	// Prescription         []string            `json:"prescription" bson:"prescription"`
+}
+
+type ProvderProvidedInformation struct {
+	AvailableDrugs     string  `json:"availableDrugs" bson:"availableDrugs"`
+	NotAvailableDrugs  string  `json:"notAvailableDrugs" bson:"notAvailableDrugs"`
+	DoctorApprovel     string  `json:"doctorApprovel" bson:"doctorApprovel"`
+	HomeDelivery       string  `json:"homeDelivery" bson:"homeDelivery"`
+	TotalPriceToBePaid float64 `json:"totalPriceToBePaid" bson:"totalPriceToBePaid"`
 }
 
 type PharmacyInformation struct {
