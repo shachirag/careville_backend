@@ -50,8 +50,8 @@ func SendPharmacyDrugs(c *fiber.Ctx) error {
 
 	pharmacyUpdate := bson.M{
 		"$set": bson.M{
-			"pharmacy.provderProvidedInformation": pharmacyDrugsData,
-			"updatedAt":                           time.Now().UTC(),
+			"pharmacy.providerProvidedInformation": pharmacyDrugsData,
+			"updatedAt":                            time.Now().UTC(),
 		},
 	}
 
