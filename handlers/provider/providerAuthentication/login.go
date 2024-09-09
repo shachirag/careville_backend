@@ -61,6 +61,21 @@ func LoginProvider(c *fiber.Ctx) error {
 		})
 	}
 
+	updateData := bson.M{
+		"$set": bson.M{
+			"user.notification.deviceToken": data.DeviceToken,
+			"user.notification.deviceType":  data.DeviceType,
+		},
+	}
+
+	_, err = serviceColl.UpdateOne(ctx, bson.M{"email": data.Email}, updateData)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(providerAuth.LoginProviderResDto{
+			Status:  false,
+			Message: "Failed to update device info into MongoDB: " + err.Error(),
+		})
+	}
+
 	// Checking if passwords match
 	err = bcrypt.CompareHashAndPassword([]byte(provider.User.Password), []byte(strings.TrimSpace(data.Password)))
 	if err != nil {

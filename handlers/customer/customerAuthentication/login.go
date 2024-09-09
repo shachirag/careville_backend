@@ -90,6 +90,21 @@ func LoginCustomer(c *fiber.Ctx) error {
 		})
 	}
 
+	updateData := bson.M{
+		"$set": bson.M{
+			"notification.deviceToken": data.DeviceToken,
+			"notification.deviceType":  data.DeviceType,
+		},
+	}
+
+	_, err = customerColl.UpdateOne(ctx, bson.M{"email": data.Email}, updateData)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(customerAuth.LoginCustomerResDto{
+			Status:  false,
+			Message: "Failed to update device info into MongoDB: " + err.Error(),
+		})
+	}
+
 	err = bcrypt.CompareHashAndPassword([]byte(customer.Password), []byte(strings.TrimSpace(data.Password)))
 	if err != nil {
 		return c.Status(400).JSON(customerAuth.LoginCustomerResDto{
@@ -115,7 +130,7 @@ func LoginCustomer(c *fiber.Ctx) error {
 			Message: "Token is not valid" + err.Error(),
 		})
 	}
-	
+
 	familyData := make([]customerAuth.FamilyMembers, 0)
 	if customer.FamilyMembers != nil {
 

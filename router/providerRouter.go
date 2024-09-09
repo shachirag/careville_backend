@@ -130,6 +130,7 @@ func ProviderSetupsRoutes(app *fiber.App) {
 	appointment := provider.Group("/appointment")
 	appointment.Use(jwt, middlewares.ProviderData)
 	appointment.Put("/change-appointment-status", commonApi.ChangeAppointmentStatus)
+	appointment.Get("/get-notifications", commonApi.GetAllNotifications)
 	appointmentServices := providerServices.Group("/appointment")
 	appointmentServices.Use(jwt, middlewares.ProviderData)
 	appointmentServices.Get("/doctor-appointments", doctorProfession.FetchDoctorAppointmentsWithPagination)

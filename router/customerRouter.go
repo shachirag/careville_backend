@@ -41,6 +41,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	customer.Put("/change-payment-status", jwt, common.ChangePaymentStatus)
 	customer.Put("/cancel-appointment", jwt, common.CancelAppointment)
 	customer.Get("/past-appointments", jwt, common.FetchPastAppointmentsWithPagination)
+	customer.Get("/get-notifications", jwt, middlewares.CustomerData, common.GetAllNotifications)
 
 	customerProfile := customer.Group("/profile")
 	customerProfile.Use(jwt, middlewares.CustomerData)

@@ -1095,6 +1095,10 @@ definitions:
     type: object
   customerAuth.LoginCustomerReqDto:
     properties:
+      deviceToken:
+        type: string
+      deviceType:
+        type: string
       email:
         type: string
       password:
@@ -3798,6 +3802,10 @@ definitions:
     type: object
   providerAuth.LoginProviderReqDto:
     properties:
+      deviceToken:
+        type: string
+      deviceType:
+        type: string
       email:
         type: string
       password:
@@ -4538,6 +4546,23 @@ definitions:
       status:
         type: boolean
     type: object
+  services.GetNotificationRes:
+    properties:
+      body:
+        type: string
+      createdAt:
+        type: string
+      data:
+        additionalProperties:
+          type: string
+        type: object
+      id:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   services.GetNurseAppointmentDetailResDto:
     properties:
       data:
@@ -5001,6 +5026,17 @@ definitions:
     type: object
   services.MorePhysiotherapistServiceResDto:
     properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.NotificationResData:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.GetNotificationRes'
+        type: array
       message:
         type: string
       status:
@@ -6628,6 +6664,19 @@ paths:
       summary: Get customer by ID
       tags:
       - customer authorization
+  /customer/get-notifications:
+    get:
+      description: Get Notifications
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResData'
+      summary: Get Notifications
+      tags:
+      - customer commonApis
   /customer/healthFacility/add-fitnessCenter-appointment:
     post:
       consumes:
@@ -9043,6 +9092,19 @@ paths:
       summary: change appointment status
       tags:
       - provider appointments
+  /provider/appointment/get-notifications:
+    get:
+      description: Get Notifications
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.NotificationResData'
+      summary: Get Notifications
+      tags:
+      - provider
   /provider/forgot-password:
     post:
       consumes:

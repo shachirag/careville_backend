@@ -1439,6 +1439,26 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/get-notifications": {
+            "get": {
+                "description": "Get Notifications",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer commonApis"
+                ],
+                "summary": "Get Notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResData"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/healthFacility/add-fitnessCenter-appointment": {
             "post": {
                 "description": "Add appointment",
@@ -5079,6 +5099,26 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.NotificationResDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/appointment/get-notifications": {
+            "get": {
+                "description": "Get Notifications",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Get Notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.NotificationResData"
                         }
                     }
                 }
@@ -11014,6 +11054,12 @@ const docTemplate = `{
         "customerAuth.LoginCustomerReqDto": {
             "type": "object",
             "properties": {
+                "deviceToken": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -15186,6 +15232,12 @@ const docTemplate = `{
         "providerAuth.LoginProviderReqDto": {
             "type": "object",
             "properties": {
+                "deviceToken": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -16330,6 +16382,32 @@ const docTemplate = `{
                 }
             }
         },
+        "services.GetNotificationRes": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "services.GetNurseAppointmentDetailResDto": {
             "type": "object",
             "properties": {
@@ -17045,6 +17123,23 @@ const docTemplate = `{
         "services.MorePhysiotherapistServiceResDto": {
             "type": "object",
             "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "services.NotificationResData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/services.GetNotificationRes"
+                    }
+                },
                 "message": {
                     "type": "string"
                 },

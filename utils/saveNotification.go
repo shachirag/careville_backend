@@ -16,6 +16,7 @@ func SaveNotification(
 	data map[string]string,
 ) error {
 	var notification = entity.NotificationEntity{
+		Id:        primitive.NewObjectID(),
 		UserId:    userId,
 		Title:     title,
 		Body:      body,
