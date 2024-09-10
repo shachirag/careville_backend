@@ -2,10 +2,9 @@ package common
 
 import (
 	"careville_backend/database"
-	providerMiddleware "careville_backend/dto/provider/middleware"
 	"careville_backend/dto/provider/services"
 	"careville_backend/entity"
-
+	customerMiddleware "careville_backend/dto/customer/middleware"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -23,10 +22,10 @@ func GetAllNotifications(c *fiber.Ctx) error {
 		notificationColl = database.GetCollection("notification")
 	)
 
-	providerData := providerMiddleware.GetProviderMiddlewareData(c)
+	customerData := customerMiddleware.GetCustomerMiddlewareData(c)
 
 	filter := bson.M{
-		"customerId": providerData.ProviderId,
+		"customerId": customerData.CustomerId,
 	}
 
 	sortOptions := options.Find().SetSort(bson.M{"updatedAt": -1})
