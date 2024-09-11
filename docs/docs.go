@@ -11329,6 +11329,9 @@ const docTemplate = `{
         "doctorProfession.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -11850,6 +11853,9 @@ const docTemplate = `{
         "fitnessCenter.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -12368,6 +12374,9 @@ const docTemplate = `{
         "hospitals.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -12803,6 +12812,9 @@ const docTemplate = `{
         "laboratory.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -13275,6 +13287,9 @@ const docTemplate = `{
         "medicalLabScientist.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -13809,6 +13824,9 @@ const docTemplate = `{
         "nurse.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -14695,6 +14713,9 @@ const docTemplate = `{
         "physiotherapist.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -15693,6 +15714,9 @@ const docTemplate = `{
         "services.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },

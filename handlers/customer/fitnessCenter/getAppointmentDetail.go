@@ -51,6 +51,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"age":                             1,
 		"fitnessCenter.information.name":  1,
 		"fitnessCenter.information.image": 1,
 		"fitnessCenter.information.address": bson.M{
@@ -154,6 +155,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
+				Age: appointment.Customer.Age,
 			},
 			FitnessCenterInformation: fitnessCenter.FitnessCenterInformation{
 				Id:        appointment.ServiceID,

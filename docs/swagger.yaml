@@ -1272,6 +1272,8 @@ definitions:
     type: object
   doctorProfession.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -1610,6 +1612,8 @@ definitions:
     type: object
   fitnessCenter.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -1946,6 +1950,8 @@ definitions:
     type: object
   hospitals.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -2228,6 +2234,8 @@ definitions:
     type: object
   laboratory.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -2534,6 +2542,8 @@ definitions:
     type: object
   medicalLabScientist.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -2880,6 +2890,8 @@ definitions:
     type: object
   nurse.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -3454,6 +3466,8 @@ definitions:
     type: object
   physiotherapist.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:
@@ -4099,6 +4113,8 @@ definitions:
     type: object
   services.CustomerInformation:
     properties:
+      age:
+        type: string
       firstName:
         type: string
       id:

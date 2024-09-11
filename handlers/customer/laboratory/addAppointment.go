@@ -207,6 +207,7 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"age": 1,
 	}
 
 	customerOpts := options.FindOne().SetProjection(customerProjection)
@@ -312,6 +313,7 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 			Image:       customer.Image,
 			Email:       customer.Email,
 			PhoneNumber: customer.PhoneNumber,
+			Age:         customer.Age,
 		},
 		Laboratory:        &appointmentData,
 		PaymentStatus:     "initiated",
@@ -337,7 +339,7 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 			"role":                 "healthFacility",
 			"facilityOrProfession": "laboratory",
 		}
-	
+
 		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 

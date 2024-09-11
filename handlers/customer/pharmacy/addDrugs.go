@@ -120,6 +120,7 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 			"type":        1,
 			"add":         1,
 		},
+		"age": 1,
 	}
 
 	customerOpts := options.FindOne().SetProjection(customerProjection)
@@ -209,6 +210,7 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 			Image:       customer.Image,
 			Email:       customer.Email,
 			PhoneNumber: customer.PhoneNumber,
+			Age:         customer.Age,
 		},
 		Pharmacy:          &drugData,
 		PaymentStatus:     "initiated",
@@ -260,7 +262,7 @@ func AddPharmacyDrugs(c *fiber.Ctx) error {
 			"role":                 "healthFacility",
 			"facilityOrProfession": "pharmacy",
 		}
-	
+
 		utils.SendNotificationToUser(service.User.Notification.DeviceToken, service.User.Notification.DeviceType, notificationTitle, notificationBody, notificationData, service.Id, "provider")
 	}
 

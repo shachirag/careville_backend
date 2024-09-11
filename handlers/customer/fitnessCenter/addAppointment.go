@@ -192,6 +192,7 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"age": 1,
 	}
 
 	customerOpts := options.FindOne().SetProjection(customerProjection)
@@ -283,6 +284,7 @@ func AddFitnessCenterAppointment(c *fiber.Ctx) error {
 			Image:       customer.Image,
 			Email:       customer.Email,
 			PhoneNumber: customer.PhoneNumber,
+			Age:         customer.Age,
 		},
 		FitnessCenter:     &appointmentData,
 		PaymentStatus:     "initiated",

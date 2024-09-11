@@ -4,6 +4,7 @@ import (
 	"careville_backend/handlers"
 	common "careville_backend/handlers/customer/commonApis"
 	customerAuth "careville_backend/handlers/customer/customerAuthentication"
+	schedular "careville_backend/handlers/schedular"
 	"careville_backend/handlers/customer/doctorProfession"
 	emergency "careville_backend/handlers/customer/emergency"
 	"careville_backend/handlers/customer/fitnessCenter"
@@ -24,6 +25,7 @@ import (
 func CustomerSetupsRoutes(app *fiber.App) {
 
 	app.Static("/", ".puplic")
+	app.Get("/send-appointment-reminder", schedular.SendAppointmentReminderNotification)
 
 	/* ---------- HEALTH ---------- */
 	app.Get("/health", handlers.HealthCheck)

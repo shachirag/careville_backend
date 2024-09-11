@@ -144,6 +144,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"age": 1,
 	}
 
 	customerOpts := options.FindOne().SetProjection(customerProjection)
@@ -339,6 +340,7 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 			Image:       customer.Image,
 			Email:       customer.Email,
 			PhoneNumber: customer.PhoneNumber,
+			Age:         customer.Age,
 		},
 		Nurse:             &appointmentData,
 		PaymentStatus:     "initiated",
@@ -394,8 +396,8 @@ func AddNurseAppointment(c *fiber.Ctx) error {
 	}
 
 	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
-		formattedFromDate := fromDate.Format("02 Jan 2006")
-		formattedToDate := toDate.Format("02 Jan 2006")
+		formattedFromDate := fromDate.Format("02 Jan 2006 15:04")
+		formattedToDate := toDate.Format("02 Jan 2006 15:04")
 
 		notificationTitle := "New Appointment Scheduled"
 		notificationBody := "A new appointment has been scheduled from " + formattedFromDate + " to " + formattedToDate + "."

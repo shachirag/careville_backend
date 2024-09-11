@@ -33,6 +33,7 @@ type CustomerAppointmentEntity struct {
 	Image       string             `json:"image" bson:"image"`
 	Email       string             `json:"email" bson:"email"`
 	PhoneNumber PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
+	Age         string             `json:"age" bson:"age"`
 }
 
 type PharmacyAppointmentEntity struct {

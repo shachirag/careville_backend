@@ -50,6 +50,7 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"age":                          1,
 		"laboratory.information.name":  1,
 		"laboratory.information.image": 1,
 		"laboratory.information.address": bson.M{
@@ -151,6 +152,7 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
+				Age: appointment.Customer.Age,
 			},
 			LaboratoryInformation: laboratory.LaboratoryInformation{
 				Id:        appointment.ServiceID,

@@ -141,6 +141,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"age": 1,
 	}
 
 	customerOpts := options.FindOne().SetProjection(customerProjection)
@@ -318,6 +319,7 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 			Image:       customer.Image,
 			Email:       customer.Email,
 			PhoneNumber: customer.PhoneNumber,
+			Age:         customer.Age,
 		},
 		MedicalLabScientist: &appointmentData,
 		PaymentStatus:       "initiated",
@@ -372,8 +374,8 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 	}
 
 	if service.User.Notification.DeviceToken != "" && service.User.Notification.DeviceType != "" {
-		formattedFromDate := fromDate.Format("02 Jan 2006")
-		formattedToDate := toDate.Format("02 Jan 2006")
+		formattedFromDate := fromDate.Format("02 Jan 2006 15:04")
+		formattedToDate := toDate.Format("02 Jan 2006 15:04")
 
 		notificationTitle := "Appointment Scheduled for Medical Lab Scientist"
 		notificationBody := "An appointment has been scheduled for a medical lab scientist from " + formattedFromDate + " to " + formattedToDate + "."

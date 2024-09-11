@@ -156,6 +156,7 @@ func UpdateCustomer(c *fiber.Ctx) error {
 				"number":      data.PhoneNumber,
 				"countryCode": data.CountryCode,
 			},
+			"age": data.Age,
 		}}
 
 		_, err = database.GetCollection("appointment").UpdateMany(sessCtx, bson.M{"customer.id": customerData.CustomerId}, appointmentUpdate)

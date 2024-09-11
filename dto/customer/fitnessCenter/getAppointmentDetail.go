@@ -48,6 +48,7 @@ type CustomerInformation struct {
 	LastName    string             `json:"lastName" bson:"lastName"`
 	Image       string             `json:"image" bson:"image"`
 	PhoneNumber PhoneNumber        `json:"phoneNumber" bson:"phoneNumber"`
+	Age         string             `json:"age" bson:"age"`
 }
 
 type PhoneNumber struct {

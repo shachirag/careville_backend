@@ -11322,6 +11322,9 @@
         "doctorProfession.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -11843,6 +11846,9 @@
         "fitnessCenter.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -12361,6 +12367,9 @@
         "hospitals.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -12796,6 +12805,9 @@
         "laboratory.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -13268,6 +13280,9 @@
         "medicalLabScientist.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -13802,6 +13817,9 @@
         "nurse.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -14688,6 +14706,9 @@
         "physiotherapist.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -15686,6 +15707,9 @@
         "services.CustomerInformation": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
