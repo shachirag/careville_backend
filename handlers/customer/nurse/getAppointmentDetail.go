@@ -49,7 +49,7 @@ func GetNurseAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
-		"age":                             1,
+		"customer.age":                    1,
 		"facilityOrProfession":            1,
 		"nurse.appointmentDetails.from":   1,
 		"nurse.appointmentDetails.to":     1,

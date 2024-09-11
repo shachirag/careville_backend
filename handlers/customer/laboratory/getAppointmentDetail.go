@@ -50,7 +50,7 @@ func GetLaboratoryAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
-		"age":                          1,
+		"customer.age":                 1,
 		"laboratory.information.name":  1,
 		"laboratory.information.image": 1,
 		"laboratory.information.address": bson.M{

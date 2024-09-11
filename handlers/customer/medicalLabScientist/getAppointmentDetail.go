@@ -49,7 +49,7 @@ func GetMedicalLabScientistAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
-		"age":                  1,
+		"customer.age":         1,
 		"facilityOrProfession": 1,
 		"medicalLabScientist.appointmentDetails.from":   1,
 		"medicalLabScientist.appointmentDetails.to":     1,
