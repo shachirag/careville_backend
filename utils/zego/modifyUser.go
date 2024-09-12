@@ -3,18 +3,17 @@ package zegoCloudChatHandler
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
 
 type ModifyUserInfoReq struct {
 	UserId     string `json:"UserId"`
-	UserName   string `json:"UserName,omitempty"`   
+	UserName   string `json:"UserName,omitempty"`
 	UserAvatar string `json:"UserAvatar,omitempty"`
-	Extra      string `json:"Extra,omitempty"`     
+	Extra      string `json:"Extra,omitempty"`
 }
 
 type ModifyUserInfoRequest struct {
@@ -60,7 +59,7 @@ func ModifyUserInfo(users []ModifyUserInfoReq) (*ModifyUserInfoResponse, error) 
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %v", err)
 	}
@@ -72,9 +71,8 @@ func ModifyUserInfo(users []ModifyUserInfoReq) (*ModifyUserInfoResponse, error) 
 	}
 
 	if modifyUserInfoResp.Code != 0 {
-		return &modifyUserInfoResp, errors.New(modifyUserInfoResp.Message)
+		return &modifyUserInfoResp, fmt.Errorf("user modification failed: %s", modifyUserInfoResp.Message)
 	}
 
 	return &modifyUserInfoResp, nil
 }
-
