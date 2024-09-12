@@ -49,6 +49,7 @@ func GetDoctorprofessionAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"customer.age":                     1,
 		"facilityOrProfession":             1,
 		"doctor.appointmentDetails.from":   1,
 		"doctor.appointmentDetails.to":     1,
@@ -105,6 +106,7 @@ func GetDoctorprofessionAppointmentByID(c *fiber.Ctx) error {
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
+				Age: appointment.Customer.Age,
 			},
 			FacilityOrProfession: appointment.FacilityOrProfession,
 			AppointmentDetails: services.AppointmentDetails{

@@ -48,6 +48,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"customer.age":                            1,
 		"facilityOrProfession":                    1,
 		"fitnessCenter.invoice.totalAmountPaid":   1,
 		"fitnessCenter.package":                   1,
@@ -118,6 +119,7 @@ func GetFitnessCenterAppointmentByID(c *fiber.Ctx) error {
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
+				Age: appointment.Customer.Age,
 			},
 			Subscription: services.SubscriptionData{
 				Package: gymPackage,

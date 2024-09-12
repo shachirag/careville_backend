@@ -48,10 +48,11 @@ func GetPharmacyAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"customer.age":                            1,
 		"facilityOrProfession":                    1,
 		"pharmacy.pricePaid":                      1,
 		"pharmacy.requestedDrugs.nameAndQuantity": 1,
-		"pharmacy.requestedDrugs.modeOfDelivery": 1,
+		"pharmacy.requestedDrugs.modeOfDelivery":  1,
 		"pharmacy.requestedDrugs.prescription":    1,
 	}
 
@@ -92,6 +93,7 @@ func GetPharmacyAppointmentByID(c *fiber.Ctx) error {
 					Number:      appointment.Customer.PhoneNumber.Number,
 					CountryCode: appointment.Customer.PhoneNumber.CountryCode,
 				},
+				Age: appointment.Customer.Age,
 			},
 			Prescription:         prescription,
 			NameAndQuantity:      nameAndQuantity,
