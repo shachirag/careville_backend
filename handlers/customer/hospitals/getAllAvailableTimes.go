@@ -22,7 +22,7 @@ import (
 // @Param doctorId query string true "doctor ID"
 // @Produce json
 // @Success 200 {object} hospitals.AvailableSlotsResDto
-// @Router /customer/healthFacility/get-all-available-slots [get]
+// @Router /customer/healthFacility/get-all-available-times [get]
 func GetAvailableSlots(c *fiber.Ctx) error {
 	var service entity.ServiceEntity
 

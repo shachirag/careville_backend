@@ -7372,7 +7372,7 @@ paths:
       summary: Fetch appointments
       tags:
       - customer appointments
-  /customer/healthFacility/get-all-available-slots:
+  /customer/healthFacility/get-all-available-times:
     get:
       consumes:
       - application/json

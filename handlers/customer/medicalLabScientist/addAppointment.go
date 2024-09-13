@@ -83,7 +83,63 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	var fromDate time.Time
+	if data.FromDate != "" {
+		fromDate, err = time.Parse(time.DateTime, data.FromDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse fromDate date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "fromDate is mandatory",
+		})
+	}
+
+	var toDate time.Time
+	if data.ToDate != "" {
+		toDate, err = time.Parse(time.DateTime, data.ToDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse toDate date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "toDate date is mandatory",
+		})
+	}
+
 	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
+
+	overlapFilter := bson.M{
+		"customer.id":                    customerMiddlewareData.CustomerId,
+		"serviceId":                      serviceObjectID,
+		"medicalLabScientist.service.id": medicalLabScientistServiceDataServiceObjID,
+		"medicalLabScientist.appointmentDetails.from": bson.M{"$lte": toDate},
+		"medicalLabScientist.appointmentDetails.to":   bson.M{"$gte": fromDate},
+	}
+
+	count, err := appointmentColl.CountDocuments(ctx, overlapFilter)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "Failed to check existing appointments: " + err.Error(),
+		})
+	}
+
+	if count > 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
+			Status:  false,
+			Message: "You have already created a booking for this service with the Medical Lab Scientist.",
+		})
+	}
+
 	var familyData entity.FamilyMembers
 	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 
@@ -219,38 +275,6 @@ func AddMedicalLabScientistAppointment(c *fiber.Ctx) error {
 				break
 			}
 		}
-	}
-
-	var fromDate time.Time
-	if data.FromDate != "" {
-		fromDate, err = time.Parse(time.DateTime, data.FromDate)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
-				Status:  false,
-				Message: "Failed to parse fromDate date: " + err.Error(),
-			})
-		}
-	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
-			Status:  false,
-			Message: "fromDate is mandatory",
-		})
-	}
-
-	var toDate time.Time
-	if data.ToDate != "" {
-		toDate, err = time.Parse(time.DateTime, data.ToDate)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
-				Status:  false,
-				Message: "Failed to parse toDate date: " + err.Error(),
-			})
-		}
-	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(medicalLabScientist.MedicalLabScientistAppointmentResDto{
-			Status:  false,
-			Message: "toDate date is mandatory",
-		})
 	}
 
 	var remindMeBefore time.Time

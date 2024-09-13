@@ -46,6 +46,8 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
+
 	var familyObjectID primitive.ObjectID
 	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 
@@ -80,6 +82,43 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(laboratory.LaboratoryAppointmentResDto{
 			Status:  false,
 			Message: "Invalid ID format",
+		})
+	}
+
+	var appointmentDate time.Time
+	if data.AppointmentDate != "" {
+		appointmentDate, err = time.Parse(time.DateOnly, data.AppointmentDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(laboratory.LaboratoryAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse appointment date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "Appointment date is mandatory",
+		})
+	}
+
+	overlapFilter := bson.M{
+		"customer.id":                        customerMiddlewareData.CustomerId,
+		"laboratory.investigation.id":        investigationObjID,
+		"laboratory.appointmentDetails.date": appointmentDate,
+	}
+
+	count, err := appointmentColl.CountDocuments(ctx, overlapFilter)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "Failed to check existing appointments: " + err.Error(),
+		})
+	}
+
+	if count > 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(laboratory.LaboratoryAppointmentResDto{
+			Status:  false,
+			Message: "You have already created a booking for this investigation on the selected date.",
 		})
 	}
 
@@ -152,7 +191,7 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 	}
 
 	var familyData entity.FamilyMembers
-	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
+
 	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
 		familyFilter := bson.M{
 			"_id": customerMiddlewareData.CustomerId,
@@ -247,22 +286,6 @@ func AddLaboratoryAppointment(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(laboratory.LaboratoryAppointmentResDto{
 			Status:  false,
 			Message: "laboratory data not found",
-		})
-	}
-
-	var appointmentDate time.Time
-	if data.AppointmentDate != "" {
-		appointmentDate, err = time.Parse(time.DateOnly, data.AppointmentDate)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(laboratory.LaboratoryAppointmentResDto{
-				Status:  false,
-				Message: "Failed to parse appointment date: " + err.Error(),
-			})
-		}
-	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(laboratory.LaboratoryAppointmentResDto{
-			Status:  false,
-			Message: "Appointment date is mandatory",
 		})
 	}
 

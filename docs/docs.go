@@ -2482,7 +2482,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/customer/healthFacility/get-all-available-slots": {
+        "/customer/healthFacility/get-all-available-times": {
             "get": {
                 "description": "Get available times",
                 "consumes": [

@@ -46,6 +46,8 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		})
 	}
 
+	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
+
 	var familyObjectID primitive.ObjectID
 
 	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
@@ -76,7 +78,60 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		})
 	}
 
-	customerMiddlewareData := customerMiddleware.GetCustomerMiddlewareData(c)
+	var fromDate time.Time
+	if data.FromDate != "" {
+		fromDate, err = time.Parse(time.DateTime, data.FromDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse fromDate date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "fromDate is mandatory",
+		})
+	}
+
+	var toDate time.Time
+	if data.ToDate != "" {
+		toDate, err = time.Parse(time.DateTime, data.ToDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+				Status:  false,
+				Message: "Failed to parse toDate date: " + err.Error(),
+			})
+		}
+	} else {
+		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "toDate date is mandatory",
+		})
+	}
+
+	overlapFilter := bson.M{
+		"customer.id":                    customerMiddlewareData.CustomerId,
+		"serviceId":                      serviceObjectID,
+		"doctor.appointmentDetails.from": bson.M{"$lte": toDate},
+		"doctor.appointmentDetails.to":   bson.M{"$gte": fromDate},
+	}
+
+	count, err := appointmentColl.CountDocuments(ctx, overlapFilter)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "Failed to check existing appointments: " + err.Error(),
+		})
+	}
+
+	if count > 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
+			Status:  false,
+			Message: "You have already created a booking for this time slot.",
+		})
+	}
+
 	var familyData entity.FamilyMembers
 
 	if data.FamillyMemberId != nil && *data.FamillyMemberId != "" {
@@ -177,38 +232,6 @@ func AddDoctorAppointment(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
 			Status:  false,
 			Message: "Doctor data not found",
-		})
-	}
-
-	var fromDate time.Time
-	if data.FromDate != "" {
-		fromDate, err = time.Parse(time.DateTime, data.FromDate)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-				Status:  false,
-				Message: "Failed to parse fromDate date: " + err.Error(),
-			})
-		}
-	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-			Status:  false,
-			Message: "fromDate is mandatory",
-		})
-	}
-
-	var toDate time.Time
-	if data.ToDate != "" {
-		toDate, err = time.Parse(time.DateTime, data.ToDate)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-				Status:  false,
-				Message: "Failed to parse toDate date: " + err.Error(),
-			})
-		}
-	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(doctorProfession.DoctorProfessionAppointmentResDto{
-			Status:  false,
-			Message: "toDate date is mandatory",
 		})
 	}
 
