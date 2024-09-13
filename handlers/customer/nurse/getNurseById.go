@@ -66,6 +66,7 @@ func GetNurseByID(c *fiber.Ctx) error {
 		"nurse.review.totalReviews":        1,
 		"nurse.review.avgRating":           1,
 		"nurse.schedule.serviceFees":       1,
+		"nurse.schedule.name":              1,
 		"nurse.schedule.slots": bson.M{
 			"startTime": 1,
 			"endTime":   1,
