@@ -17,6 +17,7 @@ import (
 // @Tags customer physiotherapist
 // @Accept application/json
 // @Param physiotherapistId query string true "service ID"
+//
 //	@Param Authorization header	string true	"Authentication header"
 //
 // @Produce json
@@ -49,7 +50,7 @@ func GetPhysiotherapistAvailableTimes(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"physiotherapist.serviceAndSchedule.upcommingEvents": 1,
+		"physiotherapist.upcommingEvents": 1,
 		"physiotherapist.serviceAndSchedule.slots": bson.M{
 			"startTime":     1,
 			"endTime":       1,

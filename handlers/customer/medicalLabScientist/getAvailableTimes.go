@@ -49,7 +49,7 @@ func GetMedicalLabScientistAvailableTimes(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"medicalLabScientist.serviceAndSchedule.upcommingEvents": 1,
+		"medicalLabScientist.upcommingEvents": 1,
 		"medicalLabScientist.serviceAndSchedule.slots": bson.M{
 			"startTime":     1,
 			"endTime":       1,

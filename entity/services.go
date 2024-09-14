@@ -165,7 +165,6 @@ type DoctorEntityDto struct {
 	PersonalIdentificationDocs PersonalIdentificationDocs `json:"personalIdentificationDocs" bson:"personalIdentificationDocs"`
 	ProfessionalDetailsDocs    ProfessionalDetailsDocs    `json:"professionalDetailsDocs" bson:"professionalDetailsDocs"`
 	Schedule                   DoctorSchedule             `json:"schedule" bson:"schedule"`
-	UpcommingEvents            []UpcommingEvents          `json:"upcommingEvents" bson:"upcommingEvents"`
 }
 
 type AdditionalService struct {
@@ -184,8 +183,9 @@ type ProfessionalDetailsDocs struct {
 }
 
 type DoctorSchedule struct {
-	ConsultationFees float64       `json:"consultationFees" bson:"consultationFees"`
-	Slots            []DoctorSlots `json:"slots" bson:"slots"`
+	ConsultationFees float64           `json:"consultationFees" bson:"consultationFees"`
+	Slots            []DoctorSlots     `json:"slots" bson:"slots"`
+	UpcommingEvents  []UpcommingEvents `json:"upcommingEvents" bson:"upcommingEvents"`
 }
 
 type DoctorSlots struct {

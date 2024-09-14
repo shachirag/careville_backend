@@ -50,7 +50,7 @@ func GetNurseAvailableTimes(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"nurse.schedule.upcommingEvents": 1,
+		"nurse.upcommingEvents": 1,
 		"nurse.schedule.slots": bson.M{
 			"startTime":     1,
 			"endTime":       1,
@@ -104,6 +104,7 @@ func GetNurseAvailableTimes(c *fiber.Ctx) error {
 				EndTime:   event.EndTime,
 			})
 		}
+
 	}
 
 	if upcommingEvents == nil {

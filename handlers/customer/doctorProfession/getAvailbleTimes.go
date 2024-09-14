@@ -50,7 +50,11 @@ func GetDoctorAvailableTimes(c *fiber.Ctx) error {
 	}
 
 	projection := bson.M{
-		"doctor.upcommingEvents": 1,
+		"doctor.schedule.upcommingEvents": bson.M{
+			"id":        1,
+			"startTime": 1,
+			"endTime":   1,
+		},
 		"doctor.schedule.slots": bson.M{
 			"startTime":     1,
 			"endTime":       1,
@@ -95,18 +99,17 @@ func GetDoctorAvailableTimes(c *fiber.Ctx) error {
 			})
 		}
 
-		upcomingEvents := make([]doctorProfession.UpcommingEvents, len(service.Doctor.UpcommingEvents))
-		for i, event := range service.Doctor.UpcommingEvents {
-			upcomingEvents[i] = doctorProfession.UpcommingEvents{
+		for _, event := range service.Doctor.Schedule.UpcommingEvents {
+			upcommingEvents = append(upcommingEvents, doctorProfession.UpcommingEvents{
 				Id:        event.Id,
 				StartTime: event.StartTime,
 				EndTime:   event.EndTime,
-			}
+			})
 		}
 	}
 
-	if upcommingEvents == nil {
-		upcommingEvents = make([]doctorProfession.UpcommingEvents, 0)
+	if len(upcommingEvents) == 0 {
+		upcommingEvents = []doctorProfession.UpcommingEvents{}
 	}
 
 	response := doctorProfession.AvailableSlotsResDto{
