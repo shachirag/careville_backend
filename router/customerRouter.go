@@ -127,7 +127,7 @@ func CustomerSetupsRoutes(app *fiber.App) {
 	appointments.Use(jwt, middlewares.CustomerData)
 	appointment.Get("/doctor-appointments", doctorProfession.FetchDoctorAppointmentsWithPagination)
 	appointment.Get("/doctor-approved-appointments", doctorProfession.FetchApprovedDoctorAppointmentsWithPagination)
-	appointment.Get("/nurse-appointment/:id", doctorProfession.GetdoctorProfessionAppointmentByID)
+	appointment.Get("/doctor-appointment/:id", doctorProfession.GetdoctorProfessionAppointmentByID)
 	appointment.Get("/nurse-appointments", nurse.FetchNurseAppointmentsWithPagination)
 	appointment.Get("/nurse-approved-appointments", nurse.FetchApprovedNurseAppointmentsWithPagination)
 	appointment.Get("/nurse-appointment/:id", nurse.GetNurseAppointmentByID)

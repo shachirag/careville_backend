@@ -126,7 +126,7 @@ func FetchHospitalsWithPagination(c *fiber.Ctx) error {
 
 	finalResponse := hospitals.GetHospitalsPaginationRes{
 		Status:  true,
-		Message: "Sucessfully fetched data",
+		Message: "Successfully fetched data",
 		Data:    response,
 	}
 	return c.Status(fiber.StatusOK).JSON(finalResponse)

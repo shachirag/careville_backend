@@ -4,6 +4,7 @@ import (
 	"careville_backend/database"
 	doctorProfession "careville_backend/dto/customer/doctorProfession"
 	"careville_backend/entity"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,6 +50,7 @@ func GetdoctorProfessionAppointmentByID(c *fiber.Ctx) error {
 			"number":      1,
 			"countryCode": 1,
 		},
+		"serviceId":                        1,
 		"customer.age":                     1,
 		"facilityOrProfession":             1,
 		"doctor.appointmentDetails.from":   1,
@@ -71,6 +73,7 @@ func GetdoctorProfessionAppointmentByID(c *fiber.Ctx) error {
 			Message: "Failed to fetch appointment data: " + err.Error(),
 		})
 	}
+	fmt.Println("appointment", appointment)
 
 	var doctor entity.ServiceEntity
 	reviewFilter := bson.M{"_id": appointment.ServiceID}
@@ -78,8 +81,10 @@ func GetdoctorProfessionAppointmentByID(c *fiber.Ctx) error {
 		"doctor.review.avgRating": 1,
 	}
 
+	fmt.Println("appointment.ServiceID", appointment.ServiceID)
+
 	reviewFindOptions := options.FindOne().SetProjection(projection)
-	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&appointment)
+	err = database.GetCollection("service").FindOne(ctx, reviewFilter, reviewFindOptions).Decode(&doctor)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(doctorProfession.GetDoctorProfessionAppointmentDetailResDto{
 			Status:  false,
